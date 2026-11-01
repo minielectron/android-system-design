@@ -23,7 +23,11 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 3 | Persistence Core & Single Source of Truth | [`docs/chapters/03-persistence-core-ssot.md`](./docs/chapters/03-persistence-core-ssot.md) | ✅ Draft |
 | 4 | DataStore: Preferences & Proto | [`docs/chapters/04-datastore.md`](./docs/chapters/04-datastore.md) | ✅ Draft |
 | 5 | Dependency Injection at Scale with Hilt | [`docs/chapters/05-dependency-injection-hilt.md`](./docs/chapters/05-dependency-injection-hilt.md) | ✅ Draft |
+| 6 | UI State Modeling & Unidirectional Data Flow | [`docs/chapters/06-ui-state-udf.md`](./docs/chapters/06-ui-state-udf.md) | ✅ Draft |
+| 7 | One-Time Events & Side Effects | [`docs/chapters/07-one-time-events.md`](./docs/chapters/07-one-time-events.md) | ✅ Draft |
+| 8 | Process Death & State Restoration | [`docs/chapters/08-process-death-state-restoration.md`](./docs/chapters/08-process-death-state-restoration.md) | ✅ Draft |
 | 9 | Debounced Network Search | [`docs/chapters/09-debounced-network-search.md`](./docs/chapters/09-debounced-network-search.md) | ✅ Draft |
+| 10 | Search Suggestions & Autocomplete | [`docs/chapters/10-search-suggestions-autocomplete.md`](./docs/chapters/10-search-suggestions-autocomplete.md) | ✅ Draft |
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order
