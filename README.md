@@ -18,11 +18,17 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 
 | Ch | Topic | File | State |
 |----|-------|------|-------|
+| 1 | Networking Core: API Request Orchestration | [`docs/chapters/01-networking-core.md`](./docs/chapters/01-networking-core.md) | ✅ Draft |
+| 2 | Network Reliability: Timeouts, Retries, Backoff & Circuit Breaking | [`docs/chapters/02-network-reliability.md`](./docs/chapters/02-network-reliability.md) | ✅ Draft |
+| 3 | Persistence Core & Single Source of Truth | [`docs/chapters/03-persistence-core-ssot.md`](./docs/chapters/03-persistence-core-ssot.md) | ✅ Draft |
+| 4 | DataStore: Preferences & Proto | [`docs/chapters/04-datastore.md`](./docs/chapters/04-datastore.md) | ✅ Draft |
+| 5 | Dependency Injection at Scale with Hilt | [`docs/chapters/05-dependency-injection-hilt.md`](./docs/chapters/05-dependency-injection-hilt.md) | ✅ Draft |
 | 9 | Debounced Network Search | [`docs/chapters/09-debounced-network-search.md`](./docs/chapters/09-debounced-network-search.md) | ✅ Draft |
 
-> Chapters are authored one topic at a time. The chapter numbering follows the
-> blueprint's canonical order (§5); authoring order can differ on request —
-> e.g. Ch 9 (Debounced Search) was authored first.
+> Chapters are authored one topic at a time (or in batches on request). The
+> chapter numbering follows the blueprint's canonical order (§5); authoring order
+> can differ — Ch 9 (Debounced Search) was authored first, then the Part I
+> foundations (Ch 1–5) it depends on.
 
 ## How this book is organized
 
