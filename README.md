@@ -1,6 +1,6 @@
-# Android Application System Design
+# Designing Android at Scale
 
-> *From Fundamentals to Production-Scale Engineering*
+> *System Design in Practice: Building, and Defending Production-Scale Mobile Features in Kotlin*
 
 This repository holds the manuscript, diagrams, and reference code for a
 technically rigorous book on **Android application system design** — aimed at
@@ -11,12 +11,18 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 
 | Phase | Description | State |
 |-------|-------------|-------|
-| **Phase 1** | Book planning: title, audience, full TOC, 100-topic catalog, dependency ordering, reference application, conventions, glossary | ✅ Draft complete — see [`BLUEPRINT.md`](./BLUEPRINT.md) |
-| **Phase 2+** | Chapter-by-chapter authoring (one topic at a time, 18-section structure) | ⏸ Awaiting approval of Phase 1 |
+| **Phase 1** | Book planning: title, audience, full TOC, 100-topic catalog, dependency ordering, reference application, conventions, glossary | ✅ Approved — see [`BLUEPRINT.md`](./BLUEPRINT.md) |
+| **Phase 2+** | Chapter-by-chapter authoring (one topic at a time, 18-section structure) | 🚧 In progress |
 
-**Nothing beyond the blueprint is written yet.** Per the authoring workflow,
-chapters are produced one topic at a time, on request, only after the Phase 1
-plan is approved.
+### Chapters authored
+
+| Ch | Topic | File | State |
+|----|-------|------|-------|
+| 9 | Debounced Network Search | [`docs/chapters/09-debounced-network-search.md`](./docs/chapters/09-debounced-network-search.md) | ✅ Draft |
+
+> Chapters are authored one topic at a time. The chapter numbering follows the
+> blueprint's canonical order (§5); authoring order can differ on request —
+> e.g. Ch 9 (Debounced Search) was authored first.
 
 ## How this book is organized
 

@@ -14,19 +14,19 @@
 
 ## 1. Title & Subtitle
 
-**Primary title:**
-> **Android System Design in Practice**
+**Primary title:** *(approved)*
+> **Designing Android at Scale**
 
 **Subtitle:**
-> *Designing, Building, and Defending Production-Scale Mobile Features in Kotlin*
+> *System Design in Practice: Building and Defending Production-Scale Mobile Features in Kotlin*
 
 **Working series tagline:** *From a single screen to an enterprise-scale app.*
 
-Rationale: the title foregrounds *system design* (the discriminator for senior
-roles and interviews) while *in Practice* and the subtitle promise working
-Kotlin and production concerns rather than whiteboard theory. The book is not a
-"learn Android" book; it is a "how senior engineers reason about Android
-features" book.
+Rationale: the title foregrounds *scale* and *system design* (the discriminator
+for senior roles and interviews) while the subtitle promises working Kotlin and
+production concerns rather than whiteboard theory. The book is not a "learn
+Android" book; it is a "how senior engineers reason about Android features"
+book.
 
 ---
 
@@ -723,23 +723,20 @@ defend the feature at Senior/Staff level.
 
 ---
 
-## 13. Open Questions for Approval
+## 13. Locked Decisions (post-approval)
 
-Before writing Chapter 1, confirmation on the following would help lock the
-plan:
+| # | Decision | Resolution |
+|---|----------|-----------|
+| 1 | **Title** | **Designing Android at Scale** |
+| 2 | **Reference app** | **StreamCart** (e-commerce + streaming) |
+| 3 | **Authoring start** | **Debounced Network Search** (canonical Ch 9) |
+| 4 | **Code depth** | Chapter-embedded Kotlin snippets |
+| 5 | **Chapter length** | ≥ 3,000–4,000 words per chapter; may span multiple authoring turns without compressing mandatory sections |
 
-1. **Title choice** — is *"Android System Design in Practice"* acceptable, or
-   do you prefer an alternative (e.g., *"Designing Android at Scale"*)?
-2. **Reference app** — is **StreamCart (e-commerce + streaming)** the right
-   anchor, given your TV/STB/Fire TV background (Ch 98 leans into this)?
-3. **Starting chapter** — the dependency graph recommends starting with
-   **Ch 1 (Networking Core)**. Confirm, or name a different first topic.
-4. **Code depth** — full compilable modules in `reference-app/`, or
-   chapter-embedded snippets only? (Plan assumes embedded snippets first, with
-   extracted runnable modules added opportunistically.)
-5. **Per-chapter length** — confirm the expectation that chapters may span
-   multiple authoring turns rather than being compressed to fit one response.
+> Authoring order may differ from the canonical chapter numbering in §5. Each
+> chapter keeps its canonical number; a chapter's **Prerequisites** box names
+> the earlier chapters it relies on so non-linear readers know what to skim.
 
 ---
 
-*End of Phase 1 blueprint. Awaiting approval before Chapter 1.*
+*End of Phase 1 blueprint. Phase 2 authoring in progress.*
