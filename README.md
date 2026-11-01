@@ -30,6 +30,16 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 > can differ — Ch 9 (Debounced Search) was authored first, then the Part I
 > foundations (Ch 1–5) it depends on.
 
+### Formats
+
+- **Markdown** (`docs/chapters/*.md`) — diagrams are embedded inline as base64
+  PNGs, so each chapter renders self-contained in any markdown viewer.
+- **PDF** (`docs/pdf/*.pdf`) — a book-styled, self-contained PDF per chapter
+  (plus the blueprint), generated from the markdown with diagrams baked in.
+
+> Diagrams are authored in Mermaid, rendered to PNG, and embedded; the render/
+> embed/PDF pipeline is reusable for every new chapter.
+
 ## How this book is organized
 
 - Every **topic is one chapter**, and every chapter follows the same
