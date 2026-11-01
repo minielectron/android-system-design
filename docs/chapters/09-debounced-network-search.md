@@ -158,39 +158,7 @@ callback/imperative alternative.)
 
 ## 9.4 High-Level Architecture
 
-```mermaid
-flowchart TD
-    subgraph UI["Presentation (:feature:search)"]
-        TF["SearchBar (Compose)"]
-        LIST["ResultsList (Compose)"]
-    end
-    subgraph VM["SearchViewModel"]
-        Q["queryFlow: MutableStateFlow&lt;String&gt;"]
-        PIPE["debounce → distinctUntilChanged → flatMapLatest"]
-        S["uiState: StateFlow&lt;SearchUiState&gt;"]
-    end
-    subgraph DOMAIN["Domain (:domain)"]
-        UC["SearchProductsUseCase"]
-    end
-    subgraph DATA["Data (:data:catalog)"]
-        REPO["SearchRepository (SSOT for results)"]
-        MEM["In-memory LRU query cache"]
-        REMOTE["ProductSearchApi (Retrofit)"]
-    end
-    CORE[":core:network<br/>OkHttp + Outcome/AppError"]
-
-    TF -->|onQueryChange| Q
-    Q -.->|cold pipeline| PIPE
-    PIPE --> UC
-    UC --> REPO
-    REPO --> MEM
-    REPO -->|miss| REMOTE
-    REMOTE --> CORE
-    REPO -.->|Outcome| UC
-    UC -.-> PIPE
-    PIPE --> S
-    S -.->|collectAsStateWithLifecycle| LIST
-```
+![9.4 High-Level Architecture](images/09-debounced-network-search-1.png)
 
 **Component responsibilities & ownership**
 
@@ -217,41 +185,7 @@ it is reusable by non-debounced callers (e.g., a "search" button, voice search).
 
 ## 9.5 Detailed Component Design
 
-```mermaid
-classDiagram
-    class SearchViewModel {
-        -MutableStateFlow~String~ query
-        +StateFlow~SearchUiState~ uiState
-        +onQueryChanged(String)
-        +onRetry()
-        +onClear()
-    }
-    class SearchProductsUseCase {
-        +invoke(String) Outcome~List~Product~~
-    }
-    class SearchRepository {
-        <<interface>>
-        +search(String) Outcome~List~Product~~
-    }
-    class SearchRepositoryImpl {
-        -ProductSearchApi api
-        -LruCache cache
-        -DispatcherProvider dispatchers
-        +search(String) Outcome~List~Product~~
-    }
-    class ProductSearchApi {
-        <<interface>>
-        +search(String, Int) List~ProductDto~
-    }
-    class SearchUiState {
-        <<sealed>>
-    }
-    SearchViewModel --> SearchProductsUseCase
-    SearchProductsUseCase --> SearchRepository
-    SearchRepository <|.. SearchRepositoryImpl
-    SearchRepositoryImpl --> ProductSearchApi
-    SearchViewModel --> SearchUiState
-```
+![9.5 Detailed Component Design](images/09-debounced-network-search-2.png)
 
 | Component | Input | Output | State | Lifecycle | Errors |
 |-----------|-------|--------|-------|-----------|--------|
@@ -270,47 +204,11 @@ the single active request; its cache access is guarded (see §9.8).
 
 ### Success path
 
-```mermaid
-sequenceDiagram
-    actor User
-    participant UI as SearchBar
-    participant VM as SearchViewModel
-    participant UC as SearchProductsUseCase
-    participant Repo as SearchRepository
-    participant API as ProductSearchApi
-
-    User->>UI: types "head"
-    UI->>VM: onQueryChanged("head")
-    Note over VM: query emits; debounce(300ms) waiting
-    User->>UI: types "phones" (within 300ms)
-    UI->>VM: onQueryChanged("headphones")
-    Note over VM: debounce resets; only "headphones" survives
-    Note over VM: distinctUntilChanged passes; flatMapLatest cancels any prior inner flow
-    VM->>VM: emit Loading
-    VM->>UC: invoke("headphones")
-    UC->>Repo: search("headphones")
-    Repo->>API: GET /search/products?q=headphones (IO)
-    API-->>Repo: List<ProductDto>
-    Repo-->>UC: Outcome.Success(List<Product>)
-    UC-->>VM: Outcome.Success
-    VM-->>UI: emit Results(list) / Empty
-    UI-->>User: renders results
-```
+![Success path](images/09-debounced-network-search-3.png)
 
 ### Failure path (offline, then retry)
 
-```mermaid
-sequenceDiagram
-    participant VM as SearchViewModel
-    participant Repo as SearchRepository
-    participant API as ProductSearchApi
-    VM->>Repo: search("headphones")
-    Repo->>API: GET ... (IO)
-    API--xRepo: UnknownHostException
-    Repo-->>VM: Outcome.Failure(NoConnectivity)
-    VM-->>VM: emit Error(NoConnectivity, retryable=true)
-    Note over VM: user taps Retry → onRetry() re-emits same query bypassing debounce
-```
+![Failure path (offline, then retry)](images/09-debounced-network-search-4.png)
 
 ---
 
@@ -637,20 +535,7 @@ experience → retry? → recovery → telemetry.*
 | **Empty results** | success, empty list | `Empty(query)` | "No matches for X" + suggestions | n/a | `search_zero_results{q_len}` |
 | **Process death** | n/a | `SavedStateHandle` restore | seamless | n/a | — |
 
-```mermaid
-flowchart TD
-    REQ[search q] --> OK{Outcome?}
-    OK -->|Success non-empty| R[Results]
-    OK -->|Success empty| E[Empty]
-    OK -->|Failure| T{AppError}
-    T -->|NoConnectivity/Timeout/5xx| RET[Error retryable=true]
-    T -->|Serialization/Forbidden| NR[Error retryable=false]
-    T -->|RateLimited| BO[Backoff then retryable]
-    T -->|Unauthorized| RF[Refresh token → replay]
-    RET -->|user/auto| REQ
-    BO -->|after delay| REQ
-    RF --> REQ
-```
+![9.9 Failure Scenarios and Recovery](images/09-debounced-network-search-5.png)
 
 > **Design note — "keep last results on error?"** For search, showing a toast/
 > inline error while *retaining* the last good results often beats blanking the

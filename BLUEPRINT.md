@@ -317,41 +317,7 @@ its core. The guiding dependency rules:
 
 ### Key dependency edges (Appendix B, abbreviated)
 
-```mermaid
-graph LR
-  subgraph PartI[Part I: Core Infra]
-    N[Ch1 Networking Core]
-    REL[Ch2 Reliability]
-    DB[Ch3 Persistence/SSOT]
-    DS[Ch4 DataStore]
-    DI[Ch5 Hilt]
-    ST[Ch6 UI State/UDF]
-  end
-
-  N --> REL
-  N --> AUTH[Ch19 Auth/Refresh]
-  REL --> AUTH
-  N --> DEDUP[Ch11 Single-flight]
-  DEDUP --> AUTH
-  N --> CACHE[Ch12 Caching]
-  DB --> CACHE
-  CACHE --> PAGE[Ch13 Paging3]
-  DB --> OFFLINE[Ch29 Offline-first]
-  AUTH --> OFFLINE
-  OFFLINE --> SYNC[Ch30 WorkManager Sync]
-  SYNC --> OUTBOX[Ch31 Outbox]
-  OUTBOX --> CONFLICT[Ch33 Conflict Resolution]
-  OFFLINE --> CART[Ch38 Shared Cart]
-  ST --> CART
-  CART --> OPT[Ch72 Optimistic Updates]
-  SYNC --> DL[Ch59 Offline Media DL]
-  SYNC --> WS[Ch63 WebSocket]
-  CART --> CHECKOUT[Ch75 Checkout]
-  AUTH --> CHECKOUT
-  CHECKOUT --> BILLING[Ch76 Billing]
-  N --> OBS[Ch82 Logging/Analytics]
-  OBS --> TRACE[Ch84 Tracing/Correlation IDs]
-```
+![Key dependency edges (Appendix B, abbreviated)](images/BLUEPRINT-1.png)
 
 > This is a *suggested* path. Experienced readers can jump to a target topic;
 > each chapter's **Prerequisites** box names the earlier chapters it builds on
@@ -415,67 +381,7 @@ sync (Ch 98–99) without inventing a new app.
 Gradle multi-module, Clean-Architecture-influenced, convention-plugin driven.
 Modeled on Google's *Now in Android* conventions and adapted.
 
-```mermaid
-graph TD
-  app[":app<br/>DI root, nav host, Application"]
-
-  subgraph feature["feature layer (:feature:*)"]
-    fsearch[":feature:search"]
-    fcart[":feature:cart"]
-    fcheckout[":feature:checkout"]
-    fcatalog[":feature:catalog"]
-    fplayer[":feature:player"]
-    fdownloads[":feature:downloads"]
-    fauth[":feature:auth"]
-    fprofile[":feature:profile"]
-    ffeed[":feature:feed"]
-    fwallet[":feature:wallet"]
-  end
-
-  subgraph domain["domain layer"]
-    duse[":domain<br/>use cases, domain models"]
-  end
-
-  subgraph data["data layer (:data:*)"]
-    dcatalog[":data:catalog"]
-    dcart[":data:cart"]
-    dauth[":data:auth"]
-    dplayer[":data:player"]
-    dorders[":data:orders"]
-  end
-
-  subgraph core["core layer (:core:*)"]
-    cnet[":core:network"]
-    cdb[":core:database"]
-    cstore[":core:datastore"]
-    cmodel[":core:model"]
-    ccommon[":core:common<br/>Result, dispatchers, errors"]
-    cds[":core:designsystem"]
-    cui[":core:ui"]
-    csec[":core:security"]
-    canalytics[":core:analytics"]
-    cnotif[":core:notifications"]
-    csync[":core:sync"]
-    ctest[":core:testing"]
-  end
-
-  app --> feature
-  feature --> domain
-  feature --> cds
-  feature --> cui
-  domain --> data
-  domain --> cmodel
-  data --> cnet
-  data --> cdb
-  data --> cstore
-  data --> ccommon
-  data --> csec
-  data --> cmodel
-  csync --> data
-  cnet --> ccommon
-  cdb --> ccommon
-  canalytics --> ccommon
-```
+![8.2 Module architecture](images/BLUEPRINT-2.png)
 
 **Dependency rules (enforced by convention plugins + module boundaries):**
 
@@ -647,27 +553,7 @@ are comparable across chapters.
 
 Example skeleton (reused and adapted per chapter):
 
-```mermaid
-sequenceDiagram
-    actor User
-    participant UI as Compose UI
-    participant VM as ViewModel
-    participant UC as UseCase
-    participant Repo as Repository
-    participant DB as Room (SSOT)
-    participant API as Remote API
-
-    User->>UI: action
-    UI->>VM: onEvent(...)
-    VM->>UC: invoke(...)
-    UC->>Repo: request(...)
-    Repo->>DB: observe/query
-    Repo-->>API: fetch (async)
-    API-->>Repo: DTO / error
-    Repo->>DB: upsert
-    DB-->>VM: Flow emission
-    VM-->>UI: UiState update
-```
+![10. Diagram Conventions](images/BLUEPRINT-3.png)
 
 ---
 
