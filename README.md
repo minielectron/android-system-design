@@ -32,6 +32,12 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 12 | Caching Strategies: HTTP, In-Memory, Disk | [`docs/chapters/12-caching-strategies.md`](./docs/chapters/12-caching-strategies.md) | ✅ Draft |
 | 13 | Pagination & Caching with Paging 3 | [`docs/chapters/13-pagination-paging3.md`](./docs/chapters/13-pagination-paging3.md) | ✅ Draft |
 | 14 | Request Prioritization, Queueing & Rate Limiting | [`docs/chapters/14-request-prioritization-rate-limiting.md`](./docs/chapters/14-request-prioritization-rate-limiting.md) | ✅ Draft |
+| 15 | Idempotency for Mutations | [`docs/chapters/15-idempotency-mutations.md`](./docs/chapters/15-idempotency-mutations.md) | ✅ Draft |
+| 16 | API Schema Evolution & Backward Compatibility | [`docs/chapters/16-api-schema-evolution.md`](./docs/chapters/16-api-schema-evolution.md) | ✅ Draft |
+| 17 | Multipart & Resumable Uploads | [`docs/chapters/17-multipart-resumable-uploads.md`](./docs/chapters/17-multipart-resumable-uploads.md) | ✅ Draft |
+| 18 | File Download Manager | [`docs/chapters/18-file-download-manager.md`](./docs/chapters/18-file-download-manager.md) | ✅ Draft |
+
+**Part II — Networking Patterns (Ch 9–18) is complete.**
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order
