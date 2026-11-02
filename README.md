@@ -28,6 +28,10 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 8 | Process Death & State Restoration | [`docs/chapters/08-process-death-state-restoration.md`](./docs/chapters/08-process-death-state-restoration.md) | ✅ Draft |
 | 9 | Debounced Network Search | [`docs/chapters/09-debounced-network-search.md`](./docs/chapters/09-debounced-network-search.md) | ✅ Draft |
 | 10 | Search Suggestions & Autocomplete | [`docs/chapters/10-search-suggestions-autocomplete.md`](./docs/chapters/10-search-suggestions-autocomplete.md) | ✅ Draft |
+| 11 | Request Deduplication & Single-Flight | [`docs/chapters/11-request-deduplication-single-flight.md`](./docs/chapters/11-request-deduplication-single-flight.md) | ✅ Draft |
+| 12 | Caching Strategies: HTTP, In-Memory, Disk | [`docs/chapters/12-caching-strategies.md`](./docs/chapters/12-caching-strategies.md) | ✅ Draft |
+| 13 | Pagination & Caching with Paging 3 | [`docs/chapters/13-pagination-paging3.md`](./docs/chapters/13-pagination-paging3.md) | ✅ Draft |
+| 14 | Request Prioritization, Queueing & Rate Limiting | [`docs/chapters/14-request-prioritization-rate-limiting.md`](./docs/chapters/14-request-prioritization-rate-limiting.md) | ✅ Draft |
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order
