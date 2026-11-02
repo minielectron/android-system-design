@@ -1,0 +1,7 @@
+flowchart LR
+    REQ[request: token, path, body] --> LOG[Logger.log event]
+    LOG --> TYPED[token wrapped as Sensitive -> ****]
+    TYPED --> PATT[pattern scrub: emails/cards in message]
+    PATT --> BUILD{build}
+    BUILD -->|debug| LC[Logcat: redacted verbose]
+    BUILD -->|release| REM[crash/analytics: redacted warn/error only]

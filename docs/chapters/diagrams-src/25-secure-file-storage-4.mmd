@@ -1,0 +1,5 @@
+flowchart LR
+    F[file] --> Q{user-visible?}
+    Q -->|no, private| APPDIR[app-internal/external-specific]
+    Q -->|yes, media| MEDIA[MediaStore]
+    Q -->|user picks location| SAFP[SAF picker]

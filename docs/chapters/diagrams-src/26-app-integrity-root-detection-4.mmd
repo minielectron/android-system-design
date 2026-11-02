@@ -1,0 +1,4 @@
+flowchart LR
+    REQ[request verdict] --> AVAIL{Play Services?}
+    AVAIL -->|yes| TOKEN[signed token -> backend]
+    AVAIL -->|no| POLICY[fallback policy: limit / alternative checks / allow low-value]

@@ -1,0 +1,6 @@
+flowchart TD
+    SHARE[share file] --> TYPE{file:// or content://?}
+    TYPE -->|file://| CRASH[FileUriExposedException - fix]
+    TYPE -->|content://| GRANT[FileProvider + temp read grant]
+    STORE[store sensitive] --> ENC[encrypt Ch 24] --> EXCL[exclude from backup]
+    GRANT --> CLEAN[delete temp after use]

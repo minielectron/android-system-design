@@ -1,0 +1,10 @@
+flowchart TD
+    CODE["app code logs structured events"] --> LOGGER["Logger (central abstraction)"]
+    LOGGER --> REDACT["redaction: typed Sensitive + pattern backstop"]
+    REDACT --> LEVEL{"level + build"}
+    LEVEL -->|debug build| LOGCAT["Logcat sink (verbose)"]
+    LEVEL -->|release warn/error| CRASH["crash reporter (scrubbed)"]
+    LEVEL -->|allowed analytics| ANALYTICS["analytics (schema-validated, no PII)"]
+    CONSENT["user consent / privacy"] -.-> ANALYTICS
+    CID["correlation IDs (Ch 1/84)"] -.-> LOGGER
+    RAW["raw Log/println"] -.->|forbidden - lint| LOGGER

@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant App
+    participant KM as KeyManager
+    participant KS as Keystore (Ch 20)
+    participant DB as SQLCipher Room
+
+    App->>KM: getOrCreateDek()
+    KM->>KS: unwrap stored wrapped-DEK with KEK
+    KS-->>KM: DEK (in memory, transient)
+    KM-->>App: DEK
+    App->>DB: open Room with SupportFactory(DEK)
+    DB-->>App: queries work, pages encrypted on disk

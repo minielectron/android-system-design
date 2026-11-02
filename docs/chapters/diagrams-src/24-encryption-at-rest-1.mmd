@@ -1,0 +1,12 @@
+flowchart TD
+    APP["app / repository"] --> CHOICE{"data sensitivity"}
+    CHOICE -->|whole DB sensitive| SQLC["SQLCipher: encrypted Room DB"]
+    CHOICE -->|few fields| FIELD["field-level TypeConverter encrypt"]
+    CHOICE -->|files| FILE["EncryptedFile / AES-GCM (Ch 25)"]
+    SQLC --> DEK["data key (passphrase)"]
+    FIELD --> DEK
+    FILE --> DEK
+    DEK --> WRAP["wrapped DEK stored (ciphertext)"]
+    WRAP --> KEK["Keystore KEK unwraps DEK (Ch 20) - non-extractable"]
+    BACKUP["backup rules: exclude DB/files/wrapped DEK"] -.-> SQLC
+    LOGOUT["logout/invalidation: clear keys (Ch 20/22)"] -.-> KEK

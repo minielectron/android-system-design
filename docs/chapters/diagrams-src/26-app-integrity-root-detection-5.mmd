@@ -1,0 +1,8 @@
+flowchart TD
+    GATE[sensitive action] --> TOKEN{verdict obtained?}
+    TOKEN -->|yes| VERIFY[server verify signature + nonce]
+    VERIFY --> RISK{risk}
+    RISK -->|good| ALLOW[allow]
+    RISK -->|degraded| STEP[step-up / limit]
+    RISK -->|bad| BLOCK[block]
+    TOKEN -->|no Play Services/offline| FALLBACK[fallback policy by value]

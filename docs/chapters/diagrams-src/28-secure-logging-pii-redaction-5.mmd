@@ -1,0 +1,7 @@
+flowchart TD
+    EVENT[log event] --> TYPED{Sensitive fields masked?}
+    TYPED --> SCRUB[pattern scrub message]
+    SCRUB --> BUILD{release?}
+    BUILD -->|yes| REMOTE[warn/error only -> scrubbed remote]
+    BUILD -->|no| LOGCAT[verbose -> redacted Logcat]
+    LEAKFOUND[leak found] --> FIX[fix site + add redaction + lint]

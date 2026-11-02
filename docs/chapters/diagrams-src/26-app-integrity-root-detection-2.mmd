@@ -1,0 +1,17 @@
+classDiagram
+    class IntegrityGate {
+        +requestVerdict(nonce) IntegrityToken
+    }
+    class IntegrityToken {
+        +String token
+    }
+    class SensitiveActionFlow {
+        +perform(action) Outcome
+    }
+    class BackendVerifier {
+        <<server-side>>
+        +verify(token, nonce) Verdict
+    }
+    SensitiveActionFlow --> IntegrityGate
+    IntegrityGate --> IntegrityToken
+    SensitiveActionFlow --> BackendVerifier

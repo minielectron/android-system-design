@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant Srv as Backend
+    participant PI as Play Integrity (Google)
+
+    User->>App: tap Pay
+    App->>Srv: begin payment
+    Srv-->>App: nonce N
+    App->>PI: requestIntegrityToken(nonce = N)
+    PI-->>App: signed integrity token T
+    App->>Srv: submit payment + T
+    Srv->>Srv: verify T (signature, nonce == N, verdict)
+    alt genuine app + device integrity
+        Srv-->>App: payment allowed
+    else degraded / tampered
+        Srv-->>App: require step-up (Ch 21) or block
+    end

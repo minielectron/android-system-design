@@ -43,8 +43,14 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 22 | Session Management & Logout-Everywhere | [`docs/chapters/22-session-management-logout.md`](./docs/chapters/22-session-management-logout.md) | ✅ Draft |
 | 23 | Secure Network Communication & Certificate Pinning | [`docs/chapters/23-secure-network-certificate-pinning.md`](./docs/chapters/23-secure-network-certificate-pinning.md) | ✅ Draft |
 
-**Part II — Networking Patterns (Ch 9–18) is complete.** Part III — Authentication
-& Security is underway (Ch 19–23 drafted).
+| 24 | Encryption of Sensitive Data at Rest (SQLCipher) | [`docs/chapters/24-encryption-at-rest.md`](./docs/chapters/24-encryption-at-rest.md) | ✅ Draft |
+| 25 | Secure File Storage | [`docs/chapters/25-secure-file-storage.md`](./docs/chapters/25-secure-file-storage.md) | ✅ Draft |
+| 26 | App Integrity, Root & Tamper Detection (Play Integrity) | [`docs/chapters/26-app-integrity-root-detection.md`](./docs/chapters/26-app-integrity-root-detection.md) | ✅ Draft |
+| 27 | Secrets Management & Obfuscation (R8) | [`docs/chapters/27-secrets-management-obfuscation.md`](./docs/chapters/27-secrets-management-obfuscation.md) | ✅ Draft |
+| 28 | Secure Logging & PII Redaction | [`docs/chapters/28-secure-logging-pii-redaction.md`](./docs/chapters/28-secure-logging-pii-redaction.md) | ✅ Draft |
+
+**Part II — Networking Patterns (Ch 9–18)** and **Part III — Authentication &
+Security (Ch 19–28)** are complete.
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

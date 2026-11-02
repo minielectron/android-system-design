@@ -1,0 +1,12 @@
+flowchart TD
+    ACT["sensitive action (pay / play premium)"] --> NONCE["backend issues nonce"]
+    NONCE --> REQ["client: Play Integrity request(nonce)"]
+    REQ --> GOOG["Play Integrity (Google) -> signed token"]
+    GOOG --> SEND["send token + request to backend"]
+    SEND --> VERIFY["backend verifies token (signature, nonce, verdict)"]
+    VERIFY --> RISK{"verdict risk"}
+    RISK -->|genuine + device integrity| ALLOW["allow"]
+    RISK -->|degraded| STEPUP["step-up (Ch 21) / limit"]
+    RISK -->|failed / tampered| BLOCK["block high-value action"]
+    DEPTH["defense-in-depth: attestation (Ch 20), pinning (Ch 23), R8 (Ch 27)"] -.-> VERIFY
+    UNAVAIL["no Play Services / offline"] -.->|fallback policy| RISK
