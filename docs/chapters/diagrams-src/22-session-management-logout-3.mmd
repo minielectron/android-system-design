@@ -1,0 +1,14 @@
+sequenceDiagram
+    actor User
+    participant VM as ProfileViewModel
+    participant SM as SessionManager
+    participant Stores as Session-scoped stores
+    participant Srv as Backend
+
+    User->>VM: tap Log out
+    VM->>SM: logout(allDevices=false)
+    SM->>Srv: POST /logout (revoke this session)
+    SM->>Stores: clearForLogout() for each
+    SM->>SM: wipe tokens/keys (Ch 20)
+    SM-->>SM: emit SessionState.Unauthenticated
+    Note over SM: nav root swaps to Login, ViewModels gone with the graph

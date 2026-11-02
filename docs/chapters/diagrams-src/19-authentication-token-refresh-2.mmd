@@ -1,0 +1,26 @@
+classDiagram
+    class TokenStore {
+        <<interface>>
+        +tokens() Tokens?
+        +version() Long
+        +update(Tokens)
+        +clear()
+    }
+    class Tokens {
+        +String access
+        +String refresh
+        +long expiresAt
+        +long version
+    }
+    class TokenAuthenticator {
+        -TokenStore store
+        -RefreshApi api
+        -Mutex mutex
+        +authenticate(route, response) Request?
+    }
+    class AuthInterceptor {
+        +intercept(chain) Response
+    }
+    TokenAuthenticator --> TokenStore
+    TokenAuthenticator --> Tokens
+    AuthInterceptor --> TokenStore

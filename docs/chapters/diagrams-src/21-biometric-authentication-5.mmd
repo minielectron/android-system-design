@@ -1,0 +1,9 @@
+flowchart TD
+    GATE[sensitive action] --> CAP{canAuthenticate?}
+    CAP -->|success| INIT{init auth-bound cipher ok?}
+    INIT -->|invalidated| REKEY[wipe key -> re-provision]
+    INIT -->|ok| PROMPT[BiometricPrompt CryptoObject]
+    PROMPT -->|succeeded| USE[use unlocked crypto -> proceed]
+    PROMPT -->|lockout| CRED[device credential / login]
+    PROMPT -->|cancel| ABORT[abort, no change]
+    CAP -->|none/no hw| CRED

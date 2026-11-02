@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant VM as ViewModel
+    participant BM as BiometricManager
+    participant KS as Keystore (Ch 20)
+    participant BP as BiometricPrompt
+    participant SS as SecureStore
+
+    VM->>BM: canAuthenticate(STRONG)?
+    BM-->>VM: success
+    VM->>KS: Cipher.init DECRYPT with auth-bound key
+    KS-->>VM: cipher (locked until auth)
+    VM->>BP: authenticate(CryptoObject cipher)
+    User->>BP: fingerprint
+    BP-->>VM: onAuthenticationSucceeded(crypto)
+    VM->>SS: decrypt secret USING crypto.cipher
+    SS-->>VM: plaintext secret -> proceed

@@ -37,7 +37,14 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 17 | Multipart & Resumable Uploads | [`docs/chapters/17-multipart-resumable-uploads.md`](./docs/chapters/17-multipart-resumable-uploads.md) | ✅ Draft |
 | 18 | File Download Manager | [`docs/chapters/18-file-download-manager.md`](./docs/chapters/18-file-download-manager.md) | ✅ Draft |
 
-**Part II — Networking Patterns (Ch 9–18) is complete.**
+| 19 | Authentication & Token Refresh | [`docs/chapters/19-authentication-token-refresh.md`](./docs/chapters/19-authentication-token-refresh.md) | ✅ Draft |
+| 20 | Credential & Token Storage (Android Keystore) | [`docs/chapters/20-credential-token-storage-keystore.md`](./docs/chapters/20-credential-token-storage-keystore.md) | ✅ Draft |
+| 21 | Biometric Authentication | [`docs/chapters/21-biometric-authentication.md`](./docs/chapters/21-biometric-authentication.md) | ✅ Draft |
+| 22 | Session Management & Logout-Everywhere | [`docs/chapters/22-session-management-logout.md`](./docs/chapters/22-session-management-logout.md) | ✅ Draft |
+| 23 | Secure Network Communication & Certificate Pinning | [`docs/chapters/23-secure-network-certificate-pinning.md`](./docs/chapters/23-secure-network-certificate-pinning.md) | ✅ Draft |
+
+**Part II — Networking Patterns (Ch 9–18) is complete.** Part III — Authentication
+& Security is underway (Ch 19–23 drafted).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order
@@ -46,13 +53,16 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 
 ### Formats
 
-- **Markdown** (`docs/chapters/*.md`) — diagrams are embedded inline as base64
-  PNGs, so each chapter renders self-contained in any markdown viewer.
+- **Markdown** (`docs/chapters/*.md`) — diagrams are committed PNGs under
+  `docs/chapters/images/` referenced by relative path, so they render on GitHub.
 - **PDF** (`docs/pdf/*.pdf`) — a book-styled, self-contained PDF per chapter
-  (plus the blueprint), generated from the markdown with diagrams baked in.
+  (plus the blueprint), with diagrams baked in (best for offline/portable viewing).
+- **Diagram sources** (`docs/chapters/diagrams-src/*.mmd`) — the Mermaid source
+  for every diagram, so any diagram can be re-rendered at higher DPI on demand.
 
-> Diagrams are authored in Mermaid, rendered to PNG, and embedded; the render/
-> embed/PDF pipeline is reusable for every new chapter.
+> Pipeline: author diagrams in Mermaid → render to high-DPI PNG (committed) →
+> reference by relative path in markdown → build PDFs that resolve those images.
+> (Ch 1–18 diagrams render at 2×; Ch 19+ at 3×.)
 
 ## How this book is organized
 

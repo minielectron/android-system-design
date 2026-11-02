@@ -1,0 +1,7 @@
+flowchart TD
+    LOGOUT[logout] --> REVOKE{server revoke}
+    REVOKE -->|ok or offline| CLEAR[clear all session-scoped stores]
+    CLEAR --> WIPE[wipe tokens/keys]
+    WIPE --> STATE[SessionState = Unauthenticated]
+    STATE --> NAV[nav -> Login, ViewModels destroyed]
+    REVOKE -.->|offline| LATER[token unusable after short TTL anyway Ch 19]

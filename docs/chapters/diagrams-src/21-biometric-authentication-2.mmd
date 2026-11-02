@@ -1,0 +1,23 @@
+classDiagram
+    class BiometricAuthenticator {
+        +canAuthenticate() AuthCapability
+        +authenticate(cryptoObject) AuthResult
+    }
+    class AuthResult {
+        <<sealed>>
+    }
+    class Success {
+        +CryptoObject crypto
+    }
+    class Failed
+    class Error {
+        +int code
+        +boolean recoverable
+    }
+    class SensitiveActionGate {
+        +run(action) Outcome
+    }
+    AuthResult <|-- Success
+    AuthResult <|-- Failed
+    AuthResult <|-- Error
+    SensitiveActionGate --> BiometricAuthenticator

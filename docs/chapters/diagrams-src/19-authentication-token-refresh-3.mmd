@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant R1 as Request 1
+    participant R2 as Request 2
+    participant Auth as TokenAuthenticator
+    participant Store as TokenStore
+    participant Srv as Backend
+
+    R1->>Srv: GET with access v5
+    R2->>Srv: GET with access v5
+    Srv-->>R1: 401
+    Srv-->>R2: 401
+    R1->>Auth: authenticate (saw v5)
+    R2->>Auth: authenticate (saw v5)
+    Auth->>Store: lock mutex (R1 wins)
+    Auth->>Store: version still v5? yes
+    Auth->>Srv: POST /token/refresh
+    Srv-->>Auth: new access+refresh v6 (rotated)
+    Auth->>Store: update to v6, unlock
+    Auth-->>R1: retry with v6
+    R2->>Store: lock mutex, version now v6 != v5
+    Auth-->>R2: reuse v6, no refresh
+    R1->>Srv: retry OK
+    R2->>Srv: retry OK

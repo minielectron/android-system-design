@@ -1,0 +1,5 @@
+flowchart LR
+    F[401 -> refresh] --> X{refresh valid?}
+    X -->|no 401/invalid| CLEAR[clear tokens/session]
+    CLEAR --> LOGIN[route to login, emit session-expired event]
+    X -->|yes| RETRY[retry original]
