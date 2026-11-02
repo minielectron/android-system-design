@@ -1,0 +1,9 @@
+flowchart TD
+    ENQ[enqueue unique] --> PERSIST[persist in WM DB]
+    PERSIST --> KILL{app killed/reboot?}
+    KILL -->|yes| SURVIVE[work survives -> runs on constraints]
+    KILL -->|no| RUN[run when constraints met]
+    RUN --> RES{Result}
+    RES -->|retry| BACKOFF[backoff -> reschedule]
+    RES -->|failure| STOP[terminal -> surface]
+    RES -->|success| DONE[done]

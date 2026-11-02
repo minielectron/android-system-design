@@ -1,0 +1,5 @@
+flowchart LR
+    REQ[changes-since old token] --> INV{token valid?}
+    INV -->|yes| DELTA[apply delta]
+    INV -->|no expired| FULL[clear token -> paged full initial sync]
+    FULL --> NEWTOKEN[establish new token]

@@ -49,8 +49,14 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 27 | Secrets Management & Obfuscation (R8) | [`docs/chapters/27-secrets-management-obfuscation.md`](./docs/chapters/27-secrets-management-obfuscation.md) | ✅ Draft |
 | 28 | Secure Logging & PII Redaction | [`docs/chapters/28-secure-logging-pii-redaction.md`](./docs/chapters/28-secure-logging-pii-redaction.md) | ✅ Draft |
 
-**Part II — Networking Patterns (Ch 9–18)** and **Part III — Authentication &
-Security (Ch 19–28)** are complete.
+| 29 | Offline-First Architecture | [`docs/chapters/29-offline-first-architecture.md`](./docs/chapters/29-offline-first-architecture.md) | ✅ Draft |
+| 30 | Background Synchronization with WorkManager | [`docs/chapters/30-background-sync-workmanager.md`](./docs/chapters/30-background-sync-workmanager.md) | ✅ Draft |
+| 31 | The Outbox Pattern for Reliable Writes | [`docs/chapters/31-outbox-pattern.md`](./docs/chapters/31-outbox-pattern.md) | ✅ Draft |
+| 32 | Delta / Incremental Sync | [`docs/chapters/32-delta-incremental-sync.md`](./docs/chapters/32-delta-incremental-sync.md) | ✅ Draft |
+| 33 | Conflict Resolution & a Sync Engine | [`docs/chapters/33-conflict-resolution-sync-engine.md`](./docs/chapters/33-conflict-resolution-sync-engine.md) | ✅ Draft |
+
+**Parts II (Ch 9–18), III (Ch 19–28), and IV — Offline-First & Synchronization
+(Ch 29–33)** are complete.
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

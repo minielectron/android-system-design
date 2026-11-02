@@ -1,0 +1,12 @@
+flowchart TD
+    WRITE["user action (offline/online)"] --> TX["ONE transaction"]
+    TX --> ENTITY["optimistic entity update (Room)"]
+    TX --> ENTRY["outbox entry (idempotency key, Ch 15)"]
+    ENTITY -.->|Flow| UI["UI updates instantly"]
+    DRAINER["SyncWorker drainer (Ch 30)"] --> READ["read PENDING in order"]
+    READ --> SEND["send to server (idempotent)"]
+    SEND --> ACK{"result"}
+    ACK -->|acked| REMOVE["remove entry, mark entity SYNCED"]
+    ACK -->|retryable| KEEP["leave PENDING -> backoff retry (Ch 30)"]
+    ACK -->|permanent| DEAD["dead-letter -> surface (Ch 29)"]
+    COMPACT["compaction (optional)"] -.-> READ

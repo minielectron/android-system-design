@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant W as SyncWorker (Ch 30)
+    participant TS as SyncTokenStore
+    participant Srv as Backend
+    participant Room as Room (SSOT)
+
+    W->>TS: lastToken
+    loop pages until hasMore=false
+        W->>Srv: GET changes-since(token)
+        Srv-->>W: changes + tombstones + nextToken + hasMore
+        W->>Room: upsert changes (version-aware, Ch 33)
+        W->>Room: delete tombstoned ids
+        W->>TS: save nextToken (resumable)
+    end
+    Note over W: failure mid-way -> resume from saved token next run

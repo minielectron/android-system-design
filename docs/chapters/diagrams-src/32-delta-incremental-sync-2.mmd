@@ -1,0 +1,28 @@
+classDiagram
+    class DeltaPage {
+        +List~ChangedEntity~ changes
+        +List~Tombstone~ tombstones
+        +String nextToken
+        +boolean hasMore
+    }
+    class ChangedEntity {
+        +String id
+        +long version
+        +data fields
+    }
+    class Tombstone {
+        +String id
+        +long version
+    }
+    class SyncTokenStore {
+        +get(type) String?
+        +set(type, token)
+        +clear(type)
+    }
+    class DeltaSyncEngine {
+        +sync(type) Result
+    }
+    DeltaSyncEngine --> DeltaPage
+    DeltaSyncEngine --> SyncTokenStore
+    DeltaPage --> ChangedEntity
+    DeltaPage --> Tombstone

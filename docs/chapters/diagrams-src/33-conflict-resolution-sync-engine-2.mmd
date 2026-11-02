@@ -1,0 +1,24 @@
+classDiagram
+    class Versioned {
+        +String id
+        +long version
+        +VectorClock clock
+        +long updatedAt
+    }
+    class ConflictResolver {
+        <<interface>>
+        +resolve(base, local, remote) Resolution
+    }
+    class LwwResolver
+    class FieldMergeResolver
+    class CrdtResolver
+    class UserPromptResolver
+    class Resolution {
+        <<sealed>>
+    }
+    ConflictResolver <|.. LwwResolver
+    ConflictResolver <|.. FieldMergeResolver
+    ConflictResolver <|.. CrdtResolver
+    ConflictResolver <|.. UserPromptResolver
+    ConflictResolver --> Resolution
+    Resolution --> Versioned

@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor User
+    participant Repo as Repository
+    participant DB as Room (one tx)
+    participant W as Drainer (Ch 30)
+    participant Srv as Backend
+
+    User->>Repo: add to cart (offline)
+    Repo->>DB: transaction - upsert entity PENDING + insert outbox entry (key K)
+    DB-->>Repo: committed (atomic)
+    Note over W: connectivity returns - Ch 68
+    W->>DB: read PENDING entries in order
+    W->>Srv: apply(type, K, payload) [Idempotency-Key K]
+    Srv-->>W: 200 (server state)
+    W->>DB: remove entry K, mark entity SYNCED

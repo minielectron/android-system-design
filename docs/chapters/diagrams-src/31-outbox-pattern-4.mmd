@@ -1,0 +1,7 @@
+flowchart LR
+    SEND[send entry] --> R{result}
+    R -->|ack| REMOVE[remove -> SYNCED]
+    R -->|transient| RETRY[attempts++ -> PENDING -> backoff Ch 30]
+    R -->|permanent 4xx| DEAD[DEAD_LETTER -> surface to user]
+    RETRY --> CAP{attempts > max?}
+    CAP -->|yes| DEAD

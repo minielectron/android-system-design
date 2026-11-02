@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant App
+    participant WM as WorkManager
+    participant OS as Android OS
+    participant W as SyncWorker
+
+    App->>WM: enqueueUniqueWork("sync", KEEP, constraints=CONNECTED)
+    WM->>WM: persist request (DB)
+    Note over App: app is killed - request survives
+    OS-->>WM: connectivity available
+    WM->>W: run doWork (new process if needed)
+    W->>W: drain outbox + pull delta (idempotent, Ch 29/31/32)
+    alt transient failure
+        W-->>WM: Result.retry()
+        WM->>WM: reschedule with backoff (Ch 2)
+    else done
+        W-->>WM: Result.success()
+    end
+    WM-->>App: WorkInfo (observed by UI)

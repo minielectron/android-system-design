@@ -1,0 +1,28 @@
+classDiagram
+    class OutboxEntry {
+        +long seq
+        +String idempotencyKey
+        +String type
+        +String entityId
+        +String payload
+        +OutboxStatus status
+        +int attempts
+        +long createdAt
+    }
+    class OutboxStatus {
+        <<enum>>
+        PENDING
+        SENDING
+        DEAD_LETTER
+    }
+    class OutboxDao {
+        +enqueue(entry)
+        +pendingInOrder() List
+        +remove(key)
+        +markStatus(key, status)
+    }
+    class Drainer {
+        +drain() Result
+    }
+    OutboxEntry --> OutboxStatus
+    Drainer --> OutboxDao

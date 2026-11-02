@@ -1,0 +1,12 @@
+flowchart TD
+    IN[remote change] --> D{diverged from local?}
+    D -->|no / causal| FF[fast-forward apply]
+    D -->|concurrent| POL{policy}
+    POL -->|LWW| WIN[higher version wins]
+    POL -->|field merge| M3[three-way merge]
+    POL -->|CRDT| MC[commutative merge]
+    POL -->|user| ASK[prompt -> choice]
+    WIN --> CONV[converged state]
+    M3 --> CONV
+    MC --> CONV
+    ASK --> CONV

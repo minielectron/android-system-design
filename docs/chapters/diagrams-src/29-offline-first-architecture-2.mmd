@@ -1,0 +1,33 @@
+classDiagram
+    class SyncStatus {
+        <<enum>>
+        SYNCED
+        PENDING
+        SYNCING
+        FAILED
+        CONFLICT
+    }
+    class Entity {
+        +String id
+        +data fields
+        +long updatedAt
+        +long version
+        +SyncStatus syncStatus
+    }
+    class PendingMutation {
+        +String idempotencyKey
+        +String type
+        +String entityId
+        +String payload
+    }
+    class OfflineRepository {
+        +observe() Flow~Resource~
+        +mutate(op) (optimistic + enqueue)
+    }
+    class SyncEngine {
+        +sync() push + pull + resolve
+    }
+    Entity --> SyncStatus
+    OfflineRepository --> Entity
+    OfflineRepository --> PendingMutation
+    SyncEngine --> PendingMutation

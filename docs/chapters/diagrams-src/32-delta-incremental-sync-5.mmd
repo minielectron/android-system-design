@@ -1,0 +1,9 @@
+flowchart TD
+    SYNC[delta sync] --> REQ[changes-since token]
+    REQ --> OK{response}
+    OK -->|delta| APPLY[apply page tx -> advance token]
+    APPLY --> MORE{hasMore?}
+    MORE -->|yes| REQ
+    MORE -->|no| DONE[done]
+    OK -->|token invalid 410| FULL[full re-sync]
+    OK -->|network error| RESUME[retry -> resume from saved token]
