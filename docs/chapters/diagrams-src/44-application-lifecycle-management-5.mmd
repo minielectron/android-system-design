@@ -1,0 +1,6 @@
+flowchart TD
+    WORK[a piece of work] --> SCOPE{how long should it live?}
+    SCOPE -->|visible only| SCREEN[screen scope - stops when invisible]
+    SCOPE -->|survive config/nav| VM[viewModelScope Ch 6]
+    SCOPE -->|survive UI/process| WM[WorkManager Ch 30]
+    APP[app fg/bg reaction] --> PLO[ProcessLifecycleOwner]

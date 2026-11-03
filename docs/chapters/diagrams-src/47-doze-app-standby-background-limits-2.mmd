@@ -1,0 +1,19 @@
+classDiagram
+    class BackgroundWorkRouter {
+        +schedule(need): Mechanism
+    }
+    class StandbyBucketMonitor {
+        +currentBucket(): Bucket
+        +isRestricted(): Boolean
+    }
+    class BatteryOptimizationHelper {
+        +isIgnoringOptimizations(): Boolean
+        +requestExemption()  // legitimate only
+    }
+    class OemBatteryHelper {
+        +isAggressiveOem(): Boolean
+        +openOemSettings()
+    }
+    BackgroundWorkRouter --> StandbyBucketMonitor
+    BackgroundWorkRouter --> BatteryOptimizationHelper
+    BatteryOptimizationHelper ..> OemBatteryHelper

@@ -67,8 +67,15 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 42 | Multi-Account & Account Switching | [`docs/chapters/42-multi-account-switching.md`](./docs/chapters/42-multi-account-switching.md) | ✅ Draft |
 | 43 | Personalization & User-Preference Sync | [`docs/chapters/43-personalization-preference-sync.md`](./docs/chapters/43-personalization-preference-sync.md) | ✅ Draft |
 
+| 44 | Application Lifecycle Management | [`docs/chapters/44-application-lifecycle-management.md`](./docs/chapters/44-application-lifecycle-management.md) | ✅ Draft |
+| 45 | App Startup Optimization | [`docs/chapters/45-app-startup-optimization.md`](./docs/chapters/45-app-startup-optimization.md) | ✅ Draft |
+| 46 | Foreground Services | [`docs/chapters/46-foreground-services.md`](./docs/chapters/46-foreground-services.md) | ✅ Draft |
+| 47 | Doze, App Standby & Background Execution Limits | [`docs/chapters/47-doze-app-standby-background-limits.md`](./docs/chapters/47-doze-app-standby-background-limits.md) | ✅ Draft |
+| 48 | Alarms & Exact Scheduling | [`docs/chapters/48-alarms-exact-scheduling.md`](./docs/chapters/48-alarms-exact-scheduling.md) | ✅ Draft |
+
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), and V — Shared & Global State (Ch 38–43)** are complete.
+**Part VI — Lifecycle, Background & Platform (Ch 44–55)** is in progress (Ch 44–48 done).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

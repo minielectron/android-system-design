@@ -1,0 +1,7 @@
+flowchart TD
+    MISS[reminder didn't fire on time] --> WHY{why?}
+    WHY -->|reboot cleared it| BOOT[BOOT_COMPLETED reschedule]
+    WHY -->|deferred by Doze| EXACT[use setExactAndAllowWhileIdle/setAlarmClock]
+    WHY -->|no exact permission| PERM[request if justified, else inexact + explain]
+    WHY -->|DST/zone change| TZ[recompute from local time + zone]
+    WHY -->|wrong tool| TOOL[WorkManager for deferrable / FCM for server events]

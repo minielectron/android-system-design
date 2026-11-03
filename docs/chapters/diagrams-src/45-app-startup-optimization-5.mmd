@@ -1,0 +1,7 @@
+flowchart TD
+    SLOW[slow launch reported] --> TRACE[startup trace / Macrobenchmark]
+    TRACE --> WHERE{where is the time?}
+    WHERE -->|Application.onCreate| TRIM[defer/background non-essential init]
+    WHERE -->|first frame blocked on data| CACHE[skeleton + cached data first]
+    WHERE -->|slow code / jank| BP[Baseline Profile + R8]
+    WHERE -->|warm/hot confused with cold| TYPE[measure the right start type]

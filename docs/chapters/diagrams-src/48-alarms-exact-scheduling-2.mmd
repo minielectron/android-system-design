@@ -1,0 +1,21 @@
+classDiagram
+    class AlarmScheduler {
+        +schedule(reminder)
+        +cancel(id)
+        -chooseMethod(): exact|inexact
+    }
+    class AlarmReceiver {
+        <<BroadcastReceiver>>
+        +onReceive() fast -> notify/enqueue
+    }
+    class BootReceiver {
+        <<BroadcastReceiver BOOT_COMPLETED>>
+        +onReceive() reschedule all
+    }
+    class ReminderStore {
+        +all(): List~Reminder~  (SSOT, Ch 3)
+    }
+    AlarmScheduler ..> AlarmManager
+    AlarmReceiver ..> NotificationManager
+    BootReceiver --> ReminderStore
+    BootReceiver --> AlarmScheduler

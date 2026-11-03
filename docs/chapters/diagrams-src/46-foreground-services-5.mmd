@@ -1,0 +1,7 @@
+flowchart TD
+    NEED[ongoing work] --> CLASSIFY{deferrable?}
+    CLASSIFY -->|yes| WM[WorkManager - let the OS schedule it]
+    CLASSIFY -->|no, user-visible| LEGALSTART{can I start from foreground?}
+    LEGALSTART -->|yes| FGS[FGS with correct type + prompt notification]
+    LEGALSTART -->|no, background| EXEMPT[use exemption or WorkManager setForeground]
+    FGS --> DONE[stop immediately when complete]

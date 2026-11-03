@@ -1,0 +1,20 @@
+sequenceDiagram
+    actor User
+    participant OS
+    participant App as Application
+    participant Act as First Activity
+    participant Cache as Room/cache (Ch 12)
+    participant Net as Backend
+
+    User->>OS: tap icon
+    OS->>App: fork + onCreate (minimal)
+    App->>App: essential init only (DI, crash)
+    App->>Act: start first Activity
+    Act->>Act: setContent (skeleton)
+    Act-->>User: first frame (TTID) fast
+    Act->>Cache: load cached feed
+    Cache-->>Act: cached data
+    Act-->>User: content shown
+    Act->>Act: reportFullyDrawn (TTFMC)
+    Act->>Net: fetch fresh (background)
+    Net-->>Act: fresh -> update UI

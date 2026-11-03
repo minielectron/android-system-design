@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor User
+    participant PLO as ProcessLifecycleOwner
+    participant Obs as AppLifecycleObserver
+    participant Analytics as AnalyticsBatcher (Ch 14)
+    participant WS as WebSocket (Ch 63)
+
+    User->>PLO: leaves app (background)
+    PLO->>Obs: ON_STOP
+    Obs->>Analytics: flush batched events
+    Obs->>WS: pause/disconnect
+    User->>PLO: returns (foreground)
+    PLO->>Obs: ON_START
+    Obs->>WS: reconnect
+    Obs->>Analytics: resume

@@ -1,0 +1,6 @@
+flowchart TD
+    FAIL[background work unreliable] --> WHY{why?}
+    WHY -->|deferred by Doze/bucket| ACCEPT[expected - make idempotent + catch-up; use FCM for urgent]
+    WHY -->|killed by OEM| GUIDE[guide user to exempt; FGS for critical]
+    WHY -->|wrong mechanism| ROUTE[WorkManager/FGS/FCM/alarm per need]
+    WHY -->|battery flagged| COOPERATE[drop wakelocks/exact alarms; set constraints]

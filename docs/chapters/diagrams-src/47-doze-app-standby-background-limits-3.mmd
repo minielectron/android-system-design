@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant App
+    participant WM as WorkManager
+    participant OS as OS (Doze/Standby)
+    participant Net as Backend
+
+    App->>WM: enqueue periodic sync (unmetered + charging)
+    WM->>OS: register job with constraints
+    Note over OS: device idle -> deep Doze. job deferred to next maintenance window
+    OS->>WM: maintenance window + constraints met
+    WM->>Net: delta sync (Ch 32)
+    Net-->>WM: changes
+    WM-->>App: updated (SSOT, Ch 3)
+    Note over OS: outside window network suspended. work waits, no battery cost

@@ -1,0 +1,5 @@
+flowchart LR
+    REBOOT[device reboots] --> LOST[all alarms cleared]
+    BOOT[BOOT_COMPLETED broadcast] --> BR[BootReceiver]
+    BR --> READ[read reminders from SSOT - Ch 3]
+    READ --> RESET[reschedule each via AlarmScheduler]

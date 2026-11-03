@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor User
+    participant VM as ViewModel
+    participant Store as ReminderStore (Ch 3)
+    participant Sched as AlarmScheduler
+    participant AM as AlarmManager
+    participant Rcv as AlarmReceiver
+    participant Notif as NotificationManager
+
+    User->>VM: set reminder for 8:00 PM
+    VM->>Store: persist reminder (SSOT)
+    VM->>Sched: schedule(reminder)
+    Sched->>Sched: canScheduleExactAlarms?
+    Sched->>AM: setExactAndAllowWhileIdle(8pm, pendingIntent)
+    Note over AM: fires at 8pm, even in Doze, rate-limited
+    AM->>Rcv: onReceive at 8pm
+    Rcv->>Notif: post reminder notification (Ch 50)
+    Rcv->>Store: mark fired / reschedule if repeating
