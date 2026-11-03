@@ -1,0 +1,14 @@
+flowchart TD
+    LIFECYCLE["foreground/active (Ch 44)"] --> CONNECT["connect WSS (authed handshake, TLS+pinning, Ch 19/23)"]
+    CONNECT --> SOCKET["OkHttp WebSocket (full-duplex)"]
+    SOCKET --> HEARTBEAT["ping-pong heartbeat -> detect dead"]
+    HEARTBEAT -->|missed pong / drop| RECONNECT["reconnect: jittered backoff (Ch 2) + resume cursor (Ch 32)"]
+    RECONNECT --> SOCKET
+    SOCKET --> EVENTS["incoming events -> Flow"]
+    EVENTS --> VALIDATE["validate (untrusted, Ch 23) + coalesce/backpressure"]
+    VALIDATE --> SSOT["idempotent update -> SSOT/Room (Ch 3/15)"]
+    SSOT --> UI["UI observes SSOT (UDF, Ch 6)"]
+    REST["REST/sync = source of truth (Ch 32)"] -.->|missed msgs self-heal| SSOT
+    BACKGROUND["app backgrounded (Ch 44)"] --> DISCONNECT["disconnect socket"]
+    DISCONNECT --> FCM["FCM for background events (Ch 49)"]
+    NETCHANGE["network change (Ch 68)"] -.-> RECONNECT

@@ -1,0 +1,19 @@
+classDiagram
+    class StreamCopier {
+        +copy(source, sink, onProgress): flow
+        -bufferSize
+    }
+    class FileHasher {
+        +sha256(source): String  // streaming
+    }
+    class StreamingTransform {
+        <<pipeline>>
+        read -> hash -> gzip -> cipher -> write
+    }
+    class StorageManager {
+        +hasSpace(bytes): Boolean  // Ch 62
+        +tempFile(): File
+        +cleanup()
+    }
+    StreamCopier --> StorageManager
+    StreamingTransform --> FileHasher

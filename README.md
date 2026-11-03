@@ -83,11 +83,18 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 56 | Image Loading & Caching (Coil) | [`docs/chapters/56-image-loading-caching-coil.md`](./docs/chapters/56-image-loading-caching-coil.md) | ✅ Draft |
 | 57 | Thumbnail Generation & Caching | [`docs/chapters/57-thumbnail-generation-caching.md`](./docs/chapters/57-thumbnail-generation-caching.md) | ✅ Draft |
 | 58 | Media Playback State (Media3/ExoPlayer) | [`docs/chapters/58-media-playback-state-media3.md`](./docs/chapters/58-media-playback-state-media3.md) | ✅ Draft |
+| 59 | Offline Media Downloads (OTT) | [`docs/chapters/59-offline-media-downloads-ott.md`](./docs/chapters/59-offline-media-downloads-ott.md) | ✅ Draft |
+| 60 | Camera Capture Pipeline (CameraX) | [`docs/chapters/60-camera-capture-cameraX.md`](./docs/chapters/60-camera-capture-cameraX.md) | ✅ Draft |
+| 61 | Large File & Streaming Handling | [`docs/chapters/61-large-file-streaming-handling.md`](./docs/chapters/61-large-file-streaming-handling.md) | ✅ Draft |
+| 62 | File Sharing & Content Providers (SAF) | [`docs/chapters/62-file-sharing-content-providers-saf.md`](./docs/chapters/62-file-sharing-content-providers-saf.md) | ✅ Draft |
+
+| 63 | Real-Time Communication over WebSocket | [`docs/chapters/63-realtime-websocket.md`](./docs/chapters/63-realtime-websocket.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
-Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), and VI —
-Lifecycle, Background & Platform (Ch 44–55)** are complete.
-**Part VII — Media & Files (Ch 56–62)** is in progress (Ch 56–58 done).
+Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
+Lifecycle, Background & Platform (Ch 44–55), and VII — Media & Files
+(Ch 56–62)** are complete.
+**Part VIII — Real-Time & Connectivity (Ch 63–69)** is in progress (Ch 63 done).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

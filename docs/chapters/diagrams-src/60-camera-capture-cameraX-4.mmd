@@ -1,0 +1,6 @@
+flowchart LR
+    CAP[ImageCapture.takePicture] --> FILE[write to app-internal - Ch 25]
+    FILE --> ORIENT[apply orientation]
+    ORIENT --> STRIP[strip location EXIF - Ch 28]
+    STRIP --> THUMB[thumbnail - Ch 57]
+    THUMB --> UPLOAD[upload - Ch 17]

@@ -1,0 +1,5 @@
+flowchart LR
+    PICK[ACTION_OPEN_DOCUMENT] --> URI[content:// URI - no storage permission]
+    URI --> STREAM[ContentResolver.openInputStream -> stream chunks - Ch 61]
+    STREAM --> UPLOAD[upload - Ch 17]
+    URI -.->|if needed across restarts| PERSIST[takePersistableUriPermission]

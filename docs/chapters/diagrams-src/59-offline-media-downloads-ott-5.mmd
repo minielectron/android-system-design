@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[offline media problem] --> WHY{category}
+    WHY -->|won't play| LICENSE[license is the asset - acquire before completed - validate at play]
+    WHY -->|interrupted/reboot| RESUME[DownloadManager persistence + Scheduler - Ch 30]
+    WHY -->|storage| STORAGE[check/cleanup/SD choice - Ch 62]
+    WHY -->|expired/over-limit| SERVER[server authorizes renewal/limits - Ch 19/23]
+    WHY -->|orphans| ATOMIC[atomic delete: media + license + SSOT row]

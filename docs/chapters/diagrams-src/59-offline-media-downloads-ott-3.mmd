@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor User
+    participant Repo as DownloadsRepository
+    participant Srv as Server (entitlement, Ch 19/23)
+    participant Helper as DownloadHelper
+    participant DM as Media3 DownloadManager + DownloadService (FGS, Ch 46)
+    participant Lic as License server
+    participant SSOT as Room (Ch 3)
+
+    User->>Repo: download(title, 720p)
+    Repo->>Srv: authorize download (entitled? within limits?)
+    Srv-->>Repo: ok
+    Repo->>Helper: select 720p track + audio/subtitle from manifest
+    Helper->>DM: enqueue download (Wi-Fi-only, Ch 47)
+    DM->>SSOT: state=downloading, progress updates
+    DM->>Lic: acquire offline Widevine license (authed) + expiry
+    Lic-->>DM: offline license stored securely (Ch 25)
+    DM->>SSOT: state=completed, licenseExpiry set

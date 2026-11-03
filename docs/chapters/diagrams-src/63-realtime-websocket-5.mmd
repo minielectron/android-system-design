@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[real-time problem] --> WHY{category}
+    WHY -->|silent death| HEARTBEAT[ping-pong + watchdog -> reconnect]
+    WHY -->|drops/storm| BACKOFF[jittered backoff + resume - Ch 2/32]
+    WHY -->|missed/dup/order| SSOT[resume cursor + REST catch-up + idempotent SSOT - Ch 32/15]
+    WHY -->|battery| LIFECYCLE[disconnect on background + FCM - Ch 44/49]
+    WHY -->|auth/malicious| SECURITY[refresh + reconnect - validate untrusted - Ch 19/23]

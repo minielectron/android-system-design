@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[file-sharing problem] --> WHY{category}
+    WHY -->|file:// crash/hole| CONTENTURI[FileProvider content URI + grant - never file://]
+    WHY -->|access denied| GRANT[grant flags / persist SAF permission]
+    WHY -->|OOM/ANR| STREAM[stream content URI off-main - Ch 61]
+    WHY -->|provider leak| HARDEN[restrict file_paths + validate + minimal grants - Ch 23]
+    WHY -->|no permission for shared| SAFMS[use SAF / MediaStore - no broad permission]

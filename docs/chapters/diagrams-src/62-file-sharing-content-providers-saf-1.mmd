@@ -1,0 +1,11 @@
+flowchart TD
+    APPFILE["app file (export/receipt) in app-specific storage (Ch 25)"] --> FP["FileProvider.getUriForFile -> content:// URI"]
+    FP --> SEND["ACTION_SEND/VIEW + FLAG_GRANT_READ_URI_PERMISSION"]
+    SEND --> OTHERAPP["other app reads the file - temporary, read-only"]
+    USERPICK["user picks a file (upload, Ch 17)"] --> OPEN["SAF ACTION_OPEN_DOCUMENT -> content:// URI"]
+    USERSAVE["user saves an export"] --> CREATE["SAF ACTION_CREATE_DOCUMENT -> content:// URI"]
+    OPEN --> STREAMIN["ContentResolver.openInputStream -> stream (Ch 61)"]
+    CREATE --> STREAMOUT["ContentResolver.openOutputStream -> stream (Ch 61)"]
+    MEDIA["shared media (gallery)"] --> MEDIASTORE["MediaStore / Photo Picker (Ch 51)"]
+    PERSIST["need access across restarts?"] -.->|takePersistableUriPermission| OPEN
+    SECURE["provider security: not over-exported, minimal grants, validate paths (Ch 23)"] -.-> FP

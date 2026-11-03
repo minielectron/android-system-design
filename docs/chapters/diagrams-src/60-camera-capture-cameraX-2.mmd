@@ -1,0 +1,18 @@
+classDiagram
+    class CameraFeature {
+        +bind(lifecycleOwner, previewView)
+        +capture(): Uri
+        +release()  // via unbind / lifecycle
+    }
+    class BarcodeAnalyzer {
+        <<ImageAnalysis.Analyzer>>
+        +analyze(imageProxy) off-main, keep-latest
+    }
+    class CaptureOutput {
+        +toAppInternal(): File  // Ch 25
+        +toMediaStore(): Uri    // Ch 62
+        +stripLocationExif()    // Ch 28
+    }
+    CameraFeature --> BarcodeAnalyzer
+    CameraFeature --> CaptureOutput
+    CameraFeature ..> ProcessCameraProvider

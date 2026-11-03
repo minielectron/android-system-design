@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[camera problem] --> WHY{category}
+    WHY -->|leak/unavailable| LIFECYCLE[lifecycle-bound use cases auto-release - Ch 44]
+    WHY -->|permission| PERM[in-context + alternatives - Ch 51]
+    WHY -->|jank| OFFMAIN[analysis off-main + keep-latest + close proxies]
+    WHY -->|privacy| EXIF[strip location EXIF + app-internal - Ch 28/25]
+    WHY -->|device quirk| CAMERAX[CameraX compatibility / reduce use cases]
