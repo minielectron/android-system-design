@@ -1,0 +1,10 @@
+flowchart TD
+    URI[deep link Uri] --> STATE{launch state}
+    STATE -->|cold start| INTENT[launch intent -> route after minimal init - Ch 45]
+    STATE -->|app running| NEWINTENT[onNewIntent -> route in place]
+    STATE -->|from notification| PI[PendingIntent -> route + mark inbox read - Ch 50]
+    STATE -->|after process death| RESTORE[pending link in intent survives - Ch 8]
+    INTENT --> ROUTER[central router]
+    NEWINTENT --> ROUTER
+    PI --> ROUTER
+    RESTORE --> ROUTER

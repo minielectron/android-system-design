@@ -1,0 +1,5 @@
+flowchart LR
+    DROP[push dropped in deep Doze] --> NONOTIF[no immediate notification]
+    OPEN[user opens app / periodic sync] --> DELTA[delta sync since cursor - Ch 32]
+    DELTA --> SSOT[SSOT now has the update]
+    SSOT --> UI[UI shows order shipped - no data lost]

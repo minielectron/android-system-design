@@ -1,0 +1,6 @@
+flowchart TD
+    ISSUE[navigation problem] --> KIND{category}
+    KIND -->|modules tangled| CONTRACT[navigate via :core:navigation contract, assemble in :app]
+    KIND -->|back stack wrong| BACKSTACK[popUpTo/singleTop + synthesized deep-link stack - Ch 52]
+    KIND -->|state lost| SCOPE[nav-entry scoping + type-safe routes + SavedStateHandle - Ch 40/8]
+    KIND -->|tabs lose state| TABS[per-tab save/restore]

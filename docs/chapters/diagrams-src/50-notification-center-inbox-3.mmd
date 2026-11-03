@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant Push as PushSyncWorker (Ch 49)
+    participant Inbox as InboxRepository (Room, Ch 3)
+    participant Notif as Notifier
+    participant Sys as System drawer
+    actor User
+    participant Nav as App (deep link, Ch 52)
+
+    Push->>Inbox: upsert InboxItem (durable record)
+    Push->>Notif: notifyFor(item) if permitted (Ch 51)
+    Notif->>Sys: post (channel, style, group, deep-link PendingIntent)
+    User->>Sys: tap notification
+    Sys->>Nav: deep link -> order screen (Ch 52)
+    Nav->>Inbox: markRead(id)  (local + sync up, Ch 32)
+    Nav->>Notif: cancel(id)    (remove from drawer)

@@ -1,0 +1,13 @@
+flowchart TD
+    WEB["https://streamcart.com/product/123 (App Link, verified)"] --> OS["OS routes to app (no chooser, Digital Asset Links)"]
+    SCHEME["streamcart://order/456 (internal/notification)"] --> OS
+    NOTIF["notification tap PendingIntent (Ch 49/50)"] --> OS
+    OS --> ROUTER["DeepLinkRouter: Uri -> typed destination"]
+    ROUTER --> VALIDATE{validate params - untrusted, Ch 23}
+    VALIDATE -->|invalid| SAFEFAIL["fail safe: home / error, no crash"]
+    VALIDATE -->|valid| ACCOUNT{account matches? Ch 42}
+    ACCOUNT -->|no| SWITCH["switch/confirm account"]
+    ACCOUNT -->|yes| AUTH{auth required and logged in?}
+    AUTH -->|logged out| LOGIN["route to login -> resume to target (Ch 21)"]
+    AUTH -->|ok| NAV["Navigation: destination + synthesized back stack (Ch 53)"]
+    NAV --> SERVERAUTHZ["fetch over authed API -> server authorizes (IDOR-safe, Ch 23/19)"]

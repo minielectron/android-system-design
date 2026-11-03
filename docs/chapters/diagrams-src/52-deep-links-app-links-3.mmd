@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant OS
+    participant Router as DeepLinkRouter
+    participant Auth as AuthGate (Ch 21)
+    participant Nav as Navigation (Ch 53)
+    participant API as Authed API (Ch 19/23)
+
+    User->>OS: open https://streamcart.com/order/456 (App Link)
+    OS->>Router: resolve(uri) on cold start
+    Router->>Router: validate params (untrusted)
+    Router->>Auth: requiresAuth(Order)? yes, logged out
+    Auth->>Nav: navigate(Login, pending = Order/456)
+    User->>Nav: logs in
+    Nav->>Nav: resume -> Order/456 + synth back stack (Home)
+    Nav->>API: GET order/456 (Bearer) -> server authorizes (IDOR-safe)
+    API-->>Nav: order (only if it belongs to this user)

@@ -1,0 +1,6 @@
+flowchart TD
+    DENIED[permission denied] --> WHICH{which state?}
+    WHICH -->|can ask again| RATIONALE[show rationale -> re-request]
+    WHICH -->|permanently denied| SETTINGS[deep-link to Settings + explain - Ch 52]
+    WHICH -->|revoked at runtime| RECHECK[check at use -> re-enter flow]
+    DENIED --> DEGRADE[disable only this feature - never crash/block]

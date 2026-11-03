@@ -1,0 +1,4 @@
+flowchart LR
+    NEED[user adds a review photo] --> PICKER{need whole library?}
+    PICKER -->|no| PHOTOPICKER[PickVisualMedia - no permission, privacy-friendly]
+    PICKER -->|yes| MEDIA[request READ_MEDIA_IMAGES - handle partial selected-photos]

@@ -1,0 +1,7 @@
+flowchart TD
+    FAIL[deep link problem] --> WHY{category}
+    WHY -->|opens browser/chooser| VERIFY[fix assetlinks.json + autoVerify]
+    WHY -->|crash/wrong screen| VALIDATE[validate params -> typed destination -> fail safe]
+    WHY -->|empty gated screen| AUTH[login + resume - Ch 21]
+    WHY -->|security IDOR/redirect| SERVER[server authz + no arbitrary URL - Ch 23]
+    WHY -->|lost on launch| TIMING[route after nav ready; pending survives - Ch 8/45]

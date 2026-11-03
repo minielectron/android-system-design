@@ -72,10 +72,15 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 46 | Foreground Services | [`docs/chapters/46-foreground-services.md`](./docs/chapters/46-foreground-services.md) | ✅ Draft |
 | 47 | Doze, App Standby & Background Execution Limits | [`docs/chapters/47-doze-app-standby-background-limits.md`](./docs/chapters/47-doze-app-standby-background-limits.md) | ✅ Draft |
 | 48 | Alarms & Exact Scheduling | [`docs/chapters/48-alarms-exact-scheduling.md`](./docs/chapters/48-alarms-exact-scheduling.md) | ✅ Draft |
+| 49 | Push Notifications (FCM) Architecture | [`docs/chapters/49-push-notifications-fcm.md`](./docs/chapters/49-push-notifications-fcm.md) | ✅ Draft |
+| 50 | Notification Center / Inbox | [`docs/chapters/50-notification-center-inbox.md`](./docs/chapters/50-notification-center-inbox.md) | ✅ Draft |
+| 51 | Runtime Permissions Management | [`docs/chapters/51-runtime-permissions.md`](./docs/chapters/51-runtime-permissions.md) | ✅ Draft |
+| 52 | Deep Links & App Links Routing | [`docs/chapters/52-deep-links-app-links.md`](./docs/chapters/52-deep-links-app-links.md) | ✅ Draft |
+| 53 | Navigation Architecture (Multi-Module) | [`docs/chapters/53-navigation-architecture-multimodule.md`](./docs/chapters/53-navigation-architecture-multimodule.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), and V — Shared & Global State (Ch 38–43)** are complete.
-**Part VI — Lifecycle, Background & Platform (Ch 44–55)** is in progress (Ch 44–48 done).
+**Part VI — Lifecycle, Background & Platform (Ch 44–55)** is in progress (Ch 44–53 done).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

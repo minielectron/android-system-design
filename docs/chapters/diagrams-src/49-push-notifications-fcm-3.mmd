@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant BK as Backend
+    participant FCM as FCM
+    participant Svc as MessagingService
+    participant Router as PushRouter
+    participant WM as PushSyncWorker (expedited)
+    participant API as Authed API (Ch 19)
+    participant SSOT as Room (Ch 3)
+    participant Notif as Notifier (Ch 50)
+
+    BK->>FCM: send data msg {type: order_update, id, acct} priority high
+    FCM->>Svc: onMessageReceived (wakes in Doze, Ch 47)
+    Svc->>Router: route(payload)
+    Router->>Router: validate + accountMatches? (Ch 42)
+    Router->>WM: enqueue expedited sync(order id)
+    WM->>API: GET order/{id} (Bearer token, Ch 19)
+    API-->>WM: authoritative order state
+    WM->>SSOT: upsert (truth)
+    SSOT-->>Notif: show order-shipped notification (if permitted, Ch 51)

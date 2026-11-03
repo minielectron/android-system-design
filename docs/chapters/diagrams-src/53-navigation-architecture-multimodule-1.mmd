@@ -1,0 +1,11 @@
+flowchart TD
+    APP[":app: top-level NavHost + graph assembly"] --> CORE[":core:navigation: routes + Navigator contract"]
+    APP --> FEED["feedGraph (:feature:feed)"]
+    APP --> CART["cartGraph (:feature:cart)"]
+    APP --> CHECKOUT["checkoutGraph (:feature:checkout)"]
+    CART -->|navigate to CheckoutRoute| CORE
+    CORE -.->|resolved by :app graph| CHECKOUT
+    CART -. no direct dependency .-x CHECKOUT
+    DEEPLINK["deep links (Ch 52)"] --> APP
+    APP --> BACKSTACK["back stack: popUpTo / singleTop / per-tab / synthesized"]
+    APP --> SCOPE["ViewModel scoping: nav entry / graph (Ch 40)"]

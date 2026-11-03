@@ -1,0 +1,27 @@
+classDiagram
+    class StreamCartMessagingService {
+        <<FirebaseMessagingService>>
+        +onMessageReceived(msg)
+        +onNewToken(token)
+    }
+    class FcmTokenManager {
+        +refreshAndUpsert()
+        +invalidateOnLogout()
+        +currentToken(): String?
+    }
+    class PushRouter {
+        +route(payload): PushAction
+        -validate(payload)
+        -accountMatches(payload): Boolean
+    }
+    class PushSyncWorker {
+        <<CoroutineWorker, expedited>>
+        +doWork(): Result  // delta sync (Ch 32)
+    }
+    class Notifier {
+        +show(notification)  // Ch 50, permission-gated (Ch 51)
+    }
+    StreamCartMessagingService --> PushRouter
+    StreamCartMessagingService --> FcmTokenManager
+    PushRouter --> PushSyncWorker
+    PushSyncWorker --> Notifier

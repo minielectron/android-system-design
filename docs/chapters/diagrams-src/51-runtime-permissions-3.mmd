@@ -1,0 +1,22 @@
+sequenceDiagram
+    actor User
+    participant UI as Feature UI (Ch 6)
+    participant Ctrl as PermissionController
+    participant Sys as System dialog / Settings
+
+    User->>UI: tap "Scan" (camera)
+    UI->>Ctrl: state(CAMERA)
+    alt granted
+        Ctrl-->>UI: Granted
+        UI->>UI: open scanner
+    else denied, can ask
+        Ctrl-->>UI: DeniedCanAsk
+        UI->>User: rationale ("Scan needs the camera to read codes")
+        User->>UI: continue
+        UI->>Sys: launch request
+        Sys-->>UI: result (granted/denied)
+    else permanently denied
+        Ctrl-->>UI: PermanentlyDenied
+        UI->>User: "Enable Camera in Settings"
+        User->>Sys: open app settings (Ch 52)
+    end

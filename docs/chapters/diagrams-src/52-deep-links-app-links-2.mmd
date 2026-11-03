@@ -1,0 +1,23 @@
+classDiagram
+    class DeepLinkRouter {
+        +resolve(uri): Destination?
+        -validate(uri): Boolean
+        -accountFor(uri): String?
+    }
+    class Destination {
+        <<sealed, typed (Ch 53)>>
+        Product(id)
+        Order(id)
+        Invite(code)
+        Settings
+    }
+    class AuthGate {
+        +requiresAuth(dest): Boolean
+        +pending: Destination?
+    }
+    class BackStackBuilder {
+        +build(dest): List~Destination~
+    }
+    DeepLinkRouter --> Destination
+    DeepLinkRouter --> AuthGate
+    DeepLinkRouter --> BackStackBuilder

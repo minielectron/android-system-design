@@ -1,0 +1,8 @@
+flowchart TD
+    PROBLEM[push feature unreliable] --> WHY{why?}
+    WHY -->|message dropped/delayed| SYNC[push is a trigger - reconcile via sync - Ch 32]
+    WHY -->|token stale| TOKEN[onNewToken upsert + server prune]
+    WHY -->|wrong user| ISOLATE[per-account check + logout invalidation - Ch 42]
+    WHY -->|duplicate| IDEMP[dedupe by id - Ch 15]
+    WHY -->|not shown Android 13+| PERM[request POST_NOTIFICATIONS - Ch 51]
+    WHY -->|quota throttled| PRIO[high priority only when justified - Ch 47]
