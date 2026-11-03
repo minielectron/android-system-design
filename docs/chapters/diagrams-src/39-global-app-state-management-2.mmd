@@ -1,0 +1,17 @@
+classDiagram
+    class ConnectivityManager {
+        +state StateFlow~NetworkState~
+    }
+    class ThemeRepository {
+        +theme StateFlow~Theme~
+        +setTheme(Theme)
+    }
+    class UnreadCounter {
+        +count StateFlow~Int~
+        +refresh()
+    }
+    class FeatureUseCase {
+        +observeRelevantGlobalState() Flow
+    }
+    FeatureUseCase ..> ConnectivityManager
+    FeatureUseCase ..> FeatureFlags

@@ -1,0 +1,21 @@
+flowchart TD
+    PROVIDER["AccountProvider: current accountId (StateFlow)"]
+    subgraph STORES["per-account stores (keyed by accountId)"]
+        ROOM["Room: cart/orders WHERE accountId = current"]
+        TOKENS["per-account token store (Ch 20)"]
+        PREFS["per-account prefs (Ch 4)"]
+        CACHE["per-account caches (Ch 12)"]
+    end
+    subgraph STATE["account-aware state"]
+        CART["CartRepository (Ch 38) - flatMapLatest(current)"]
+        SESSION["SessionManager (Ch 22) - per account"]
+    end
+    SWITCHER["Account switcher UI"] --> PROVIDER
+    PROVIDER --> ROOM
+    PROVIDER --> TOKENS
+    PROVIDER --> PREFS
+    PROVIDER --> CACHE
+    PROVIDER -.-> CART
+    PROVIDER -.-> SESSION
+    AUTH["AuthInterceptor (Ch 19)"] -->|current account's token| TOKENS
+    WORK["Background work (Ch 30)"] -.->|accountId in inputData| ROOM

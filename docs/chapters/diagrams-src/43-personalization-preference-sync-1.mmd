@@ -1,0 +1,20 @@
+flowchart TD
+    subgraph DEVICE["device-scoped (local, Ch 4)"]
+        LOCALDS["DataStore: per-device settings (don't sync)"]
+    end
+    subgraph ACCOUNT["account-scoped (synced, per account Ch 42)"]
+        SYNCSTORE["pref store (Room, offline-first Ch 29)"]
+        OUTBOX["outbox (Ch 31)"]
+        DELTA["delta sync (Ch 32)"]
+        CONFLICT["per-key conflict resolution (Ch 33)"]
+    end
+    EDIT["user changes a pref"] --> CLASS{device or account?}
+    CLASS -->|device| LOCALDS
+    CLASS -->|account| SYNCSTORE
+    SYNCSTORE --> OUTBOX --> DELTA --> SRV["Backend account prefs"]
+    SRV --> DELTA --> CONFLICT --> SYNCSTORE
+    HOLDER["PreferencesRepository (global state Ch 39)"] --> READ["read by precedence: local-unsynced -> synced -> default"]
+    LOCALDS --> HOLDER
+    SYNCSTORE --> HOLDER
+    HOLDER --> UI["theme/filters applied app-wide"]
+    CONSENT["consent"] -.-> SRV

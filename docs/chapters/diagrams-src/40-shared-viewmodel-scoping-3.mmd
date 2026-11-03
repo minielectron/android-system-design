@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor User
+    participant Ship as Shipping
+    participant Pay as Payment
+    participant VM as CheckoutViewModel (graph-scoped)
+    participant Nav as NavController
+
+    User->>Ship: enter address
+    Ship->>VM: update(address)        %% same instance via graph entry
+    User->>Ship: Next
+    Ship->>Nav: navigate(Payment)
+    User->>Pay: enter card
+    Pay->>VM: update(card)            %% SAME VM -> sees address too
+    VM-->>Pay: form(address + card)
+    Note over Nav,VM: pop checkout graph, VM cleared and released

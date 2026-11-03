@@ -1,0 +1,5 @@
+flowchart LR
+    SET[setTheme Dark] --> HOLDER[ThemeRepository updates StateFlow + DataStore]
+    HOLDER --> OBS1[Settings re-renders]
+    HOLDER --> OBS2[whole app re-themes]
+    HOLDER --> PERSIST[survives restart Ch 4]

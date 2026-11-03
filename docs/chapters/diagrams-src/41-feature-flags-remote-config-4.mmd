@@ -1,0 +1,4 @@
+flowchart LR
+    BUG[new feature broken in prod] --> FLIP[flip new_feature=false remotely]
+    FLIP --> NEXTFETCH[clients fetch on next cycle]
+    NEXTFETCH --> OFF[feature disabled everywhere, no release]

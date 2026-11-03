@@ -61,9 +61,14 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 37 | Data Export, Import & Backup | [`docs/chapters/37-data-export-import-backup.md`](./docs/chapters/37-data-export-import-backup.md) | ✅ Draft |
 | 38 | Shared Shopping Cart Across Screens | [`docs/chapters/38-shared-shopping-cart.md`](./docs/chapters/38-shared-shopping-cart.md) | ✅ Draft |
 
-**Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), and IV — Offline-First &
-Synchronization (Ch 29–37)** are complete. Part V — Shared & Global State is
-underway (Ch 38 drafted).
+| 39 | Global App State Management | [`docs/chapters/39-global-app-state-management.md`](./docs/chapters/39-global-app-state-management.md) | ✅ Draft |
+| 40 | Shared ViewModel Scoping | [`docs/chapters/40-shared-viewmodel-scoping.md`](./docs/chapters/40-shared-viewmodel-scoping.md) | ✅ Draft |
+| 41 | Feature Flags & Remote Config | [`docs/chapters/41-feature-flags-remote-config.md`](./docs/chapters/41-feature-flags-remote-config.md) | ✅ Draft |
+| 42 | Multi-Account & Account Switching | [`docs/chapters/42-multi-account-switching.md`](./docs/chapters/42-multi-account-switching.md) | ✅ Draft |
+| 43 | Personalization & User-Preference Sync | [`docs/chapters/43-personalization-preference-sync.md`](./docs/chapters/43-personalization-preference-sync.md) | ✅ Draft |
+
+**Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
+Synchronization (Ch 29–37), and V — Shared & Global State (Ch 38–43)** are complete.
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

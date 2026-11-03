@@ -1,0 +1,14 @@
+sequenceDiagram
+    actor User
+    participant UI as Account switcher
+    participant AP as AccountProvider
+    participant Cart as CartRepository (Ch 38)
+    participant Tokens as per-account tokens (Ch 20)
+
+    User->>UI: switch to Work account
+    UI->>AP: switchTo("work")
+    AP->>AP: currentId = "work" (StateFlow emits)
+    AP-->>Cart: flatMapLatest -> observe cart WHERE accountId="work"
+    Cart-->>UI: Work cart (instant, no network)
+    Note over Tokens: requests now use Work's token, Ch 19
+    Note over AP: Personal account data untouched, switch back is instant

@@ -1,0 +1,8 @@
+flowchart TD
+    STATE[a piece of state] --> Q{read by many unrelated features?}
+    Q -->|no, one feature| FEAT[feature state Ch 38]
+    Q -->|no, one screen| UI[UI state Ch 6]
+    Q -->|yes, app/session| HOLD[focused @Singleton holder + StateFlow]
+    HOLD --> DUR{must survive process death?}
+    DUR -->|yes| BACK[DataStore/Room Ch 4/22]
+    DUR -->|no| MEM[in-memory, recompute]

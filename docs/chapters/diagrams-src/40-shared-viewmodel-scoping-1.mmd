@@ -1,0 +1,18 @@
+flowchart TD
+    subgraph OWNERS["ViewModelStoreOwners (scope)"]
+        ACT["Activity"]
+        GRAPH["checkout nav graph (back-stack entry)"]
+        SCREEN["each destination"]
+    end
+    subgraph SCREENS["checkout flow screens"]
+        SHIP["Shipping"]
+        PAY["Payment"]
+        REVIEW["Review"]
+    end
+    GRAPH --> CVM["CheckoutViewModel (graph-scoped, SHARED)"]
+    SHIP -->|hiltViewModel graphEntry| CVM
+    PAY -->|hiltViewModel graphEntry| CVM
+    REVIEW -->|hiltViewModel graphEntry| CVM
+    SCREEN -->|hiltViewModel| PERSCREEN["per-screen VM (NOT shared)"]
+    CVM -.->|released when graph leaves back stack| GONE["cleared (no leak)"]
+    SSOT["SSOT (cart/session, Ch 38/39)"] -.->|durable/app-wide| CVM

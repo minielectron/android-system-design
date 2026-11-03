@@ -1,0 +1,9 @@
+flowchart TD
+    NEED[screens need shared state] --> KIND{ephemeral flow or durable/app-wide?}
+    KIND -->|durable/app-wide| SSOT[SSOT Ch 38/39]
+    KIND -->|ephemeral flow| SCOPE{choose owner}
+    SCOPE -->|flow steps| GRAPH[nav-graph-scoped VM]
+    SCOPE -->|all fragments| ACTIVITY[Activity-scoped VM]
+    GRAPH --> SAVE{process death matters?}
+    SAVE -->|yes| SS[SavedStateHandle Ch 8]
+    SAVE -->|no| OK[in-memory]

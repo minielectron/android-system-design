@@ -1,0 +1,17 @@
+classDiagram
+    class FeatureFlags {
+        +bool(key, default) Boolean
+        +int(key, default) Int
+        +string(key, default) String
+        +observe(key) Flow~Boolean~
+        +refresh()
+    }
+    class ConfigFetcher {
+        +fetchAndCache() Result
+    }
+    class ConfigCache {
+        +get() ConfigSnapshot
+        +put(snapshot)
+    }
+    FeatureFlags --> ConfigCache
+    ConfigFetcher --> ConfigCache

@@ -1,0 +1,9 @@
+flowchart TD
+    EDIT[edit pref] --> SCOPE{device or account?}
+    SCOPE -->|device| LOCAL[local only - no sync]
+    SCOPE -->|account| OPT[optimistic + outbox]
+    OPT --> SYNC[sync Ch 32]
+    SYNC --> CONF{conflict?}
+    CONF -->|scalar| LWW[LWW Ch 33]
+    CONF -->|collection| MERGE[set-merge Ch 33]
+    CONF -->|none| APPLY[apply]

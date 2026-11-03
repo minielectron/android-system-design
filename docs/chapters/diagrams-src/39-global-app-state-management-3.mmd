@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant VM as ShopViewModel
+    participant Flags as FeatureFlags
+    participant Conn as ConnectivityManager
+    participant Session as SessionManager
+
+    VM->>Flags: observe flags
+    VM->>Conn: observe connectivity
+    VM->>Session: observe session
+    Note over VM: combine flags, conn, session into ShopUiState
+    Flags-->>VM: new flag value -> recompute
+    Conn-->>VM: offline -> show banner
+    Session-->>VM: logged out -> hide account UI
