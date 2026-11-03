@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[thumbnail problem] --> WHY{category}
+    WHY -->|expensive/bandwidth| WHERE[generate in the right place - CDN for remote - Ch 56]
+    WHY -->|jank/ANR| OFFMAIN[generate off-main - WorkManager - Ch 30]
+    WHY -->|regenerated| CACHE[cache by source+size - Ch 12/25]
+    WHY -->|stale/orphan| INVALIDATE[version-key + delete on source change - Ch 34]
+    WHY -->|leak| STORE[app-internal, per-account - Ch 25/42]

@@ -1,0 +1,19 @@
+classDiagram
+    class OrderWidget {
+        <<GlanceAppWidget>>
+        +provideGlance(context, id)
+    }
+    class WidgetUpdateWorker {
+        <<CoroutineWorker>>
+        +doWork() read SSOT -> update widget
+    }
+    class ShortcutPublisher {
+        +pushRecent(items)
+        +requestPin(shortcut)
+    }
+    class WidgetDeepLinks {
+        +pendingIntent(route): PendingIntent  // FLAG_IMMUTABLE (Ch 52)
+    }
+    OrderWidget --> WidgetDeepLinks
+    WidgetUpdateWorker --> OrderWidget
+    ShortcutPublisher ..> WidgetDeepLinks

@@ -1,0 +1,13 @@
+flowchart TD
+    SVC["MediaSessionService (FGS mediaPlayback, Ch 46)"] --> PLAYER["Media3 ExoPlayer (ABR, HLS/DASH, DRM Ch 59)"]
+    SVC --> SESSION["MediaSession = single source of playback state"]
+    PLAYER --> SESSION
+    SESSION --> NOTIF["system media notification (Ch 46/50)"]
+    SESSION --> LOCK["lock screen"]
+    SESSION --> BT["Bluetooth / Auto / Wear / Assistant"]
+    UI["UI (Compose)"] --> CONTROLLER["MediaController"]
+    CONTROLLER --> SESSION
+    SESSION --> AUDIO["audio focus + becoming-noisy + interruptions"]
+    SESSION --> PERSIST["persist position -> SSOT (Ch 3) -> sync continue-watching (Ch 32)"]
+    PERSIST -.->|restore on relaunch| PLAYER
+    LIFECYCLE["lifecycle Ch 44 - bg-continue audio / pause video / release when done"] -.-> SVC

@@ -1,0 +1,7 @@
+flowchart LR
+    WTAP[tap widget tile] --> PI[deep-link PendingIntent - FLAG_IMMUTABLE]
+    SCLAUNCH[launch shortcut] --> PI
+    PI --> ROUTER[central router - Ch 52]
+    ROUTER --> AUTH{auth/account ok? - Ch 21/42}
+    AUTH -->|yes| DEST[destination + back stack - Ch 53]
+    AUTH -->|no| LOGIN[login/switch then resume]

@@ -1,0 +1,4 @@
+flowchart LR
+    CHANGE[source changed/deleted] --> KEY{key by version/mtime}
+    KEY -->|new version| NEWKEY[new key -> regenerate - old ages out]
+    CHANGE -->|deleted| DELETE[delete thumbnail file + SSOT ref - Ch 34/3]

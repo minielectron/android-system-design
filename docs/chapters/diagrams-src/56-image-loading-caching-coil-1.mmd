@@ -1,0 +1,12 @@
+flowchart TD
+    REQ["AsyncImage request (url, target size, lifecycle)"] --> MEM{memory cache hit?}
+    MEM -->|yes| DRAW["draw decoded bitmap - instant"]
+    MEM -->|no| DISK{disk / OkHttp cache hit?}
+    DISK -->|yes| DECODE["decode off-main, downsample to target size"]
+    DISK -->|no| NET["OkHttp fetch (shared client: auth Ch 19, pinning Ch 23)"]
+    NET --> STOREDISK["store encoded bytes on disk (Ch 12)"]
+    STOREDISK --> DECODE
+    DECODE --> STOREMEM["put decoded bitmap in memory cache"]
+    STOREMEM --> DRAW
+    RECYCLE["view recycled / composition left (Ch 44)"] -.->|cancel request| REQ
+    CDN["CDN returns right-sized modern-format image (Ch 57)"] -.-> NET

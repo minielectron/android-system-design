@@ -1,0 +1,21 @@
+classDiagram
+    class VersionPolicy {
+        +minSupported: Int
+        +recommendedFloor: Int
+        +latest: Int
+        +message: String
+    }
+    class UpdateManager {
+        +evaluate(installed): UpdateState
+        +startFlexible()
+        +startImmediate()
+        +openStoreListing()  // fallback
+    }
+    class UpdateState {
+        <<sealed>>
+        UpToDate
+        SoftUpdate
+        ForcedUpgrade
+    }
+    UpdateManager --> VersionPolicy
+    UpdateManager --> UpdateState

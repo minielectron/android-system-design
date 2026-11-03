@@ -1,0 +1,20 @@
+sequenceDiagram
+    actor User
+    participant App as App startup (Ch 45)
+    participant Cfg as Remote config (Ch 41)
+    participant UM as UpdateManager
+    participant Play as Play In-App Updates
+    participant Store as Play Store listing
+
+    App->>Cfg: fetch version policy (cached)
+    Cfg-->>App: minSupported=120, latest=130
+    App->>UM: evaluate(installed=110)
+    UM-->>App: ForcedUpgrade
+    App->>Play: appUpdateInfo (immediate allowed?)
+    alt available from Play
+        Play-->>App: available -> startImmediate (blocking)
+    else not available (staged/not Play)
+        UM->>Store: open listing (fallback)
+    end
+    User->>App: update + restart
+    App->>UM: re-evaluate(installed=130) -> UpToDate (no loop)

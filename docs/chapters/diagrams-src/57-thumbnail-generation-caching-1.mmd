@@ -1,0 +1,15 @@
+flowchart TD
+    ASSET["an asset to preview"] --> WHERE{remote or local?}
+    WHERE -->|remote| CDN["request CDN thumbnail URL ?w=size (Ch 56) - Coil loads + caches"]
+    WHERE -->|local| TYPE{source type}
+    TYPE -->|image| IMG["decode downsampled to target"]
+    TYPE -->|video| VID["MediaMetadataRetriever frame - off-main"]
+    TYPE -->|pdf/doc| PDF["PdfRenderer page -> bitmap - off-main"]
+    TYPE -->|content uri| CR["ContentResolver.loadThumbnail (Android 10+)"]
+    IMG --> GEN["generate off-main (WorkManager/coroutine, Ch 30)"]
+    VID --> GEN
+    PDF --> GEN
+    CR --> GEN
+    GEN --> CACHE["cache: memory + app-internal disk, key = source+size+version (Ch 12/25/56)"]
+    CACHE --> SSOT["store thumbnail ref in SSOT where needed (Ch 3)"]
+    INVALIDATE["source changed/deleted -> invalidate (Ch 34)"] -.-> CACHE

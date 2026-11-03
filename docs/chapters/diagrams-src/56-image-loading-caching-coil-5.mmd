@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[image problem] --> WHY{category}
+    WHY -->|OOM| SIZE[downsample to target + bound memory cache]
+    WHY -->|jank| OFFMAIN[off-main decode + right-size + modest preload]
+    WHY -->|wrong/flicker| LIFECYCLE[lifecycle-bound request cancels on recycle - Coil]
+    WHY -->|re-download| CACHE[disk cache + shared OkHttp + cache headers - Ch 12]
+    WHY -->|huge source| CDN[request right-sized modern-format image - Ch 57]

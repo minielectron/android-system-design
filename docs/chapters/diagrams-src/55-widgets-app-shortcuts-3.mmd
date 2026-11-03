@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant Sync as Sync (Ch 32)
+    participant Room as SSOT (Ch 3)
+    participant WM as WidgetUpdateWorker (Ch 30)
+    participant Glance as Glance widget
+    participant Launcher as Home screen
+
+    Sync->>Room: upsert latest order status
+    Room-->>WM: data changed -> enqueue widget update (expedited if urgent, Ch 47)
+    WM->>Room: read snapshot (active account, Ch 42)
+    WM->>Glance: updateAppWidgetState + update()
+    Glance->>Launcher: push new RemoteViews

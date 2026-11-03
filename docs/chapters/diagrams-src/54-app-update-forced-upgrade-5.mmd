@@ -1,0 +1,7 @@
+flowchart TD
+    PROBLEM[update/gate issue] --> WHY{category}
+    WHY -->|old clients break| SERVER[raise server floor - forced upgrade - Ch 16]
+    WHY -->|gate loops| NOLOOP[re-read live versionCode + fresh policy]
+    WHY -->|update unavailable| FALLBACK[store link + retry - staged rollout]
+    WHY -->|config outage| FAILOPEN[fail open on missing policy - no mass lockout]
+    WHY -->|tampered client| ENFORCE[server rejects unsupported version - Ch 23]

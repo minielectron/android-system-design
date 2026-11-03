@@ -77,10 +77,17 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 51 | Runtime Permissions Management | [`docs/chapters/51-runtime-permissions.md`](./docs/chapters/51-runtime-permissions.md) | ✅ Draft |
 | 52 | Deep Links & App Links Routing | [`docs/chapters/52-deep-links-app-links.md`](./docs/chapters/52-deep-links-app-links.md) | ✅ Draft |
 | 53 | Navigation Architecture (Multi-Module) | [`docs/chapters/53-navigation-architecture-multimodule.md`](./docs/chapters/53-navigation-architecture-multimodule.md) | ✅ Draft |
+| 54 | App Update & Forced-Upgrade Flow | [`docs/chapters/54-app-update-forced-upgrade.md`](./docs/chapters/54-app-update-forced-upgrade.md) | ✅ Draft |
+| 55 | Widgets & App Shortcuts | [`docs/chapters/55-widgets-app-shortcuts.md`](./docs/chapters/55-widgets-app-shortcuts.md) | ✅ Draft |
+
+| 56 | Image Loading & Caching (Coil) | [`docs/chapters/56-image-loading-caching-coil.md`](./docs/chapters/56-image-loading-caching-coil.md) | ✅ Draft |
+| 57 | Thumbnail Generation & Caching | [`docs/chapters/57-thumbnail-generation-caching.md`](./docs/chapters/57-thumbnail-generation-caching.md) | ✅ Draft |
+| 58 | Media Playback State (Media3/ExoPlayer) | [`docs/chapters/58-media-playback-state-media3.md`](./docs/chapters/58-media-playback-state-media3.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
-Synchronization (Ch 29–37), and V — Shared & Global State (Ch 38–43)** are complete.
-**Part VI — Lifecycle, Background & Platform (Ch 44–55)** is in progress (Ch 44–53 done).
+Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), and VI —
+Lifecycle, Background & Platform (Ch 44–55)** are complete.
+**Part VII — Media & Files (Ch 56–62)** is in progress (Ch 56–58 done).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

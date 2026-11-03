@@ -1,0 +1,5 @@
+flowchart LR
+    CALL[API call] --> RESP{status}
+    RESP -->|426 Upgrade Required| GATE[enter ForcedUpgrade immediately]
+    RESP -->|200| CONTINUE[normal]
+    GATE --> UPDATEUI[blocking screen + Update action]

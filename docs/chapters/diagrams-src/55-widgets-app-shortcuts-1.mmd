@@ -1,0 +1,12 @@
+flowchart TD
+    SSOT["SSOT: Room/DataStore (Ch 3/4)"] --> UPDATER["WidgetUpdater (WorkManager, Ch 30)"]
+    SYNC["sync / user action (Ch 32)"] --> UPDATER
+    PERIODIC["periodic refresh - respects Doze (Ch 47)"] --> UPDATER
+    UPDATER --> GLANCE["Glance widget -> RemoteViews pushed to launcher"]
+    GLANCE --> TAP["tap -> deep link (Ch 52)"]
+    SHORTCUTS["App shortcuts: static / dynamic / pinned"] --> SCTAP["long-press -> deep link (Ch 52)"]
+    TAP --> ROUTER["central deep-link router (Ch 52): destination + auth + account"]
+    SCTAP --> ROUTER
+    ACCOUNT["account switch (Ch 42)"] --> UPDATER
+    ACCOUNT --> SCUPDATE["refresh dynamic shortcuts"]
+    PRIVACY["privacy: no sensitive/cross-account leak (Ch 28/42)"] -.-> GLANCE

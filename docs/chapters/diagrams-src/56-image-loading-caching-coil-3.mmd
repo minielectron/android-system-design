@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant UI as LazyGrid cell (Compose)
+    participant Coil as Coil ImageLoader
+    participant Mem as Memory cache
+    participant Disk as Disk/OkHttp cache (Ch 12)
+    participant CDN as CDN (Ch 57)
+
+    UI->>Coil: AsyncImage(url?w=cellWidth, size=cell)
+    Coil->>Mem: lookup key
+    alt memory hit
+        Mem-->>UI: decoded bitmap (instant)
+    else miss
+        Coil->>Disk: lookup
+        alt disk hit
+            Disk-->>Coil: encoded bytes -> decode off-main (downsample)
+        else miss
+            Coil->>CDN: fetch right-sized image
+            CDN-->>Coil: bytes -> disk + decode
+        end
+        Coil-->>UI: crossfade in decoded bitmap
+    end
+    Note over UI,Coil: cell recycled -> request cancelled, no wrong image

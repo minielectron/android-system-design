@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor User
+    participant UI as UI (MediaController)
+    participant Session as MediaSession (single truth)
+    participant Player as Media3 Player
+    participant Notif as Media notification (Ch 46/50)
+    participant BT as Bluetooth
+
+    User->>UI: tap pause
+    UI->>Session: pause command
+    Session->>Player: pause
+    Player-->>Session: state = paused
+    Session-->>Notif: update (paused) — no drift
+    Session-->>UI: state = paused
+    User->>BT: press play on headset
+    BT->>Session: play command
+    Session->>Player: play
+    Player-->>Session: playing -> all surfaces update
