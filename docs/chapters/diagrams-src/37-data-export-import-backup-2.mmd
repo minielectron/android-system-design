@@ -1,0 +1,16 @@
+classDiagram
+    class BackupRules {
+        +include domains
+        +exclude secrets/caches
+    }
+    class RestoreHandler {
+        +onRestore() migrate + reprovision
+    }
+    class DataExporter {
+        +export() PortableBundle
+    }
+    class DataImporter {
+        +import(file) ValidationResult
+    }
+    DataExporter --> PortableBundle
+    DataImporter --> ValidationResult

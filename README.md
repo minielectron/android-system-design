@@ -55,8 +55,15 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 32 | Delta / Incremental Sync | [`docs/chapters/32-delta-incremental-sync.md`](./docs/chapters/32-delta-incremental-sync.md) | ✅ Draft |
 | 33 | Conflict Resolution & a Sync Engine | [`docs/chapters/33-conflict-resolution-sync-engine.md`](./docs/chapters/33-conflict-resolution-sync-engine.md) | ✅ Draft |
 
-**Parts II (Ch 9–18), III (Ch 19–28), and IV — Offline-First & Synchronization
-(Ch 29–33)** are complete.
+| 34 | Cache Invalidation Strategy | [`docs/chapters/34-cache-invalidation-strategy.md`](./docs/chapters/34-cache-invalidation-strategy.md) | ✅ Draft |
+| 35 | Local Full-Text Search (FTS) | [`docs/chapters/35-local-full-text-search-fts.md`](./docs/chapters/35-local-full-text-search-fts.md) | ✅ Draft |
+| 36 | Room Migrations & Schema Management | [`docs/chapters/36-room-migrations-schema.md`](./docs/chapters/36-room-migrations-schema.md) | ✅ Draft |
+| 37 | Data Export, Import & Backup | [`docs/chapters/37-data-export-import-backup.md`](./docs/chapters/37-data-export-import-backup.md) | ✅ Draft |
+| 38 | Shared Shopping Cart Across Screens | [`docs/chapters/38-shared-shopping-cart.md`](./docs/chapters/38-shared-shopping-cart.md) | ✅ Draft |
+
+**Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), and IV — Offline-First &
+Synchronization (Ch 29–37)** are complete. Part V — Shared & Global State is
+underway (Ch 38 drafted).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

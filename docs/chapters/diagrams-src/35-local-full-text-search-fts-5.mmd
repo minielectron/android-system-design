@@ -1,0 +1,9 @@
+flowchart TD
+    Q[user query] --> SAN[sanitize -> MATCH]
+    SAN --> RUN{run MATCH}
+    RUN -->|ok| RANK[rank bm25 + snippet]
+    RUN -->|syntax error| SAFE[fallback safe terms]
+    RANK --> LOCAL[local results]
+    LOCAL --> ONLINE{online?}
+    ONLINE -->|yes| MERGE[merge remote Ch 10]
+    ONLINE -->|no| DONE[local-only]

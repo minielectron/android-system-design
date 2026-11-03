@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant App
+    participant Room
+    participant DB as on-device DB (v1, has cart + outbox)
+
+    App->>Room: open DB (current version 3)
+    Room->>DB: read user_version = 1
+    Room->>DB: apply MIGRATION_1_2 (add discount col)
+    Room->>DB: apply MIGRATION_2_3 (recreate table, transform)
+    DB-->>Room: version 3, data preserved (cart + unsynced outbox intact)
+    Room-->>App: ready

@@ -1,0 +1,8 @@
+flowchart TD
+    EDIT[cart edit] --> OPT[optimistic SSOT + outbox]
+    OPT --> ALL[all screens update instantly]
+    OPT --> SYNC{sync}
+    SYNC -->|ok| SYNCED[mark synced]
+    SYNC -->|stock/price change| RECONCILE[update line / surface]
+    SYNC -->|device conflict| RESOLVE[Ch 33 sum/LWW]
+    LOGIN[login] --> MERGE[guest->user merge Ch 33]

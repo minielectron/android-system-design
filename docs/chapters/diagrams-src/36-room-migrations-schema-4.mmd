@@ -1,0 +1,6 @@
+flowchart LR
+    OLD[products v2] --> NEW[create products_new - new schema]
+    NEW --> COPY[INSERT INTO products_new SELECT transform FROM products]
+    COPY --> DROP[DROP products]
+    DROP --> REN[ALTER TABLE products_new RENAME TO products]
+    REN --> IDX[recreate indexes]

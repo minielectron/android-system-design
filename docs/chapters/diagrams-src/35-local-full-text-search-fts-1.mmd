@@ -1,0 +1,9 @@
+flowchart TD
+    SRC["products table (Room SSOT, Ch 3)"] --> FTS["products_fts (FTS4/5, external-content)"]
+    SYNC["index sync: triggers / repo writes"] -.-> FTS
+    QUERY["user query (debounced, Ch 9)"] --> SANITIZE["sanitize -> FTS MATCH syntax"]
+    SANITIZE --> MATCH["SELECT ... WHERE products_fts MATCH ? ORDER BY bm25()"]
+    MATCH --> FTS
+    MATCH --> RESULTS["ranked rows + snippet/highlight"]
+    RESULTS --> MERGE["merge local-first with remote (Ch 10)"]
+    MERGE --> UI["results UI"]

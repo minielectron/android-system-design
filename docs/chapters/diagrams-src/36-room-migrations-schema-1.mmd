@@ -1,0 +1,14 @@
+flowchart TD
+    OPEN["app opens DB at version M (installed)"] --> CUR{"current version N"}
+    CUR -->|M == N| READY["ready"]
+    CUR -->|M < N| CHAIN["apply migrations M->...->N"]
+    CHAIN --> TYPE{"change type"}
+    TYPE -->|additive| AUTO["auto-migration (generated from schemas)"]
+    TYPE -->|rename/delete| SPEC["auto-migration + AutoMigrationSpec"]
+    TYPE -->|type/constraint| MANUAL["manual Migration: create-copy-drop-rename"]
+    AUTO --> DONE["migrated, data preserved"]
+    SPEC --> DONE
+    MANUAL --> DONE
+    EXPORT["exported schema JSON (committed)"] -.-> AUTO
+    EXPORT -.-> TEST["MigrationTestHelper validates"]
+    DESTRUCT["fallbackToDestructiveMigration"] -.->|FORBIDDEN in release| CHAIN

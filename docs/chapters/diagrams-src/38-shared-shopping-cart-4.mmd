@@ -1,0 +1,6 @@
+flowchart LR
+    GUEST[guest cart local] --> LOGIN[user logs in]
+    LOGIN --> FETCH[fetch server user cart]
+    FETCH --> MERGE[merge: union lines, sum/LWW qty per policy Ch 33]
+    MERGE --> SSOT[write merged cart to Room per account]
+    MERGE --> PUSH[push merged cart to server idempotent]

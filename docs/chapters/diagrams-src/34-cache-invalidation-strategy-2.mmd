@@ -1,0 +1,17 @@
+classDiagram
+    class Invalidator {
+        +onWrite(entityId, type)
+        +onServerChange(ids, version)
+        +invalidateTag(tag)
+        +invalidateAll()
+    }
+    class CacheDependencyGraph {
+        +dependentsOf(entityId) Set
+        +tagsOf(entityId) Set
+    }
+    class CacheVersion {
+        +current Int
+        +ensureCompatible()
+    }
+    Invalidator --> CacheDependencyGraph
+    Invalidator --> CacheVersion

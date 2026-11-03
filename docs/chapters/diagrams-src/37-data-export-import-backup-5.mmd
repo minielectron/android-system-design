@@ -1,0 +1,11 @@
+flowchart TD
+    BACKUP[auto-backup] --> RULES{rules}
+    RULES -->|secrets/caches| SKIP[excluded]
+    RULES -->|config/data| UP[uploaded]
+    RESTORE[restore] --> MIG[migrate schema Ch 36]
+    MIG --> SEC{secrets present?}
+    SEC -->|no by design| REAUTH[re-authenticate Ch 19]
+    SEC -->|n/a| READY[ready]
+    IMPORT[import file] --> VAL{valid?}
+    VAL -->|no| REJECT[reject]
+    VAL -->|yes| MERGE[conflict-aware merge Ch 33]
