@@ -1,0 +1,7 @@
+flowchart LR
+    ACTIVE[app active - Ch 44] --> HB[heartbeat -> server]
+    HB --> ONLINE[server marks online + TTL]
+    BG[app background / drop] --> NOHB[no heartbeat]
+    NOHB --> TTL{TTL elapsed?}
+    TTL -->|yes| OFFLINE[auto-expire offline -> show last seen - no ghost]
+    ONLINE --> RENDER[client shows online within fresh TTL]

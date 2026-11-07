@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor Alice
+    participant TA as Typing (Alice)
+    participant Srv as Server fan-out
+    participant TB as Typing UI (Bob)
+
+    Alice->>TA: keystroke
+    TA->>Srv: typing start (then debounce, Ch 9)
+    Srv->>TB: Alice typing
+    TB->>TB: start client timeout (e.g. 5s)
+    Note over TA,Srv: no more keystrokes
+    TA->>Srv: typing stop (idle timeout / send)
+    Srv->>TB: Alice stopped
+    TB->>TB: clear
+    Note over TB: if stop LOST, client timeout clears anyway - best-effort

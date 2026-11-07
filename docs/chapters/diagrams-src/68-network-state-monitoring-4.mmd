@@ -1,0 +1,5 @@
+flowchart LR
+    STATE[NetworkState] --> METERED{metered?}
+    METERED -->|yes cellular| DEFER[defer heavy download to Wi-Fi - WorkManager UNMETERED - Ch 30]
+    METERED -->|yes| LOWER[lower video bitrate / skip image prefetch - Ch 58/56]
+    METERED -->|no unmetered| FULL[full quality + prefetch + sync]

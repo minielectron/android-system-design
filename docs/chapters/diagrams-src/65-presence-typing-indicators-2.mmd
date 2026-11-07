@@ -1,0 +1,18 @@
+classDiagram
+    class PresenceTracker {
+        +heartbeat()  while active
+        +observe(userId): Flow~Presence~  // online|away|lastSeen, TTL-expiring
+    }
+    class TypingController {
+        +onInput()  debounced start (Ch 9)
+        +onStopOrSend()  stop
+        +observeTyping(convId): Flow~Set~UserId~~  // receiver timeout auto-clear
+    }
+    class LiveCount {
+        +observe(channel): Flow~Int~  // coalesced/sampled (Ch 63)
+    }
+    class PrivacySettings {
+        +sharePresence; +shareTyping  // reciprocal (Ch 28)
+    }
+    PresenceTracker --> PrivacySettings
+    TypingController --> PrivacySettings

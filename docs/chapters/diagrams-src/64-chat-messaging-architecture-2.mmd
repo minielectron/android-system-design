@@ -1,0 +1,23 @@
+classDiagram
+    class Message {
+        +clientId: String  (idempotency, Ch 15)
+        +serverSeq: Long?   (ordering/cursor, Ch 32)
+        +conversationId; +senderId; +body
+        +status: Sending|Sent|Delivered|Read|Failed
+        +sentAt; +localTs
+    }
+    class ChatRepository {
+        +send(conversationId, body)
+        +observeMessages(conversationId): PagingData
+        +markRead(messageIds)
+        +catchUp(conversationId)
+    }
+    class MessageMerger {
+        +merge(incoming): upsert  (dedup + order, Ch 15)
+    }
+    class OutboxProcessor {
+        +process()  (retry + idempotent, Ch 31/15)
+    }
+    ChatRepository --> Message
+    ChatRepository --> MessageMerger
+    ChatRepository --> OutboxProcessor

@@ -89,12 +89,17 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 62 | File Sharing & Content Providers (SAF) | [`docs/chapters/62-file-sharing-content-providers-saf.md`](./docs/chapters/62-file-sharing-content-providers-saf.md) | ✅ Draft |
 
 | 63 | Real-Time Communication over WebSocket | [`docs/chapters/63-realtime-websocket.md`](./docs/chapters/63-realtime-websocket.md) | ✅ Draft |
+| 64 | Chat / Messaging Architecture | [`docs/chapters/64-chat-messaging-architecture.md`](./docs/chapters/64-chat-messaging-architecture.md) | ✅ Draft |
+| 65 | Presence & Typing Indicators | [`docs/chapters/65-presence-typing-indicators.md`](./docs/chapters/65-presence-typing-indicators.md) | ✅ Draft |
+| 66 | Server-Sent Events & Long Polling | [`docs/chapters/66-sse-long-polling.md`](./docs/chapters/66-sse-long-polling.md) | ✅ Draft |
+| 67 | Live Location Tracking | [`docs/chapters/67-live-location-tracking.md`](./docs/chapters/67-live-location-tracking.md) | ✅ Draft |
+| 68 | Network State Monitoring (Wi-Fi / Cellular / Metered) | [`docs/chapters/68-network-state-monitoring.md`](./docs/chapters/68-network-state-monitoring.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
 Lifecycle, Background & Platform (Ch 44–55), and VII — Media & Files
 (Ch 56–62)** are complete.
-**Part VIII — Real-Time & Connectivity (Ch 63–69)** is in progress (Ch 63 done).
+**Part VIII — Real-Time & Connectivity (Ch 63–70)** is in progress (Ch 63–68 done).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

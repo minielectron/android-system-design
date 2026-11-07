@@ -1,0 +1,15 @@
+classDiagram
+    class ConnectivityObserver {
+        +observe(): Flow~NetworkState~
+        -registerDefaultNetworkCallback()
+    }
+    class NetworkState {
+        <<sealed>>
+        Offline
+        Online(transport, metered, validated, bandwidthKbps)
+    }
+    class NetworkReactor {
+        +onChange(state)  reconnect/retry/quality
+    }
+    ConnectivityObserver --> NetworkState
+    NetworkReactor --> ConnectivityObserver

@@ -1,0 +1,15 @@
+flowchart TD
+    COMPOSE["compose message (client-id UUID)"] --> OPT["optimistic insert -> SSOT status Sending (Ch 72)"]
+    OPT --> OUTBOX["enqueue outbox (survives death/offline, Ch 31)"]
+    OUTBOX --> SEND["send with client-id idempotency key (Ch 15) over WebSocket/REST"]
+    SEND --> CONFIRM["server assigns sequence -> SSOT status Sent + server-seq"]
+    WS["WebSocket foreground (Ch 63)"] --> MERGE["idempotent SSOT merge: dedup client-id/server-seq, order by seq"]
+    FCMPUSH["FCM background (Ch 49)"] --> CATCHUP["REST catch-up from last seq (Ch 32)"]
+    CATCHUP --> MERGE
+    WS --> MERGE
+    RECONNECT["reconnect/open"] --> CATCHUP
+    MERGE --> SSOT["Room SSOT (Ch 3) - UI observes (Ch 6)"]
+    SSOT --> RECEIPTS["delivery/read receipts synced (Ch 32)"]
+    SSOT --> PAGING["history paging (Ch 13)"]
+    SERVER["server = source of truth + fan-out + authz (Ch 23)"] -.-> MERGE
+    SERVER -.->|per-device cursors converge| SSOT

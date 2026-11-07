@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant CM as ConnectivityManager
+    participant Obs as ConnectivityObserver (Flow)
+    participant RT as RealtimeConnection (Ch 63)
+    participant Retry as Retry (Ch 2)
+    participant UI as UI (Ch 6)
+
+    CM->>Obs: onLost -> NetworkState.Offline
+    Obs->>UI: show offline banner
+    Obs->>RT: pause/stop reconnect attempts (don't thrash)
+    CM->>Obs: onAvailable + onCapabilitiesChanged(validated)
+    Obs->>UI: hide banner (Online, validated)
+    Obs->>RT: reconnect WebSocket (Ch 63)
+    Obs->>Retry: retry failed requests (Ch 2)

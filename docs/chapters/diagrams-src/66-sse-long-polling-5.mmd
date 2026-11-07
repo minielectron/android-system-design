@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[one-way real-time problem] --> WHY{category}
+    WHY -->|drops/missed| RESUME[Last-Event-ID / cursor resume + REST catch-up - Ch 32]
+    WHY -->|duplicates| IDEMP[idempotent SSOT merge - Ch 15]
+    WHY -->|WS blocked| SSE[SSE/long-poll over HTTP - more proxy-robust]
+    WHY -->|battery| LIFECYCLE[foreground only + FCM - Ch 44/49]
+    WHY -->|laggy/flood| TUNE[long-poll vs short-poll - coalesce high-rate - Ch 63]

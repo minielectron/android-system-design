@@ -1,0 +1,6 @@
+flowchart LR
+    FIX[location fix] --> ONLINE{connected?}
+    ONLINE -->|yes| WS[stream over WebSocket - Ch 63]
+    ONLINE -->|no| OUTBOX[buffer in outbox - trip track not lost - Ch 31]
+    OUTBOX -->|reconnect| FLUSH[flush in timestamp order]
+    FLUSH --> WS

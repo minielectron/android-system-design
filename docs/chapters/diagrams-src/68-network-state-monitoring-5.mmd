@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[network-state problem] --> WHY{category}
+    WHY -->|fake online| VALIDATED[check NET_CAPABILITY_VALIDATED]
+    WHY -->|stale state| CALLBACK[callback-driven Flow, not polling]
+    WHY -->|data burn| METERED[respect NOT_METERED + WorkManager UNMETERED - Ch 30]
+    WHY -->|dead reconnect / no retry| REACT[reconnect + retry on validated recovery - Ch 63/2]
+    WHY -->|over-gating| ADVISORY[advisory only - offline-first SSOT - Ch 29]
