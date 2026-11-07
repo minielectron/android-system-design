@@ -1,0 +1,23 @@
+classDiagram
+    class NearbyManager {
+        +advertise(serviceId)
+        +discover(serviceId): Flow~Endpoint~
+        +requestConnection(endpoint)
+        +sendPayload(endpoint, payload)
+    }
+    class ConnectionLifecycle {
+        +onConnectionInitiated(authToken)  // verify
+        +onConnectionResult(status)
+        +onDisconnected()  // retry (Ch 2)
+    }
+    class PayloadHandler {
+        +onBytes(bytes)
+        +onFile(stream, progress)  // stream (Ch 61)
+    }
+    class Strategy {
+        <<enum>>
+        POINT_TO_POINT; STAR; CLUSTER
+    }
+    NearbyManager --> ConnectionLifecycle
+    NearbyManager --> PayloadHandler
+    NearbyManager --> Strategy

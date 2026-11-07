@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor User
+    participant UI as LazyColumn (Paging)
+    participant PS as PagingSource (Room)
+    participant RM as RemoteMediator
+    participant Net as Feed API (cursor)
+    participant Room as Room SSOT (Ch 3)
+
+    UI->>PS: page from DB (window)
+    PS-->>UI: cached items (instant, offline-capable)
+    UI->>RM: scroll near edge -> load APPEND
+    RM->>Net: GET feed?after=<lastCursor>
+    Net-->>RM: ranked page + nextCursor (Ch 73)
+    RM->>Room: insert items + remote key (dedup by id)
+    Room-->>PS: new items -> PagingSource invalidates
+    PS-->>UI: appended items (position preserved)

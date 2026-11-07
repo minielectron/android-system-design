@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor UserA
+    actor UserB
+    participant A as Device A (advertiser)
+    participant B as Device B (discoverer)
+
+    A->>A: startAdvertising(serviceId)
+    B->>B: startDiscovery(serviceId)
+    B-->>A: endpoint found -> requestConnection
+    A-->>B: onConnectionInitiated(authToken)
+    Note over A,B: both verify the SAME token - mutual trust, anti-MITM
+    UserA->>A: accept; UserB->>B: accept
+    A->>B: connection established
+    A->>B: sendPayload(FILE) -> streamed with progress (Ch 61)
+    B-->>A: onPayloadTransferUpdate(progress)
+    Note over A,B: drop -> retry + resume remainder, Ch 2/61

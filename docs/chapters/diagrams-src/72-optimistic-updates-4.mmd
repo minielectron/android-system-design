@@ -1,0 +1,6 @@
+flowchart LR
+    T1[like] --> T2[unlike] --> T3[like]
+    T3 --> FINAL[final intent: liked=true]
+    FINAL --> COALESCE[outbox coalesces to latest set-state - Ch 31]
+    COALESCE --> SRV[server set liked=true - idempotent, Ch 15]
+    SRV --> RECON[reconcile count]

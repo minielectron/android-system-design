@@ -1,0 +1,21 @@
+sequenceDiagram
+    actor User
+    participant Repo as InteractionRepository
+    participant SSOT as Room row (Ch 3)
+    participant Out as Outbox (Ch 31)
+    participant Srv as Server (truth)
+
+    User->>Repo: like(postId)
+    Repo->>SSOT: save pre-action (liked=false, count=41); set liked=true, count=42 (optimistic)
+    Note over SSOT: UI updates instantly EVERYWHERE - feed/detail, Ch 3/6
+    Repo->>Out: enqueue Like{idempotencyKey} (Ch 15/31)
+    Out->>Srv: POST like (idempotent)
+    alt success
+        Srv-->>Out: real count = 57 (others liked too)
+        Out->>SSOT: reconcile -> count=57 (replace guess, Ch 32)
+    else genuine 4xx (blocked)
+        Srv-->>Out: 403
+        Out->>SSOT: rollback -> liked=false, count=41 + tell user
+    else transient 5xx/network
+        Out->>Out: keep optimistic + retry (Ch 2/31)
+    end

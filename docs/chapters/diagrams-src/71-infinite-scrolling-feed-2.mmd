@@ -1,0 +1,19 @@
+classDiagram
+    class FeedRemoteMediator {
+        <<RemoteMediator, Ch 13>>
+        +load(LoadType, state): MediatorResult  // cursor pagination -> Room
+    }
+    class FeedItem {
+        +id (stable key); +type; +cursor
+        +content; +likeCount; +likedByMe  (SSOT, Ch 3)
+    }
+    class FeedViewModel {
+        +pagingData: Flow~PagingData~FeedItem~~
+        +refresh(); +newContentCount
+    }
+    class FeedInteractions {
+        +like(id)  optimistic SSOT (Ch 72)
+    }
+    FeedRemoteMediator --> FeedItem
+    FeedViewModel --> FeedRemoteMediator
+    FeedViewModel --> FeedInteractions

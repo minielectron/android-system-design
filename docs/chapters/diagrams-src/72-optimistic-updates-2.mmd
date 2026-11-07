@@ -1,0 +1,21 @@
+classDiagram
+    class OptimisticAction {
+        <<sealed>>
+        Like(id, liked)
+        Comment(clientId, postId, text)
+    }
+    class InteractionRepository {
+        +like(id)  optimistic + outbox
+        +comment(postId, text)
+        -applyOptimistic(); -reconcile(); -rollback()
+    }
+    class ItemRow {
+        +id; +liked; +likeCount  (SSOT, Ch 3)
+        +preActionLiked; +preActionCount  (for rollback)
+    }
+    class OutboxOp {
+        +idempotencyKey (Ch 15)
+    }
+    InteractionRepository --> OptimisticAction
+    InteractionRepository --> ItemRow
+    InteractionRepository --> OutboxOp

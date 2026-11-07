@@ -1,0 +1,11 @@
+flowchart TD
+    SERVER["Server + ML: rank & personalize (global data, models) + assign A/B variant (Ch 87)"] --> FEED["ranked, personalized items (+ explanations)"]
+    FEED --> RM["RemoteMediator -> SSOT (reuse Ch 71 infra)"]
+    RM --> ROOM["Room SSOT (Ch 3): cached ranked feed"]
+    ROOM --> UI["render server order - DO NOT re-rank (Ch 71)"]
+    UI --> SIGNALS["log signals: impressions(visible) / clicks / dwell / conversions / dismiss (Ch 14)"]
+    SIGNALS --> PIPELINE["analytics/event pipeline (batched, reliable, Ch 14)"]
+    PIPELINE -.->|train models| SERVER
+    COLDSTART["cold-start -> server fallback: popular/onboarding/contextual (Ch 43)"] --> FEED
+    EXPERIMENT["remote config assigns variant (Ch 41/87)"] --> UI
+    PRIVACY["consent + opt-out + 'not interested' + transparency (Ch 28)"] -.-> SIGNALS

@@ -1,0 +1,6 @@
+flowchart LR
+    NEW[new user - no history] --> SRV{server personalization available?}
+    SRV -->|no| FALLBACK[server returns popular/trending or onboarding prefs - Ch 43]
+    SRV -->|warming| MIX[mix personalized + popular]
+    FALLBACK --> RENDER[client renders + keeps logging signals]
+    RENDER -.->|signals warm up personalization| SRV

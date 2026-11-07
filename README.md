@@ -94,12 +94,18 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 66 | Server-Sent Events & Long Polling | [`docs/chapters/66-sse-long-polling.md`](./docs/chapters/66-sse-long-polling.md) | ✅ Draft |
 | 67 | Live Location Tracking | [`docs/chapters/67-live-location-tracking.md`](./docs/chapters/67-live-location-tracking.md) | ✅ Draft |
 | 68 | Network State Monitoring (Wi-Fi / Cellular / Metered) | [`docs/chapters/68-network-state-monitoring.md`](./docs/chapters/68-network-state-monitoring.md) | ✅ Draft |
+| 69 | Bluetooth Low Energy (BLE) Connectivity | [`docs/chapters/69-bluetooth-low-energy.md`](./docs/chapters/69-bluetooth-low-energy.md) | ✅ Draft |
+| 70 | Peer-to-Peer / Nearby Connections | [`docs/chapters/70-peer-to-peer-nearby-connections.md`](./docs/chapters/70-peer-to-peer-nearby-connections.md) | ✅ Draft |
+
+| 71 | Infinite Scrolling Feed (Social) | [`docs/chapters/71-infinite-scrolling-feed.md`](./docs/chapters/71-infinite-scrolling-feed.md) | ✅ Draft |
+| 72 | Optimistic Updates (Likes / Comments) | [`docs/chapters/72-optimistic-updates.md`](./docs/chapters/72-optimistic-updates.md) | ✅ Draft |
+| 73 | Recommendations Feed | [`docs/chapters/73-recommendations-feed.md`](./docs/chapters/73-recommendations-feed.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
-Lifecycle, Background & Platform (Ch 44–55), and VII — Media & Files
-(Ch 56–62)** are complete.
-**Part VIII — Real-Time & Connectivity (Ch 63–70)** is in progress (Ch 63–68 done).
+Lifecycle, Background & Platform (Ch 44–55), VII — Media & Files
+(Ch 56–62), and VIII — Real-Time & Connectivity (Ch 63–70)** are complete.
+**Part IX — Feature Architectures (Ch 71–81)** is in progress (Ch 71–73 done).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

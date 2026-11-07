@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[P2P problem] --> WHY{category}
+    WHY -->|drop mid-transfer| RESUME[retry + resume remainder - Ch 2/61]
+    WHY -->|OOM large payload| STREAM[FILE/STREAM streamed - Ch 61]
+    WHY -->|MITM/wrong peer| AUTH[verify mutual token + consent before accept]
+    WHY -->|no discovery| PERM[permission matrix + same service id - Ch 51/69]
+    WHY -->|battery| LIFECYCLE[stop radios promptly - FGS for long transfer - Ch 44/46]

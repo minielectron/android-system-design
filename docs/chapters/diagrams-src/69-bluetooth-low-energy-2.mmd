@@ -1,0 +1,21 @@
+classDiagram
+    class BleManager {
+        +scan(filters): Flow~ScanResult~
+        +connect(address): Flow~ConnectionState~
+        +disconnect()
+    }
+    class GattOperationQueue {
+        +enqueue(op): suspend result  // ONE at a time + timeout
+        -runNext()
+    }
+    class ConnectionState {
+        <<sealed>>
+        Disconnected; Connecting; Connected; Failed(reason)
+    }
+    class GattOperation {
+        <<sealed>>
+        Discover; Read(uuid); Write(uuid, bytes); Subscribe(uuid); RequestMtu(size)
+    }
+    BleManager --> GattOperationQueue
+    BleManager --> ConnectionState
+    GattOperationQueue --> GattOperation
