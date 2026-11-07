@@ -1,0 +1,13 @@
+flowchart TD
+    SERVER["server: order status state machine (authoritative) + driver location + ETA"] --> MECH{mechanism per app state}
+    MECH -->|watching foreground| LIVE["live channel: WebSocket/SSE (Ch 63/66) - low-latency status + driver map (Ch 67)"]
+    MECH -->|backgrounded| FCM["high-priority FCM (Ch 49) -> status change + notification (Ch 50)"]
+    MECH -->|open/periodic| SYNC["sync backstop (Ch 32) - self-heal missed updates"]
+    LIVE --> SSOT["order SSOT (Ch 3): status + timeline + ETA"]
+    FCM --> SYNCPULL["FCM triggers a sync pull"]
+    SYNCPULL --> SSOT
+    SYNC --> SSOT
+    SSOT --> UI["tracking screen: timeline + live map + ETA (one source)"]
+    SSOT --> NOTIF["notification matches in-app status (Ch 50)"]
+    DEATH["process death (Ch 8)"] -.->|SSOT + sync restore| SSOT
+    LIFECYCLE["live channel only while watching - close on leave (Ch 44/47)"] -.-> LIVE

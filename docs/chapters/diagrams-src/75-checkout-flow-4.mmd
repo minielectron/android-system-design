@@ -1,0 +1,8 @@
+flowchart LR
+    DEATH[process dies after charge, before response - Ch 8] --> RELAUNCH[relaunch]
+    RELAUNCH --> PERSISTED[read persisted idempotency key / order attempt - SSOT Ch 3]
+    PERSISTED --> ASK{ask server what happened}
+    ASK -->|re-submit SAME key| DEDUP[server returns existing order - Ch 15]
+    ASK -->|query status by key/order| STATUS[true outcome: confirmed/failed]
+    DEDUP --> SHOW[show real state - no double charge]
+    STATUS --> SHOW

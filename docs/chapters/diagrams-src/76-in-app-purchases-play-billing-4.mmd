@@ -1,0 +1,7 @@
+flowchart LR
+    LAUNCH[launch / login / new device] --> QUERY[queryPurchases - tied to Google account]
+    QUERY --> RECON[verify + grant any active purchases server-side]
+    RECON --> ENT[entitlement restored - SSOT Ch 3]
+    RTDN[RTDN: renew/cancel/grace/hold - Ch 49] --> BE[backend updates entitlement]
+    BE --> ENT
+    ENT --> APP[app reads current entitlement]

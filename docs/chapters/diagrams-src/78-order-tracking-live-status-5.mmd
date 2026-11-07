@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[order-tracking problem] --> WHY{category}
+    WHY -->|stale/missed status| SYNC[sync backstop self-heals - Ch 32]
+    WHY -->|invented/regressed status| SERVER[reflect server-owned state machine - Ch 3]
+    WHY -->|battery| MECH[live channel only while watching - FCM background - Ch 44/49]
+    WHY -->|notification mismatch| SSOT[one SSOT drives screen + notification - Ch 3/50]
+    WHY -->|laggy driver map| LIVE[live channel + smoothing while watching - Ch 63/67]

@@ -1,0 +1,13 @@
+flowchart TD
+    CART["cart (Ch 38)"] --> STEPS["multi-step: address -> shipping -> payment -> review (server-validated each, Ch 53)"]
+    STEPS --> KEY["generate idempotency key per attempt + persist (SSOT, Ch 3/8/15)"]
+    KEY --> PLACE["Place order: send cart + options + idempotency key (authed, Ch 19)"]
+    PLACE --> SERVER["server: authoritative price/tax/shipping/stock + charge via PSP"]
+    SERVER --> PSP["PSP: tokenized charge + SCA/3-DS + async confirm (no card on device, Ch 23)"]
+    PSP --> OUTCOME{result}
+    OUTCOME -->|confirmed| CONFIRMED["real confirmed order (NOT optimistic, contrast Ch 72)"]
+    OUTCOME -->|requires auth| CHALLENGE["SCA challenge via SDK -> confirm"]
+    OUTCOME -->|declined/precise failure| FAILURE["precise, actionable error - no partial order"]
+    INTERRUPT["process death mid-payment (Ch 8)"] --> RECOVER["recover: re-submit SAME key / query status - NEVER blind re-submit"]
+    RECOVER --> SERVER
+    CONFIRMED --> AUDIT["server audit trail (Ch 19)"]

@@ -1,0 +1,21 @@
+classDiagram
+    class WalletRepository {
+        +balance: Flow~Money~  (server-authoritative, synced)
+        +history: Flow~List~Txn~~
+        +topUp(amount, methodToken)  // idempotent (Ch 15)
+        +spend(amount)               // server-validated debit
+    }
+    class PaymentMethodRepository {
+        +methods: Flow~List~PaymentMethod~~  // tokens + metadata, no PAN
+        +addCard()    // PSP tokenize (Ch 75), authed (Ch 21)
+        +remove(id)
+    }
+    class PaymentMethod {
+        +id; +brand; +last4; +token  (reference only; secured Ch 20)
+    }
+    class SensitiveActionGuard {
+        +require(): BiometricResult  // Ch 21
+    }
+    WalletRepository --> PaymentMethod
+    PaymentMethodRepository --> PaymentMethod
+    WalletRepository --> SensitiveActionGuard

@@ -1,0 +1,11 @@
+flowchart TD
+    TAP["tap save/unsave (feed/detail/search)"] --> OPT["optimistic toggle -> SSOT membership (Ch 72/3)"]
+    OPT --> UI["heart flips INSTANTLY everywhere (one row, UDF, Ch 6)"]
+    OPT --> OUTBOX["enqueue idempotent set-membership op (outbox, Ch 31/15)"]
+    OUTBOX --> SYNCUP["sync to server (retry, Ch 2) - reconcile on failure (Ch 72)"]
+    SERVER["server = authoritative membership"] --> DELTASYNC["delta sync across devices (Ch 32)"]
+    DELTASYNC --> CONFLICT["add/remove conflict resolution (last-writer / add-wins, Ch 33)"]
+    CONFLICT --> SSOT["Room SSOT per account (Ch 3/42)"]
+    SSOT --> SCREEN["wishlist screen: paged (Ch 13) + current price/availability (Ch 12)"]
+    SCREEN --> CART["move to cart (Ch 38)"]
+    ACCOUNT["account switch -> swap wishlist (Ch 42)"] -.-> SSOT

@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor User
+    participant Srv as Server (status authority)
+    participant Live as Live channel (Ch 63/66)
+    participant FCM as FCM (Ch 49)
+    participant SSOT as Order SSOT (Ch 3)
+    participant Sync as Sync (Ch 32)
+
+    User->>SSOT: open tracking (watching) -> startWatching
+    SSOT->>Live: subscribe (low-latency status + driver, Ch 67)
+    Srv-->>Live: Shipped -> SSOT update -> timeline + map
+    User->>SSOT: leave screen -> stopWatching (close live channel, Ch 44)
+    Srv-->>FCM: OutForDelivery (backgrounded) -> notification (Ch 50)
+    FCM->>Sync: trigger sync pull
+    Sync->>SSOT: authoritative status (self-heal, Ch 32)
+    User->>Sync: reopen app -> sync -> current status

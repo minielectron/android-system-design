@@ -1,0 +1,19 @@
+sequenceDiagram
+    actor User
+    participant Repo as WishlistRepository
+    participant SSOT as Room per-account (Ch 3/42)
+    participant Out as Outbox (Ch 31)
+    participant Srv as Server
+
+    User->>Repo: toggle(productId) save
+    Repo->>SSOT: add (accountId, productId) optimistic (Ch 72)
+    Note over SSOT: heart flips INSTANTLY everywhere - one row, Ch 3
+    Repo->>Out: enqueue Add idempotency key (Ch 31/15)
+    Out->>Srv: set membership add idempotent
+    alt success
+        Srv-->>Out: ok
+    else genuine failure
+        Out->>SSOT: rollback remove + tell user (Ch 72)
+    else transient offline
+        Out->>Out: keep + retry on reconnect (Ch 2/29)
+    end

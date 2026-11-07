@@ -100,12 +100,17 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 71 | Infinite Scrolling Feed (Social) | [`docs/chapters/71-infinite-scrolling-feed.md`](./docs/chapters/71-infinite-scrolling-feed.md) | ✅ Draft |
 | 72 | Optimistic Updates (Likes / Comments) | [`docs/chapters/72-optimistic-updates.md`](./docs/chapters/72-optimistic-updates.md) | ✅ Draft |
 | 73 | Recommendations Feed | [`docs/chapters/73-recommendations-feed.md`](./docs/chapters/73-recommendations-feed.md) | ✅ Draft |
+| 74 | Wishlist | [`docs/chapters/74-wishlist.md`](./docs/chapters/74-wishlist.md) | ✅ Draft |
+| 75 | Checkout Flow (Fintech-Grade) | [`docs/chapters/75-checkout-flow.md`](./docs/chapters/75-checkout-flow.md) | ✅ Draft |
+| 76 | In-App Purchases / Play Billing | [`docs/chapters/76-in-app-purchases-play-billing.md`](./docs/chapters/76-in-app-purchases-play-billing.md) | ✅ Draft |
+| 77 | Wallet & Payments | [`docs/chapters/77-wallet-payments.md`](./docs/chapters/77-wallet-payments.md) | ✅ Draft |
+| 78 | Order Tracking & Live Status | [`docs/chapters/78-order-tracking-live-status.md`](./docs/chapters/78-order-tracking-live-status.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
 Lifecycle, Background & Platform (Ch 44–55), VII — Media & Files
 (Ch 56–62), and VIII — Real-Time & Connectivity (Ch 63–70)** are complete.
-**Part IX — Feature Architectures (Ch 71–81)** is in progress (Ch 71–73 done).
+**Part IX — Feature Architectures (Ch 71–81)** is in progress (Ch 71–78 done).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

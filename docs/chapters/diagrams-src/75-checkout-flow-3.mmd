@@ -1,0 +1,19 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant SSOT as SSOT (Ch 3)
+    participant Srv as Server (authoritative)
+    participant PSP as PSP SDK
+
+    App->>SSOT: generate + persist idempotency key (Ch 15/8)
+    User->>App: tap Place order
+    App->>Srv: placeOrder(cart, options, idempotencyKey) authed (Ch 19)
+    Srv->>Srv: authoritative price/tax/shipping/stock (Ch 23)
+    Srv->>PSP: charge (tokenized)
+    alt requires auth (SCA/3-DS)
+        PSP-->>App: requiresAuth -> present challenge
+        App->>PSP: complete challenge -> confirm
+    end
+    PSP-->>Srv: charge confirmed (async/webhook)
+    Srv-->>App: confirmed order (REAL state)
+    Note over App,Srv: retry with SAME key -> server dedups -> same order, NO double charge, Ch 15

@@ -1,0 +1,5 @@
+flowchart LR
+    DROP[push/live event dropped - best-effort] --> MISS[SSOT momentarily stale]
+    OPEN[app open / periodic] --> SYNC[sync order from server - Ch 32]
+    SYNC --> SSOT[SSOT = authoritative status - self-healed]
+    SSOT --> UI[timeline/ETA correct]

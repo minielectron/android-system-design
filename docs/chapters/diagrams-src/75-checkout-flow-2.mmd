@@ -1,0 +1,20 @@
+classDiagram
+    class CheckoutStateMachine {
+        <<SSOT, Ch 3/8>>
+        +step: Address|Shipping|Payment|Review|Placing|Confirmed|Failed
+        +idempotencyKey (persisted, Ch 15)
+    }
+    class PlaceOrderUseCase {
+        +place(): Outcome~Order~  // idempotent, server-authoritative
+        +recover()               // query status by key (Ch 8)
+    }
+    class PaymentController {
+        +pay(token): PaymentResult  // PSP SDK: SCA/3-DS/async
+    }
+    class PaymentResult {
+        <<sealed>>
+        Confirmed; RequiresAuth; Declined; InsufficientFunds; NetworkError; FraudHold
+    }
+    CheckoutStateMachine --> PlaceOrderUseCase
+    PlaceOrderUseCase --> PaymentController
+    PaymentController --> PaymentResult

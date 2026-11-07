@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant Bio as Biometric (Ch 21)
+    participant PSP as PSP SDK
+    participant BE as Backend (ledger authority)
+
+    User->>App: add card
+    App->>Bio: authenticate sensitive action (Ch 21)
+    Bio-->>App: ok
+    App->>PSP: tokenize card (PAN stays with PSP, PCI, Ch 23)
+    PSP-->>App: token + brand/last4
+    App->>BE: store token (authed, Ch 19)
+    User->>App: spend 100 from wallet
+    App->>Bio: authenticate spend
+    App->>BE: debit 100, idempotencyKey (Ch 15)
+    BE->>BE: validate balance >= 100, atomic debit (server-authoritative)
+    BE-->>App: new balance (synced, Ch 32) - NEVER a local-balance spend
