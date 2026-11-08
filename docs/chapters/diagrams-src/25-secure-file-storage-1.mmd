@@ -1,0 +1,13 @@
+flowchart TD
+    DATA["a file to store"] --> VIS{"visibility?"}
+    VIS -->|private| INT["app-internal filesDir/cacheDir"]
+    VIS -->|private, large| EXT["app-specific external (getExternalFilesDir)"]
+    VIS -->|user-visible media| MS["MediaStore"]
+    VIS -->|user-chosen location| SAF["Storage Access Framework"]
+    INT --> SENS{"sensitive?"}
+    EXT --> SENS
+    SENS -->|yes| ENC["encrypt contents (Ch 24) - Keystore key (Ch 20)"]
+    SENS -->|no| PLAIN["store plaintext"]
+    INT --> SHARE["share via FileProvider -> content:// + temp grant"]
+    BACKUP["backup rules: exclude sensitive"] -.-> INT
+    CLEAN["cleanup: cache eviction / post-use delete"] -.-> INT

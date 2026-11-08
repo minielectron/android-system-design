@@ -1,0 +1,13 @@
+flowchart TD
+    REQ["authenticated request"] --> INT["AuthInterceptor adds access token (Ch 1)"]
+    INT --> NET["Backend"]
+    NET -->|401| AUTH["TokenAuthenticator"]
+    AUTH --> LOCK["Mutex: single-flight refresh"]
+    LOCK --> VER{"token changed since request?"}
+    VER -->|yes| REUSE["reuse new token, retry"]
+    VER -->|no| REFRESH["POST /token/refresh (refresh token)"]
+    REFRESH --> ROT["persist rotated access+refresh (Ch 20)"]
+    ROT --> RETRY["retry original with new token"]
+    REFRESH -->|invalid refresh| LOGOUT["clear session -> login (Ch 22)"]
+    RETRY --> NET
+    REUSE --> NET

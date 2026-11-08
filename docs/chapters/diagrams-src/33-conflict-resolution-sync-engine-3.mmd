@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant Eng as Sync Engine
+    participant Room as Room (SSOT)
+    participant Res as ConflictResolver
+    participant UI as UI (if user-resolved)
+
+    Eng->>Room: incoming remote(entity id, version R)
+    Room-->>Eng: local(entity id, baseVersion B, pending local change?)
+    alt no local pending OR R descends from local
+        Eng->>Room: apply remote (fast-forward)
+    else divergent (concurrent change)
+        Eng->>Res: resolve(base=B, local, remote=R)
+        alt auto (LWW / merge / CRDT)
+            Res-->>Eng: Merged/Accept/Keep
+            Eng->>Room: apply resolved (new version) -> converges
+        else user-resolved
+            Res-->>UI: present local vs remote
+            UI-->>Eng: user choice
+            Eng->>Room: apply choice
+        end
+    end

@@ -1,0 +1,6 @@
+flowchart LR
+    PLAY[user plays title] --> CHECK{downloaded + license valid?}
+    CHECK -->|yes| OFFLINE[Media3 plays from download cache + offline license - Ch 58]
+    CHECK -->|expired| BLOCK[block + offer renewal - server authed]
+    CHECK -->|not downloaded| STREAM[stream online - Ch 58]
+    DELETE[delete download] --> REL[release license + remove media + SSOT row]

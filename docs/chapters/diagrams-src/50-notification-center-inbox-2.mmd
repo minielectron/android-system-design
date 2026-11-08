@@ -1,0 +1,23 @@
+classDiagram
+    class Notifier {
+        +notifyFor(item: InboxItem)
+        +cancel(id)
+        -channelFor(type): String
+        -groupFor(type): String
+        -withLockScreenPrivacy(builder)
+    }
+    class ChannelInitializer {
+        +createChannels()  // startup, idempotent
+    }
+    class InboxRepository {
+        +observe(): Flow~List~InboxItem~~
+        +markRead(id)   // local + sync (Ch 32)
+        +upsert(item)
+    }
+    class InboxItem {
+        +id; +type; +title; +body
+        +deepLink; +isRead; +createdAt; +account
+    }
+    Notifier --> ChannelInitializer
+    Notifier ..> NotificationManagerCompat
+    InboxRepository --> InboxItem

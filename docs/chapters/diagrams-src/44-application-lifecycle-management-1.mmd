@@ -1,0 +1,10 @@
+flowchart TD
+    PROCESS["Process (Ch 8: killed anytime in bg)"] --> APP["Application @HiltAndroidApp - app-wide init (light)"]
+    APP --> PLO["ProcessLifecycleOwner (app foreground/background)"]
+    APP --> ACT["Activity / Fragment / Compose (screen lifecycle)"]
+    PLO -->|ON_START foreground| FG["reconnect, refresh, resume"]
+    PLO -->|ON_STOP background| BG["flush analytics (Ch 14), pause (Ch 63)"]
+    ACT --> SCREEN["repeatOnLifecycle(STARTED): collect while visible"]
+    ACT --> VM["viewModelScope: survives config change (Ch 6)"]
+    VM -.->|long/guaranteed work| WM["WorkManager (survives UI/process, Ch 30)"]
+    ACT -.->|wrong: long work in screen scope| LEAK["cancelled on leave / leak"]

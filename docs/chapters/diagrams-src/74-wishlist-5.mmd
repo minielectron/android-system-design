@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[wishlist problem] --> WHY{category}
+    WHY -->|lost/double toggle| OUTBOX[outbox + idempotent set-membership - Ch 31/15]
+    WHY -->|inconsistent heart| SSOT[one SSOT row - Ch 3]
+    WHY -->|device divergence| SYNC[delta sync + conflict resolution - Ch 32/33]
+    WHY -->|stale price| REFRESH[refresh price/availability on render - Ch 12]
+    WHY -->|cross-account| ACCOUNT[per-account key + active scope - Ch 42]

@@ -1,0 +1,3 @@
+flowchart LR
+    WHOLE[readBytes of 2GB] --> OOM[2GB in heap -> OOM]
+    STREAM[stream in 64KB chunks] --> OK[~64KB in heap -> safe regardless of size]

@@ -1,0 +1,10 @@
+flowchart TD
+    WRITE[local write] --> OPT[optimistic Room + outbox]
+    OPT --> ONLINE{online?}
+    ONLINE -->|no| WAIT[wait - usable offline]
+    ONLINE -->|yes| PUSH[push idempotent]
+    PUSH --> ACK{server ok?}
+    ACK -->|yes| SYNCED[mark SYNCED]
+    ACK -->|retryable| RETRY[WorkManager retry]
+    ACK -->|rejected| FAIL[mark FAILED -> surface/rollback]
+    PULL[pull delta] --> RESOLVE[conflict policy Ch 33] --> ROOM[reconcile]

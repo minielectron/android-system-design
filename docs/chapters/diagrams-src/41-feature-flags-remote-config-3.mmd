@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant App
+    participant Flags as FeatureFlags
+    participant Cache as DataStore
+    participant Remote as Remote config
+
+    App->>Flags: read bool("new_search", default=false)
+    Flags->>Cache: cached value?
+    Cache-->>Flags: cached OR none
+    Flags-->>App: cached value OR default (never blocks)
+    par background
+        Flags->>Remote: fetch (Ch 30/44)
+        Remote-->>Flags: new config (rollout-resolved)
+        Flags->>Cache: cache it
+        Note over Flags: activate at a safe point -> stable next read
+    end

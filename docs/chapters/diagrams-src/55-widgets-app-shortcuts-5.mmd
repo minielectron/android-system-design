@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[widget/shortcut problem] --> KIND{category}
+    KIND -->|stale data| SSOT[update on SSOT change + periodic - Ch 30/47]
+    KIND -->|battery| CADENCE[reduce cadence - update-on-change only - Ch 47]
+    KIND -->|wrong screen| ROUTER[central deep-link router - Ch 52]
+    KIND -->|leak/cross-account| PRIVACY[update on switch - non-sensitive content - Ch 42/28]
+    KIND -->|blank after death| REDERIVE[re-derive snapshot from SSOT - Ch 3]

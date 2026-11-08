@@ -1,0 +1,10 @@
+flowchart TD
+    SRC["large source (file / content URI / network, Ch 18)"] --> READ["streaming read: bounded chunks (okio Source / InputStream)"]
+    READ --> TRANSFORM["streaming transforms: hash / compress / encrypt / chunk"]
+    TRANSFORM --> WRITE["streaming write: OutputStream / Sink"]
+    WRITE --> DEST["destination: app-specific / SAF / MediaStore (Ch 62/25)"]
+    READ --> PROGRESS["count bytes -> progress Flow (Ch 6)"]
+    READ --> CANCEL["per-chunk ensureActive -> cancellation (Ch 1)"]
+    OFFMAIN["Dispatchers.IO (off-main, Ch 1)"] -.-> READ
+    SPACE["check free space + cleanup temp (Ch 62)"] -.-> WRITE
+    RESUME["offset/range for resume (Ch 17/18)"] -.-> READ

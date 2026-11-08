@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor User
+    participant UI as Scanner screen (Ch 6)
+    participant Perm as Permission (Ch 51)
+    participant CX as CameraX (bound to lifecycle, Ch 44)
+    participant An as BarcodeAnalyzer (off-main)
+
+    User->>UI: open scanner
+    UI->>Perm: request CAMERA in context
+    Perm-->>UI: granted
+    UI->>CX: bind Preview + ImageAnalysis to lifecycleOwner
+    CX->>An: frames (keep-only-latest)
+    An-->>UI: barcode detected
+    User->>UI: close scanner
+    UI->>CX: lifecycle STOPPED -> camera released automatically

@@ -1,0 +1,182 @@
+# Designing Android at Scale
+
+> *System Design in Practice: Building, and Defending Production-Scale Mobile Features in Kotlin*
+
+This repository holds the manuscript, diagrams, and reference code for a
+technically rigorous book on **Android application system design** — aimed at
+Senior, Lead, and Staff Android engineers and at engineers preparing for
+Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
+
+## Status
+
+| Phase | Description | State |
+|-------|-------------|-------|
+| **Phase 1** | Book planning: title, audience, full TOC, 100-topic catalog, dependency ordering, reference application, conventions, glossary | ✅ Approved — see [`BLUEPRINT.md`](./BLUEPRINT.md) |
+| **Phase 2+** | Chapter-by-chapter authoring (one topic at a time, 18-section structure) | 🚧 In progress |
+
+### Chapters authored
+
+| Ch | Topic | File | State |
+|----|-------|------|-------|
+| 1 | Networking Core: API Request Orchestration | [`docs/chapters/01-networking-core.md`](./docs/chapters/01-networking-core.md) | ✅ Draft |
+| 2 | Network Reliability: Timeouts, Retries, Backoff & Circuit Breaking | [`docs/chapters/02-network-reliability.md`](./docs/chapters/02-network-reliability.md) | ✅ Draft |
+| 3 | Persistence Core & Single Source of Truth | [`docs/chapters/03-persistence-core-ssot.md`](./docs/chapters/03-persistence-core-ssot.md) | ✅ Draft |
+| 4 | DataStore: Preferences & Proto | [`docs/chapters/04-datastore.md`](./docs/chapters/04-datastore.md) | ✅ Draft |
+| 5 | Dependency Injection at Scale with Hilt | [`docs/chapters/05-dependency-injection-hilt.md`](./docs/chapters/05-dependency-injection-hilt.md) | ✅ Draft |
+| 6 | UI State Modeling & Unidirectional Data Flow | [`docs/chapters/06-ui-state-udf.md`](./docs/chapters/06-ui-state-udf.md) | ✅ Draft |
+| 7 | One-Time Events & Side Effects | [`docs/chapters/07-one-time-events.md`](./docs/chapters/07-one-time-events.md) | ✅ Draft |
+| 8 | Process Death & State Restoration | [`docs/chapters/08-process-death-state-restoration.md`](./docs/chapters/08-process-death-state-restoration.md) | ✅ Draft |
+| 9 | Debounced Network Search | [`docs/chapters/09-debounced-network-search.md`](./docs/chapters/09-debounced-network-search.md) | ✅ Draft |
+| 10 | Search Suggestions & Autocomplete | [`docs/chapters/10-search-suggestions-autocomplete.md`](./docs/chapters/10-search-suggestions-autocomplete.md) | ✅ Draft |
+| 11 | Request Deduplication & Single-Flight | [`docs/chapters/11-request-deduplication-single-flight.md`](./docs/chapters/11-request-deduplication-single-flight.md) | ✅ Draft |
+| 12 | Caching Strategies: HTTP, In-Memory, Disk | [`docs/chapters/12-caching-strategies.md`](./docs/chapters/12-caching-strategies.md) | ✅ Draft |
+| 13 | Pagination & Caching with Paging 3 | [`docs/chapters/13-pagination-paging3.md`](./docs/chapters/13-pagination-paging3.md) | ✅ Draft |
+| 14 | Request Prioritization, Queueing & Rate Limiting | [`docs/chapters/14-request-prioritization-rate-limiting.md`](./docs/chapters/14-request-prioritization-rate-limiting.md) | ✅ Draft |
+| 15 | Idempotency for Mutations | [`docs/chapters/15-idempotency-mutations.md`](./docs/chapters/15-idempotency-mutations.md) | ✅ Draft |
+| 16 | API Schema Evolution & Backward Compatibility | [`docs/chapters/16-api-schema-evolution.md`](./docs/chapters/16-api-schema-evolution.md) | ✅ Draft |
+| 17 | Multipart & Resumable Uploads | [`docs/chapters/17-multipart-resumable-uploads.md`](./docs/chapters/17-multipart-resumable-uploads.md) | ✅ Draft |
+| 18 | File Download Manager | [`docs/chapters/18-file-download-manager.md`](./docs/chapters/18-file-download-manager.md) | ✅ Draft |
+
+| 19 | Authentication & Token Refresh | [`docs/chapters/19-authentication-token-refresh.md`](./docs/chapters/19-authentication-token-refresh.md) | ✅ Draft |
+| 20 | Credential & Token Storage (Android Keystore) | [`docs/chapters/20-credential-token-storage-keystore.md`](./docs/chapters/20-credential-token-storage-keystore.md) | ✅ Draft |
+| 21 | Biometric Authentication | [`docs/chapters/21-biometric-authentication.md`](./docs/chapters/21-biometric-authentication.md) | ✅ Draft |
+| 22 | Session Management & Logout-Everywhere | [`docs/chapters/22-session-management-logout.md`](./docs/chapters/22-session-management-logout.md) | ✅ Draft |
+| 23 | Secure Network Communication & Certificate Pinning | [`docs/chapters/23-secure-network-certificate-pinning.md`](./docs/chapters/23-secure-network-certificate-pinning.md) | ✅ Draft |
+
+| 24 | Encryption of Sensitive Data at Rest (SQLCipher) | [`docs/chapters/24-encryption-at-rest.md`](./docs/chapters/24-encryption-at-rest.md) | ✅ Draft |
+| 25 | Secure File Storage | [`docs/chapters/25-secure-file-storage.md`](./docs/chapters/25-secure-file-storage.md) | ✅ Draft |
+| 26 | App Integrity, Root & Tamper Detection (Play Integrity) | [`docs/chapters/26-app-integrity-root-detection.md`](./docs/chapters/26-app-integrity-root-detection.md) | ✅ Draft |
+| 27 | Secrets Management & Obfuscation (R8) | [`docs/chapters/27-secrets-management-obfuscation.md`](./docs/chapters/27-secrets-management-obfuscation.md) | ✅ Draft |
+| 28 | Secure Logging & PII Redaction | [`docs/chapters/28-secure-logging-pii-redaction.md`](./docs/chapters/28-secure-logging-pii-redaction.md) | ✅ Draft |
+
+| 29 | Offline-First Architecture | [`docs/chapters/29-offline-first-architecture.md`](./docs/chapters/29-offline-first-architecture.md) | ✅ Draft |
+| 30 | Background Synchronization with WorkManager | [`docs/chapters/30-background-sync-workmanager.md`](./docs/chapters/30-background-sync-workmanager.md) | ✅ Draft |
+| 31 | The Outbox Pattern for Reliable Writes | [`docs/chapters/31-outbox-pattern.md`](./docs/chapters/31-outbox-pattern.md) | ✅ Draft |
+| 32 | Delta / Incremental Sync | [`docs/chapters/32-delta-incremental-sync.md`](./docs/chapters/32-delta-incremental-sync.md) | ✅ Draft |
+| 33 | Conflict Resolution & a Sync Engine | [`docs/chapters/33-conflict-resolution-sync-engine.md`](./docs/chapters/33-conflict-resolution-sync-engine.md) | ✅ Draft |
+
+| 34 | Cache Invalidation Strategy | [`docs/chapters/34-cache-invalidation-strategy.md`](./docs/chapters/34-cache-invalidation-strategy.md) | ✅ Draft |
+| 35 | Local Full-Text Search (FTS) | [`docs/chapters/35-local-full-text-search-fts.md`](./docs/chapters/35-local-full-text-search-fts.md) | ✅ Draft |
+| 36 | Room Migrations & Schema Management | [`docs/chapters/36-room-migrations-schema.md`](./docs/chapters/36-room-migrations-schema.md) | ✅ Draft |
+| 37 | Data Export, Import & Backup | [`docs/chapters/37-data-export-import-backup.md`](./docs/chapters/37-data-export-import-backup.md) | ✅ Draft |
+| 38 | Shared Shopping Cart Across Screens | [`docs/chapters/38-shared-shopping-cart.md`](./docs/chapters/38-shared-shopping-cart.md) | ✅ Draft |
+
+| 39 | Global App State Management | [`docs/chapters/39-global-app-state-management.md`](./docs/chapters/39-global-app-state-management.md) | ✅ Draft |
+| 40 | Shared ViewModel Scoping | [`docs/chapters/40-shared-viewmodel-scoping.md`](./docs/chapters/40-shared-viewmodel-scoping.md) | ✅ Draft |
+| 41 | Feature Flags & Remote Config | [`docs/chapters/41-feature-flags-remote-config.md`](./docs/chapters/41-feature-flags-remote-config.md) | ✅ Draft |
+| 42 | Multi-Account & Account Switching | [`docs/chapters/42-multi-account-switching.md`](./docs/chapters/42-multi-account-switching.md) | ✅ Draft |
+| 43 | Personalization & User-Preference Sync | [`docs/chapters/43-personalization-preference-sync.md`](./docs/chapters/43-personalization-preference-sync.md) | ✅ Draft |
+
+| 44 | Application Lifecycle Management | [`docs/chapters/44-application-lifecycle-management.md`](./docs/chapters/44-application-lifecycle-management.md) | ✅ Draft |
+| 45 | App Startup Optimization | [`docs/chapters/45-app-startup-optimization.md`](./docs/chapters/45-app-startup-optimization.md) | ✅ Draft |
+| 46 | Foreground Services | [`docs/chapters/46-foreground-services.md`](./docs/chapters/46-foreground-services.md) | ✅ Draft |
+| 47 | Doze, App Standby & Background Execution Limits | [`docs/chapters/47-doze-app-standby-background-limits.md`](./docs/chapters/47-doze-app-standby-background-limits.md) | ✅ Draft |
+| 48 | Alarms & Exact Scheduling | [`docs/chapters/48-alarms-exact-scheduling.md`](./docs/chapters/48-alarms-exact-scheduling.md) | ✅ Draft |
+| 49 | Push Notifications (FCM) Architecture | [`docs/chapters/49-push-notifications-fcm.md`](./docs/chapters/49-push-notifications-fcm.md) | ✅ Draft |
+| 50 | Notification Center / Inbox | [`docs/chapters/50-notification-center-inbox.md`](./docs/chapters/50-notification-center-inbox.md) | ✅ Draft |
+| 51 | Runtime Permissions Management | [`docs/chapters/51-runtime-permissions.md`](./docs/chapters/51-runtime-permissions.md) | ✅ Draft |
+| 52 | Deep Links & App Links Routing | [`docs/chapters/52-deep-links-app-links.md`](./docs/chapters/52-deep-links-app-links.md) | ✅ Draft |
+| 53 | Navigation Architecture (Multi-Module) | [`docs/chapters/53-navigation-architecture-multimodule.md`](./docs/chapters/53-navigation-architecture-multimodule.md) | ✅ Draft |
+| 54 | App Update & Forced-Upgrade Flow | [`docs/chapters/54-app-update-forced-upgrade.md`](./docs/chapters/54-app-update-forced-upgrade.md) | ✅ Draft |
+| 55 | Widgets & App Shortcuts | [`docs/chapters/55-widgets-app-shortcuts.md`](./docs/chapters/55-widgets-app-shortcuts.md) | ✅ Draft |
+
+| 56 | Image Loading & Caching (Coil) | [`docs/chapters/56-image-loading-caching-coil.md`](./docs/chapters/56-image-loading-caching-coil.md) | ✅ Draft |
+| 57 | Thumbnail Generation & Caching | [`docs/chapters/57-thumbnail-generation-caching.md`](./docs/chapters/57-thumbnail-generation-caching.md) | ✅ Draft |
+| 58 | Media Playback State (Media3/ExoPlayer) | [`docs/chapters/58-media-playback-state-media3.md`](./docs/chapters/58-media-playback-state-media3.md) | ✅ Draft |
+| 59 | Offline Media Downloads (OTT) | [`docs/chapters/59-offline-media-downloads-ott.md`](./docs/chapters/59-offline-media-downloads-ott.md) | ✅ Draft |
+| 60 | Camera Capture Pipeline (CameraX) | [`docs/chapters/60-camera-capture-cameraX.md`](./docs/chapters/60-camera-capture-cameraX.md) | ✅ Draft |
+| 61 | Large File & Streaming Handling | [`docs/chapters/61-large-file-streaming-handling.md`](./docs/chapters/61-large-file-streaming-handling.md) | ✅ Draft |
+| 62 | File Sharing & Content Providers (SAF) | [`docs/chapters/62-file-sharing-content-providers-saf.md`](./docs/chapters/62-file-sharing-content-providers-saf.md) | ✅ Draft |
+
+| 63 | Real-Time Communication over WebSocket | [`docs/chapters/63-realtime-websocket.md`](./docs/chapters/63-realtime-websocket.md) | ✅ Draft |
+| 64 | Chat / Messaging Architecture | [`docs/chapters/64-chat-messaging-architecture.md`](./docs/chapters/64-chat-messaging-architecture.md) | ✅ Draft |
+| 65 | Presence & Typing Indicators | [`docs/chapters/65-presence-typing-indicators.md`](./docs/chapters/65-presence-typing-indicators.md) | ✅ Draft |
+| 66 | Server-Sent Events & Long Polling | [`docs/chapters/66-sse-long-polling.md`](./docs/chapters/66-sse-long-polling.md) | ✅ Draft |
+| 67 | Live Location Tracking | [`docs/chapters/67-live-location-tracking.md`](./docs/chapters/67-live-location-tracking.md) | ✅ Draft |
+| 68 | Network State Monitoring (Wi-Fi / Cellular / Metered) | [`docs/chapters/68-network-state-monitoring.md`](./docs/chapters/68-network-state-monitoring.md) | ✅ Draft |
+| 69 | Bluetooth Low Energy (BLE) Connectivity | [`docs/chapters/69-bluetooth-low-energy.md`](./docs/chapters/69-bluetooth-low-energy.md) | ✅ Draft |
+| 70 | Peer-to-Peer / Nearby Connections | [`docs/chapters/70-peer-to-peer-nearby-connections.md`](./docs/chapters/70-peer-to-peer-nearby-connections.md) | ✅ Draft |
+
+| 71 | Infinite Scrolling Feed (Social) | [`docs/chapters/71-infinite-scrolling-feed.md`](./docs/chapters/71-infinite-scrolling-feed.md) | ✅ Draft |
+| 72 | Optimistic Updates (Likes / Comments) | [`docs/chapters/72-optimistic-updates.md`](./docs/chapters/72-optimistic-updates.md) | ✅ Draft |
+| 73 | Recommendations Feed | [`docs/chapters/73-recommendations-feed.md`](./docs/chapters/73-recommendations-feed.md) | ✅ Draft |
+| 74 | Wishlist | [`docs/chapters/74-wishlist.md`](./docs/chapters/74-wishlist.md) | ✅ Draft |
+| 75 | Checkout Flow (Fintech-Grade) | [`docs/chapters/75-checkout-flow.md`](./docs/chapters/75-checkout-flow.md) | ✅ Draft |
+| 76 | In-App Purchases / Play Billing | [`docs/chapters/76-in-app-purchases-play-billing.md`](./docs/chapters/76-in-app-purchases-play-billing.md) | ✅ Draft |
+| 77 | Wallet & Payments | [`docs/chapters/77-wallet-payments.md`](./docs/chapters/77-wallet-payments.md) | ✅ Draft |
+| 78 | Order Tracking & Live Status | [`docs/chapters/78-order-tracking-live-status.md`](./docs/chapters/78-order-tracking-live-status.md) | ✅ Draft |
+| 79 | Reviews & Ratings | [`docs/chapters/79-reviews-ratings.md`](./docs/chapters/79-reviews-ratings.md) | ✅ Draft |
+| 80 | Onboarding & Feature Discovery | [`docs/chapters/80-onboarding-feature-discovery.md`](./docs/chapters/80-onboarding-feature-discovery.md) | ✅ Draft |
+| 81 | In-App Feedback & Diagnostics | [`docs/chapters/81-in-app-feedback-diagnostics.md`](./docs/chapters/81-in-app-feedback-diagnostics.md) | ✅ Draft |
+
+| 82 | Centralized Logging & Analytics | [`docs/chapters/82-centralized-logging-analytics.md`](./docs/chapters/82-centralized-logging-analytics.md) | ✅ Draft |
+| 83 | Crash & ANR Reporting | [`docs/chapters/83-crash-anr-reporting.md`](./docs/chapters/83-crash-anr-reporting.md) | ✅ Draft |
+
+**Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
+Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
+Lifecycle, Background & Platform (Ch 44–55), VII — Media & Files
+(Ch 56–62), VIII — Real-Time & Connectivity (Ch 63–70), and IX — Feature
+Architectures (Ch 71–81)** are complete.
+**Part X — Performance, Observability & Quality (Ch 82–93)** is in progress (Ch 82–83 done).
+
+> Chapters are authored one topic at a time (or in batches on request). The
+> chapter numbering follows the blueprint's canonical order (§5); authoring order
+> can differ — Ch 9 (Debounced Search) was authored first, then the Part I
+> foundations (Ch 1–5) it depends on.
+
+### Formats
+
+- **Markdown** (`docs/chapters/*.md`) — diagrams are committed PNGs under
+  `docs/chapters/images/` referenced by relative path, so they render on GitHub.
+- **PDF** (`docs/pdf/*.pdf`) — a book-styled, self-contained PDF per chapter
+  (plus the blueprint), with diagrams baked in (best for offline/portable viewing).
+- **Diagram sources** (`docs/chapters/diagrams-src/*.mmd`) — the Mermaid source
+  for every diagram, so any diagram can be re-rendered at higher DPI on demand.
+
+> Pipeline: author diagrams in Mermaid → render to high-DPI PNG (committed) →
+> reference by relative path in markdown → build PDFs that resolve those images.
+> (Ch 1–18 diagrams render at 2×; Ch 19+ at 3×.)
+
+## How this book is organized
+
+- Every **topic is one chapter**, and every chapter follows the same
+  **18-section mandatory structure** (problem → requirements → architecture →
+  Kotlin implementation → concurrency → failure recovery → scaling →
+  trade-offs → security → performance → testing → observability → interview
+  prep → exercises → summary).
+- All chapters share **one reference application — *StreamCart*** — a fictional
+  super-app that combines e-commerce and content streaming, so patterns can be
+  demonstrated across realistic modules instead of toy examples.
+- Shared infrastructure (networking core, persistence core, DI, error model,
+  logging) is defined once in **Part I** and **reused and extended** by later
+  chapters rather than reinvented.
+
+## Repository layout (planned)
+
+```
+.
+├── README.md                 # this file
+├── BLUEPRINT.md              # Phase 1 deliverable: the complete book plan
+├── docs/
+│   ├── conventions/          # code + diagram conventions (expanded from blueprint)
+│   └── chapters/             # one markdown file per chapter, added as authored
+│       └── NN-topic-slug.md
+└── reference-app/            # StreamCart reference code modules (added incrementally)
+```
+
+> The `docs/chapters/` and `reference-app/` trees are created as chapters are
+> written. They are intentionally empty today.
+
+## Conventions at a glance
+
+- **Language:** Kotlin, structured concurrency, Flow/StateFlow/SharedFlow.
+- **UI:** Jetpack Compose, unidirectional data flow.
+- **Architecture:** Multi-module Clean Architecture (applied pragmatically, not
+  dogmatically).
+- **DI:** Hilt. **Persistence:** Room + DataStore. **Background:** WorkManager.
+  **Networking:** OkHttp + Retrofit + Kotlin Serialization.
+- **Diagrams:** Mermaid throughout (architecture, class, sequence, state,
+  data-flow, failure-recovery).
+
+See [`BLUEPRINT.md`](./BLUEPRINT.md) §7–§9 for the full reference architecture,
+code conventions, and diagram conventions.

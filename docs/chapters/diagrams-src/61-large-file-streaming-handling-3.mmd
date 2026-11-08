@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant VM as ViewModel (Ch 6)
+    participant Op as StreamCopier (Dispatchers.IO, Ch 1)
+    participant Src as Source (file/URI)
+    participant Dst as Dest (app-specific/SAF, Ch 62)
+
+    VM->>Op: copy(src, dst) off-main
+    loop per bounded chunk
+        Op->>Src: read(buffer)  // constant memory
+        Op->>Op: ensureActive (cancellation)
+        Op->>Dst: write(buffer) [hash/compress/encrypt streamed]
+        Op-->>VM: emit progress (bytes/total)
+    end
+    Op->>Dst: close + rename temp -> final (atomic)
+    Op-->>VM: done (hash)

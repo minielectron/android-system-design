@@ -1,0 +1,5 @@
+flowchart LR
+    W[write row with sensitive field] --> CONV[TypeConverter.encrypt field]
+    CONV --> STORE[store ciphertext column]
+    R[read row] --> DEC[TypeConverter.decrypt field]
+    DEC --> USE[plaintext in memory only]

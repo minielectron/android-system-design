@@ -1,0 +1,4 @@
+flowchart LR
+    STATE[UiState + user data] --> CRUMB[breadcrumb: type + ids ONLY]
+    CRUMB --> SCRUB[no PII values]
+    SCRUB --> UPLOAD[crash report Ch 83]

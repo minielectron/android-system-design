@@ -1,0 +1,12 @@
+flowchart TD
+    JVM["JVM uncaught exception (UncaughtExceptionHandler)"] --> CAPTURE["capture: stack + context"]
+    NATIVE["native crash (signal handler, NDK)"] --> CAPTURE
+    ANR["ANR: main thread blocked >5s (ApplicationExitInfo API 30+ / watchdog)"] --> CAPTURE
+    CAPTURE --> CONTEXT["attach breadcrumbs (Ch 89) + device/app state + redacted logs + correlation id (Ch 81/82)"]
+    CONTEXT --> REDACT["redact PII (Ch 28)"]
+    REDACT --> PERSIST["persist locally - crash can't upload itself"]
+    PERSIST --> NEXTLAUNCH["send on NEXT launch (Ch 44)"]
+    NEXTLAUNCH --> REPORTER["reporter backend: deobfuscate via mapping/symbols (Ch 27) + group/dedup"]
+    REPORTER --> VITALS["crash-free rate / ANR rate (Android vitals) - release-over-release"]
+    VITALS --> ALERT["alert on regression -> rollback (Ch 41)"]
+    MAPPING["upload R8 mapping / native symbols at release (Ch 27)"] -.-> REPORTER

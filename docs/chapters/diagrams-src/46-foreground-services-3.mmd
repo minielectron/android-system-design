@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor User
+    participant Act as Activity (foreground)
+    participant Svc as DownloadFGS (dataSync)
+    participant Notif as NotificationManager
+    participant Store as storage (Ch 18)
+
+    User->>Act: start download
+    Act->>Svc: startForegroundService(intent)
+    Svc->>Svc: startForeground(id, notif, DATA_SYNC) within window
+    Svc->>Notif: show progress notification
+    Svc->>Store: download chunks (Ch 18)
+    Svc->>Notif: update progress
+    Store-->>Svc: complete
+    Svc->>Svc: stopForeground + stopSelf
+    Svc->>Notif: dismiss / show complete

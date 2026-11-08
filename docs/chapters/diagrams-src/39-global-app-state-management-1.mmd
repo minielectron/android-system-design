@@ -1,0 +1,23 @@
+flowchart TD
+    subgraph HOLDERS["app-scoped global holders (@Singleton)"]
+        SESSION["SessionManager (Ch 22)"]
+        CONN["ConnectivityManager (Ch 68)"]
+        THEME["ThemeRepository (Ch 4/97)"]
+        FLAGS["FeatureFlags (Ch 41)"]
+        BADGE["UnreadCounter"]
+    end
+    subgraph FEATURES["features observe only what they need"]
+        NAV["Nav root: session"]
+        SHOP["Shop: flags + connectivity"]
+        SETTINGS["Settings: theme"]
+        TOPBAR["Top bar: unread + session"]
+    end
+    SESSION -->|StateFlow| NAV
+    SESSION --> TOPBAR
+    CONN --> SHOP
+    FLAGS --> SHOP
+    THEME --> SETTINGS
+    BADGE --> TOPBAR
+    DS["DataStore (durable: theme/flags, Ch 4)"] -.-> THEME
+    DS -.-> FLAGS
+    GOD["single GlobalStore god object"] -.->|ANTI-PATTERN| HOLDERS

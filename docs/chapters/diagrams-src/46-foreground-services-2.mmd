@@ -1,0 +1,16 @@
+classDiagram
+    class DownloadForegroundService {
+        <<Service, dataSync>>
+        +onStartCommand(): START_REDELIVER_INTENT
+        +startForeground(id, notif, DATA_SYNC)
+        +stopSelf() when done
+    }
+    class PlaybackService {
+        <<MediaSessionService, mediaPlayback>>
+        +onGetSession(): MediaSession
+    }
+    class StartGuard {
+        +canStartFromBackground(): Boolean
+    }
+    DownloadForegroundService ..> NotificationManager
+    PlaybackService ..> MediaSession

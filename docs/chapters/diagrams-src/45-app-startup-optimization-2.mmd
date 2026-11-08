@@ -1,0 +1,19 @@
+classDiagram
+    class CrashInitializer {
+        <<Initializer>>
+        +create(Context)
+        +dependencies() empty
+    }
+    class AnalyticsInitializer {
+        <<Initializer - lazy/deferred>>
+        +create(Context)
+    }
+    class StartupTracer {
+        +reportFullyDrawn()
+    }
+    class FirstScreenViewModel {
+        +cachedState first
+        +refresh() background
+    }
+    CrashInitializer ..> AppStartup
+    AnalyticsInitializer ..> AppStartup

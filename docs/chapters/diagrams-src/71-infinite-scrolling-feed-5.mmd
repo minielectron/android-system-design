@@ -1,0 +1,8 @@
+flowchart TD
+    ISSUE[feed problem] --> WHY{category}
+    WHY -->|dupes/skips| CURSOR[cursor pagination + stable-id dedup]
+    WHY -->|OOM/jank| PERF[windowed paging + right-sized images + lazy - Ch 13/56/86]
+    WHY -->|lost position| RESTORE[paged SSOT + saved scroll key - Ch 3/8]
+    WHY -->|offline empty| CACHE[RemoteMediator serves Room cache - Ch 3]
+    WHY -->|refresh yanks| FRESHNESS[pill + in-place updates - no auto-scroll - Ch 32]
+    WHY -->|stale interactions| OPTIMISTIC[optimistic SSOT + reconcile - Ch 72]

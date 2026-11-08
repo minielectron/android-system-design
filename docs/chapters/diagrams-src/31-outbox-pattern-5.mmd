@@ -1,0 +1,9 @@
+flowchart TD
+    ENTRY[outbox entry PENDING] --> SEND[send idempotent]
+    SEND --> R{result}
+    R -->|ack| GONE[remove -> SYNCED]
+    R -->|retryable| ATT{attempts < max?}
+    ATT -->|yes| WAIT[PENDING -> backoff]
+    ATT -->|no| DL[DEAD_LETTER -> surface]
+    R -->|permanent| DL
+    WAIT --> SEND

@@ -1,0 +1,7 @@
+flowchart LR
+    CONN[connected] --> DROP{onConnectionStateChange DISCONNECTED / status 133}
+    DROP --> CLOSE[gatt.close - avoid leak]
+    CLOSE --> RETRY{attempts left?}
+    RETRY -->|yes| BACKOFF[exponential backoff + jitter - Ch 2]
+    BACKOFF --> RECONNECT[reconnect]
+    RETRY -->|no| FAIL[ConnectionState.Failed -> surface to UI]

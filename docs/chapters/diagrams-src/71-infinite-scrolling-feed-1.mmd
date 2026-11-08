@@ -1,0 +1,11 @@
+flowchart TD
+    NET["feed API (cursor pagination, server-ranked, Ch 73)"] --> RM["RemoteMediator (Ch 13): fetch page -> write Room"]
+    RM --> ROOM["Room SSOT (Ch 3): cached pages + items"]
+    ROOM --> PS["PagingSource over Room (windowed + prefetch)"]
+    PS --> UI["LazyColumn (Compose) - 60fps, stable keys"]
+    UI --> IMAGES["images right-sized (Coil, Ch 56)"]
+    REFRESH["refresh: pull-to-refresh / new-content pill / background delta (Ch 32)"] --> ROOM
+    REFRESH -.->|preserve scroll position| UI
+    INTERACT["like/comment -> optimistic SSOT mutation (Ch 72)"] --> ROOM
+    OFFLINE["offline / process death -> render from Room (Ch 3/8)"] -.-> PS
+    SCROLL["scroll position restored (config/death/tab, Ch 8/53)"] -.-> UI

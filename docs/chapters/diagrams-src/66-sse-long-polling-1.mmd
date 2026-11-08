@@ -1,0 +1,14 @@
+flowchart TD
+    NEED["a real-time need"] --> DIR{direction and state}
+    DIR -->|bidirectional foreground| WS["WebSocket (Ch 63)"]
+    DIR -->|one-way foreground stream| SSE["SSE: text/event-stream + Last-Event-ID"]
+    DIR -->|one-way, SSE/WS unavailable or rare| LP["long polling: hold-open + cursor"]
+    DIR -->|infrequent| SP["short polling"]
+    DIR -->|background/killed| FCM["FCM (Ch 49)"]
+    SSE --> MANAGE["reconnect+backoff (Ch 2) + resume (Last-Event-ID) + events->Flow"]
+    LP --> MANAGE
+    MANAGE --> MERGE["idempotent SSOT merge: dedup by event id, order by seq (Ch 3/15)"]
+    MERGE --> UI["UI observes SSOT (Ch 6)"]
+    REST["SSOT/REST = truth (Ch 32)"] -.->|drops self-heal| MERGE
+    LIFECYCLE["foreground only - background disconnects + FCM (Ch 44/49)"] -.-> SSE
+    LIFECYCLE -.-> LP

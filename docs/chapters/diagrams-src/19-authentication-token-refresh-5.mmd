@@ -1,0 +1,8 @@
+flowchart TD
+    REQ[request 401] --> LOCK[mutex]
+    LOCK --> CHANGED{token changed?}
+    CHANGED -->|yes| REUSE[retry with new token]
+    CHANGED -->|no| RF{refresh result?}
+    RF -->|success| SAVE[persist rotated -> retry]
+    RF -->|invalid| OUT[clear session -> login]
+    RF -->|transient| FAIL[fail request, keep session]

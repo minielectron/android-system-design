@@ -1,0 +1,4 @@
+flowchart LR
+    SRC[source 4000x3000 ~ 48MB full] --> TARGET{decode to target 200dp cell}
+    TARGET -->|downsample| SMALL[~ small bitmap - low memory]
+    SRC -. no downsample .-> OOM[full decode -> OOM risk]

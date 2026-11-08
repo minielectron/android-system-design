@@ -1,0 +1,23 @@
+classDiagram
+    class DownloadsRepository {
+        +download(title, quality)
+        +pause(id); +resume(id); +delete(id)
+        +observe(): Flow~List~DownloadEntity~~
+    }
+    class DownloadEntity {
+        +id; +title; +quality; +state
+        +progress; +totalBytes; +licenseExpiry
+        +storagePath; +account
+    }
+    class OfflineLicenseController {
+        +acquire(mediaId): License
+        +renew(mediaId); +release(mediaId)
+        +isValid(mediaId): Boolean
+    }
+    class DownloadServiceImpl {
+        <<Media3 DownloadService, FGS Ch 46>>
+    }
+    DownloadsRepository --> DownloadEntity
+    DownloadsRepository --> OfflineLicenseController
+    DownloadsRepository ..> Media3DownloadManager
+    DownloadServiceImpl ..> Media3DownloadManager

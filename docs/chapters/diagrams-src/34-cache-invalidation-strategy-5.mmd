@@ -1,0 +1,10 @@
+flowchart TD
+    CHANGE[change] --> SRC{trigger}
+    SRC -->|local write| CASCADE[evict entry + dependents]
+    SRC -->|server push/version| CASCADE
+    SRC -->|TTL| ENTRY[evict entry]
+    SRC -->|release| ALL{cache version changed?}
+    ALL -->|yes| WIPE[invalidate all old-shaped]
+    CASCADE --> LAYERS[all layers coherent]
+    ENTRY --> LAYERS
+    LAYERS --> NEXT[next read refetch/SWR]

@@ -1,0 +1,18 @@
+classDiagram
+    class AccountProvider {
+        +currentId StateFlow~String~
+        +accounts StateFlow~List~Account~~
+        +switchTo(accountId)
+        +add(account)
+        +signOut(accountId)
+    }
+    class Account {
+        +String id
+        +String displayName
+        +String? avatarUrl
+    }
+    class AccountScopedRepo {
+        +observe() Flow uses currentId
+    }
+    AccountProvider --> Account
+    AccountScopedRepo ..> AccountProvider

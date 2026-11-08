@@ -1,0 +1,19 @@
+classDiagram
+    class ProductEntity {
+        +String id
+        +String title
+        +String brand
+        +String description
+    }
+    class ProductFts {
+        <<Fts4 external-content=ProductEntity>>
+        +String title
+        +String brand
+        +String description
+    }
+    class ProductSearchDao {
+        +search(match) List~ProductResult~
+        +rebuildIndex()
+    }
+    ProductFts ..> ProductEntity : indexes
+    ProductSearchDao --> ProductFts

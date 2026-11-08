@@ -1,0 +1,5 @@
+flowchart LR
+    DELTA[background delta / push - Ch 32/49] --> NEWITEMS{new items at top?}
+    NEWITEMS -->|yes| PILL["show 'N new posts' pill - user taps to jump"]
+    NEWITEMS -->|changed/removed| INPLACE[update SSOT row -> Paging diffs in place - no scroll move]
+    PILL -.->|do NOT auto-scroll/reorder| UI[scroll position kept]

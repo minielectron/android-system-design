@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant C as SseClient
+    participant S as Server (text/event-stream)
+    participant SSOT as Room (Ch 3)
+
+    C->>S: GET /orders/stream (Last-Event-ID: 42, authed Ch 19)
+    S-->>C: 200 text/event-stream -> replay from 43 (resume, Ch 32)
+    loop open
+        S-->>C: event id:44 data:{...}
+        C->>C: lastEventId = 44
+        C->>SSOT: idempotent upsert (dedup by id, Ch 15)
+    end
+    S--xC: connection drops
+    C->>C: backoff (Ch 2)
+    C->>S: reconnect GET (Last-Event-ID: 44) -> replay missed

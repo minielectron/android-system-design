@@ -1,0 +1,12 @@
+flowchart TD
+    CALLSITE["feature code: analytics.track(event)"] --> API["ONE internal API (typed schema) - no direct vendor calls"]
+    API --> CONSENT{consent granted? Ch 28}
+    CONSENT -->|no / opted out| DROP["drop / collect essential-only per policy"]
+    CONSENT -->|yes| REDACT["redact PII (Ch 28) - allowlist params, no raw email/content/token"]
+    REDACT --> BUFFER["durable buffer: persistent queue (Room/outbox, Ch 31/3) - immediate, non-blocking"]
+    BUFFER --> TRIGGER{flush trigger: size / time / background / network}
+    TRIGGER -->|batch| UPLOAD["batched upload (Ch 14) via WorkManager (Ch 30/47)"]
+    UPLOAD --> SINK["AnalyticsSink abstraction -> vendor(s) / self-hosted (swap/fan-out)"]
+    IDENTITY["identity/session: user+session+device, reset on logout (Ch 42), event id for dedup (Ch 15)"] -.-> API
+    SAMPLING["sample high-volume events - never sample critical"] -.-> BUFFER
+    OPS["operational telemetry (perf, non-fatal errors, breadcrumbs Ch 89)"] --> API

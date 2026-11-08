@@ -1,0 +1,7 @@
+flowchart TD
+    OPEN[open encrypted store] --> UNWRAP{unwrap DEK ok?}
+    UNWRAP -->|yes| USE[decrypt/query]
+    UNWRAP -->|KEK invalidated| RESET[wipe + re-provision]
+    USE --> TAMPER{AEAD ok?}
+    TAMPER -->|yes| OK[plaintext in memory]
+    TAMPER -->|no| DISCARD[discard + re-fetch]

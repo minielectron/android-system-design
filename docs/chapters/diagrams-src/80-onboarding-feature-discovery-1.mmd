@@ -1,0 +1,13 @@
+flowchart TD
+    CONFIG["remote config / server: flow definition + A/B variant (Ch 41/87)"] --> FLOW["declarative onboarding/discovery flow (steps/prompts)"]
+    FLOW --> STATE{per step/feature already seen or completed? DataStore Ch 4, server-synced}
+    STATE -->|yes| SKIP["skip - never re-show"]
+    STATE -->|no| SHOW["show step/prompt in context"]
+    SHOW --> TYPE{step type}
+    TYPE -->|intro/value| INTRO["intro screen (skippable)"]
+    TYPE -->|interests| INTERESTS["collect interests -> seed personalization (Ch 43/73)"]
+    TYPE -->|permission prime| PRIME["prime -> then system request (Ch 51)"]
+    TYPE -->|discovery| COACH["coach mark/tooltip - throttled, dismissible"]
+    SHOW --> ANALYTICS["log shown/completed/skipped -> funnel (Ch 14)"]
+    ANALYTICS -.-> EXPERIMENT["compare variants (Ch 87)"]
+    COMPLETE["mark step complete -> persist (Ch 4) + sync (Ch 32)"] --> STATE

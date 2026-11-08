@@ -1,0 +1,28 @@
+classDiagram
+    class CartRepository {
+        <<interface>>
+        +observeCart() Flow~Cart~
+        +add(productId, qty)
+        +setQuantity(lineId, qty)
+        +remove(lineId)
+        +mergeGuestCart()
+    }
+    class Cart {
+        +List~CartLine~ lines
+        +Money subtotal
+        +int itemCount
+    }
+    class CartLine {
+        +String id
+        +String productId
+        +int quantity
+        +Money unitPrice
+        +SyncStatus syncStatus
+    }
+    class CartViewModel {
+        +StateFlow~CartUiState~ uiState
+        +onEvent(CartUiEvent)
+    }
+    CartRepository --> Cart
+    Cart --> CartLine
+    CartViewModel --> CartRepository

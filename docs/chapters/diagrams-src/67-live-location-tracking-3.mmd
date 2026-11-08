@@ -1,0 +1,20 @@
+sequenceDiagram
+    actor Driver
+    participant Svc as LocationTrackingService (FGS, Ch 46)
+    participant Fused as FusedLocationProvider
+    participant Filt as LocationFilter
+    participant Str as LocationStreamer (WS+outbox, Ch 63/31)
+    participant BE as Backend
+
+    Driver->>Svc: start delivery
+    Svc->>Fused: requestUpdates(BALANCED, interval=5s)
+    loop during trip
+        Fused-->>Svc: location fix
+        Svc->>Filt: accept? (accuracy/jump)
+        Filt-->>Svc: yes
+        Svc->>Str: send(fix) over WebSocket
+        Str->>BE: update (authed, Ch 19)
+    end
+    Driver->>Svc: delivery complete
+    Svc->>Fused: stop updates
+    Svc->>Svc: stopForeground + stopSelf (battery + privacy)

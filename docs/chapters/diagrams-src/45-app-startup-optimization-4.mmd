@@ -1,0 +1,5 @@
+flowchart TD
+    INIT[a library/init] --> NEED{needed for first frame?}
+    NEED -->|yes, cheap| ONCREATE[Application.onCreate / App Startup]
+    NEED -->|yes, expensive| BG[background init]
+    NEED -->|no| DEFER[defer: lazy or post-first-frame]

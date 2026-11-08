@@ -1,0 +1,14 @@
+flowchart TD
+    USER["user taps Download, picks quality"] --> ENTITLE{entitled and within limits? Ch 19/23}
+    ENTITLE -->|no| DENY["deny / explain limit"]
+    ENTITLE -->|yes| HELPER["DownloadHelper: select track/quality from manifest"]
+    HELPER --> DM["Media3 DownloadManager (queue, resume, retry)"]
+    DM --> SVC["DownloadService (FGS dataSync, Ch 46) - background + constraints (Ch 47)"]
+    SVC --> STORE["download cache: app-specific / SD storage (Ch 25/62)"]
+    DM --> LIC["acquire offline Widevine license (authed, Ch 19) + expiry"]
+    LIC --> SECLIC["store license securely (Ch 25)"]
+    DM --> SSOT["mirror state/progress -> Room SSOT (Ch 3) - UI observes (Ch 6)"]
+    PLAY["Media3 player (Ch 58)"] --> SOURCE{offline copy and valid license?}
+    SOURCE -->|yes| OFFLINE["play from download cache + offline license"]
+    SOURCE -->|no/expired| STREAM["stream online / block + renew"]
+    DELETE["delete download"] --> RELEASE["release license + remove media + SSOT row"]

@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[presence/typing problem] --> WHY{category}
+    WHY -->|stale/ghost| EXPIRE[heartbeat+TTL / receiver timeout - auto-expire]
+    WHY -->|spam/battery| DEBOUNCE[debounce + lifecycle-scope - Ch 9/44]
+    WHY -->|flood| COALESCE[conflate + sample - Ch 63]
+    WHY -->|privacy| RECIPROCAL[opt-out + reciprocal + server-enforced - Ch 28]
+    WHY -->|treated as durable| EPHEMERAL[transient UI state - not SSOT - contrast Ch 64]

@@ -1,0 +1,20 @@
+classDiagram
+    class RecommendationsFeed {
+        +items: Flow~PagingData~RecItem~~  (server-ranked, Ch 71)
+        +refresh()
+    }
+    class SignalLogger {
+        +impression(itemId, position)  (on visible, Ch 14)
+        +click(itemId); +dwell(itemId, ms)
+        +conversion(itemId, type); +dismiss(itemId, reason)
+    }
+    class RecItem {
+        +id; +position (server rank)
+        +content; +explanation  (SSOT, Ch 3)
+    }
+    class ExperimentAssignment {
+        +variant  (remote config, Ch 41/87)
+    }
+    RecommendationsFeed --> RecItem
+    RecommendationsFeed --> SignalLogger
+    RecommendationsFeed --> ExperimentAssignment

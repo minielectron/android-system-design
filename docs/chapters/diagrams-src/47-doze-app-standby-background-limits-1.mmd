@@ -1,0 +1,13 @@
+flowchart TD
+    NEED["a background need"] --> CLASSIFY{what kind?}
+    CLASSIFY -->|deferrable work| WM["WorkManager + constraints (Ch 30)"]
+    CLASSIFY -->|ongoing user-visible| FGS["Foreground service (Ch 46)"]
+    CLASSIFY -->|prompt wake, time-sensitive| FCM["High-priority FCM (Ch 49)"]
+    CLASSIFY -->|genuine user-facing time| ALARM["Exact alarm (Ch 48)"]
+    WM --> OSGOV["OS governs: Doze windows + App Standby bucket"]
+    FCM --> OSGOV
+    ALARM --> OSGOV
+    OSGOV --> OEM{aggressive OEM?}
+    OEM -->|yes| GUIDE["guide user: disable battery optimization / FGS for critical path"]
+    OEM -->|no| RUN["runs in maintenance window"]
+    RUN --> DEGRADE["degrade gracefully: catch-up sync, backoff, idempotent (Ch 32/15)"]

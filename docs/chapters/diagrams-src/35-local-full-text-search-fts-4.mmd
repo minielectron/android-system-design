@@ -1,0 +1,4 @@
+flowchart LR
+    WRITE[product inserted/updated/deleted] --> TRIG[Room trigger / repo write]
+    TRIG --> FTSUP[update products_fts index]
+    FTSUP --> SEARCHABLE[new data searchable offline]

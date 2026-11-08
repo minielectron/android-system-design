@@ -1,0 +1,6 @@
+flowchart LR
+    CLIENT[client shows balance] --> SPENDREQ[request debit + idempotency key - Ch 15]
+    SPENDREQ --> SERVER{server: sufficient funds? dedup key?}
+    SERVER -->|yes, not seen| DEBIT[atomic debit -> new balance -> sync Ch 32]
+    SERVER -->|insufficient| REJECT[reject - no negative balance]
+    SERVER -->|duplicate key| SAME[return same result - no double-debit]

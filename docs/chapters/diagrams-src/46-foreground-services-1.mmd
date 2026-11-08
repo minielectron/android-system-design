@@ -1,0 +1,12 @@
+flowchart TD
+    WORK["some background work"] --> Q{ongoing, user-visible, must run now?}
+    Q -->|no, deferrable| WM["WorkManager (Ch 30)"]
+    Q -->|yes| TYPE{which type?}
+    TYPE -->|playback| MEDIA["MediaSessionService (mediaPlayback)"]
+    TYPE -->|long download/upload| SETFG["WorkManager setForeground (dataSync, Ch 18)"]
+    TYPE -->|active trip| LOC["FGS location (Ch 67)"]
+    MEDIA --> NOTIF["prompt notification + controls (Ch 50)"]
+    SETFG --> NOTIF
+    LOC --> NOTIF
+    START["start legally: foreground OR exemption (Ch 47/48/49)"] --> MEDIA
+    NOTIF --> STOP["stop when done: stopSelf/stopForeground"]

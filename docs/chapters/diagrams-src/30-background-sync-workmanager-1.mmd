@@ -1,0 +1,12 @@
+flowchart TD
+    TRIGGER["triggers: on-write / periodic / connectivity (Ch 68)"] --> ENQ["enqueueUniqueWork / Periodic"]
+    ENQ --> WM["WorkManager (persisted DB)"]
+    WM --> CONSTRAINTS{"constraints met? (network/charging/battery)"}
+    CONSTRAINTS -->|no| WAIT["defer (respects Doze, Ch 47)"]
+    CONSTRAINTS -->|yes| RUN["run Worker (@HiltWorker)"]
+    RUN --> WORK["doWork: sync / upload / drain outbox (Ch 29/31)"]
+    WORK --> RESULT{"Result"}
+    RESULT -->|retry| BACKOFF["exponential backoff (Ch 2) -> reschedule"]
+    RESULT -->|success/failure| DONE["terminal"]
+    RUN -.->|setForeground| FG["foreground notification (long work, Ch 46)"]
+    WM -.->|WorkInfo Flow| UI["UI observes progress/result"]

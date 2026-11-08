@@ -1,0 +1,7 @@
+flowchart LR
+    FEATURE[feature becomes relevant/visible] --> SEEN{already shown? Ch 4}
+    SEEN -->|yes| NOTHING[do nothing]
+    SEEN -->|no| THROTTLE{another prompt active?}
+    THROTTLE -->|yes| QUEUE[queue by priority]
+    THROTTLE -->|no| SHOW[show coach mark - dismissible]
+    SHOW --> MARK[mark shown - Ch 4 + log - Ch 14]

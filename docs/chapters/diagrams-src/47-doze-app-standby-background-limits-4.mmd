@@ -1,0 +1,6 @@
+flowchart LR
+    BK[backend event: order shipped] --> HPFCM[high-priority FCM push - Ch 49]
+    HPFCM --> DOZE[allowed limited Doze wake]
+    DOZE --> WM[enqueue expedited WorkManager if more work]
+    WM --> NOTIF[notify user - Ch 50]
+    BK -.->|over-use burns bucket FCM quota| THROTTLE[quota exhausted -> delayed]

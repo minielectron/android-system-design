@@ -1,0 +1,7 @@
+flowchart TD
+    W[work] --> VIS{user-visible & ongoing now?}
+    VIS -->|no| WM[WorkManager - deferrable, battery-respecting]
+    VIS -->|yes| MUST{must run immediately?}
+    MUST -->|yes, long + progress| WMF[WorkManager setForeground]
+    MUST -->|yes, playback| MS[MediaSessionService]
+    MUST -->|yes, tracking| FGS[FGS with correct type]

@@ -1,0 +1,12 @@
+flowchart TD
+    ADDCARD["add payment method"] --> AUTH1{authenticated? session and biometric, Ch 19/21}
+    AUTH1 -->|yes| PSP["PSP SDK tokenizes card -> TOKEN (no PAN on device, PCI, Ch 23/75)"]
+    PSP --> STORE["backend stores token + metadata (brand, last4)"]
+    GPAY["Google Pay"] --> TOKEN2["payment token -> PSP charge (Ch 75)"]
+    BALANCE["balance + history = SERVER-AUTHORITATIVE ledger"] --> SYNC["sync to client (Ch 32)"]
+    SYNC --> DISPLAY["client DISPLAYS balance/history (SSOT, Ch 3) - never spends local"]
+    SPEND["spend / top-up"] --> AUTH2{authenticated? Ch 21}
+    AUTH2 -->|yes| MONEYOP["server-validated, IDEMPOTENT debit/credit (Ch 15)"]
+    MONEYOP --> LEDGER["atomic ledger update (server) -> new balance"]
+    LEDGER --> SYNC
+    KEYSTORE["local token references secured (Keystore, Ch 20)"] -.-> DISPLAY

@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[playback problem] --> WHY{category}
+    WHY -->|state drift| SESSION[MediaSession is single truth - all surfaces observe]
+    WHY -->|stops in background/rotation| SERVICE[player in MediaSessionService - Ch 46]
+    WHY -->|position lost| PERSIST[save to SSOT + restore - Ch 3/8]
+    WHY -->|focus/noisy| AUDIO[audio focus + becoming-noisy handling]
+    WHY -->|battery| RELEASE[release player when done]

@@ -1,0 +1,23 @@
+classDiagram
+    class WishlistRepository {
+        +toggle(productId)
+        +observeIds(): Flow~Set~String~~
+        +observeWishlist(): Flow~PagingData~WishlistItem~~
+        +moveToCart(productId)
+    }
+    class WishlistItem {
+        +accountId; +productId  (SSOT key, Ch 3/42)
+        +addedAt; +pendingSync
+    }
+    class WishlistOp {
+        <<outbox, Ch 31>>
+        Add(productId, key)
+        Remove(productId, key)
+    }
+    class WishlistSync {
+        +delta()  (Ch 32)
+        +resolve(conflict)  (Ch 33)
+    }
+    WishlistRepository --> WishlistItem
+    WishlistRepository --> WishlistOp
+    WishlistRepository --> WishlistSync

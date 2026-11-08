@@ -1,0 +1,8 @@
+flowchart LR
+    REQ[user taps Export my data] --> COLLECT[collect orders/profile/wishlist]
+    COLLECT --> SER[serialize -> JSON/ZIP]
+    SER --> ENC{sensitive?}
+    ENC -->|yes| ENCRYPT[encrypt]
+    ENC -->|no| PLAIN[as-is]
+    ENCRYPT --> SAF[SAF CreateDocument -> user picks location Ch 25]
+    PLAIN --> SAF

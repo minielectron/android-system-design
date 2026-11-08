@@ -1,0 +1,13 @@
+flowchart TD
+    TRIGGER["a time-based need"] --> CLASSIFY{what kind of trigger?}
+    CLASSIFY -->|deferrable periodic work| WM["WorkManager (Ch 30)"]
+    CLASSIFY -->|server-driven event| FCM["FCM (Ch 49)"]
+    CLASSIFY -->|approximate time-of-day| INEXACT["inexact alarm / WorkManager"]
+    CLASSIFY -->|user-facing exact time| EXACT{permission?}
+    EXACT -->|granted| SET["setAlarmClock / setExactAndAllowWhileIdle"]
+    EXACT -->|denied| DEGRADE["degrade to inexact + explain"]
+    SET --> PI["PendingIntent -> BroadcastReceiver"]
+    INEXACT --> PI
+    PI --> EFFECT["post notification (Ch 50) OR enqueue WorkManager"]
+    STORE["alarm definitions persisted (SSOT, Ch 3)"] --> RESCHED["BOOT_COMPLETED / TIME_CHANGED -> reschedule"]
+    RESCHED --> SET

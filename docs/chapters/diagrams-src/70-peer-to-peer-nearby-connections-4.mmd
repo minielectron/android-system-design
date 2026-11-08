@@ -1,0 +1,5 @@
+flowchart LR
+    NEED[P2P need] --> SIZE{payload and control needs}
+    SIZE -->|large file, auto radio| NEARBY[Nearby Connections - default]
+    SIZE -->|need low-level / no Play services| WIFIDIRECT[Wi-Fi Direct]
+    SIZE -->|tiny bytes| BLE[BLE - Ch 69]

@@ -1,0 +1,25 @@
+flowchart TD
+    subgraph SCREENS["screens (each its own ViewModel)"]
+        LIST["Catalog (add)"]
+        DETAIL["Product detail (add)"]
+        BADGE["Mini-cart badge (count)"]
+        CART["Cart screen (edit)"]
+    end
+    REPO["CartRepository (singleton SSOT owner)"]
+    ROOM["Room: cart_items (per account)"]
+    OUTBOX["Outbox (Ch 31) + idempotency (Ch 15)"]
+    SYNC["Sync (Ch 29/30) + conflict (Ch 33)"]
+    SRV["Backend cart API + merge"]
+
+    LIST -->|onEvent add| REPO
+    DETAIL -->|onEvent add| REPO
+    CART -->|onEvent change/remove| REPO
+    REPO -->|optimistic write| ROOM
+    REPO -->|enqueue| OUTBOX
+    ROOM -.->|Flow| LIST
+    ROOM -.->|Flow| DETAIL
+    ROOM -.->|Flow| BADGE
+    ROOM -.->|Flow| CART
+    OUTBOX --> SYNC --> SRV
+    SRV -.->|server cart / price changes| SYNC --> ROOM
+    LOGIN["login"] -.->|merge guest cart| REPO

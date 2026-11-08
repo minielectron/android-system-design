@@ -1,0 +1,6 @@
+flowchart LR
+    PLAY[playing at 12:34] --> SAVE[periodically save mediaId+position -> SSOT - Ch 3]
+    SAVE --> SYNC[sync continue-watching - Ch 32]
+    KILL[process death - Ch 8] --> RELAUNCH[relaunch]
+    RELAUNCH --> RESTORE[read SSOT -> seek to 12:34]
+    SYNC -.->|another device| RESUME[resume at 12:34 elsewhere]

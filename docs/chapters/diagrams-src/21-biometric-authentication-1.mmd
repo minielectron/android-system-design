@@ -1,0 +1,9 @@
+flowchart TD
+    ACT["sensitive action (unlock / pay)"] --> CHECK["BiometricManager.canAuthenticate(STRONG)"]
+    CHECK -->|success| CIPHER["Cipher.init with auth-bound Keystore key (Ch 20)"]
+    CIPHER --> PROMPT["BiometricPrompt.authenticate(CryptoObject)"]
+    PROMPT -->|succeeded| UNLOCK["use unlocked Cipher -> decrypt secret / sign"]
+    PROMPT -->|error/cancel| HANDLE["handle: fallback / retry / deny"]
+    CHECK -->|none enrolled| ENROLL["route to enrollment"]
+    CHECK -->|no hw / unavailable| FALLBACK["device credential / app login"]
+    CIPHER -->|KeyPermanentlyInvalidated| REKEY["wipe key -> re-provision (Ch 20)"]

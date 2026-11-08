@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor User
+    participant VM as SearchViewModel
+    participant San as QuerySanitizer
+    participant Dao as ProductSearchDao
+    participant Fts as products_fts
+
+    User->>VM: types "runni" (offline, debounced Ch 9)
+    VM->>San: toMatch("runni")
+    San-->>VM: "runni*"   (prefix for typeahead)
+    VM->>Dao: search("runni*")
+    Dao->>Fts: SELECT ... MATCH 'runni*' ORDER BY bm25(weights)
+    Fts-->>Dao: ranked rows + highlighted snippets
+    Dao-->>VM: List<ProductResult>
+    VM-->>User: instant local results

@@ -1,0 +1,20 @@
+classDiagram
+    class RealtimeConnection {
+        +connect(); +disconnect()
+        +events: Flow~Event~
+        +send(msg)  // ack + retry (Ch 15)
+        -heartbeat(); -reconnectWithBackoff()
+    }
+    class ConnectionState {
+        <<sealed>>
+        Connecting; Connected; Reconnecting; Disconnected
+    }
+    class EventProcessor {
+        +process(raw): Event?  // validate (Ch 23) + dedupe (Ch 15)
+    }
+    class ResumeCursor {
+        +last: Long  // for replay / REST catch-up (Ch 32)
+    }
+    RealtimeConnection --> ConnectionState
+    RealtimeConnection --> EventProcessor
+    RealtimeConnection --> ResumeCursor

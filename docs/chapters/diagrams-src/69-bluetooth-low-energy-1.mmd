@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor User
+    participant BM as BleManager
+    participant Q as GattOperationQueue
+    participant G as BluetoothGatt
+    participant P as Peripheral (lock)
+
+    User->>BM: connect(lockAddress)
+    BM->>G: connectGatt (main thread, state machine)
+    G-->>BM: onConnectionStateChange(CONNECTED)
+    BM->>Q: enqueue(Discover)
+    Q->>G: discoverServices()  (one op)
+    G-->>Q: onServicesDiscovered -> next
+    BM->>Q: enqueue(Write unlock)
+    Q->>G: writeCharacteristic()  (wait for prior to finish)
+    G->>P: unlock
+    G-->>Q: onCharacteristicWrite -> done
+    Note over Q,G: concurrent ops would SILENTLY FAIL -> queue serializes + times out

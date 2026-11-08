@@ -1,0 +1,26 @@
+flowchart TD
+    subgraph UI["Presentation"]
+        VM["ViewModel: observes Room + sync status"]
+    end
+    subgraph LOCAL["Local (SSOT)"]
+        ROOM["Room: entities + sync status"]
+        OUTBOX["Outbox: pending mutations (Ch 31)"]
+    end
+    subgraph SYNC["Sync engine (background)"]
+        WORKER["SyncWorker (WorkManager, Ch 30)"]
+        PUSH["push: drain outbox -> server (idempotent, Ch 15)"]
+        PULL["pull: delta from server (Ch 32)"]
+        CONFLICT["conflict resolution (Ch 33)"]
+    end
+    REMOTE["Backend"]
+
+    VM -->|read| ROOM
+    VM -->|write optimistic| ROOM
+    VM -->|enqueue mutation| OUTBOX
+    ROOM -.->|Flow| VM
+    WORKER --> PUSH --> OUTBOX
+    PUSH --> REMOTE
+    WORKER --> PULL --> REMOTE
+    PULL --> CONFLICT --> ROOM
+    PUSH -.->|ack| OUTBOX
+    CONN["connectivity (Ch 68)"] -.->|trigger/constraint| WORKER

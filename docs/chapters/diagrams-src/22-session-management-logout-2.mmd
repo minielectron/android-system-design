@@ -1,0 +1,21 @@
+classDiagram
+    class SessionManager {
+        +sessionState Flow~SessionState~
+        +logout(allDevices)
+        +onSessionExpired()
+    }
+    class SessionState {
+        <<sealed>>
+    }
+    class Authenticated {
+        +String userId
+    }
+    class Unauthenticated
+    class SessionScopedStore {
+        <<interface>>
+        +clearForLogout()
+    }
+    SessionState <|-- Authenticated
+    SessionState <|-- Unauthenticated
+    SessionManager --> SessionState
+    SessionManager --> SessionScopedStore

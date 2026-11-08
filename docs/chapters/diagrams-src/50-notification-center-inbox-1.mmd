@@ -1,0 +1,13 @@
+flowchart TD
+    PUSH["Push arrives (Ch 49)"] --> WRITE["write InboxItem to Room (SSOT, Ch 3)"]
+    PUSH --> NOTIFIER["Notifier: post system notification"]
+    NOTIFIER --> CH["correct channel (category) + style + group"]
+    NOTIFIER --> PI["content PendingIntent -> deep link (Ch 52)"]
+    WRITE --> SYNC["sync inbox + read state across devices (Ch 32)"]
+    INBOXUI["Inbox screen (observes Room, Ch 6)"] --> READ["mark read"]
+    READ --> CANCEL["cancel matching system notification"]
+    READ --> SYNC
+    TAP["tap system notification"] --> DEEPLINK["deep link -> screen (Ch 52)"]
+    DEEPLINK --> MARK["mark inbox item read -> cancel notif"]
+    PERM{POST_NOTIFICATIONS granted? Ch 51} -->|no| INBOXONLY["system suppressed - inbox still works"]
+    PERM -->|yes| NOTIFIER

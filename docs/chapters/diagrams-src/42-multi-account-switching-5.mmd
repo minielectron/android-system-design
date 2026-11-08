@@ -1,0 +1,9 @@
+flowchart TD
+    SWITCH[switch account] --> SET[set current id]
+    SET --> REPOINT[account-aware state flatMapLatest -> new account]
+    REPOINT --> ISO{all queries filter by accountId?}
+    ISO -->|yes| CLEAN[isolated view]
+    ISO -->|no| LEAK[cross-account LEAK - fix filter]
+    INFLIGHT[in-flight work] --> TAG{tagged with accountId?}
+    TAG -->|yes| CORRECT[writes to its account]
+    TAG -->|no| WRONG[writes to current - bug]

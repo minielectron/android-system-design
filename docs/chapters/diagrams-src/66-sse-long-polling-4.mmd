@@ -1,0 +1,6 @@
+flowchart LR
+    REQ[GET /updates?cursor=100 - server holds open] --> RESP{data or timeout}
+    RESP -->|data at 101-103| MERGE[idempotent SSOT upsert - Ch 15]
+    MERGE --> RREQ[immediately re-request cursor=103]
+    RESP -->|timeout empty| RREQ
+    RREQ --> REQ

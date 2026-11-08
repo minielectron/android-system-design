@@ -1,0 +1,19 @@
+sequenceDiagram
+    actor User
+    participant LC as Lifecycle (Ch 44)
+    participant Conn as RealtimeConnection
+    participant WS as Server WSS
+    participant SSOT as Room (Ch 3)
+
+    User->>LC: open chat (foreground)
+    LC->>Conn: connect (authed handshake, Ch 19)
+    Conn->>WS: upgrade + token + resume cursor
+    WS-->>Conn: connected (+ replay missed since cursor, Ch 32)
+    loop live
+        WS-->>Conn: message (seq n)
+        Conn->>SSOT: idempotent upsert (dedupe by seq, Ch 15)
+        Conn->>Conn: ping-pong heartbeat
+    end
+    WS--xConn: connection drops
+    Conn->>Conn: jittered backoff (Ch 2)
+    Conn->>WS: reconnect + resume cursor -> replay missed

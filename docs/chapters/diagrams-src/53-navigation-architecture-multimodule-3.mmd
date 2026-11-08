@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant Cart as :feature:cart screen
+    participant Route as CheckoutRoute (:core:navigation)
+    participant Nav as NavController (:app graph)
+    participant Checkout as :feature:checkout destination
+
+    Cart->>Route: navigate(CheckoutRoute(cartId))   // knows the route, not the screen
+    Route->>Nav: type-safe navigate
+    Nav->>Checkout: resolve destination (wired in :app)
+    Note over Cart,Checkout: :feature:cart has NO dependency on :feature:checkout

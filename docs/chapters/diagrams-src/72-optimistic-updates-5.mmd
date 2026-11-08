@@ -1,0 +1,8 @@
+flowchart TD
+    ISSUE[optimistic-update problem] --> WHY{category}
+    WHY -->|lost/double| OUTBOX[outbox + idempotent set-state - Ch 31/15]
+    WHY -->|stale count| RECONCILE[reconcile to server value - Ch 32]
+    WHY -->|wrong after failure| ROLLBACK[rollback on genuine 4xx + keep on transient - Ch 2]
+    WHY -->|inconsistent screens| SSOT[one SSOT row - Ch 3]
+    WHY -->|conflict| POLICY[conflict policy / server truth - Ch 33]
+    WHY -->|irreversible| REALSTATE[do NOT optimize - show real state]

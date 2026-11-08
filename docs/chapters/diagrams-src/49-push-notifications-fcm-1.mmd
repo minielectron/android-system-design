@@ -1,0 +1,14 @@
+flowchart TD
+    BK["Backend event (order shipped)"] --> SEND["FCM HTTP v1 API: token/topic + priority"]
+    SEND --> GOOG["Google FCM infrastructure (best-effort)"]
+    GOOG --> OS["Device OS (routes per Doze/bucket, Ch 47)"]
+    OS --> SVC["StreamCartMessagingService.onMessageReceived"]
+    SVC --> STATE{active account matches? payload valid?}
+    STATE -->|no| DROP["ignore / reroute (per-account isolation, Ch 42)"]
+    STATE -->|yes| TRIGGER["treat as trigger"]
+    TRIGGER --> WM["expedited WorkManager: delta sync over authed API (Ch 30/32/19)"]
+    WM --> SSOT["SSOT updated (Ch 3)"]
+    SSOT --> NOTIF["Notifier: show notification if permitted (Ch 50/51)"]
+    TOKEN["onNewToken / getToken"] --> UPSERT["upsert token to backend (per user+device, Ch 42)"]
+    LOGOUT["logout / account switch"] --> INVALIDATE["delete token locally + server (Ch 22)"]
+    SYNC["periodic/open sync (Ch 32)"] -.->|dropped push self-heals| SSOT

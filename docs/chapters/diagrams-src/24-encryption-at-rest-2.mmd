@@ -1,0 +1,17 @@
+classDiagram
+    class KeyManager {
+        +getOrCreateDek() ByteArray
+        +wrapDek(dek) ByteArray
+        +unwrapDek(wrapped) ByteArray
+        +rotate()
+    }
+    class EncryptedDatabaseFactory {
+        +build() SupportSQLiteOpenHelper.Factory
+    }
+    class EncryptedConverter {
+        +encrypt(String) ByteArray
+        +decrypt(ByteArray) String
+    }
+    KeyManager --> KEK_Keystore
+    EncryptedDatabaseFactory --> KeyManager
+    EncryptedConverter --> KeyManager

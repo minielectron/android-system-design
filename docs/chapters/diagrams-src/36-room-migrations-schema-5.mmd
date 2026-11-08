@@ -1,0 +1,9 @@
+flowchart TD
+    OPEN[open DB] --> GAP{version gap?}
+    GAP -->|none| OK[ready]
+    GAP -->|migration exists| RUN[run migration tx]
+    RUN --> SUCC{success?}
+    SUCC -->|yes| OK
+    SUCC -->|sql error| ROLLBACK[rollback -> fail open -> fix+test]
+    GAP -->|no path| CRASH[IllegalStateException -> add migration]
+    GAP -->|destructive fallback| WIPE[DATA WIPED - forbidden in release]

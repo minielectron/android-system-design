@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor User
+    participant UI as Report flow
+    participant Redact as Redaction (Ch 28)
+    participant Out as Outbox + upload (Ch 31/17)
+    participant BE as Support backend
+
+    User->>UI: Report a problem + text
+    UI->>User: consent to attach diagnostics? (preview screenshot)
+    User->>UI: yes
+    UI->>UI: assemble bundle (logs, info, breadcrumbs Ch 89, screenshot)
+    UI->>Redact: redact PII (logs + screenshot) (Ch 28)
+    Redact-->>UI: redacted bundle
+    UI->>Out: enqueue report + resumable bundle upload + correlationId (Ch 31/17/82)
+    Out->>BE: upload (authed, Ch 19) - retries offline/death
+    Note over Out,BE: NO raw PII/tokens uploaded - Ch 28

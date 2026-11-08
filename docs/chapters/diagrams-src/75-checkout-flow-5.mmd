@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[checkout problem] --> WHY{category}
+    WHY -->|double-charge| IDEMPOTENCY[one key per attempt, persisted, reused - server dedups - Ch 15]
+    WHY -->|interruption| RECOVER[query status by key - never blind re-submit - Ch 8]
+    WHY -->|wrong total/stock| SERVER[server-authoritative price/stock at place - Ch 23]
+    WHY -->|payment failure| PRECISE[precise PSP failure handling + SCA]
+    WHY -->|false success| REALSTATE[real server-confirmed state only - not optimistic - Ch 72]

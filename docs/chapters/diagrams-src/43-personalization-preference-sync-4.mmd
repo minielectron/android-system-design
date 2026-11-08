@@ -1,0 +1,6 @@
+flowchart LR
+    READ[read theme] --> L{local unsynced edit?}
+    L -->|yes| USEL[use it]
+    L -->|no| S{synced value?}
+    S -->|yes| USES[use it]
+    S -->|no| D[use default]

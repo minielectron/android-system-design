@@ -1,0 +1,5 @@
+flowchart LR
+    C[canAuthenticate] --> S{result}
+    S -->|SUCCESS| STRONG[biometric prompt]
+    S -->|NONE_ENROLLED| EN[prompt to enroll / use credential]
+    S -->|NO_HARDWARE / UNAVAILABLE| CRED[DEVICE_CREDENTIAL or app login]

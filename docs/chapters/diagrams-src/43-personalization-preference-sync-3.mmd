@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor User
+    participant Phone as Phone
+    participant Repo as PreferencesRepository
+    participant Sync as Sync (Ch 29-33)
+    participant Srv as Backend
+    participant TV as TV
+
+    User->>Phone: set content filter "hide spoilers"
+    Phone->>Repo: setFilter (account-scoped)
+    Repo->>Repo: optimistic local apply (instant) + outbox (Ch 31)
+    Repo-->>Phone: filter applied now
+    Repo->>Sync: push (Ch 32) -> Srv
+    Srv-->>Sync: TV pulls delta -> conflict resolve (Ch 33) -> apply
+    Sync-->>TV: TV now hides spoilers too

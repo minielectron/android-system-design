@@ -1,0 +1,19 @@
+classDiagram
+    class FileSharer {
+        +shareFile(file): Intent  // FileProvider + grant
+    }
+    class DocumentPicker {
+        +pickToRead(): Uri   // ACTION_OPEN_DOCUMENT
+        +createToWrite(name): Uri  // ACTION_CREATE_DOCUMENT
+        +persist(uri)        // takePersistableUriPermission
+    }
+    class ContentUriIo {
+        +read(uri): Source   // openInputStream -> stream (Ch 61)
+        +write(uri): Sink    // openOutputStream -> stream (Ch 61)
+    }
+    class MediaStoreHelper {
+        +saveImage(bytesSource): Uri
+    }
+    FileSharer ..> FileProvider
+    DocumentPicker ..> ActivityResultContracts
+    ContentUriIo ..> ContentResolver

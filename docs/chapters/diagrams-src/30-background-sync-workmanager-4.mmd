@@ -1,0 +1,6 @@
+flowchart LR
+    ENQ[enqueue download worker] --> FG[setForeground + notification]
+    FG --> STREAM[stream file, setProgress]
+    STREAM --> DONE{done?}
+    DONE -->|no| STREAM
+    DONE -->|yes| SUCCESS[Result.success]

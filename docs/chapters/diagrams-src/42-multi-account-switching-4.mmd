@@ -1,0 +1,5 @@
+flowchart LR
+    SIGNOUT[sign out Work] --> REVOKE[revoke Work session server-side Ch 22]
+    REVOKE --> CLEAR[clear Work data + tokens only]
+    CLEAR --> SWITCH[switch current to Personal]
+    SWITCH --> KEEP[Personal data intact]

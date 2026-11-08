@@ -1,0 +1,6 @@
+flowchart LR
+    LINK[deep link to Orders - Ch 52] --> GATE{logged in?}
+    GATE -->|no| LOGIN[navigate Login]
+    LOGIN --> SUCCESS[on success]
+    SUCCESS --> POP[navigate Orders, popUpTo Login inclusive]
+    GATE -->|yes| ORDERS[navigate Orders + back stack to Home]

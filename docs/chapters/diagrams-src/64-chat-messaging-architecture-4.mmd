@@ -1,0 +1,7 @@
+flowchart LR
+    WSIN[WebSocket message - foreground] --> MERGE[idempotent merge]
+    FCMIN[FCM wake -> REST catch-up - background] --> MERGE
+    RECON[reconnect -> catch-up from last seq] --> MERGE
+    MERGE --> DEDUP{seen clientId/serverSeq?}
+    DEDUP -->|yes| IGNORE[ignore - deduped - Ch 15]
+    DEDUP -->|no| UPSERT[upsert ordered by serverSeq -> SSOT - Ch 3]

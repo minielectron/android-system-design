@@ -1,0 +1,22 @@
+classDiagram
+    class OrderStatus {
+        <<server-owned, reflected in SSOT (Ch 3)>>
+        Placed; Confirmed; Packed; Shipped; OutForDelivery; Delivered; Cancelled
+        +timeline: List~StatusEvent~
+        +eta: Long?
+    }
+    class OrderTrackingRepository {
+        +observe(orderId): Flow~Order~  (SSOT)
+        +startWatching(orderId)  // live channel (Ch 63/66) + driver (Ch 67)
+        +stopWatching()
+        +sync(orderId)           // backstop (Ch 32)
+    }
+    class DriverLocationStream {
+        +observe(): Flow~LatLng~  // watching-scoped (Ch 67)
+    }
+    class OrderPushHandler {
+        +onStatusPush()  // FCM -> sync + notify (Ch 49/50)
+    }
+    OrderTrackingRepository --> OrderStatus
+    OrderTrackingRepository --> DriverLocationStream
+    OrderTrackingRepository --> OrderPushHandler

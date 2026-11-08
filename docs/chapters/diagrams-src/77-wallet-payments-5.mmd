@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[wallet problem] --> WHY{category}
+    WHY -->|double-spend/negative| SERVER[server-authoritative + idempotent debit - Ch 15]
+    WHY -->|double top-up| IDEMPOTENT[idempotent money ops - Ch 15]
+    WHY -->|card data exposed| TOKENS[tokens only, no PAN - Ch 23/75]
+    WHY -->|unauthorized action| AUTH[biometric/re-auth guard - Ch 21]
+    WHY -->|stale/divergent balance| SYNC[server-authoritative + sync - Ch 32]

@@ -1,0 +1,12 @@
+flowchart TD
+    CM["ConnectivityManager.NetworkCallback (onAvailable/onLost/onCapabilitiesChanged)"] --> OBS["ConnectivityObserver -> Flow NetworkState"]
+    OBS --> STATE["NetworkState: Offline / Online(transport, metered, validated, bandwidth)"]
+    STATE --> VALIDATED{validated? - real internet}
+    VALIDATED -->|no| OFFLINEUX["treat as offline for UX - captive portal"]
+    VALIDATED -->|yes| REACT["react to changes"]
+    REACT --> RECONNECT["reconnect WebSocket/SSE (Ch 63)"]
+    REACT --> RETRY["retry failed requests (Ch 2)"]
+    REACT --> QUALITY["metered -> lower quality / skip prefetch (Ch 58/56)"]
+    REACT --> UI["offline banner / messaging (Ch 6)"]
+    HEAVY["deferrable heavy transfer"] --> WM["WorkManager NetworkType.UNMETERED constraint (Ch 30/47)"]
+    OFFLINEFIRST["app works offline from SSOT (Ch 29) - state is ADVISORY not a gate"] -.-> STATE

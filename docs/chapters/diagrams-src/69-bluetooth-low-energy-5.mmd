@@ -1,0 +1,8 @@
+flowchart TD
+    ISSUE[BLE problem] --> WHY{category}
+    WHY -->|flaky/silent fails| SERIALIZE[serialized GATT queue - one op at a time]
+    WHY -->|hangs| TIMEOUT[per-op withTimeout + retry]
+    WHY -->|133/drops| RETRY[retry+backoff + close + reconnect - Ch 2]
+    WHY -->|cant connect anymore| CLOSE[always gatt.close - avoid leak]
+    WHY -->|scan empty / OEM fails| PERMMATRIX[fix permission matrix + defensive quirks - Ch 51]
+    WHY -->|battery| LIFECYCLE[stop scan/disconnect promptly - FGS for sessions - Ch 44/46]

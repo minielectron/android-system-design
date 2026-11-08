@@ -1,0 +1,13 @@
+flowchart TD
+    FEATURE["camera feature opened"] --> NEED{simple one-off capture?}
+    NEED -->|yes| INTENT["system camera intent / Photo Picker - NO CAMERA permission (Ch 51)"]
+    NEED -->|no, custom UI/analysis| PERM{CAMERA permission granted? Ch 51}
+    PERM -->|denied| DEGRADE["rationale / settings / degrade (Ch 51)"]
+    PERM -->|granted| BIND["CameraX: bind use cases to LifecycleOwner (Ch 44)"]
+    BIND --> PREVIEW["Preview (viewfinder)"]
+    BIND --> CAPTURE["ImageCapture / VideoCapture"]
+    BIND --> ANALYSIS["ImageAnalysis (off-main, keep-latest)"]
+    CAPTURE --> OUTPUT["output: app-internal / MediaStore (Ch 25/62)"]
+    OUTPUT --> EXIF["orientation + strip location EXIF (Ch 28)"]
+    ANALYSIS --> MLKIT["ML Kit barcode/text off-main"]
+    STOP["feature closed / app background (Ch 44)"] -.->|lifecycle STOPPED -> release camera| BIND

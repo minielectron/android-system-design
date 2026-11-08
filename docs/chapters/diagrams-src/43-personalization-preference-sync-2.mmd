@@ -1,0 +1,19 @@
+classDiagram
+    class PreferencesRepository {
+        +theme Flow~Theme~
+        +contentFilters Flow~Set~Filter~~
+        +setTheme(Theme)
+        +addMutedTopic(topic)
+    }
+    class PreferenceEntry {
+        +String key
+        +String value
+        +long updatedAt
+        +long version
+        +SyncStatus syncStatus
+    }
+    class PrefConflictResolver {
+        +resolve(key, local, remote) value
+    }
+    PreferencesRepository --> PreferenceEntry
+    PreferencesRepository --> PrefConflictResolver

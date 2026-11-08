@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor User
+    participant Repo as ChatRepository
+    participant SSOT as Room (Ch 3)
+    participant Out as Outbox (Ch 31)
+    participant WS as WebSocket/REST (Ch 63)
+    participant Srv as Server (truth)
+
+    User->>Repo: send("hi")
+    Repo->>SSOT: insert {clientId, status=Sending} (optimistic, Ch 72)
+    Repo->>Out: enqueue {clientId, body}
+    Out->>WS: send {clientId as idempotency key} (Ch 15)
+    WS->>Srv: deliver
+    Srv-->>WS: ack {clientId, serverSeq, ts}
+    WS->>SSOT: update {clientId -> status=Sent, serverSeq} (re-sort)
+    Note over Out,Srv: offline -> outbox retries. idempotency dedups

@@ -1,0 +1,12 @@
+flowchart TD
+    BUY["user buys (Premium / coins / unlock)"] --> FLOW["launch Play Billing flow (BillingClient)"]
+    FLOW --> PURCHASE["purchase result (token) via PurchasesUpdatedListener"]
+    PURCHASE --> STATE{purchase state}
+    STATE -->|pending| PENDING["show pending - DO NOT grant yet"]
+    STATE -->|purchased| VERIFY["send token to BACKEND -> verify via Google Play Developer API (Ch 23)"]
+    VERIFY --> GRANT["backend grants ENTITLEMENT (not client, Ch 23)"]
+    GRANT --> ACK["acknowledge (non-consumable/sub) / consume (consumable) - AVOID auto-refund"]
+    GRANT --> ENTSTATE["entitlement state = backend SSOT (Ch 3/41)"]
+    ENTSTATE --> APP["app READS entitlement (has Premium?)"]
+    RTDN["RTDN: renew/cancel/grace/hold (Ch 49)"] --> ENTSTATE
+    RESTORE["launch/login/new device -> queryPurchases -> restore entitlements"] --> VERIFY

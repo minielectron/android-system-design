@@ -1,0 +1,23 @@
+classDiagram
+    class ProductRoute {
+        <<@Serializable route>>
+        +id: String
+    }
+    class CheckoutRoute {
+        <<@Serializable route, in :core:navigation>>
+        +cartId: String
+    }
+    class FeatureGraphContributor {
+        <<interface>>
+        +NavGraphBuilder.register(navController)
+    }
+    class AppNavHost {
+        +assemble all feature sub-graphs
+    }
+    class Navigator {
+        <<interface, :core:navigation>>
+        +toCheckout(cartId)
+    }
+    AppNavHost --> FeatureGraphContributor
+    FeatureGraphContributor ..> CheckoutRoute
+    Navigator ..> CheckoutRoute

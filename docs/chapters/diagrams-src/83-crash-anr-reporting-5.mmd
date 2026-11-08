@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[crash/ANR observability problem] --> WHY{category}
+    WHY -->|invisible| CAPTURE[install JVM+native+ANR - send on next launch]
+    WHY -->|unreadable| DEOBF[upload mapping/symbols + deobfuscate - Ch 27]
+    WHY -->|ANR no detail| AEI[ApplicationExitInfo main-thread trace - API 30+]
+    WHY -->|PII leak| REDACT[redact messages/breadcrumbs/keys - Ch 28]
+    WHY -->|regression| VITALS[crash-free/ANR rate alert -> rollback - Ch 41]

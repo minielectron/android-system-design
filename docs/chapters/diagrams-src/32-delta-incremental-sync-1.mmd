@@ -1,0 +1,11 @@
+flowchart TD
+    WORKER["SyncWorker (Ch 30)"] --> TOKEN["read lastSyncToken (durable)"]
+    TOKEN --> REQ["GET changes-since(token)"]
+    REQ --> SRV["Backend change-log"]
+    SRV --> PAGE["delta page: creates/updates/tombstones + nextToken + hasMore"]
+    PAGE --> APPLY["apply to Room (upsert / delete-on-tombstone) + conflict (Ch 33)"]
+    APPLY --> SAVE["persist nextToken"]
+    SAVE --> MORE{"hasMore?"}
+    MORE -->|yes| REQ
+    MORE -->|no| DONE["sync complete"]
+    SRV -.->|token invalid/expired| FULL["full re-sync (paged initial load)"]

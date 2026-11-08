@@ -1,0 +1,10 @@
+flowchart TD
+    APP["OkHttp client (Ch 1)"] --> PINNER["CertificatePinner (primary + backup pins)"]
+    APP --> NSC["Network Security Config (res/xml): cleartext off, pins, debug CA"]
+    PINNER --> TLS["TLS handshake"]
+    TLS --> CHECK{"server key matches a pin?"}
+    CHECK -->|yes| OK["connection allowed"]
+    CHECK -->|no| FAIL["reject: SSLPeerUnverifiedException (fail closed)"]
+    FAIL --> REPORT["report pin failure (possible MITM / misconfig)"]
+    ROTATE["backup pin + remote config / forced upgrade"] -.-> PINNER
+    DEBUG["debug overrides: allow proxy CA"] -.->|debug only| NSC

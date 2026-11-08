@@ -1,0 +1,20 @@
+classDiagram
+    class LocationTrackingService {
+        <<FGS type location, Ch 46>>
+        +startTrip(); +stopTrip()
+    }
+    class LocationEngine {
+        +requestUpdates(priority, interval)
+        +currentFix()  one-shot
+        +stop()
+    }
+    class LocationStreamer {
+        +send(fix)  WebSocket + outbox (Ch 63/31)
+        +flushOnReconnect()
+    }
+    class LocationFilter {
+        +accept(fix): Boolean  // accuracy/jump/dedup
+    }
+    LocationTrackingService --> LocationEngine
+    LocationTrackingService --> LocationStreamer
+    LocationEngine --> LocationFilter

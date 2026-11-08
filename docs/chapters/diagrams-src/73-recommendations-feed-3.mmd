@@ -1,0 +1,14 @@
+sequenceDiagram
+    actor User
+    participant Srv as Server + ML (ranks, Ch 87 variant)
+    participant Feed as RecommendationsFeed (Ch 71)
+    participant UI as Rec UI
+    participant Log as SignalLogger (Ch 14)
+
+    Srv-->>Feed: ranked personalized items (+ explanations)
+    Feed->>UI: render server order (NO re-rank)
+    UI->>Log: impression(item, position) when VISIBLE
+    User->>UI: tap / dwell / add-to-cart / "not interested"
+    UI->>Log: click / dwell / conversion / dismiss
+    Log->>Srv: batched signals (Ch 14) -> train models
+    Note over Srv: better future ranking

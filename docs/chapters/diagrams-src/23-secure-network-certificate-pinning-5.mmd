@@ -1,0 +1,7 @@
+flowchart TD
+    CONN[TLS connect] --> MATCH{pin match?}
+    MATCH -->|yes| OK[proceed]
+    MATCH -->|no| CLOSED[reject + report]
+    CLOSED --> CAUSE{likely cause?}
+    CAUSE -->|rotation no backup| OUTAGE[need remote pins / app update]
+    CAUSE -->|MITM| BLOCK[attack blocked]

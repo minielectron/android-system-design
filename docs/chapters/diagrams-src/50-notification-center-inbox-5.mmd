@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[notification problem] --> WHAT{which system?}
+    WHAT -->|message lost on dismiss| INBOX[inbox is the record - SSOT + sync]
+    WHAT -->|spam / app muted| GROUP[group + correct channel importance]
+    WHAT -->|not shown Android 13+| PERM[request POST_NOTIFICATIONS - inbox still works]
+    WHAT -->|read diverges| SYNC[sync read state - Ch 32]
+    WHAT -->|lock-screen leak| PRIV[VISIBILITY_PRIVATE + public version]

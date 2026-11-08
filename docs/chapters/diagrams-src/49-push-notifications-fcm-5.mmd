@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant FCM
+    participant Svc as MessagingService
+    participant TM as FcmTokenManager
+    participant API as Backend
+
+    FCM->>Svc: onNewToken(newToken)
+    Svc->>TM: refreshAndUpsert(newToken)
+    TM->>API: PUT /devices {userId, deviceId, token} (authed)
+    Note over API: old token pruned on next UNREGISTERED send

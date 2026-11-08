@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[chat problem] --> WHY{category}
+    WHY -->|lost/duplicate send| OUTBOX[outbox + client-id idempotency - Ch 31/15]
+    WHY -->|missed/out-of-order/dup receive| MERGE[unified idempotent merge + server-seq order + catch-up - Ch 32/63]
+    WHY -->|background| FCM[FCM -> catch-up -> notify - Ch 49/50]
+    WHY -->|device divergence| SYNC[server-synced seq + read state - Ch 32]
+    WHY -->|process death| SSOT[persisted SSOT + outbox - Ch 3/8/31]

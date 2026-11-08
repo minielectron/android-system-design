@@ -1,0 +1,19 @@
+classDiagram
+    class FileStore {
+        <<interface>>
+        +writePrivate(name, bytes, encrypted)
+        +readPrivate(name) ByteArray
+        +shareUri(name) Uri
+        +delete(name)
+    }
+    class SecureFileStore {
+        -Context context
+        -Crypto crypto
+        -KeyManager keyManager
+    }
+    class MediaStoreWriter {
+        +saveImage(bytes) Uri
+    }
+    FileStore <|.. SecureFileStore
+    SecureFileStore --> Crypto
+    SecureFileStore --> KeyManager

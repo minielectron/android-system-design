@@ -1,0 +1,12 @@
+flowchart TD
+    SESSION["active session starts (delivery/share)"] --> PERM{foreground and background location permission? Ch 51}
+    PERM -->|denied| DEGRADE["rationale / settings / degrade (Ch 51)"]
+    PERM -->|granted| FGS["location foreground service + visible notification (Ch 46)"]
+    FGS --> FUSED["FusedLocationProvider: priority + interval per use case"]
+    FUSED --> FILTER["filter noisy/low-accuracy fixes + timestamp"]
+    FILTER --> STREAM["stream over WebSocket (Ch 63)"]
+    STREAM --> OUTBOX["buffer in outbox when offline (Ch 31)"]
+    OUTBOX -->|reconnect| FLUSH["flush in order (Ch 63)"]
+    STREAM --> BACKEND["backend: authed, access-controlled (Ch 19/23)"]
+    END["session ends / share expires"] --> STOP["STOP FGS + location requests - battery + privacy"]
+    PRIVACY["least precision/retention + indicator + consent (Ch 28)"] -.-> FUSED

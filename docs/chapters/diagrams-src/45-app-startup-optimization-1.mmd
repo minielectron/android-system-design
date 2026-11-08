@@ -1,0 +1,11 @@
+flowchart TD
+    FORK["process fork (cold start only)"] --> APP["Application.onCreate (keep MINIMAL)"]
+    APP --> ESSENTIAL["essential init only: DI, crash reporting"]
+    APP -.->|defer| LATER["non-essential SDKs: analytics, ads - after first frame"]
+    ESSENTIAL --> ACT["first Activity onCreate + setContent"]
+    ACT --> FRAME["first frame drawn (TTID)"]
+    FRAME --> CACHE["render cached / skeleton (Ch 12/34)"]
+    CACHE --> RFD["content ready -> reportFullyDrawn (TTFMC)"]
+    CACHE -.->|background| FRESH["fetch fresh, update (Ch 29)"]
+    STARTUP["Jetpack App Startup: ordered, lazy Initializers"] --> APP
+    BP["Baseline Profile: AOT-compile hot paths"] -.-> FORK

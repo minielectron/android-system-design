@@ -1,0 +1,7 @@
+flowchart LR
+    DEVA[device A: add product X] --> SRV[server membership]
+    DEVB[device B: remove product X - concurrent] --> SRV
+    SRV --> CONFLICT{resolve, Ch 33}
+    CONFLICT -->|last-writer or add-wins| FINAL[final membership]
+    FINAL --> SYNC[delta sync to both devices - Ch 32]
+    SYNC --> SSOT[converged per-account SSOT - Ch 3]

@@ -1,0 +1,11 @@
+classDiagram
+    class CheckoutViewModel {
+        +StateFlow~CheckoutForm~ form
+        +SavedStateHandle saved
+        +update(...)
+        +submit()
+    }
+    class ViewModelStoreOwner {
+        <<nav graph back-stack entry>>
+    }
+    CheckoutViewModel --> ViewModelStoreOwner : scoped to

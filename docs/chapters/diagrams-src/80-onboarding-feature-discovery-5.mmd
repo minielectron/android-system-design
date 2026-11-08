@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[onboarding/discovery problem] --> WHY{category}
+    WHY -->|re-shown| SHOWONCE[persisted + server-synced show-once state - Ch 4/32]
+    WHY -->|can't iterate| CONFIG[remote-config/server-driven + A/B - Ch 41/87]
+    WHY -->|low grants| PRIME[prime before request - Ch 51]
+    WHY -->|drop-off| MEASURE[funnel + shorten/skippable + A/B - Ch 14/87]
+    WHY -->|spam| THROTTLE[throttle + dismissible discovery]

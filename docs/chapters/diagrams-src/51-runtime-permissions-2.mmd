@@ -1,0 +1,19 @@
+classDiagram
+    class PermissionState {
+        <<sealed>>
+        Granted
+        NotRequested
+        DeniedCanAsk
+        PermanentlyDenied
+    }
+    class PermissionController {
+        +state(permission): PermissionState
+        +request(permission)
+        +openAppSettings()  // Ch 52
+    }
+    class FeatureGate {
+        +runIfGranted(action)
+        +onDenied(): degrade
+    }
+    PermissionController --> PermissionState
+    FeatureGate --> PermissionController

@@ -1,0 +1,13 @@
+flowchart TD
+    STORE["TokenStore (Ch 19/20)"] --> SESSION["SessionManager: SessionState SSOT"]
+    SESSION --> NAV["Nav root observes state -> Login or Main"]
+    subgraph LOGOUT["logout procedure"]
+        CLEAR["clear session-scoped: tokens, DB, caches, prefs, media"]
+        REVOKE["server revoke (this session / all)"]
+        RESET["reset in-memory -> fresh nav graph"]
+    end
+    USER["user taps Log out"] --> LOGOUT
+    AUTH["Authenticator: invalid refresh (Ch 19)"] -->|emit| EXPIRED["session-expired SharedFlow (Ch 7)"]
+    EXPIRED --> LOGOUT
+    LOGOUT --> SESSION
+    DEVICE["device-scoped: theme, onboarding"] -.->|kept| SESSION

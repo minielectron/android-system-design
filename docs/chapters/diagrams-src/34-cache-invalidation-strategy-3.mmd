@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant VM as ViewModel
+    participant Repo as Repository
+    participant Inv as Invalidator
+    participant Cache as Cache layers (Ch 12)
+
+    VM->>Repo: updateProduct(p1, price)
+    Repo->>Cache: upsert product p1 (Room SSOT)
+    Repo->>Inv: onWrite(p1, "product")
+    Inv->>Cache: evict memory[p1]
+    Inv->>Cache: evict dependents - listings, search, category of p1
+    Note over Cache: next read of those views refetches or recomputes
+    Cache-->>VM: Flow re-emits fresh

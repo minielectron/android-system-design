@@ -1,0 +1,7 @@
+flowchart LR
+    STATE[shared state] --> Q{durable / app-wide / offline / synced?}
+    Q -->|yes| SSOT[SSOT - Ch 38/39]
+    Q -->|no, ephemeral flow| SVM[shared ViewModel - graph-scoped]
+    SVM --> PD{survive process death?}
+    PD -->|yes| SAVED[+ SavedStateHandle Ch 8]
+    PD -->|no| MEM[in-memory only]

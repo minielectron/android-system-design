@@ -1,0 +1,5 @@
+flowchart LR
+    PWD[password changed on device B] --> REVOKE[backend revokes all sessions]
+    REVOKE --> NEXT[device A next request -> 401 -> refresh -> invalid]
+    NEXT --> SIG[Authenticator emits session-expired]
+    SIG --> PROC[logout procedure: clear local + route to login]

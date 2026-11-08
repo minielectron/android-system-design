@@ -1,0 +1,6 @@
+flowchart LR
+    M1[msg 1] --> CHILD1[child notif groupKey=chat]
+    M2[msg 2] --> CHILD2[child notif groupKey=chat]
+    CHILD1 --> SUMMARY[summary notif - 2 new messages]
+    CHILD2 --> SUMMARY
+    READINAPP[read conversation in app] --> CANCELGROUP[cancel group + children]

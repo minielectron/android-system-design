@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[large-file problem] --> WHY{category}
+    WHY -->|OOM| STREAM[stream bounded chunks - never whole-file]
+    WHY -->|ANR| OFFMAIN[Dispatchers.IO + cancellable - Ch 1]
+    WHY -->|corrupt/space| ATOMIC[temp-then-rename + space check + cleanup - Ch 62]
+    WHY -->|FD leak| USE[use closes streams]
+    WHY -->|restart on resume| RANGE[offset/range resume - Ch 17/18]

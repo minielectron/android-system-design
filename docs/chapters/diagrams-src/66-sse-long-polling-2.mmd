@@ -1,0 +1,21 @@
+classDiagram
+    class SseClient {
+        +events: Flow~Event~
+        -lastEventId: String
+        -reconnectWithBackoff()  (Ch 2)
+    }
+    class LongPollClient {
+        +events: Flow~Event~
+        -cursor: Long
+        -holdOpenThenRerequest()
+    }
+    class RealtimeFeed {
+        +subscribe(): Flow~Event~  // SSE or long-poll
+        -merge(event): SSOT upsert (Ch 3/15)
+    }
+    class TransportSelector {
+        +choose(need): WS|SSE|LongPoll|ShortPoll|FCM
+    }
+    RealtimeFeed --> SseClient
+    RealtimeFeed --> LongPollClient
+    TransportSelector ..> RealtimeFeed

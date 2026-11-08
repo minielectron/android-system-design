@@ -1,0 +1,19 @@
+sequenceDiagram
+    actor User
+    participant VM as ViewModel
+    participant Room as Room (SSOT)
+    participant Out as Outbox
+    participant W as SyncWorker (Ch 30)
+    participant Srv as Backend
+
+    User->>VM: add to wishlist (offline)
+    VM->>Room: optimistic insert (syncStatus=PENDING)
+    VM->>Out: enqueue mutation (idempotency key)
+    Room-->>VM: Flow emits -> UI shows item instantly
+    Note over W: connectivity returns -> WorkManager runs
+    W->>Out: read pending mutations
+    W->>Srv: POST wishlist (Idempotency-Key)
+    Srv-->>W: 200 (server id / version)
+    W->>Room: mark SYNCED, update version
+    W->>Out: remove mutation
+    Room-->>VM: Flow emits -> UI shows synced

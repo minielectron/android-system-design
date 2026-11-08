@@ -1,0 +1,8 @@
+flowchart LR
+    BASE[base: last synced] --> CMP{per field: local vs remote vs base}
+    CMP -->|only local changed| TAKEL[take local]
+    CMP -->|only remote changed| TAKER[take remote]
+    CMP -->|both changed same field| TIE[tiebreak LWW / user]
+    TAKEL --> MERGED[merged entity]
+    TAKER --> MERGED
+    TIE --> MERGED

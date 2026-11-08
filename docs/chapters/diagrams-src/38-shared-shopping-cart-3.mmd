@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor User
+    participant Detail as Detail VM
+    participant Repo as CartRepository
+    participant Room as Room (SSOT)
+    participant Badge as Badge VM
+    participant Cart as Cart VM
+
+    User->>Detail: Add to cart
+    Detail->>Repo: add(p1, 1)
+    Repo->>Room: optimistic upsert line (PENDING) in a transaction
+    Repo->>Repo: enqueue outbox (idempotency key, Ch 31/15)
+    Room-->>Badge: Flow emits -> badge = 1 (instant)
+    Room-->>Cart: Flow emits -> cart shows item
+    Room-->>Detail: Flow emits -> "Added"
+    Note over Repo: background sync drains outbox to server cart

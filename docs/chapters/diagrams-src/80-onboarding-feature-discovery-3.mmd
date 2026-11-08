@@ -1,0 +1,21 @@
+sequenceDiagram
+    actor User
+    participant Cfg as Remote config (Ch 41/87)
+    participant Flow as OnboardingFlow
+    participant State as State store (Ch 4)
+    participant An as Analytics (Ch 14)
+
+    Cfg-->>Flow: flow definition + A/B variant
+    loop each step
+        Flow->>State: completed(stepId)?
+        alt not completed
+            Flow->>User: show step (intro/interests/prime)
+            Flow->>An: log step_shown (variant)
+            User->>Flow: complete or skip
+            Flow->>State: markComplete(stepId) -> persist + sync (Ch 4/32)
+            Flow->>An: log step_completed/skipped -> funnel
+        else completed
+            Flow->>Flow: skip (never re-show)
+        end
+    end
+    An-->>Cfg: funnel + variant outcomes (Ch 87)

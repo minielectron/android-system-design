@@ -1,0 +1,20 @@
+flowchart TD
+    subgraph TRIGGERS["invalidation triggers"]
+        WRITE["local write (write-through)"]
+        PUSH["server push / version (Ch 49/32)"]
+        TTL["TTL expiry (Ch 12)"]
+        REL["app release (cache version)"]
+    end
+    WRITE --> INV["Invalidator"]
+    PUSH --> INV
+    TTL --> INV
+    REL --> INV
+    INV --> SCOPE{"scope"}
+    SCOPE -->|entry| E["evict key in all layers"]
+    SCOPE -->|tag/group| T["evict tagged entries"]
+    SCOPE -->|cascade| C["evict dependents (dep graph)"]
+    SCOPE -->|all| A["clear (logout / version mismatch)"]
+    E --> LAYERS["memory + Room + HTTP coherent (Ch 12)"]
+    T --> LAYERS
+    C --> LAYERS
+    LAYERS --> REFETCH["next read refetches / SWR"]

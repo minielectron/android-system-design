@@ -1,0 +1,8 @@
+flowchart TD
+    ISSUE[analytics problem] --> WHY{category}
+    WHY -->|lost events| BUFFER[durable persistent buffer + retry - Ch 31/3]
+    WHY -->|duplicates| DEDUP[stable event id + server dedup - Ch 15]
+    WHY -->|PII/consent| PRIVACY[central redaction + consent gate - Ch 28]
+    WHY -->|battery/data| BATCH[batch + trigger-based + unmetered - Ch 14/47]
+    WHY -->|vendor lock-in| SINK[vendor-agnostic sink abstraction]
+    WHY -->|bad data| SCHEMA[typed versioned schema]

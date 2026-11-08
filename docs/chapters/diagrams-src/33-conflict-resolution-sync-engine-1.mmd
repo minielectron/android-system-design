@@ -1,0 +1,18 @@
+flowchart TD
+    subgraph ENGINE["Sync Engine"]
+        PUSH["push: drain outbox (Ch 31)"]
+        PULL["pull: delta (Ch 32)"]
+        DETECT{"conflict? (version / vector clock)"}
+        RESOLVE["resolve by policy"]
+        APPLY["apply to SSOT (Room, Ch 3)"]
+    end
+    PUSH --> SRV["Backend"]
+    PULL --> SRV
+    PULL --> DETECT
+    DETECT -->|no conflict| APPLY
+    DETECT -->|conflict| RESOLVE
+    RESOLVE -->|LWW / server-wins| APPLY
+    RESOLVE -->|field merge / CRDT| APPLY
+    RESOLVE -->|user-resolved| UI["prompt user -> choice"]
+    UI --> APPLY
+    APPLY --> ROOM["Room entity + version/status"]

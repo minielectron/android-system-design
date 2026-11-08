@@ -1,0 +1,16 @@
+classDiagram
+    class ImageLoaderProvider {
+        +imageLoader: ImageLoader
+        -memoryCache (% heap)
+        -diskCache (shared OkHttp, Ch 1)
+    }
+    class ImageRequestFactory {
+        +build(url, size, transforms): ImageRequest
+    }
+    class AppImage {
+        <<Composable>>
+        +AsyncImage(url, placeholder, error, crossfade)
+    }
+    ImageLoaderProvider --> OkHttpClient
+    AppImage --> ImageRequestFactory
+    ImageRequestFactory --> ImageLoaderProvider

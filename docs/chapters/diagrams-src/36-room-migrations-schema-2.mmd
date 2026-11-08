@@ -1,0 +1,19 @@
+classDiagram
+    class Migrations {
+        +MIGRATION_1_2 Migration
+        +MIGRATION_2_3 Migration
+    }
+    class AutoMigrationSpec {
+        <<interface>>
+    }
+    class RenameSpec {
+        <<@RenameColumn>>
+    }
+    class StreamCartDatabase {
+        +version N
+        +autoMigrations
+        +migrations
+    }
+    StreamCartDatabase --> Migrations
+    StreamCartDatabase --> AutoMigrationSpec
+    AutoMigrationSpec <|.. RenameSpec

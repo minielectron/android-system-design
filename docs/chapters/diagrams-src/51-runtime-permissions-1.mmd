@@ -1,0 +1,13 @@
+flowchart TD
+    TRIGGER["user triggers feature (tap Scan / Enable alerts)"] --> CHECK{checkSelfPermission at use}
+    CHECK -->|granted| PROCEED["run feature"]
+    CHECK -->|not granted| STATE{shouldShowRationale?}
+    STATE -->|true - denied, can ask| RATIONALE["show rationale UI -> request"]
+    STATE -->|false + not asked yet| REQUEST["request directly (first time)"]
+    STATE -->|false + already asked| PERMANENT["permanently denied -> deep-link to Settings (Ch 52)"]
+    RATIONALE --> LAUNCH["Activity Result API launcher"]
+    REQUEST --> LAUNCH
+    LAUNCH --> RESULT{granted?}
+    RESULT -->|yes| PROCEED
+    RESULT -->|no| DEGRADE["disable feature gracefully + explain"]
+    PREFER["prefer no-permission API: Photo Picker, approximate location"] -.-> TRIGGER

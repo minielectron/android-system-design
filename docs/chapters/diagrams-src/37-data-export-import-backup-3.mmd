@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant App
+    participant OS as Android Backup
+    participant Drive as Google Drive
+    participant New as new device
+
+    App->>OS: backup per rules - config and data, NO secrets/caches
+    OS->>Drive: upload (encrypted by Google)
+    Note over New: user reinstalls / new phone
+    Drive-->>New: restore included data
+    New->>New: run schema migrations (Ch 36)
+    New->>New: secrets absent -> re-authenticate (Ch 19/20)
+    New-->>App: restored config/data, user re-logs-in

@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[Play Billing problem] --> WHY{category}
+    WHY -->|auto-refund| ACK[acknowledge/consume within window]
+    WHY -->|piracy/spoof| VERIFY[server-side verification + backend grant - Ch 23]
+    WHY -->|lost/missed entitlement| QUERY[queryPurchases restore + reconcile - Ch 8]
+    WHY -->|double-credit| IDEMPOTENT[idempotent by purchase token - Ch 15]
+    WHY -->|stale sub| RTDN[RTDN-driven backend entitlement - Ch 49]

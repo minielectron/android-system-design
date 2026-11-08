@@ -1,0 +1,4 @@
+flowchart LR
+    BG[app backgrounded - Ch 44] --> DISC[disconnect WSS - battery]
+    DISC --> FCMPUSH[server sends events via FCM - Ch 49]
+    FG[app returns foreground] --> RECONN[reconnect WSS + catch up via REST - Ch 32]

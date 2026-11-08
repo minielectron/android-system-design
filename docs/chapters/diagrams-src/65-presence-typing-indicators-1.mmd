@@ -1,0 +1,12 @@
+flowchart TD
+    PRESENCE["presence: heartbeat while active (Ch 44)"] --> SRV["server presence service: TTL + fan-out (Ch 23)"]
+    SRV -->|no heartbeat within TTL| EXPIRE["auto-expire to offline - no ghost"]
+    SRV --> SUB["client subscribes to presence/typing/count channel (WebSocket, Ch 63)"]
+    TYPING["typing: debounced start/stop (Ch 9)"] --> SRV
+    SUB --> UISTATE["transient UI state (StateFlow, Ch 6) - NOT SSOT"]
+    UISTATE --> EXPIREUI["expires locally: presence TTL / typing timeout / count staleness"]
+    COUNTS["live counts (aggregate from server)"] --> COALESCE["coalesce/sample (backpressure, Ch 63)"]
+    COALESCE --> UISTATE
+    PRIVACY["privacy: opt-out + reciprocal + coarsened (Ch 28)"] -.-> PRESENCE
+    PRIVACY -.-> TYPING
+    LIFECYCLE["background (Ch 44) -> stop sending -> TTL expires user"] -.-> PRESENCE

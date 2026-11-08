@@ -1,0 +1,4 @@
+flowchart LR
+    PUSH[FCM: product p1 changed, Ch 49] --> INV[invalidate p1 + dependents]
+    INV --> REFETCH[background refetch delta Ch 32]
+    REFETCH --> ROOM[update Room SSOT -> UI updates]

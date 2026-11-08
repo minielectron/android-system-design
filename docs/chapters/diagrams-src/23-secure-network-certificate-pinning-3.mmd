@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant App
+    participant Pinner as CertificatePinner
+    participant Srv as Server / MITM
+
+    App->>Srv: TLS ClientHello
+    Srv-->>App: certificate chain
+    App->>Pinner: compute SPKI hash of chain keys
+    alt matches a pin (real server)
+        Pinner-->>App: OK -> proceed over TLS
+    else MITM cert (valid CA, wrong key)
+        Pinner-->>App: no pin match -> SSLPeerUnverifiedException
+        App->>App: fail closed + report
+    end

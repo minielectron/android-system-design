@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant UI as Grid cell
+    participant Coil as Coil (Ch 56)
+    participant CDN as CDN (Ch 56)
+    participant Gen as ThumbnailGenerator
+    participant Cache as Thumbnail cache (Ch 12/25)
+
+    alt remote asset
+        UI->>Coil: load url?w=cellWidth (Ch 56)
+        Coil->>CDN: fetch right-sized thumbnail (edge-cached)
+        CDN-->>UI: thumbnail (cheap)
+    else local asset (video poster)
+        UI->>Cache: get(sourceId+size)
+        alt hit
+            Cache-->>UI: cached thumbnail file
+        else miss
+            UI->>Gen: generate off-main (MediaMetadataRetriever frame)
+            Gen->>Cache: put(key, file) [app-internal]
+            Cache-->>UI: thumbnail file (Coil loads it)
+        end
+    end

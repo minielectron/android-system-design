@@ -1,0 +1,5 @@
+flowchart LR
+    MOMENT[positive moment: completed few orders] --> THROTTLE{rate-limited and not after crash?}
+    THROTTLE -->|yes| REVIEW[Play In-App Review API card]
+    THROTTLE -->|no| SKIP[do not prompt]
+    REVIEW -.->|NEVER custom rate-us dialog - policy| X[avoid]

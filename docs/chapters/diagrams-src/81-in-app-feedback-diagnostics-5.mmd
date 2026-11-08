@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[feedback/diagnostics problem] --> WHY{category}
+    WHY -->|no context| BUNDLE[attach redacted diagnostic bundle + breadcrumbs - Ch 89]
+    WHY -->|PII leak| REDACT[consent + redact logs/screenshot - Ch 28]
+    WHY -->|lost report| RELIABLE[outbox + resumable upload - Ch 31/17]
+    WHY -->|bad reviews/spam| RESPECTFUL[Play in-app review rate-limited + throttled surveys]
+    WHY -->|cant correlate| CORR[correlation id -> crash/analytics - Ch 82/83]

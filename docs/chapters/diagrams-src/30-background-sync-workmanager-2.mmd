@@ -1,0 +1,21 @@
+classDiagram
+    class SyncWorker {
+        +doWork() Result
+    }
+    class SyncScheduler {
+        +requestSync()
+        +schedulePeriodic()
+    }
+    class Constraints {
+        +networkType
+        +requiresCharging
+        +requiresBatteryNotLow
+    }
+    class WorkRequest {
+        +constraints
+        +backoffPolicy
+        +inputData
+    }
+    SyncScheduler --> WorkRequest
+    WorkRequest --> Constraints
+    SyncScheduler ..> SyncWorker

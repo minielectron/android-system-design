@@ -1,0 +1,21 @@
+classDiagram
+    class Analytics {
+        +track(event: AnalyticsEvent)
+        +setConsent(granted)
+        +resetIdentity()  // logout (Ch 42)
+    }
+    class AnalyticsEvent {
+        <<typed, versioned schema>>
+        +name; +params (allowlisted); +timestamp; +eventId (dedup, Ch 15)
+    }
+    class EventPipeline {
+        +enqueue(event)  // consent + redact -> durable buffer (Ch 28/31)
+        +flush(trigger)  // batched upload (Ch 14/47)
+    }
+    class AnalyticsSink {
+        <<interface>>
+        +send(batch)  // vendor / self-hosted (swap/fan-out)
+    }
+    Analytics --> AnalyticsEvent
+    Analytics --> EventPipeline
+    EventPipeline --> AnalyticsSink

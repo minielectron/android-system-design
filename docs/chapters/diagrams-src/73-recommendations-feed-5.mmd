@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[recommendations problem] --> WHY{category}
+    WHY -->|bad/empty| COLDSTART[server fallback: popular/onboarding/contextual - Ch 43]
+    WHY -->|not improving| SIGNALS[fix reliable signal logging - Ch 14]
+    WHY -->|garbage signals| IMPRESSIONS[log on true visibility + dedup]
+    WHY -->|broken experiment| NORERANK[render server order - pin variant - Ch 87]
+    WHY -->|privacy| CONSENT[opt-out + transparency + dismiss - Ch 28]

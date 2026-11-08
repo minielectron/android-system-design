@@ -1,0 +1,7 @@
+flowchart TD
+    READ[read flag] --> SRC{fetched/cached?}
+    SRC -->|yes| VAL{valid?}
+    VAL -->|yes| USE[use value]
+    VAL -->|no| DEF[use default]
+    SRC -->|no offline/first| DEF
+    PROD[broken in prod] --> KILL[kill switch -> off next fetch]

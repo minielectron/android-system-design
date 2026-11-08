@@ -1,0 +1,6 @@
+flowchart LR
+    REQ[open product reviews] --> AGG[server aggregates: 4.3 star, distribution, count]
+    REQ --> LIST[server-ranked page: most helpful - Ch 13/73]
+    LIST --> SAFE[render untrusted content safely - Ch 52]
+    AGG --> SHOW[client DISPLAYS aggregates - never computes]
+    SAFE --> VOTE[helpful vote -> optimistic signal -> server ranking - Ch 72/73]

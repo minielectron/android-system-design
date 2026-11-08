@@ -1,0 +1,24 @@
+classDiagram
+    class ThumbnailRequest {
+        +source: ThumbSource
+        +size: Size
+    }
+    class ThumbSource {
+        <<sealed>>
+        RemoteUrl
+        LocalImage
+        LocalVideo
+        LocalPdf
+        ContentUri
+    }
+    class ThumbnailGenerator {
+        +generate(req): File  // off-main, per-type
+    }
+    class ThumbnailCache {
+        +get(key): File?
+        +put(key, file)
+        +invalidate(sourceId)
+        -key(source, size, version)
+    }
+    ThumbnailRequest --> ThumbSource
+    ThumbnailGenerator --> ThumbnailCache

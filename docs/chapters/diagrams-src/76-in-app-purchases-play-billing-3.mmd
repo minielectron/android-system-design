@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant App as BillingManager
+    participant Play as Google Play
+    participant BE as Backend
+    participant Dev as Play Developer API
+
+    User->>App: buy Premium
+    App->>Play: launchBillingFlow
+    Play-->>App: purchase (token, PURCHASED) via listener
+    App->>BE: verify(token) (authed, Ch 19)
+    BE->>Dev: validate purchase token (Ch 23)
+    Dev-->>BE: valid (+ sub details)
+    BE->>BE: grant entitlement (idempotent by token, Ch 15) -> SSOT
+    BE-->>App: entitlement = Premium active
+    App->>Play: acknowledgePurchase(token)  // WITHIN window -> avoid auto-refund
+    Note over App,Play: NOT acknowledged in ~3 days -> Google auto-refunds + revokes

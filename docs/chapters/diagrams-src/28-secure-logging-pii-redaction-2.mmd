@@ -1,0 +1,21 @@
+classDiagram
+    class Logger {
+        <<interface>>
+        +log(level, tag, event)
+    }
+    class LogEvent {
+        +Level level
+        +String message
+        +String? correlationId
+        +Map attributes
+    }
+    class Sensitive {
+        +String masked()
+        +toString() String
+    }
+    class RedactingTree {
+        +log(...) applies redaction -> sinks
+    }
+    Logger --> LogEvent
+    LogEvent --> Sensitive
+    Logger <|.. RedactingTree

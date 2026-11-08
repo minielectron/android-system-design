@@ -1,0 +1,14 @@
+classDiagram
+    class StreamCartApp {
+        <<@HiltAndroidApp Application>>
+        +onCreate() light init
+    }
+    class AppLifecycleObserver {
+        +onStart() app foreground
+        +onStop() app background
+    }
+    class ScreenCollector {
+        +repeatOnLifecycle(STARTED)
+    }
+    StreamCartApp --> AppLifecycleObserver
+    AppLifecycleObserver ..> ProcessLifecycleOwner

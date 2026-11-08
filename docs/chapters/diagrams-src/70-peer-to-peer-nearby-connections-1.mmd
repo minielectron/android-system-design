@@ -1,0 +1,15 @@
+flowchart TD
+    NEED["offline device-to-device transfer"] --> CHOICE{mechanism}
+    CHOICE -->|default P2P| NEARBY["Nearby Connections (auto BT/BLE/Wi-Fi)"]
+    CHOICE -->|low-level, no Play services| WIFIDIRECT["Wi-Fi Direct (more work)"]
+    CHOICE -->|tiny payload| BLE["BLE (Ch 69)"]
+    NEARBY --> PERM{Bluetooth and NEARBY_WIFI_DEVICES or legacy location? Ch 51/69}
+    PERM -->|denied| DEGRADE["rationale / settings (Ch 51)"]
+    PERM -->|granted| HANDSHAKE["advertise/discover -> mutual-token auth -> accept -> connect"]
+    HANDSHAKE --> PAYLOAD{payload size}
+    PAYLOAD -->|small| BYTES["BYTES payload"]
+    PAYLOAD -->|large| FILE["FILE/STREAM streamed + progress + resume (Ch 61/2)"]
+    FILE --> FGS["connectedDevice FGS for long transfer (Ch 46)"]
+    HANDSHAKE --> SECURITY["authenticate peer + untrusted data + consent (Ch 23/28)"]
+    DROP["disconnect"] --> RETRY["retry+backoff + resume transfer (Ch 2/61)"]
+    LIFECYCLE["session-scoped discovery/advertising - stop promptly (Ch 44)"] -.-> HANDSHAKE

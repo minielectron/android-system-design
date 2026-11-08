@@ -1,0 +1,12 @@
+flowchart TD
+    START["startup / resume (Ch 44/45)"] --> FETCH["fetch version policy (remote config, Ch 41, cached)"]
+    API["API call returns 426 Upgrade Required (Ch 16)"] --> STATE
+    FETCH --> STATE{compare installed versionCode to policy}
+    STATE -->|installed >= nudgeFloor| OK["up-to-date: no action"]
+    STATE -->|recommendedFloor..latest| SOFT["soft update: dismissible nudge"]
+    STATE -->|installed < minSupported| FORCED["forced upgrade: blocking gate"]
+    SOFT --> FLEX["Play flexible update (background) OR store link"]
+    FORCED --> IMMEDIATE["Play immediate update OR store link - always an escape"]
+    IMMEDIATE --> UPDATED["updated -> re-read versionCode -> no loop"]
+    FLEX --> UPDATED
+    ENFORCE["server also rejects unsupported versions (Ch 16/23)"] -.-> API

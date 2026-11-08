@@ -1,0 +1,4 @@
+flowchart LR
+    A[app ships: pin KEY1 + backup KEY2] --> B[server rotates to KEY2]
+    B --> C[clients still trust KEY2 backup -> no outage]
+    C --> D[next app release: pin KEY2 + new backup KEY3]

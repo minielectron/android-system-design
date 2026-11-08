@@ -1,0 +1,5 @@
+flowchart LR
+    VISIBLE[screen STARTED] --> COLLECT[collect Flow]
+    COLLECT --> HIDDEN{STOPPED?}
+    HIDDEN -->|yes| CANCEL[stop collection - no waste]
+    HIDDEN -->|back visible| COLLECT

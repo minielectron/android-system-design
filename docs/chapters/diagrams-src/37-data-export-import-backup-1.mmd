@@ -1,0 +1,20 @@
+flowchart TD
+    subgraph DEVICE["app data"]
+        CONFIG["settings/prefs (durable, non-sensitive)"]
+        DBDATA["Room data"]
+        SECRETS["tokens/keys (Keystore, Ch 20)"]
+        CACHE["caches (regenerable)"]
+    end
+    RULES["backup rules: include config/data, EXCLUDE secrets + caches"]
+    CONFIG --> RULES
+    DBDATA --> RULES
+    SECRETS -.->|EXCLUDE| RULES
+    CACHE -.->|EXCLUDE| RULES
+    RULES --> AUTO["Android Auto Backup -> Google Drive"]
+    AUTO --> RESTORE["restore on reinstall/new device"]
+    RESTORE --> MIGRATE["migrate schema (Ch 36) / re-provision secrets (Ch 20)"]
+
+    EXPORT["user export (GDPR)"] --> SERIALIZE["serialize -> portable JSON/ZIP"]
+    SERIALIZE --> SAF["save via SAF (Ch 25), encrypt if sensitive"]
+    IMPORT["user import"] --> VALIDATE["validate (schema/version/integrity)"] --> MERGE["merge into Room"]
+    SYNC["cloud sync (Ch 32)"] -.->|preferred for important data| DBDATA

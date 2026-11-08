@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant App
+    participant Store as SecureFileStore
+    participant KS as Keystore (Ch 20/24)
+    participant FP as FileProvider
+    participant Viewer as External app
+
+    App->>Store: writePrivate("invoice.pdf", bytes, encrypted=true)
+    Store->>KS: get/unwrap DEK
+    Store->>Store: AES-GCM encrypt -> filesDir/invoice.pdf.enc
+    App->>Store: shareUri("invoice.pdf")
+    Store->>Store: decrypt to a temp cache file (if recipient needs plaintext)
+    Store->>FP: getUriForFile(tempFile)
+    FP-->>App: content://authority/...
+    App->>Viewer: Intent + FLAG_GRANT_READ_URI_PERMISSION
+    Note over Viewer: temporary scoped read, no world exposure

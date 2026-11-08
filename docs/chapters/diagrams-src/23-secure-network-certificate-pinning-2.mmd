@@ -1,0 +1,14 @@
+classDiagram
+    class PinConfig {
+        +String host
+        +List~String~ pins
+        +List~String~ backupPins
+    }
+    class SecureClientFactory {
+        +build() OkHttpClient
+    }
+    class PinFailureReporter {
+        +report(host, chain)
+    }
+    SecureClientFactory --> PinConfig
+    SecureClientFactory --> PinFailureReporter

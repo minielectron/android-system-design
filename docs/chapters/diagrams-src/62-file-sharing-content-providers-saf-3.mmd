@@ -1,0 +1,12 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant FP as FileProvider
+    participant Other as Receiving app
+
+    App->>App: export receipt -> app-specific storage (Ch 25)
+    App->>FP: getUriForFile(file) -> content:// URI
+    App->>Other: ACTION_SEND + FLAG_GRANT_READ_URI_PERMISSION
+    Other->>FP: openInputStream(content URI) [temporary read grant]
+    FP-->>Other: file bytes (that file only)
+    Note over App,Other: no file path exposed - grant is temporary + read-only

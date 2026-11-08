@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[location problem] --> WHY{category}
+    WHY -->|battery| TUNE[priority/interval + stop-promptly + batch - Ch 47]
+    WHY -->|background tracking| FGS[location foreground service - Ch 46]
+    WHY -->|gaps/order| OUTBOX[outbox buffer + ordered flush + START_STICKY - Ch 31/8]
+    WHY -->|noisy| FILTER[accuracy/jump/dedup filter]
+    WHY -->|privacy/Play| PRIVACY[least precision + consent + justified perms - Ch 28/51]

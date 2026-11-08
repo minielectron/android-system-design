@@ -1,0 +1,5 @@
+flowchart LR
+    PULL[pull delta since lastSync] --> CHANGED{local pending for same entity?}
+    CHANGED -->|no| MERGE[upsert remote -> Room]
+    CHANGED -->|yes| CONFLICT[conflict resolution Ch 33]
+    CONFLICT --> RESOLVED[merged result -> Room, status updated]

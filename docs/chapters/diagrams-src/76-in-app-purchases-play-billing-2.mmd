@@ -1,0 +1,21 @@
+classDiagram
+    class BillingManager {
+        +launchFlow(product)
+        +onPurchases(list)  // PurchasesUpdatedListener
+        +queryPurchases()   // restore / recover (Ch 8)
+        +acknowledge(token); +consume(token)
+    }
+    class PurchaseProcessor {
+        +process(purchase)  // verify server-side -> grant -> ack/consume
+    }
+    class EntitlementRepository {
+        +observe(): Flow~Entitlements~  // backend SSOT (Ch 3)
+        +refresh()
+    }
+    class PurchaseState {
+        <<enum>>
+        PENDING; PURCHASED; ACKNOWLEDGED
+    }
+    BillingManager --> PurchaseProcessor
+    PurchaseProcessor --> EntitlementRepository
+    BillingManager --> PurchaseState

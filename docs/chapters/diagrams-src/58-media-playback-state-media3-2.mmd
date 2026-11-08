@@ -1,0 +1,23 @@
+classDiagram
+    class PlaybackService {
+        <<MediaSessionService, Ch 46>>
+        +onGetSession(): MediaSession
+        +onDestroy() release
+    }
+    class PlaybackViewModel {
+        +uiState: StateFlow (from controller)
+        +connectController()
+    }
+    class PositionTracker {
+        +save(mediaId, pos)  // SSOT (Ch 3)
+        +restore(mediaId): pos
+        +syncContinueWatching() // Ch 32
+    }
+    class PlaybackState {
+        +isPlaying; +position; +duration
+        +queue; +tracks; +buffering
+    }
+    PlaybackService --> MediaSession
+    PlaybackViewModel --> MediaController
+    PlaybackViewModel --> PlaybackState
+    PlaybackService --> PositionTracker

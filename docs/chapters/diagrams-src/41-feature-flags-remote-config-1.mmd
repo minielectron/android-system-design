@@ -1,0 +1,10 @@
+flowchart TD
+    REMOTE["Remote config (Firebase / backend) - rollout/targeting/A-B"] --> FETCH["background fetch (Ch 30/44)"]
+    FETCH --> CACHE["cache in DataStore (Ch 4)"]
+    DEFAULTS["compiled-in defaults"] --> HOLDER["FeatureFlags holder (@Singleton, Ch 39)"]
+    CACHE --> HOLDER
+    HOLDER --> ACTIVATE["activate -> stable evaluation"]
+    ACTIVATE --> READ["features read typed flags (observable)"]
+    READ --> UI["UI gates / tuning params"]
+    KILL["kill switch flip"] -.->|next fetch| REMOTE
+    READ -.->|flag != authz| BACKEND["backend enforces entitlements (Ch 26)"]
