@@ -1,0 +1,21 @@
+classDiagram
+    class OnboardingFlow {
+        +steps: List~Step~  (from config, Ch 41)
+        +variant  (A/B, Ch 87)
+    }
+    class Step {
+        <<sealed>>
+        Intro; Interests; PermissionPrime(permission); Discovery(featureId)
+        +id; +shownOnce
+    }
+    class OnboardingStateStore {
+        +isCompleted(stepId): Flow~Boolean~  (DataStore Ch 4)
+        +markComplete(stepId)  // persist + sync (Ch 32)
+    }
+    class DiscoveryManager {
+        +maybeShow(featureId)  // contextual, throttled, once
+        +dismiss(featureId)
+    }
+    OnboardingFlow --> Step
+    OnboardingFlow --> OnboardingStateStore
+    DiscoveryManager --> OnboardingStateStore

@@ -1,0 +1,19 @@
+classDiagram
+    class Review {
+        +clientId (idempotency, Ch 15); +serverId?
+        +rating; +text; +mediaIds; +authorId
+        +status: Posting|Posted|PendingModeration|Failed
+        +helpfulCount; +verifiedPurchase  (SSOT, Ch 3)
+    }
+    class ReviewRepository {
+        +submit(rating, text, photos)  // optimistic + upload + outbox
+        +reviews(productId): PagingData  // server-ranked (Ch 13/73)
+        +aggregates(productId): Flow~Aggregates~  // server-computed
+        +voteHelpful(reviewId)  // optimistic signal (Ch 72)
+        +report(reviewId)
+    }
+    class Aggregates {
+        +average; +distribution; +count  (SERVER-computed)
+    }
+    ReviewRepository --> Review
+    ReviewRepository --> Aggregates

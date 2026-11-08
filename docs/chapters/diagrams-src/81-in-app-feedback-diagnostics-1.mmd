@@ -1,0 +1,14 @@
+flowchart TD
+    REPORT["user: Report a problem / Send feedback"] --> CONSENT{consent to attach diagnostics? Ch 28}
+    CONSENT -->|no| TEXTONLY["send text-only report"]
+    CONSENT -->|yes| BUNDLE["assemble diagnostic bundle"]
+    BUNDLE --> LOGS["recent logs (redacted, Ch 28/89)"]
+    BUNDLE --> INFO["app/device info"]
+    BUNDLE --> CRUMBS["breadcrumbs: recent actions/screens (Ch 89)"]
+    BUNDLE --> SHOT["optional screenshot (user previews, redact/blur, Ch 28)"]
+    BUNDLE --> REDACT["REDACT PII before upload (Ch 28)"]
+    REDACT --> OUTBOX["outbox + resumable upload (Ch 31/17)"]
+    OUTBOX --> SERVER["support/engineering (authed, Ch 19)"]
+    CORR["correlation id -> links crash/analytics (Ch 82/83) without PII"] -.-> OUTBOX
+    REVIEW["Play in-app review API - good moment, rate-limited (policy)"] -.-> REPORT
+    SURVEY["targeted, throttled, dismissible survey (Ch 80/41)"] -.-> REPORT

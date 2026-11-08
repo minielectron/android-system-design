@@ -1,0 +1,21 @@
+classDiagram
+    class CrashReporter {
+        +install()  // JVM + native + ANR handlers
+        +recordNonFatal(throwable)
+        +setCustomKey(k, v)  // redacted (Ch 28)
+        +log(breadcrumb)     // Ch 89
+    }
+    class CrashReport {
+        +stack; +type: Jvm|Native|Anr
+        +breadcrumbs; +deviceState; +correlationId
+    }
+    class Symbolication {
+        +uploadMapping()  // R8/native symbols at release (Ch 27)
+    }
+    class VitalsMonitor {
+        +crashFreeRate; +anrRate  // Android vitals
+        +alertOnRegression()
+    }
+    CrashReporter --> CrashReport
+    CrashReporter --> Symbolication
+    VitalsMonitor ..> CrashReport

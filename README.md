@@ -105,12 +105,19 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 76 | In-App Purchases / Play Billing | [`docs/chapters/76-in-app-purchases-play-billing.md`](./docs/chapters/76-in-app-purchases-play-billing.md) | ✅ Draft |
 | 77 | Wallet & Payments | [`docs/chapters/77-wallet-payments.md`](./docs/chapters/77-wallet-payments.md) | ✅ Draft |
 | 78 | Order Tracking & Live Status | [`docs/chapters/78-order-tracking-live-status.md`](./docs/chapters/78-order-tracking-live-status.md) | ✅ Draft |
+| 79 | Reviews & Ratings | [`docs/chapters/79-reviews-ratings.md`](./docs/chapters/79-reviews-ratings.md) | ✅ Draft |
+| 80 | Onboarding & Feature Discovery | [`docs/chapters/80-onboarding-feature-discovery.md`](./docs/chapters/80-onboarding-feature-discovery.md) | ✅ Draft |
+| 81 | In-App Feedback & Diagnostics | [`docs/chapters/81-in-app-feedback-diagnostics.md`](./docs/chapters/81-in-app-feedback-diagnostics.md) | ✅ Draft |
+
+| 82 | Centralized Logging & Analytics | [`docs/chapters/82-centralized-logging-analytics.md`](./docs/chapters/82-centralized-logging-analytics.md) | ✅ Draft |
+| 83 | Crash & ANR Reporting | [`docs/chapters/83-crash-anr-reporting.md`](./docs/chapters/83-crash-anr-reporting.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
 Lifecycle, Background & Platform (Ch 44–55), VII — Media & Files
-(Ch 56–62), and VIII — Real-Time & Connectivity (Ch 63–70)** are complete.
-**Part IX — Feature Architectures (Ch 71–81)** is in progress (Ch 71–78 done).
+(Ch 56–62), VIII — Real-Time & Connectivity (Ch 63–70), and IX — Feature
+Architectures (Ch 71–81)** are complete.
+**Part X — Performance, Observability & Quality (Ch 82–93)** is in progress (Ch 82–83 done).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

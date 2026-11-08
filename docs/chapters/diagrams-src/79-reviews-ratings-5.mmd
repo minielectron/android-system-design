@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[reviews problem] --> WHY{category}
+    WHY -->|lost/double submit| OUTBOX[optimistic + outbox + idempotency + upload - Ch 72/31/15/17]
+    WHY -->|wrong aggregate/order| SERVER[server-computed aggregates + server-ranked - Ch 73]
+    WHY -->|abuse/injection| MODERATE[server moderation + sanitize render + report - Ch 23/52]
+    WHY -->|own-review inconsistent| SSOT[SSOT one row + idempotent edit - Ch 3/15]
+    WHY -->|ineligible| ELIG[server-enforced eligibility - Ch 23]

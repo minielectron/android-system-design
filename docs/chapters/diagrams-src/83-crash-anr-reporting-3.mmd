@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant Reporter as CrashReporter
+    participant Store as Local persist
+    participant BE as Reporter backend
+    participant Vitals as Android vitals
+
+    User->>App: triggers a crash (uncaught exception)
+    App->>Reporter: UncaughtExceptionHandler -> capture stack + context (breadcrumbs Ch 89, state)
+    Reporter->>Reporter: redact PII (Ch 28)
+    Reporter->>Store: persist report (process is dying - can't upload now)
+    Note over App: process dies
+    User->>App: relaunches
+    App->>Reporter: on launch -> upload persisted report (Ch 44)
+    Reporter->>BE: report -> deobfuscate via mapping (Ch 27) + group/dedup
+    BE->>Vitals: crash counted -> crash-free rate (release-over-release)

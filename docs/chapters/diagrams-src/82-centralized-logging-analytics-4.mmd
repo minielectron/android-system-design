@@ -1,0 +1,6 @@
+flowchart LR
+    CONSENT[user consent state - Ch 28] --> GATE{consented?}
+    GATE -->|no| STOP[do not collect/send - or essential-only]
+    GATE -->|yes| COLLECT[collect redacted events]
+    LOGOUT[logout / account switch - Ch 42] --> RESET[reset identity - new anon id, flush/clear]
+    RESET --> COLLECT

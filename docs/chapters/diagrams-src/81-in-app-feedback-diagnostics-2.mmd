@@ -1,0 +1,21 @@
+classDiagram
+    class FeedbackReport {
+        +text; +category; +severity
+        +bundle: DiagnosticBundle?  (consent-gated)
+        +correlationId  (links crash/analytics, Ch 82/83)
+    }
+    class DiagnosticBundle {
+        +redactedLogs; +appDeviceInfo
+        +breadcrumbs (Ch 89); +screenshotUri?
+    }
+    class FeedbackRepository {
+        +submit(report)  // redact -> outbox + resumable upload (Ch 28/31/17)
+    }
+    class ReviewPrompter {
+        +maybeAsk()  // Play in-app review, rate-limited (policy)
+    }
+    class SurveyManager {
+        +maybeShow(campaign)  // targeted, throttled, once (Ch 80/41)
+    }
+    FeedbackReport --> DiagnosticBundle
+    FeedbackRepository --> FeedbackReport

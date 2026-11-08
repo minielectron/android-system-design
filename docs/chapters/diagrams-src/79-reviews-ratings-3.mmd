@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant Repo as ReviewRepository
+    participant SSOT as Room (Ch 3)
+    participant Up as Upload (Ch 17)
+    participant Out as Outbox (Ch 31)
+    participant Srv as Server (moderate/rank/aggregate, Ch 73)
+
+    User->>Repo: submit 5 stars, text, 2 photos
+    Repo->>SSOT: insert clientId, status Posting (optimistic, Ch 72)
+    Repo->>Up: upload photos -> media ids (Ch 17)
+    Repo->>Out: enqueue SubmitReview clientId as idempotency key (Ch 15/31)
+    Out->>Srv: submit review authed + eligible (Ch 23)
+    Srv->>Srv: moderate + persist + update aggregates/ranking
+    Srv-->>Out: Posted or PendingModeration (+ serverId)
+    Out->>SSOT: status + serverId (reconcile)
+    Note over Out,Srv: offline/death -> outbox retries. idempotency dedups

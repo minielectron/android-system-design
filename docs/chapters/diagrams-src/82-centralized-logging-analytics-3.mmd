@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant Feature
+    participant API as Analytics (one API)
+    participant Pipe as EventPipeline
+    participant Buf as Durable buffer (Ch 31/3)
+    participant Sink as AnalyticsSink (vendor)
+
+    User->>Feature: taps add-to-cart
+    Feature->>API: track(AddToCart(productId))
+    API->>Pipe: consent? (Ch 28)
+    Pipe->>Pipe: redact PII + allowlist params (Ch 28)
+    Pipe->>Buf: enqueue (immediate, non-blocking, offline/death-safe)
+    Note over Buf: event waits durably - NOT sent inline
+    Buf->>Pipe: flush trigger (size/time/background, Ch 14/47)
+    Pipe->>Sink: upload batch (WorkManager, unmetered pref, Ch 30/47)
+    Sink-->>Pipe: ack -> remove from buffer (at-least-once + server dedup, Ch 15)

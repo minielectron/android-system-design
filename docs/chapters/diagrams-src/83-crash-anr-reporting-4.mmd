@@ -1,0 +1,5 @@
+flowchart LR
+    BLOCK[main thread blocked >5s] --> SYS[system records ANR + traces]
+    RELAUNCH[next launch] --> AEI[ApplicationExitInfo REASON_ANR + main-thread trace]
+    AEI --> REPORT[report ANR with main-thread stack + context]
+    REPORT --> FIX[identify blocking call -> move off-main - Ch 1]

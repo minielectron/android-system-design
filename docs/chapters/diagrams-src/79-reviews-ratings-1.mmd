@@ -1,0 +1,13 @@
+flowchart TD
+    WRITE["write review: stars + text + photos"] --> ELIG{server: eligible? verified purchase, Ch 23}
+    ELIG -->|no| HIDE["hide/disable review CTA"]
+    ELIG -->|yes| OPT["optimistic insert -> SSOT status Posting (Ch 72)"]
+    OPT --> UPLOAD["upload photos (Ch 17) -> media ids"]
+    UPLOAD --> OUTBOX["submit via outbox + idempotency key (Ch 31/15)"]
+    OUTBOX --> SERVER["server: moderate + persist + rank + aggregate (Ch 73)"]
+    SERVER --> STATUS["status Posted / PendingModeration / Failed"]
+    LIST["review list: server-ranked + paginated (Ch 13/73)"] --> RENDER["render untrusted content safely (Ch 52)"]
+    AGG["aggregates: average + distribution + count = SERVER-computed (Ch 73)"] --> DISPLAY["client displays aggregates"]
+    VOTE["helpful vote -> optimistic signal (Ch 72) -> server ranking (Ch 73)"] --> SERVER
+    REPORT["report/flag -> server moderation"] --> SERVER
+    STATUS --> SSOT["user's own review consistent in SSOT (Ch 3)"]
