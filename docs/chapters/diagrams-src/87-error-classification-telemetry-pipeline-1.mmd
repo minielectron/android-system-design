@@ -1,0 +1,16 @@
+flowchart TD
+    SIGNALS["signals: errors/crashes (Ch 83), logs, metrics (Ch 85), traces (Ch 84), events (Ch 82)"] --> CLASSIFY["classify error"]
+    CLASSIFY --> FATAL{fatal or non-fatal}
+    CLASSIFY --> TRANS{transient or permanent}
+    CLASSIFY --> DOMAIN["domain: network/db/ui/payment"]
+    FATAL --> FINGERPRINT["fingerprint + deduplicate - stable signature (Ch 83)"]
+    TRANS --> FINGERPRINT
+    DOMAIN --> FINGERPRINT
+    FINGERPRINT --> SEVERITY["rank by severity + velocity"]
+    SEVERITY --> ROUTE{route by severity}
+    ROUTE -->|fatal + high impact + new| PAGE["page / alert (Ch 83)"]
+    ROUTE -->|handled/rare| DASH["dashboard"]
+    ROUTE -->|transient/expected| SAMPLE["sample + aggregate (Ch 82)"]
+    CORRELATE["correlate via trace/correlation/session ids (Ch 84)"] -.-> FINGERPRINT
+    REDACT["redact PII + consent (Ch 28)"] -.-> CLASSIFY
+    BUFFER["durable buffer + batch + sample (Ch 82)"] -.-> SIGNALS

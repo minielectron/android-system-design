@@ -1,0 +1,21 @@
+classDiagram
+    class TraceContext {
+        +traceId; +spanId; +sampled  (W3C traceparent)
+    }
+    class CorrelationManager {
+        +sessionId  (opaque, non-PII)
+        +currentCorrelationId(): String
+        +startAction(): String
+    }
+    class TracingInterceptor {
+        <<OkHttp>>
+        +intercept()  inject traceparent + X-Correlation-Id + new span
+    }
+    class ObservabilityBinder {
+        +bindAnalytics(id)  (Ch 82)
+        +bindCrash(id)      (Ch 83)
+        +bindFeedback(id)   (Ch 81)
+    }
+    TracingInterceptor --> TraceContext
+    TracingInterceptor --> CorrelationManager
+    ObservabilityBinder --> CorrelationManager

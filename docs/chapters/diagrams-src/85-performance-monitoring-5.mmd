@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[perf monitoring problem] --> WHY{category}
+    WHY -->|regression shipped| REGRESSION[release-over-release percentiles + alert/rollback - Ch 83/41]
+    WHY -->|tail hidden| PERCENTILES[p95/p99 by device/OS - not averages]
+    WHY -->|jank unmeasured| JANKSTATS[JankStats frame metrics]
+    WHY -->|lab-only| RUM[field RUM + lab gate - Ch 88]
+    WHY -->|not actionable| CONTEXT[correlate device/network/trace - Ch 84/68]

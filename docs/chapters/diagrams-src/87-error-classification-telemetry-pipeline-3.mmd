@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant App as App (error occurs)
+    participant Cls as ErrorClassifier
+    participant FP as Fingerprinter
+    participant Pipe as TelemetryPipeline (Ch 82)
+    participant Backend as Backend + routing
+
+    App->>Cls: throwable + context (trace id, Ch 84)
+    Cls->>Cls: classify - fatal/non-fatal, transient/permanent, domain
+    Cls->>FP: fingerprint - stable signature (Ch 83)
+    FP-->>Cls: group key
+    Cls->>Pipe: TelemetryEvent (classified, fingerprinted, correlated Ch 84)
+    Pipe->>Pipe: redact PII (Ch 28) -> buffer -> batch -> sample by severity (Ch 82)
+    Pipe->>Backend: upload (keep all fatals, sample transients)
+    Backend->>Backend: dedupe by fingerprint, rank by severity and velocity
+    Backend-->>App: fatal + new-in-release + high impact -> PAGE (Ch 83)
+    Backend-->>App: transient/expected -> aggregate only

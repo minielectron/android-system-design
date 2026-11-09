@@ -1,0 +1,21 @@
+classDiagram
+    class TelemetryEvent {
+        +type; +severity; +domain; +fingerprint
+        +transient; +fatal; +traceId; +context  (Ch 84)
+    }
+    class ErrorClassifier {
+        +classify(throwable): TelemetryEvent   // fatal/non-fatal, transient/permanent, domain
+    }
+    class Fingerprinter {
+        +fingerprint(throwable): String   // stable signature (Ch 83)
+    }
+    class SeverityRouter {
+        +route(event): Route   // page / dashboard / sample (Ch 83/82)
+    }
+    class TelemetryPipeline {
+        +report(event)   // redact (Ch 28) -> buffer -> batch -> sample (Ch 82)
+    }
+    ErrorClassifier --> TelemetryEvent
+    ErrorClassifier --> Fingerprinter
+    TelemetryEvent --> SeverityRouter
+    TelemetryEvent --> TelemetryPipeline

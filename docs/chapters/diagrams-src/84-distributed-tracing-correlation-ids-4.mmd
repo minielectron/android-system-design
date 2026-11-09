@@ -1,0 +1,5 @@
+flowchart LR
+    REQ[request - span A, trace T] --> FAIL{transient failure? Ch 2}
+    FAIL -->|retry| REQ2[retry - span B, SAME trace T, same correlation]
+    REQ2 --> OK[succeeds - both spans in trace T]
+    FAIL -->|ok| DONE[done]

@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant App as Assigner (Ch 40)
+    participant UI as Screen
+    participant Pipe as Analytics (Ch 82)
+    participant Backend as Analyzer + guardrails
+
+    User->>App: open experiment screen
+    App->>App: variant = hash(stableId + expId) < fraction ? B : A - deterministic/sticky
+    App->>UI: render variant (A or B)
+    UI->>Pipe: log EXPOSURE (expId, variant) when actually shown - PII-safe (Ch 28)
+    User->>UI: converts / engages
+    UI->>Pipe: log OUTCOME (primary metric)
+    Pipe->>Backend: exposure + outcome events (Ch 82)
+    Backend->>Backend: measure primary effect and significance, check guardrails (crash Ch 83, latency Ch 85)
+    Backend-->>App: guardrail breach -> kill variant via remote config (Ch 40/41)
+    Backend-->>App: significant lift + guardrails ok -> ramp to 100 percent (ship)

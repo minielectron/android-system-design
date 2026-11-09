@@ -1,0 +1,11 @@
+flowchart TD
+    ACTION["user action (e.g., checkout, Ch 75)"] --> CORR["correlation/session id (opaque) + start trace"]
+    CORR --> ANALYTICS["set as analytics super-property (Ch 82)"]
+    CORR --> CRASH["set as crash custom key (Ch 83)"]
+    CORR --> FEEDBACK["attach to feedback (Ch 81)"]
+    REQ["outgoing request"] --> INTERCEPTOR["OkHttp interceptor (Ch 1): inject traceparent + X-Correlation-Id + new span"]
+    INTERCEPTOR --> SERVER["backend: continue trace + log correlation id"]
+    SERVER --> TRACE["one end-to-end distributed trace across services"]
+    JOIN["one correlation id joins: client logs/analytics/crashes + backend traces"] -.-> TRACE
+    SAMPLE["sample traces, correlation always-on"] -.-> INTERCEPTOR
+    OPAQUE["opaque, non-PII ids (Ch 28)"] -.-> CORR

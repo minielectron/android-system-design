@@ -111,13 +111,18 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 
 | 82 | Centralized Logging & Analytics | [`docs/chapters/82-centralized-logging-analytics.md`](./docs/chapters/82-centralized-logging-analytics.md) | ✅ Draft |
 | 83 | Crash & ANR Reporting | [`docs/chapters/83-crash-anr-reporting.md`](./docs/chapters/83-crash-anr-reporting.md) | ✅ Draft |
+| 84 | Distributed Tracing & Correlation IDs | [`docs/chapters/84-distributed-tracing-correlation-ids.md`](./docs/chapters/84-distributed-tracing-correlation-ids.md) | ✅ Draft |
+| 85 | Performance Monitoring | [`docs/chapters/85-performance-monitoring.md`](./docs/chapters/85-performance-monitoring.md) | ✅ Draft |
+| 86 | A/B Testing & Experimentation | [`docs/chapters/86-ab-testing-experimentation.md`](./docs/chapters/86-ab-testing-experimentation.md) | ✅ Draft |
+| 87 | Error Classification & Telemetry Pipeline | [`docs/chapters/87-error-classification-telemetry-pipeline.md`](./docs/chapters/87-error-classification-telemetry-pipeline.md) | ✅ Draft |
+| 88 | Cold Start Optimization | [`docs/chapters/88-cold-start-optimization.md`](./docs/chapters/88-cold-start-optimization.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
 Lifecycle, Background & Platform (Ch 44–55), VII — Media & Files
 (Ch 56–62), VIII — Real-Time & Connectivity (Ch 63–70), and IX — Feature
 Architectures (Ch 71–81)** are complete.
-**Part X — Performance, Observability & Quality (Ch 82–93)** is in progress (Ch 82–83 done).
+**Part X — Performance, Observability & Quality (Ch 82–93)** is in progress (Ch 82–88 done).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant OS as Android (Zygote)
+    participant App as Application
+    participant Act as First Activity (SplashScreen)
+    participant BG as Background (Ch 3)
+
+    OS->>App: fork process -> Application.onCreate (AOT-compiled via baseline profile, Ch 92)
+    App->>App: CRITICAL init only - crash handler (Ch 83), DI essentials (Ch 46)
+    App->>BG: defer/parallel - analytics, image (Ch 59), flags (Ch 40) off-main (Ch 3)
+    App->>Act: launch first Activity - SplashScreen themed window (no extra activity)
+    Act->>Act: setContent - render SKELETON (Ch 93) - NO main-thread I/O
+    Act-->>OS: FIRST FRAME drawn = TTID (fast)
+    Act->>BG: load home data off-main (Ch 3/5) - lazy repo built on first use (Ch 46)
+    BG-->>Act: data ready
+    Act->>Act: reportFullyDrawn() = TTFD (Ch 45)

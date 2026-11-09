@@ -1,0 +1,8 @@
+flowchart TD
+    ISSUE[telemetry problem] --> WHY{category}
+    WHY -->|flood/noise| FPDEDUP[fingerprint/dedup + severity sampling - Ch 83/82]
+    WHY -->|false alarm| CLASSIFY[classify transient vs permanent - Ch 67]
+    WHY -->|duplicate issues| SIGNATURE[stable type+location fingerprint - Ch 83]
+    WHY -->|PII leak| REDACT[redact at boundary - Ch 28]
+    WHY -->|un-investigable| CORRELATE[correlate ids - Ch 84]
+    WHY -->|alert fatigue| ROUTE[severity routing - Ch 83]

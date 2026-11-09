@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[experiment problem] --> WHY{category}
+    WHY -->|treatment harmful| GUARD[guardrails + auto-kill - Ch 40/41/83/85]
+    WHY -->|flickering| STICKY[deterministic sticky hash - Ch 40]
+    WHY -->|false win| STATS[significance + power + pre-register - no p-hacking]
+    WHY -->|double-count| DEDUPE[once-per-user exposure]
+    WHY -->|privacy| OPAQUE[opaque PII-safe key - Ch 28]

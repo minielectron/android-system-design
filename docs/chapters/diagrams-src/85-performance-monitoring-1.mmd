@@ -1,0 +1,15 @@
+flowchart TD
+    FIELD["real users (field) - long tail of devices/networks"] --> CAPTURE["capture perf signals"]
+    CAPTURE --> STARTUP["startup: cold/warm, TTID/TTFMC (Ch 45)"]
+    CAPTURE --> FRAMES["frame metrics: janky + frozen frames (JankStats)"]
+    CAPTURE --> SCREEN["screen-load latency per screen"]
+    CAPTURE --> CUSTOM["custom timings: checkout/search/feed (traces, Ch 84)"]
+    STARTUP --> PIPELINE["report via analytics pipeline (Ch 82) + perf SDK + Android vitals"]
+    FRAMES --> PIPELINE
+    SCREEN --> PIPELINE
+    CUSTOM --> PIPELINE
+    PIPELINE --> PERCENTILES["aggregate as p50/p90/p95/p99 by device/OS/release - NOT averages"]
+    PERCENTILES --> REGRESSION["regression detection release-over-release"]
+    REGRESSION --> ALERT["alert + gate/rollback (Ch 83/41)"]
+    CONTEXT["correlate with device/network/version + correlation id (Ch 84)"] -.-> PIPELINE
+    PRIVACY["low-overhead + PII-safe + consent (Ch 28/82)"] -.-> CAPTURE

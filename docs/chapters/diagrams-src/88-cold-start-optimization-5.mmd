@@ -1,0 +1,8 @@
+flowchart TD
+    SLOW[slow cold start] --> WHY{where is the time}
+    WHY -->|Application.onCreate| TRIM[trim + defer/parallel/off-main - App Startup + Ch 3]
+    WHY -->|main-thread I/O| OFFMAIN[Dispatchers.IO / defer - Ch 3]
+    WHY -->|eager graph| LAZY[Lazy/Provider - Ch 46]
+    WHY -->|JIT cold| AOT[Baseline Profiles + R8 - Ch 92]
+    WHY -->|blocked first frame| SKELETON[skeleton at TTID, data by TTFD - Ch 45/93]
+    WHY -->|measured wrong| MEASURE[Macrobenchmark + field percentiles, real devices - Ch 85/92]

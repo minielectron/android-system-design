@@ -1,0 +1,10 @@
+flowchart TD
+    FORK["process fork (Zygote)"] --> APPCREATE["Application.onCreate - AUDIT + trim"]
+    APPCREATE --> CRITICAL["critical only: crash handler (Ch 83), DI essentials (Ch 46)"]
+    APPCREATE --> DEFER["defer/parallel/off-main: analytics, image (Ch 59), flags (Ch 40) - App Startup + Ch 3"]
+    CRITICAL --> ACTIVITY["first Activity - SplashScreen API (no extra activity)"]
+    ACTIVITY --> SKELETON["render SKELETON (Ch 93) -> FIRST FRAME = TTID"]
+    SKELETON --> LOADDATA["load data off-main (Ch 3/5) -> fully drawn = TTFD (reportFullyDrawn, Ch 45)"]
+    LAZY["lazy DI graph: Lazy/Provider - build on first use (Ch 46)"] -.-> ACTIVITY
+    AOT["Baseline Profiles + R8 - AOT pre-compile startup path (Ch 92)"] -.-> FORK
+    MEASURE["measure: Macrobenchmark (lab, Ch 92) + field vitals (Ch 85) - percentiles, representative devices"] -.-> SKELETON

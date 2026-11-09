@@ -1,0 +1,5 @@
+flowchart LR
+    ID[stable opaque id] --> HASH[hash id + experiment id]
+    HASH --> BUCKET[bucket 0..99 - deterministic]
+    BUCKET --> SAME[same variant every launch/device - no flicker]
+    CONFIG[remote fraction/kill - Ch 40] -.-> BUCKET
