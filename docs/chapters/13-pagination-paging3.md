@@ -499,6 +499,7 @@ dedup under a simulated insert, and scroll restoration.
 > 40+ questions.
 
 **Fundamentals**
+
 1. *Why paginate?* Large lists can't be loaded/held at once — OOM, slow, huge
    payloads.
 2. *Offset vs cursor?* Offset = page/limit, random access, **breaks on mutation**;
@@ -510,6 +511,7 @@ dedup under a simulated insert, and scroll restoration.
    network); mediator fetches network when Room is exhausted and persists.
 
 **Architecture**
+
 6. *How is offline-first paging built?* `PagingSource` on Room DAO +
    `RemoteMediator` filling Room from network.
 7. *What are remote keys?* Stored prev/next cursors telling the mediator what to
@@ -520,6 +522,7 @@ dedup under a simulated insert, and scroll restoration.
    doesn't re-fetch.
 
 **Kotlin/Paging**
+
 10. *`LoadType` meanings?* REFRESH (initial/pull-to-refresh), APPEND (end),
     PREPEND (start).
 11. *How is append error handled?* Keep loaded pages; expose append `LoadState.
@@ -530,6 +533,7 @@ dedup under a simulated insert, and scroll restoration.
     fixed-size; else disabled.
 
 **Consistency**
+
 14. *Why does offset duplicate/skip?* Inserts/deletes shift offsets between page
     loads.
 15. *How does cursor avoid it?* The token points at a stable item, not a numeric
@@ -537,35 +541,42 @@ dedup under a simulated insert, and scroll restoration.
 16. *Prepend for new feed items?* Load before the first using `prevKey`.
 
 **Concurrency**
+
 17. *Boundary double-load?* Paging serializes loads per type.
 18. *Atomic cache write?* `db.withTransaction { clear; upsert; keys }`.
 19. *Dedup concurrent page fetches?* Single-flight (Ch 11) if needed.
 
 **Caching**
+
 20. *How add freshness/TTL to the paged cache?* `InitializeAction.SKIP_INITIAL_REFRESH`
     when cache fresh (Ch 12); else LAUNCH.
 21. *Pull-to-refresh?* REFRESH clears + reloads page 1 transactionally.
 
 **Memory/perf**
+
 22. *Bound memory on infinite lists?* `maxSize` drops far pages.
 23. *Hide latency?* `prefetchDistance`.
 24. *Smooth scroll?* Stable keys + lazy images + bounded work per row.
 
 **Security**
+
 25. *Per-account cache?* Scope + clear on logout; cursors opaque/server-validated.
 26. *Authorization per page?* Server authorizes each page.
 
 **Scalability**
+
 27. *10M-item catalog?* Cursor + server indexing + Room cache + `maxSize`.
 28. *Multi-source feed?* Separate pagers or a server-merged feed.
 
 **Testing**
+
 29. *How test RemoteMediator?* Call `load()` with crafted `PagingState`; assert
     DB + cursor + result.
 30. *How test paging flow?* `asSnapshot { scrollTo(...) }`.
 31. *How test dedup?* Simulate insert; assert no duplicates with cursor.
 
 **Production debugging**
+
 32. *Duplicates in feed?* Offset on mutating data → cursor.
 33. *Double loads on rotation?* Missing `cachedIn`.
 34. *List clears on append error?* Error mishandled (must keep pages).
@@ -573,6 +584,7 @@ dedup under a simulated insert, and scroll restoration.
 36. *OOM on long scroll?* No `maxSize`.
 
 **Trade-offs**
+
 37. *Paging vs manual load-more?* Paging handles the hard parts; manual is
     bug-prone.
 38. *Placeholders pros/cons?* Scrollbar accuracy vs needing known count/fixed size.
@@ -631,10 +643,18 @@ remote keys, `LoadState`/`LoadType`, placeholders, `cachedIn`, `prefetchDistance
 no `maxSize` (OOM); endless spinner (no `endOfPaginationReached`); per-account leak
 (no clear on logout); manual load-more reinventing Paging badly.
 
-**Checklist:** ☐ cursor for feeds ☐ Room + `RemoteMediator` ☐ remote_keys ☐
-transactional writes ☐ `LoadState` footers + retry ☐ keep pages on append error
-☐ `cachedIn` ☐ `maxSize` + `prefetchDistance` ☐ stable keys + lazy images ☐
-per-account clear on logout.
+**Checklist:**
+
+- [ ] cursor for feeds
+- [ ] Room + `RemoteMediator`
+- [ ] remote_keys
+- [ ] transactional writes
+- [ ] `LoadState` footers + retry
+- [ ] keep pages on append error
+- [ ] `cachedIn`
+- [ ] `maxSize` + `prefetchDistance`
+- [ ] stable keys + lazy images
+- [ ] per-account clear on logout.
 
 **Key APIs:** `Pager`, `PagingConfig`, `PagingSource`, `RemoteMediator`,
 `MediatorResult`, `LoadType`/`LoadState`, `PagingData.map`, `cachedIn`,

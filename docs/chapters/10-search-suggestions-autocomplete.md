@@ -484,6 +484,7 @@ without searching.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Autocomplete vs search results?* Suggestions help form the query; results
    answer it. Autocomplete sits above Ch 9.
 2. *What does it reuse from Ch 9?* Debounce, `distinctUntilChanged`,
@@ -496,6 +497,7 @@ without searching.
    typing.
 
 **Architecture**
+
 6. *How merge multiple sources?* Combine via `combine`/within `flatMapLatest`,
    dedup by normalized text, rank (recents-match first, then remote, then
    trending).
@@ -505,6 +507,7 @@ without searching.
    cancelled.
 
 **Kotlin/Flow**
+
 9. *How render local then remote?* Emit local immediately inside the inner flow,
    then emit merged after the suggestion call.
 10. *Why dedup by normalized text?* Sources overlap (recent "shoes" + remote
@@ -512,32 +515,39 @@ without searching.
 11. *How do recents update reactively?* `combine(query, recents.recents)`.
 
 **Concurrency**
+
 12. *Out-of-order suggestions?* Prevented by `flatMapLatest` (Ch 9).
 13. *Concurrent recents writes?* DataStore atomic `edit`.
 
 **Networking**
+
 14. *Reduce suggestion requests?* Debounce, dedup, per-prefix LRU cache, min
     length.
 15. *Handle remote failure?* Silently degrade to local; never error the dropdown.
 
 **Privacy/security**
+
 16. *Is history PII?* Yes — per-account, clear on logout, redact logs.
 17. *Cross-account leak risk?* Don't cache suggestions/recents across accounts.
 18. *Incognito search?* Suppress history/suggestions in sensitive contexts.
 
 **Performance**
+
 19. *Keep it instant?* Local-first + cap list + keyed rows + stable types.
 20. *Data-saver?* Longer debounce / skip remote on metered (Ch 91).
 
 **Scalability**
+
 21. *Add catalog prefix matching offline?* Local FTS (Ch 35) merged with remote.
 22. *Personalized ranking?* Server-side ranking; client just displays.
 
 **Testing**
+
 23. *How test merge/dedup?* Virtual time + fakes; assert ordered deduped list.
 24. *How test graceful degradation?* Fake remote failure; assert local-only.
 
 **Production debugging**
+
 25. *Dropdown flicker on remote arrival?* Unstable merge order; pin local on top.
 26. *Request spikes?* Debounce defeated (Flow rebuilt per recomposition, Ch 9).
 27. *Recents from previous user shown?* Missing clear-on-logout.
@@ -594,9 +604,18 @@ dedup/ranking, suggestion caching, history privacy.
 dropdown on remote failure; logging raw queries; rebuilding the Flow per
 recomposition (debounce defeated).
 
-**Checklist:** ☐ reuse Ch 9 pipeline ☐ recents (per-account, capped) ☐ zero-query
-state ☐ local-first emit ☐ merge+dedup+rank ☐ silent remote degradation
-☐ per-prefix cache ☐ clear on logout ☐ redacted logs ☐ run vs complete actions.
+**Checklist:**
+
+- [ ] reuse Ch 9 pipeline
+- [ ] recents (per-account, capped)
+- [ ] zero-query state
+- [ ] local-first emit
+- [ ] merge+dedup+rank
+- [ ] silent remote degradation
+- [ ] per-prefix cache
+- [ ] clear on logout
+- [ ] redacted logs
+- [ ] run vs complete actions.
 
 **Key APIs:** `combine`, `debounce`, `flatMapLatest`, `distinctUntilChanged`,
 `stateIn`, DataStore `stringSetPreferencesKey`/`edit`, `LruCache`,

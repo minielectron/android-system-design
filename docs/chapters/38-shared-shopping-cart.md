@@ -538,6 +538,7 @@ screen update together.
 > 40+ questions. (A canonical "design the shared cart" interview.)
 
 **Fundamentals**
+
 1. *How do multiple screens share the cart?* One SSOT (Room repository); every
    screen's ViewModel observes the same `Flow` — not a shared ViewModel/mutable
    singleton.
@@ -550,6 +551,7 @@ screen update together.
 5. *How are totals kept in sync?* Derived (computed) from lines, never stored.
 
 **Writes / offline**
+
 6. *Add to cart offline?* Optimistic local write + outbox (Ch 31) + idempotency
    (Ch 15); syncs later.
 7. *Why idempotency?* Retries/replays shouldn't duplicate lines (Ch 15).
@@ -557,6 +559,7 @@ screen update together.
 9. *Rapid quantity changes?* Debounce/compact before sync (Ch 31).
 
 **Consistency / concurrency**
+
 10. *Add same product from two screens?* Unique (account,product) + upsert-increment
     → one line.
 11. *Two devices edit the cart?* Conflict resolution (Ch 33): sum-deltas (CRDT-ish)
@@ -565,6 +568,7 @@ screen update together.
 13. *Optimistic vs pessimistic?* Optimistic for UX/offline; reconcile on sync.
 
 **Guest / account**
+
 14. *Guest→user merge?* On login, union lines, sum/LWW quantities, push merged
     (Ch 33).
 15. *Why merge (not discard)?* Don't lose the guest's cart (conversion).
@@ -572,34 +576,40 @@ screen update together.
 17. *Account switch?* `flatMapLatest` on accountId → load that cart.
 
 **Server reconcile**
+
 18. *Price changed?* Delta (Ch 32) updates unit price; recompute totals; notify.
 19. *Out of stock?* Mark line unavailable at sync/checkout; surface.
 20. *Who owns price/availability?* The backend (authoritative); client totals are
     display-only (Ch 75).
 
 **Scoping/lifecycle**
+
 21. *Repository scope?* App-scoped singleton (survives navigation), per-account data.
 22. *When a shared ViewModel instead?* Narrow, ephemeral sharing of transient UI state
     among a tight screen group (Ch 40).
 23. *Survive rotation?* ViewModel + SSOT; `WhileSubscribed`.
 
 **Security**
+
 24. *Trust client totals for payment?* No — backend re-prices at checkout (Ch 75).
 25. *Cross-account leak?* Per-account scope + clear on logout.
 26. *Idempotency for payment-adjacent ops?* Yes (Ch 15).
 
 **Performance**
+
 27. *Avoid per-screen refetch?* One shared SSOT `Flow`.
 28. *Stepper spam?* Compact outbox (Ch 31).
 29. *Cart fetch stampede on open?* Single-flight (Ch 11).
 
 **Testing**
+
 30. *How test cross-screen consistency?* Multiple observers of the repo; one write
     updates all.
 31. *How test offline add?* Fake offline; assert optimistic + outbox.
 32. *How test merge?* Guest cart + login → assert preserved.
 
 **Production debugging**
+
 33. *Badge ≠ cart?* Not sharing the SSOT.
 34. *Items lost offline?* No durable outbox.
 35. *Empty after login?* No merge.
@@ -607,6 +617,7 @@ screen update together.
 37. *Wrong cart after switch?* Not per-account.
 
 **Design/scale**
+
 38. *Real-time cart (price drops)?* WebSocket push (Ch 63) → update SSOT.
 39. *Inventory reservation?* Server-authoritative; client shows pending.
 40. *Cross-device conflict policy?* Sum-deltas CRDT or LWW per line (Ch 33).
@@ -667,11 +678,19 @@ guest→user merge, cross-device conflict resolution, server reconcile.
 (drift); no guest merge (lost cart); no per-account scope (cross-user leak); duplicate
 lines (no unique index/upsert); trusting client totals for payment.
 
-**Checklist:** ☐ one Room SSOT + singleton repo ☐ all screens observe same `Flow`
-☐ optimistic + outbox + idempotency (Ch 31/15) ☐ offline (Ch 29) ☐ derived totals
-☐ unique (account,product) + upsert-increment ☐ per-account + clear on logout ☐
-guest→user merge (Ch 33) ☐ cross-device conflict (Ch 33) ☐ server reconcile price/
-stock ☐ backend authoritative at checkout.
+**Checklist:**
+
+- [ ] one Room SSOT + singleton repo
+- [ ] all screens observe same `Flow`
+- [ ] optimistic + outbox + idempotency (Ch 31/15)
+- [ ] offline (Ch 29)
+- [ ] derived totals
+- [ ] unique (account,product) + upsert-increment
+- [ ] per-account + clear on logout
+- [ ] guest→user merge (Ch 33)
+- [ ] cross-device conflict (Ch 33)
+- [ ] server reconcile price/stock
+- [ ] backend authoritative at checkout.
 
 **Key APIs/patterns:** Room SSOT + DAO `Flow` (Ch 3), `@Singleton` repository (Ch 5),
 optimistic write + `withTransaction` + outbox (Ch 31), idempotency keys (Ch 15),

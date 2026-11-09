@@ -549,6 +549,7 @@ Use fake Fused provider emitting scripted fixes; instrumentation for real FGS/pe
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Provider?* Fused Location Provider (fuses GPS/Wi-Fi/cell/sensors, battery-smart).
 2. *Battery lever?* Priority + interval matched to use case (balanced over high-accuracy).
 3. *Priorities?* HIGH_ACCURACY / BALANCED / LOW_POWER / PASSIVE.
@@ -557,6 +558,7 @@ Use fake Fused provider emitting scripted fixes; instrumentation for real FGS/pe
 5. *Biggest non-negotiable?* Background tracking only via a `location` FGS.
 
 **Background/FGS**
+
 6. *Background continuous tracking?* `location` foreground service + visible notification
    (Ch 46).
 7. *Why not a background job?* Doze/background-location limits kill it; Play forbids silent
@@ -565,22 +567,26 @@ Use fake Fused provider emitting scripted fixes; instrumentation for real FGS/pe
 9. *Killed mid-trip?* `START_STICKY` resume (Ch 8).
 
 **Permissions (Ch 51)**
+
 10. *Foreground perms?* `ACCESS_FINE/COARSE_LOCATION`; prefer coarse.
 11. *Background perm?* `ACCESS_BACKGROUND_LOCATION`, separate/after, Play-scrutinized.
 12. *Approximate vs precise?* Android 12+; handle both; least precision.
 13. *"Only this time"?* Ephemeral; handle revocation (Ch 51).
 
 **Streaming**
+
 14. *Stream to backend?* WebSocket (Ch 63).
 15. *Offline?* Outbox buffer; flush ordered on reconnect (Ch 31).
 16. *Ordering?* Timestamps; order on flush/server.
 17. *Trip track not lost?* Outbox + `START_STICKY`.
 
 **Accuracy**
+
 18. *Noisy GPS?* Filter accuracy/impossible jumps; dedup.
 19. *Smoothing?* Discard low-accuracy/implausible; coherent track.
 
 **Privacy (Ch 28)**
+
 20. *Sensitivity?* Highly sensitive — least precision/retention, active-session-only.
 21. *Indicator/consent?* FGS notification + system indicator; explicit, revocable; auto-
     expire.
@@ -588,6 +594,7 @@ Use fake Fused provider emitting scripted fixes; instrumentation for real FGS/pe
 23. *Play compliance?* Disclosed, justified, necessary; background heavily reviewed.
 
 **Testing/Production**
+
 24. *Test filter/streamer?* Faked provider; accuracy/jump/dedup + outbox flush order.
 25. *Battery in prod?* Wrong priority/interval / not stopped.
 26. *Lingering tracker?* FGS running without an active trip (alert).
@@ -658,14 +665,21 @@ FGS); continuous tracking for a one-time fix; losing offline fixes (no outbox); 
 noisy path; over-requesting precise/background permission; leaking location (precision/
 retention/insecure transport); no consent/indicator/auto-expiry.
 
-**Checklist:** ☐ Fused provider, priority/interval per use case ☐ one-shot for single fix /
-continuous only for trips ☐ `location` FGS + visible notification for background (Ch 46) ☐
-foreground-then-background perms, least precision (Ch 51) ☐ stream over WebSocket + outbox
-buffer + ordered reconnect flush (Ch 63/31) ☐ `START_STICKY` resume (Ch 8) ☐ filter
-accuracy/jump/dedup ☐ stop FGS + removeUpdates on session end ☐ least precision/retention +
-indicator + revocable consent + auto-expiry (Ch 28) ☐ authed+pinned transport + server
-access control (Ch 19/23) ☐ per-account (Ch 42) ☐ no coordinates in logs ☐ battery + track-
-completeness telemetry.
+**Checklist:**
+
+- [ ] Fused provider, priority/interval per use case
+- [ ] one-shot for single fix / continuous only for trips
+- [ ] `location` FGS + visible notification for background (Ch 46)
+- [ ] foreground-then-background perms, least precision (Ch 51)
+- [ ] stream over WebSocket + outbox buffer + ordered reconnect flush (Ch 63/31)
+- [ ] `START_STICKY` resume (Ch 8)
+- [ ] filter accuracy/jump/dedup
+- [ ] stop FGS + removeUpdates on session end
+- [ ] least precision/retention + indicator + revocable consent + auto-expiry (Ch 28)
+- [ ] authed+pinned transport + server access control (Ch 19/23)
+- [ ] per-account (Ch 42)
+- [ ] no coordinates in logs
+- [ ] battery + track- completeness telemetry.
 
 **Key APIs:** `FusedLocationProviderClient`/`LocationServices`, `LocationRequest.Builder`
 (`Priority.PRIORITY_*`, interval/`minUpdateInterval`/`maxUpdateDelay`), `LocationCallback`/

@@ -515,6 +515,7 @@ widget add/remove.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *How does a widget run?* Out-of-process in the launcher via `RemoteViews`; updates
    pushed from your process.
 2. *Glance?* Compose-style widget API that compiles to `RemoteViews` — same limits.
@@ -523,6 +524,7 @@ widget add/remove.
 5. *Process death?* Widget re-derives from SSOT on next update (no state to restore).
 
 **Updates**
+
 6. *How to update a widget?* WorkManager (periodic + on-change) pushing new `RemoteViews`.
 7. *`updatePeriodMillis` limits?* 30-min minimum, unreliable under Doze.
 8. *Respect background limits?* Yes — cadence per Doze/App Standby (Ch 47); update-on-
@@ -530,6 +532,7 @@ widget add/remove.
 9. *Over-update cost?* Battery + rate limits.
 
 **Shortcuts**
+
 10. *Three types?* Static (manifest, fixed), dynamic (runtime, contextual), pinned (user-
     placed).
 11. *Cap?* ~4–5 visible (`getMaxShortcutCountPerActivity`).
@@ -538,20 +541,24 @@ widget add/remove.
 14. *What do they fire?* An Intent / deep link (Ch 52).
 
 **Deep links**
+
 15. *Routing?* Central router (Ch 52): destination + back stack + auth + account.
 16. *PendingIntent?* `FLAG_IMMUTABLE`.
 17. *Untrusted?* Yes — validate + server authz (Ch 52/23).
 
 **Multi-account/privacy**
+
 18. *Account switch?* Update/clear widgets + dynamic shortcuts (Ch 42).
 19. *Sensitive content on widget?* Avoid — summary only; detail in-app (Ch 28).
 20. *Shortcut labels?* No sensitive text (visible on launcher).
 
 **Lifecycle**
+
 21. *Widget removed?* `onDisabled`/`onDeleted` → cancel update work.
 22. *SSOT access from widget?* Hilt `EntryPoint` + Room snapshot.
 
 **Testing/Production**
+
 23. *Test widget content?* Glance unit test utilities.
 24. *Test shortcuts?* Cap + clear-on-logout.
 25. *Stale widget cause?* Update not triggered / Doze deferral.
@@ -622,11 +629,18 @@ data (stale/lost); `updatePeriodMillis`-only updates (unreliable/coarse); over-r
 wrong data); sensitive content on the widget; not routing taps through the central deep-
 link router; not cancelling work when widgets are removed.
 
-**Checklist:** ☐ Glance/`RemoteViews` snapshot of SSOT (Ch 3) ☐ WorkManager updates
-(on-change + periodic, Ch 47) ☐ update only on real change ☐ static/dynamic/pinned
-shortcuts (respect cap) ☐ deep-link via central router (Ch 52) + `FLAG_IMMUTABLE` ☐
-auth/account checks ☐ update/clear on account switch (Ch 42) ☐ no sensitive content on
-widget (Ch 28) ☐ cancel work on `onDisabled` ☐ engagement/battery telemetry.
+**Checklist:**
+
+- [ ] Glance/`RemoteViews` snapshot of SSOT (Ch 3)
+- [ ] WorkManager updates (on-change + periodic, Ch 47)
+- [ ] update only on real change
+- [ ] static/dynamic/pinned shortcuts (respect cap)
+- [ ] deep-link via central router (Ch 52) + `FLAG_IMMUTABLE`
+- [ ] auth/account checks
+- [ ] update/clear on account switch (Ch 42)
+- [ ] no sensitive content on widget (Ch 28)
+- [ ] cancel work on `onDisabled`
+- [ ] engagement/battery telemetry.
 
 **Key APIs:** `GlanceAppWidget`/`GlanceAppWidgetReceiver`/`provideContent`/`updateAll`/
 `updateAppWidgetState`, `AppWidgetProvider`/`AppWidgetManager`/`RemoteViews`,

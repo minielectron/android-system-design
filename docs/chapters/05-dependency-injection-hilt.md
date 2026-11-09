@@ -434,6 +434,7 @@ singleton in a test to bypass the graph — inject a fake instead.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why DI?* Decouples construction from use; correct lifetimes; testability;
    compile-time validation.
 2. *Hilt vs Dagger?* Hilt is an opinionated Android layer over Dagger with
@@ -446,6 +447,7 @@ singleton in a test to bypass the graph — inject a fake instead.
    fail the build); Koin resolves at runtime.
 
 **Architecture**
+
 6. *How enforce dependency direction?* Module placement: `:core` installs into
    `SingletonComponent` and never references features; invert via ports
    (`TokenProvider`).
@@ -455,6 +457,7 @@ singleton in a test to bypass the graph — inject a fake instead.
    Define `TokenProvider` in core; bind the impl in `:data:auth`.
 
 **Kotlin/Android**
+
 9. *How are ViewModels injected?* `@HiltViewModel` + `hiltViewModel()`;
    `SavedStateHandle` auto-provided.
 10. *What is `@AssistedInject` for?* Objects that are injected but also need
@@ -465,33 +468,39 @@ singleton in a test to bypass the graph — inject a fake instead.
     avoid leaking the Activity.
 
 **Concurrency**
+
 13. *Is singleton creation thread-safe?* Yes — Dagger guarantees one instance per
     scope even under concurrent access.
 14. *Singleton mutable state?* Make it thread-safe (Mutex/atomics); DI doesn't
     make state safe.
 
 **Scalability**
+
 15. *50 modules — how keep DI sane?* Per-feature `di` packages; ports in core;
     convention plugins; compile-time validation.
 16. *Dynamic feature modules?* Their own entry points/components.
 
 **Scoping/lifetime**
+
 17. *`@Singleton` vs `@ActivityRetainedScoped`?* App lifetime vs
     survives-config-change (ViewModel) lifetime.
 18. *Over-scoping risk?* Memory bloat and leaks; scope only shared state.
 19. *Lost repository cache — cause?* Missing `@Singleton`.
 
 **Testing**
+
 20. *How test an injected class?* Constructor-inject fakes in a JVM test; no Hilt
     needed.
 21. *How swap a singleton in instrumentation?* `@TestInstallIn` / `@BindValue`.
 22. *Why not `new` a singleton in a test?* Bypasses the graph; hides wiring bugs.
 
 **Performance**
+
 23. *Runtime cost of Hilt?* Minimal — generated factories, no reflection.
 24. *Defer expensive singletons?* `Lazy<T>`/`Provider<T>`; App Startup.
 
 **Production debugging**
+
 25. *Activity leaked — DI cause?* Activity `Context` in a singleton/ViewModel; use
     `@ApplicationContext`.
 26. *Crash "EntryPoint"/"not an entry point"?* Missing `@AndroidEntryPoint`/
@@ -555,10 +564,18 @@ over-scoping `@Singleton`; injecting Activity `Context` into singletons (leak);
 missing `@Singleton` on an SSOT (lost cache); `new`-ing singletons in tests;
 `:core` importing `:feature` types.
 
-**Checklist:** ☐ `@HiltAndroidApp` ☐ infra `@Singleton` ☐ `@Binds` repos
-☐ dispatcher qualifiers ☐ `@HiltViewModel` ☐ ports for dependency inversion
-☐ `@ApplicationContext` in singletons ☐ `@TestInstallIn` seams ☐ scope matches
-owned state ☐ KSP.
+**Checklist:**
+
+- [ ] `@HiltAndroidApp`
+- [ ] infra `@Singleton`
+- [ ] `@Binds` repos
+- [ ] dispatcher qualifiers
+- [ ] `@HiltViewModel`
+- [ ] ports for dependency inversion
+- [ ] `@ApplicationContext` in singletons
+- [ ] `@TestInstallIn` seams
+- [ ] scope matches owned state
+- [ ] KSP.
 
 **Key APIs:** `@HiltAndroidApp`, `@AndroidEntryPoint`, `@HiltViewModel`,
 `@Module`, `@InstallIn`, `@Provides`, `@Binds`, `@Singleton`, `@Qualifier`,

@@ -514,6 +514,7 @@ transport.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Presence/typing/counts vs messages (Ch 64)?* Ephemeral/best-effort vs durable.
 2. *Persist them?* No — transient UI state that expires.
 3. *Why best-effort?* Only meaningful now; loss is fine (next update corrects).
@@ -521,33 +522,39 @@ transport.
 5. *Biggest mistake?* Treating them as durable (ghosts/spam).
 
 **Presence**
+
 6. *Model?* Heartbeat + TTL (auto-expire).
 7. *Why not explicit offline event?* Often lost (app killed/network drop).
 8. *Show online when?* Within a fresh TTL; else last-seen.
 9. *Last-seen privacy?* Coarsen (today/this week); hideable (Ch 28).
 
 **Typing**
+
 10. *Model?* Debounced start + idle/explicit stop + receiver timeout.
 11. *Why debounce?* Per-keystroke floods the socket (Ch 9).
 12. *Why receiver timeout?* Stop event / sender can be lost → clear anyway.
 13. *When stop?* Send, clear field, idle timeout.
 
 **Counts**
+
 14. *High-churn counts?* Coalesce + sample (Ch 63).
 15. *Who computes them?* Server aggregate; client smooths.
 
 **Lifecycle/efficiency**
+
 16. *When to send?* Active only; stop on background (Ch 44).
 17. *Main battery lever?* Lifecycle scoping + debounce.
 18. *Heartbeat interval?* Tuned vs accuracy/battery.
 
 **Privacy**
+
 19. *Why privacy-sensitive?* Reveals behavior.
 20. *Opt-out?* Yes, both ways; server-enforced (Ch 28).
 21. *Reciprocity?* Hide yours → don't see others'.
 22. *Channel authz?* Server-authorized subscription (Ch 23).
 
 **Testing/Production**
+
 23. *Test expiry?* Virtual time: lost-stop clears; TTL → last-seen.
 24. *Ghost "online"?* TTL/heartbeat bug.
 25. *Stuck "typing"?* Missing receiver timeout.
@@ -612,12 +619,19 @@ relying on explicit offline/stop events (lost → stuck); per-keystroke typing (
 rendering every count tick (jank); sending while backgrounded (battery); no local expiry
 (stuck indicators); ignoring privacy/reciprocity; computing global presence client-side.
 
-**Checklist:** ☐ ephemeral/transient (not SSOT) ☐ presence: heartbeat + TTL auto-expire ☐
-typing: debounce start/stop (Ch 9) + receiver timeout auto-clear ☐ counts: conflate +
-sample (Ch 63) ☐ local expiry (presence/typing/count) ☐ lifecycle-scoped send; stop on
-background (Ch 44) ☐ privacy opt-out + reciprocal + coarsened + server-enforced (Ch 28) ☐
-authorized channels (Ch 23) ☐ per-account (Ch 42) ☐ no persistence/PII logging ☐ event-rate
-+ ghost/stuck telemetry.
+**Checklist:**
+
+- [ ] ephemeral/transient (not SSOT)
+- [ ] presence: heartbeat + TTL auto-expire
+- [ ] typing: debounce start/stop (Ch 9) + receiver timeout auto-clear
+- [ ] counts: conflate + sample (Ch 63)
+- [ ] local expiry (presence/typing/count)
+- [ ] lifecycle-scoped send; stop on background (Ch 44)
+- [ ] privacy opt-out + reciprocal + coarsened + server-enforced (Ch 28)
+- [ ] authorized channels (Ch 23)
+- [ ] per-account (Ch 42)
+- [ ] no persistence/PII logging
+- [ ] event-rate + ghost/stuck telemetry.
 
 **Key APIs:** WebSocket transport (Ch 63), `Flow.debounce`/`sample`/`conflate` (Ch 9/63),
 `MutableStateFlow`/`channelFlow` (transient state, Ch 6), coroutine timeouts (`delay`/

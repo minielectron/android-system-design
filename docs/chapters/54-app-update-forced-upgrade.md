@@ -532,6 +532,7 @@ forced screen (retry, no crash). `FakeAppUpdateManager` for Play flows.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why an update strategy?* Old-version users break/are insecure; you must steer/force
    updates.
 2. *Where does the version floor live?* On the **server** (remote config/endpoint,
@@ -541,11 +542,13 @@ forced screen (retry, no crash). `FakeAppUpdateManager` for Play flows.
 5. *Who enforces incompatibility?* The server (`426`, Ch 16); the client gate is UX.
 
 **Triggers**
+
 6. *Proactive check?* At startup/resume, compare `versionCode` to cached policy.
 7. *Reactive signal?* `426 Upgrade Required` mid-session → forced.
 8. *Why reactive matters?* Catches sessions predating a floor change.
 
 **Delivery**
+
 9. *Play In-App Updates flows?* Flexible (background) and immediate (blocking).
 10. *Flexible for?* Soft updates.
 11. *Immediate for?* Forced upgrades.
@@ -553,6 +556,7 @@ forced screen (retry, no crash). `FakeAppUpdateManager` for Play flows.
 13. *Fallback?* Open the Play Store listing (always available).
 
 **Resilience**
+
 14. *No-loop?* Re-read live `versionCode` + fresh policy after update.
 15. *Staged rollout unavailable?* Store link + retry; don't claim unavailable update.
 16. *Offline on forced screen?* Retry + explain; never crash/trap.
@@ -560,6 +564,7 @@ forced screen (retry, no crash). `FakeAppUpdateManager` for Play flows.
 18. *Interrupted immediate update?* Resume on next launch (Play requirement).
 
 **Security**
+
 19. *Forced upgrade for security?* Yes — retire vulnerable clients; enforce server-side.
 20. *Message content?* Don't leak the vuln (Ch 28).
 21. *Policy source trust?* Authed/TLS-pinned config (Ch 23); don't act on spoofable
@@ -567,6 +572,7 @@ forced screen (retry, no crash). `FakeAppUpdateManager` for Play flows.
 22. *Deep-link bypass?* Evaluate gate before honoring deep links (Ch 52).
 
 **Testing/Production**
+
 23. *Test policy?* Pure unit tests at all boundaries + no-loop.
 24. *Test Play flows?* `FakeAppUpdateManager`.
 25. *Users stuck?* Loop / offline / staged-unavailable.
@@ -632,11 +638,19 @@ enforcement (bypassable); forced gate with no escape (In-App-Updates-only); loop
 update (stale policy); offline crash on gate; mass lockout on config outage (fail-closed);
 leaking the vuln in the message; deep-link bypass.
 
-**Checklist:** ☐ server-driven policy (Ch 41) ☐ 3 states (up-to-date/soft/forced) ☐
-startup/resume + `426` triggers ☐ Play In-App Updates (flexible/immediate) ☐ store-link
-fallback (always an escape) ☐ no-loop (live versionCode + fresh policy) ☐ offline tolerant
-☐ fail open on missing policy ☐ server enforces floor (`426`, Ch 16/23) ☐ non-leaky
-message ☐ no deep-link bypass.
+**Checklist:**
+
+- [ ] server-driven policy (Ch 41)
+- [ ] 3 states (up-to-date/soft/forced)
+- [ ] startup/resume + `426` triggers
+- [ ] Play In-App Updates (flexible/immediate)
+- [ ] store-link fallback (always an escape)
+- [ ] no-loop (live versionCode + fresh policy)
+- [ ] offline tolerant
+- [ ] fail open on missing policy
+- [ ] server enforces floor (`426`, Ch 16/23)
+- [ ] non-leaky message
+- [ ] no deep-link bypass.
 
 **Key APIs:** `AppUpdateManager`/`appUpdateInfo`/`startUpdateFlowForResult`,
 `AppUpdateType.FLEXIBLE`/`IMMEDIATE`, `AppUpdateOptions`, `InstallStatus`/

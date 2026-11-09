@@ -500,6 +500,7 @@ test.
 > 40+ questions.
 
 **Fundamentals**
+
 1. *What is offline-first?* The app is fully usable offline; local store is
    authoritative; network is an enhancement; sync happens in the background.
 2. *vs online-first?* Online-first blocks on the network (useless offline);
@@ -510,6 +511,7 @@ test.
 5. *Consistency model?* Eventual consistency with a conflict policy (Ch 33).
 
 **Write path / outbox**
+
 6. *What's the outbox?* A durable queue of pending local mutations replayed to the
    server until acked (Ch 31).
 7. *Why durable?* Survive process death / long offline; no lost writes.
@@ -519,6 +521,7 @@ test.
 10. *Soft deletes?* So deletes sync (a hard-deleted row can't be pushed).
 
 **Sync engine**
+
 11. *Sync phases?* Push (drain outbox), pull (delta), resolve (conflicts).
 12. *Why push before pull?* Send local changes first, then reconcile — fewer
     conflicts.
@@ -528,23 +531,27 @@ test.
     (Ch 32).
 
 **Conflicts**
+
 15. *When do conflicts happen?* Local pending + remote changed the same entity.
 16. *How detect?* Version/`updatedAt` mismatch (Ch 33).
 17. *Resolution strategies?* LWW, field merge, user-resolved (Ch 33).
 
 **Concurrency/reliability**
+
 18. *Process death mid-sync?* Durable outbox + last-sync token; resume idempotently.
 19. *Duplicate sync runs?* Idempotent mutations + `enqueueUniqueWork` (Ch 30).
 20. *Two offline edits same entity?* Ordered outbox; apply in order.
 21. *No lost writes guarantee?* Durable outbox + retry + surface permanent failures.
 
 **UX**
+
 22. *Sync status?* Per-entity status (synced/pending/syncing/failed/conflict)
     surfaced to UI (Ch 6).
 23. *Optimistic rollback?* On non-retryable rejection, revert + notify.
 24. *Offline indication?* Connectivity state + pending count (Ch 68).
 
 **Security**
+
 25. *Sensitive offline data?* Encrypt (Ch 24); clear on logout (Ch 22); per-account
     (Ch 42).
 26. *Does offline-first trust the client?* No — server authorizes every applied
@@ -553,16 +560,19 @@ test.
     optimistic.
 
 **Performance/scale**
+
 28. *Battery?* Constrained/batched/delta sync (Ch 30/32), not polling.
 29. *Large offline datasets?* Paging (Ch 13), selective sync, eviction (Ch 12).
 30. *Outbox backlog after long offline?* Bound + compact redundant ops.
 
 **Testing**
+
 31. *How test offline writes?* Fake offline; assert optimistic + queued.
 32. *How test sync?* Fake API; assert drain + status; idempotent double-sync.
 33. *How test process-death resume?* Persist outbox; re-run; no dup.
 
 **Production debugging**
+
 34. *Writes disappear?* Non-durable/non-retried outbox.
 35. *Duplicates?* Missing idempotency.
 36. *Data not updating?* Broken pull/delta.
@@ -570,6 +580,7 @@ test.
 38. *Stuck pending?* Non-retryable error not surfaced.
 
 **Design**
+
 39. *When NOT offline-first (writes)?* Always-connected/strong-consistency flows;
     then offline *reads* only.
 40. *CRDTs?* For real-time collaborative merge (advanced, Ch 33).
@@ -629,10 +640,19 @@ non-durable outbox (lost writes); no idempotency (duplicates); no conflict polic
 (lost edits); hard deletes (can't sync); unconstrained sync (battery); no sync-status
 UX; unencrypted offline data; trusting the client for authz.
 
-**Checklist:** ☐ SSOT reads (Ch 3) ☐ optimistic writes ☐ durable outbox (Ch 31)
-☐ idempotency keys (Ch 15) ☐ WorkManager sync push→pull (Ch 30) ☐ delta sync
-(Ch 32) ☐ conflict policy (Ch 33) ☐ client ids + soft deletes ☐ sync-status UX
-☐ encrypt + clear offline data ☐ server authorizes mutations.
+**Checklist:**
+
+- [ ] SSOT reads (Ch 3)
+- [ ] optimistic writes
+- [ ] durable outbox (Ch 31)
+- [ ] idempotency keys (Ch 15)
+- [ ] WorkManager sync push→pull (Ch 30)
+- [ ] delta sync (Ch 32)
+- [ ] conflict policy (Ch 33)
+- [ ] client ids + soft deletes
+- [ ] sync-status UX
+- [ ] encrypt + clear offline data
+- [ ] server authorizes mutations.
 
 **Key APIs/patterns:** Room (SSOT, Ch 3), `networkBoundResource`, `Outbox`/
 `PendingMutation` (Ch 31), WorkManager (Ch 30), idempotency keys (Ch 15), delta

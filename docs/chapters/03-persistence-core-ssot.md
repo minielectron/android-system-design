@@ -534,6 +534,7 @@ Always test migrations with `MigrationTestHelper` and `exportSchema = true`.
 > 40+ questions.
 
 **Fundamentals**
+
 1. *What is the SSOT and why?* The one authority for an entity's state (Room);
    keeps all screens consistent, enables offline, survives process death.
 2. *Why make the DB the source of truth, not the network?* Offline reads,
@@ -546,6 +547,7 @@ Always test migrations with `MigrationTestHelper` and `exportSchema = true`.
    during refresh/errors.
 
 **Architecture**
+
 6. *Who may write the DB?* Only the repository (single writer).
 7. *Why three model layers (DTO/entity/domain)?* Decouple network, storage, and
    domain so each evolves independently (Ch 16).
@@ -555,6 +557,7 @@ Always test migrations with `MigrationTestHelper` and `exportSchema = true`.
    not every call needs the DB.
 
 **Kotlin/Android/Room**
+
 10. *How does Room make reads reactive?* DAO `Flow` re-emits on table changes.
 11. *Why `@Transaction` on replace?* Atomicity — observers never see the empty
     interim.
@@ -564,6 +567,7 @@ Always test migrations with `MigrationTestHelper` and `exportSchema = true`.
     without deleting the row (preserves triggers/FKs more cleanly).
 
 **Concurrency**
+
 14. *Concurrent writers?* Room serializes writes; transactions keep multi-step
     writes atomic; SSOT limits writers to the repo.
 15. *How avoid lost updates on concurrent edits?* `updatedAt`/version +
@@ -571,6 +575,7 @@ Always test migrations with `MigrationTestHelper` and `exportSchema = true`.
 16. *Process death mid-write?* SQLite is ACID — commit or rollback.
 
 **Persistence**
+
 17. *How do migrations work?* `Migration(from,to)` SQL; test with
     `MigrationTestHelper`; `exportSchema`.
 18. *Why never `fallbackToDestructiveMigration` in prod?* It wipes user data.
@@ -580,33 +585,39 @@ Always test migrations with `MigrationTestHelper` and `exportSchema = true`.
     (Ch 24).
 
 **Networking integration**
+
 21. *How does refresh update the UI?* Persist to Room → Flow re-emits; the UI
     never reads the network directly.
 22. *Handle offline?* Serve cache; `Resource.Error(data=cache)`.
 
 **Scalability**
+
 23. *Huge tables?* Paging 3 + `RemoteMediator` (Ch 13); never load all.
 24. *Search in the DB?* FTS (Ch 35).
 25. *10M users — client DB concerns?* Size/retention, migration safety across
     versions, paging; backend scales separately.
 
 **Security**
+
 26. *allowBackup risk?* Sensitive DB can be backed up to cloud; exclude via
     backup rules (Ch 37).
 27. *Can a tampered local DB grant access?* No — backend re-validates; the DB is
     a cache.
 
 **Performance**
+
 28. *Keep DB work off main?* `flowOn(io)`; index queries; page large sets.
 29. *Reduce write cost?* Transactions (batch), upsert over replace.
 30. *How profile queries?* Database Inspector, `EXPLAIN QUERY PLAN`.
 
 **Testing**
+
 31. *How test DAOs?* In-memory Room (real SQL).
 32. *How test migrations?* `MigrationTestHelper.runMigrationsAndValidate`.
 33. *What do you fake?* API/clock; keep Room real.
 
 **Production debugging**
+
 34. *Users report stale prices on one screen.* A component bypassed the SSOT or
     didn't observe the DAO `Flow`; enforce single-writer + shared observation.
 35. *Crash spike after release — migration?* Missing/incorrect migration; add it,
@@ -614,6 +625,7 @@ Always test migrations with `MigrationTestHelper` and `exportSchema = true`.
 36. *DB growing unbounded?* Add retention/purge; TTL eviction.
 
 **Trade-offs**
+
 37. *Room vs DataStore?* Room for structured/queryable data; DataStore for
     key-values/prefs (Ch 4).
 38. *`replaceAll` vs upsert?* Upsert preserves local edits; replace for full
@@ -682,10 +694,18 @@ DTO/entity/domain mapping, staleness/TTL, upsert vs replace.
 writes; `fallbackToDestructiveMigration` in prod; mapping on the main thread;
 `replaceAll` destroying local edits; bypassing the repository to write the DB.
 
-**Checklist:** ☐ DB = SSOT ☐ single writer ☐ DAO `Flow` reads ☐ `@Transaction`
-on multi-step writes ☐ `networkBoundResource` ☐ `Resource` carries data ☐ TTL/
-staleness ☐ migrations + `MigrationTestHelper` ☐ `flowOn(io)` ☐ encrypt
-sensitive data.
+**Checklist:**
+
+- [ ] DB = SSOT
+- [ ] single writer
+- [ ] DAO `Flow` reads
+- [ ] `@Transaction` on multi-step writes
+- [ ] `networkBoundResource`
+- [ ] `Resource` carries data
+- [ ] TTL/staleness
+- [ ] migrations + `MigrationTestHelper`
+- [ ] `flowOn(io)`
+- [ ] encrypt sensitive data.
 
 **Key APIs:** `@Entity`, `@Dao`, `@Query`, `@Upsert`, `@Transaction`, `Flow`,
 `Room.databaseBuilder`, `Migration`, `MigrationTestHelper`,

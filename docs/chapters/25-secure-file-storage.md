@@ -463,6 +463,7 @@ backup-exclusion static check, EXIF stripping.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Storage locations?* App-internal (`filesDir`/`cacheDir`), app-specific external
    (`getExternalFilesDir`), MediaStore, SAF.
 2. *`filesDir` vs `cacheDir`?* Durable vs OS-evictable (regenerable data).
@@ -474,12 +475,14 @@ backup-exclusion static check, EXIF stripping.
    Android 7+.
 
 **Location choice**
+
 6. *Private vs user-visible file?* Internal/app-specific vs MediaStore/SAF.
 7. *Large private media?* `getExternalFilesDir` (app-scoped, removed on uninstall,
    no permission).
 8. *User chooses location?* SAF picker (Ch 62).
 
 **Security**
+
 9. *Is app-internal secure?* Private to the app, but readable on a rooted device /
    backup → encrypt sensitive files (Ch 24).
 10. *How encrypt a file?* AES-GCM with a Keystore-wrapped key (Ch 20/24); Tink.
@@ -490,27 +493,32 @@ backup-exclusion static check, EXIF stripping.
     FileProvider, delete after.
 
 **Scoped storage/permissions**
+
 14. *Permissions for private files?* None (scoped storage).
 15. *MediaStore for your own media?* No broad permission on Android 10+;
     `IS_PENDING` while writing.
 16. *Legacy `WRITE_EXTERNAL_STORAGE`?* Deprecated/restricted; avoid.
 
 **Sharing semantics**
+
 17. *Temporary vs persistable grant?* Temporary for one-off share; persistable
     (`takePersistableUriPermission`) for ongoing SAF access (Ch 62).
 18. *Does a content grant authorize identity?* No — authorizes a recipient app,
     not a user.
 
 **Privacy**
+
 19. *Shared photos?* Strip EXIF/GPS unless intended.
 20. *Untrusted incoming files?* Validate type/size/content.
 
 **Testing**
+
 21. *How verify encryption?* Raw file on disk isn't plaintext; round-trips.
 22. *How verify sharing?* Scheme is `content`, grant flag set.
 23. *What to check on API 29+?* Scoped-storage behavior.
 
 **Production debugging**
+
 24. *`FileUriExposedException`?* Sharing `file://`.
 25. *Breaks on Android 10+?* Legacy external-storage assumptions.
 26. *Sensitive file in backup?* Missing exclusion.
@@ -572,10 +580,18 @@ unrestricted external-storage paths (breaks on Android 10+); not excluding from
 backup; not cleaning up transient sensitive files; requesting broad storage
 permissions; persisting unneeded grants.
 
-**Checklist:** ☐ location by visibility ☐ scoped storage (no broad perms)
-☐ encrypt sensitive (Ch 24) ☐ FileProvider `content://` + temp grant ☐ MediaStore/
-SAF for user-visible ☐ backup exclusion ☐ delete transient sensitive files ☐ strip
-EXIF on share ☐ validate incoming files ☐ cache eviction.
+**Checklist:**
+
+- [ ] location by visibility
+- [ ] scoped storage (no broad perms)
+- [ ] encrypt sensitive (Ch 24)
+- [ ] FileProvider `content://` + temp grant
+- [ ] MediaStore/SAF for user-visible
+- [ ] backup exclusion
+- [ ] delete transient sensitive files
+- [ ] strip EXIF on share
+- [ ] validate incoming files
+- [ ] cache eviction.
 
 **Key APIs:** `Context.filesDir`/`cacheDir`/`getExternalFilesDir`, `FileProvider.
 getUriForFile`, `FLAG_GRANT_READ_URI_PERMISSION`, `MediaStore` + `IS_PENDING`,

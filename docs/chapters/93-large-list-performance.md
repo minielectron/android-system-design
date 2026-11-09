@@ -535,6 +535,7 @@ Ch 90); async image (no sync decode, Ch 59); field jank via JankStats (Ch 85).
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why not render all items?* Memory + layout blow up; use lazy lists.
 2. *Lazy list?* Composes only visible items + recycles (like RecyclerView).
 3. *Compose lazy APIs?* `LazyColumn`/`LazyRow`/`LazyVerticalGrid`.
@@ -542,6 +543,7 @@ Ch 90); async image (no sync decode, Ch 59); field jank via JankStats (Ch 85).
 5. *Why keys?* Identity → correct reuse, no scroll jumps, minimal recomposition.
 
 **Keys/contentType**
+
 6. *Default key?* Position/index — breaks on data change.
 7. *Stable key?* `items(list, key = { it.id })` — unique + stable.
 8. *What breaks without keys?* Wrong reuse, state on wrong item, scroll jump, extra recomposition.
@@ -549,24 +551,28 @@ Ch 90); async image (no sync decode, Ch 59); field jank via JankStats (Ch 85).
 10. *Single-type list?* contentType optional.
 
 **Items**
+
 11. *Item cost?* Paid repeatedly as items scroll in — keep light.
 12. *Over-recomposing item?* Stable/@Immutable params (Ch 90).
 13. *Heavy work in item?* Hoist to ViewModel/paging map (Ch 90).
 14. *Shallow layout?* Deep nesting costs layout.
 
 **Images**
+
 15. *Image jank?* Sync decode blocks the frame.
 16. *Fix?* Coil async — off-main decode (Ch 59).
 17. *Memory?* Downsample to view size (Ch 89).
 18. *Fast scroll?* Cancel load on recycle (Ch 59).
 
 **Paging**
+
 19. *Load everything?* No — Paging 3 (Ch 71).
 20. *Prefetch distance?* Load next page before the end.
 21. *Placeholders?* Show skeletons for not-yet-loaded (Ch 71).
 22. *Why page?* Bound memory + network (Ch 89/91).
 
 **Scroll/measure**
+
 23. *Scroll-state read?* `derivedStateOf` — not direct (Ch 90).
 24. *First-scroll jank?* Baseline Profile scroll path (Ch 92).
 25. *Measure?* Macrobenchmark `FrameTimingMetric` (lab) + JankStats (field) (Ch 85/90).
@@ -644,12 +650,18 @@ image decode (jank + OOM, Ch 59/89); loading everything instead of paging (Ch 71
 state directly in composition (recompose storm, Ch 90); I/O per scroll; no Baseline Profile (first-
 scroll JIT jank, Ch 92); not measuring the scroll.
 
-**Checklist:** ☐ lazy list (visible-only + recycle) ☐ stable `key = { it.id }` (no position jumps)
-☐ `contentType` for mixed lists ☐ light + stable + skippable items (`@Immutable`, hoisted work,
-Ch 90) ☐ Coil async images (off-main + downsample + cache + cancel, Ch 59/89) ☐ Paging 3 (pages +
-prefetch + placeholders, Ch 71) ☐ `derivedStateOf`/`graphicsLayer` scroll state; no per-scroll I/O
-(Ch 90) ☐ Baseline Profile covers scroll (Ch 92) ☐ Macrobenchmark `FrameTimingMetric` gate (Ch 90)
-+ JankStats field (Ch 85) ☐ clear sensitive content on recycle (Ch 28).
+**Checklist:**
+
+- [ ] lazy list (visible-only + recycle)
+- [ ] stable `key = { it.id }` (no position jumps)
+- [ ] `contentType` for mixed lists
+- [ ] light + stable + skippable items (`@Immutable`, hoisted work, Ch 90)
+- [ ] Coil async images (off-main + downsample + cache + cancel, Ch 59/89)
+- [ ] Paging 3 (pages + prefetch + placeholders, Ch 71)
+- [ ] `derivedStateOf`/`graphicsLayer` scroll state; no per-scroll I/O (Ch 90)
+- [ ] Baseline Profile covers scroll (Ch 92)
+- [ ] Macrobenchmark `FrameTimingMetric` gate (Ch 90) + JankStats field (Ch 85)
+- [ ] clear sensitive content on recycle (Ch 28).
 
 **Key APIs:** `LazyColumn`/`LazyRow`/`LazyVerticalGrid` (+ `items(..., key, contentType)`),
 `LazyPagingItems` (`itemKey`/`itemContentType`/`collectAsLazyPagingItems`, Ch 71), `Pager` +

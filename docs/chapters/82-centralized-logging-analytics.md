@@ -532,6 +532,7 @@ the sink. Fake sink/consent/redactor; Room in-memory.
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *Why centralize?* Enforce schema/consent/redaction centrally; decouple vendor; reliable
    pipeline.
 2. *One API?* `analytics.track(event)` behind a vendor-agnostic sink — no direct vendor calls.
@@ -540,6 +541,7 @@ the sink. Fake sink/consent/redactor; Room in-memory.
 5. *Why not send inline?* Lost offline/on death; jank; battery.
 
 **Reliability**
+
 6. *Durable buffer?* Persistent queue (Room/outbox, Ch 31/3) — offline/death-safe.
 7. *Upload?* Batched on triggers (size/time/background/network, Ch 14/47).
 8. *Delivery semantics?* At-least-once + stable event id → server dedup (Ch 15).
@@ -547,6 +549,7 @@ the sink. Fake sink/consent/redactor; Room in-memory.
 10. *Background flush?* WorkManager (Ch 30), unmetered pref (Ch 47); flush on ON_STOP.
 
 **Privacy**
+
 11. *Consent?* Central gate; collect only with consent (GDPR/CCPA, Ch 28); revoke stops +
     optional purge.
 12. *PII?* Central redaction (allowlist params; no raw email/content/token, Ch 28).
@@ -554,33 +557,39 @@ the sink. Fake sink/consent/redactor; Room in-memory.
 14. *Identity?* Consented/anonymized; reset on logout (Ch 42); don't over-identify.
 
 **Schema/identity**
+
 15. *Event id?* Stable → dedup (Ch 15).
 16. *Session/user/device?* Carried on events; reset identity on logout.
 17. *Schema versioning?* Events evolve; version them.
 
 **Efficiency**
+
 18. *Batching?* The battery/data lever (Ch 14).
 19. *Flush triggers?* Size/time/background/network.
 20. *Sampling?* High-volume events; never critical.
 21. *Bounded buffer?* Cap; drop lowest-priority on overflow.
 
 **Vendor**
+
 22. *Vendor abstraction?* `AnalyticsSink` — swap/fan-out without touching call sites.
 23. *Multi-sink?* Fan-out sink.
 24. *Self-hosted?* Just another sink.
 
 **Product vs ops**
+
 25. *Separation?* Product analytics (behavior) vs operational telemetry (perf/errors,
     Ch 89).
 26. *Crash/ANR + logging?* Siblings (Ch 83/89); PII-safe.
 27. *Rec signals (Ch 73)?* Product analytics through the same pipeline.
 
 **Security**
+
 28. *Upload channel?* Authed + TLS-pinned (Ch 19/23).
 29. *Governance?* Retention/deletion/residency (Ch 28).
 30. *Sensitive events?* Never leak card/tokens.
 
 **Testing/Production**
+
 31. *Test consent?* No consent → no collect.
 32. *Test redaction?* PII removed.
 33. *Test buffer?* Not inline; batched; remove-on-ack; keep-on-failure.
@@ -658,13 +667,18 @@ no batching (battery/data); PII in events / no consent gate (legal); free-form s
 data); no event-id dedup (inflated metrics); not resetting identity on logout (cross-user
 attribution); vendor-coupled (no portability).
 
-**Checklist:** ☐ one `track` API + typed versioned schema behind `AnalyticsSink` (no direct
-vendor calls) ☐ durable persistent buffer, immediate non-blocking capture (Ch 31/3) ☐ batched,
-trigger-based upload (size/time/background/unmetered, Ch 14/47 via WorkManager) ☐ central
-consent gate + PII redaction (Ch 28) ☐ identity/session + reset on logout (Ch 42) ☐
-at-least-once + stable event id → server dedup (Ch 15) ☐ sampling (never critical) ☐ product
-vs operational separation (crash Ch 83, logging Ch 89) ☐ authed + TLS-pinned upload + governance
-(Ch 19/23/28) ☐ delivery-rate + PII-incident telemetry.
+**Checklist:**
+
+- [ ] one `track` API + typed versioned schema behind `AnalyticsSink` (no direct vendor calls)
+- [ ] durable persistent buffer, immediate non-blocking capture (Ch 31/3)
+- [ ] batched, trigger-based upload (size/time/background/unmetered, Ch 14/47 via WorkManager)
+- [ ] central consent gate + PII redaction (Ch 28)
+- [ ] identity/session + reset on logout (Ch 42)
+- [ ] at-least-once + stable event id → server dedup (Ch 15)
+- [ ] sampling (never critical)
+- [ ] product vs operational separation (crash Ch 83, logging Ch 89)
+- [ ] authed + TLS-pinned upload + governance (Ch 19/23/28)
+- [ ] delivery-rate + PII-incident telemetry.
 
 **Key APIs:** `Analytics.track`/`setConsent`/`resetIdentity` (one API), sealed
 `AnalyticsEvent` (typed schema), `EventPipeline` (consent+redact+buffer), Room `EventDao`

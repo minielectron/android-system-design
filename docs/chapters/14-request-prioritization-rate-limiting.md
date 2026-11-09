@@ -452,6 +452,7 @@ concurrency; flush-on-background.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why prioritize requests?* One constrained radio; user-visible work must not
    queue behind prefetch/analytics.
 2. *Priority classes?* Immediate / UserVisible / Prefetch / Background (ordering,
@@ -461,6 +462,7 @@ concurrency; flush-on-background.
 5. *Why batch analytics?* Fewer radio wakeups → battery + fewer requests.
 
 **Architecture**
+
 6. *Where does scheduling sit?* Above OkHttp — app-level priority over the
    transport `Dispatcher` cap.
 7. *Per-class semaphores vs global queue?* Per-class simple + no starvation;
@@ -468,6 +470,7 @@ concurrency; flush-on-background.
 8. *How tune OkHttp?* `maxRequests`/`maxRequestsPerHost` on the `Dispatcher`.
 
 **Kotlin/concurrency**
+
 9. *How cancel stale work?* Structured concurrency — item/screen-scoped jobs
    cancel on dispose/nav.
 10. *How does cancellation reach the socket?* Coroutine cancel → OkHttp `Call`
@@ -475,31 +478,37 @@ concurrency; flush-on-background.
 11. *How throttle without blocking?* Token bucket + cancellable `delay`.
 
 **Rate limiting**
+
 12. *Token vs leaky bucket?* Token allows bursts; leaky smooths output.
 13. *Is client rate limiting a security control?* No — backend must enforce.
 14. *Handle 429?* Back off + honor `Retry-After` (Ch 2); lower concurrency.
 
 **Prioritization**
+
 15. *Prevent starvation?* Reserved per-class permits; optional aging.
 16. *Cancel vs deprioritize?* Cancel if useless; deprioritize if maybe-used.
 17. *Priority inversion?* Reserve slots for high-priority classes.
 
 **Battery/perf**
+
 18. *Why does batching save battery?* Avoids repeated radio high-power tail
     wakeups.
 19. *Adaptive concurrency?* Shrink on 429/poor network, grow on good.
 20. *Biggest perceived-perf win?* Reserved slots for user-visible content.
 
 **Scalability**
+
 21. *Remote-tune policies?* From remote config (Ch 41); per-endpoint budgets.
 22. *Background deferrable work?* WorkManager (Ch 30), not the in-app scheduler.
 
 **Testing**
+
 23. *How test priority?* Flood background; assert user-visible still runs.
 24. *How test rate limiting?* Fake clock; assert throttle delay.
 25. *How test batching?* Log N events; assert one flush of N.
 
 **Production debugging**
+
 26. *User-visible slow under load?* No reserved slots/unbounded background.
 27. *429 spikes?* Concurrency too high / no client limiting.
 28. *Battery drain?* Analytics not batched; radio thrash.
@@ -557,10 +566,18 @@ wakeups, adaptive concurrency.
 analytics (battery drain); treating client rate limiting as security; a global
 priority queue without aging (starvation).
 
-**Checklist:** ☐ priority classes ☐ per-class reserved permits ☐ OkHttp caps
-☐ cancel on scroll/nav ☐ client rate limiter ☐ analytics batching + lifecycle
-flush ☐ honor 429/`Retry-After` ☐ adaptive concurrency ☐ no PII in batches
-☐ defer guaranteed work to WorkManager.
+**Checklist:**
+
+- [ ] priority classes
+- [ ] per-class reserved permits
+- [ ] OkHttp caps
+- [ ] cancel on scroll/nav
+- [ ] client rate limiter
+- [ ] analytics batching + lifecycle flush
+- [ ] honor 429/`Retry-After`
+- [ ] adaptive concurrency
+- [ ] no PII in batches
+- [ ] defer guaranteed work to WorkManager.
 
 **Key APIs:** OkHttp `Dispatcher` (`maxRequests`/`maxRequestsPerHost`),
 `Semaphore.withPermit`, `Mutex`, `Channel`/`trySend`, `withTimeoutOrNull`,

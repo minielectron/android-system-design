@@ -1,0 +1,21 @@
+flowchart TD
+    subgraph CLIENTS["clients (shared logic/data, platform-specific UI)"]
+        PHONE["phone (Compose, Ch 2)"]
+        TV["TV/Fire TV (D-pad, Ch 98)"]
+        WEAR["Wear (glanceable, Ch 99)"]
+    end
+    CLIENTS --> UI["UI (Compose, Ch 2) -> ViewModel (UDF/StateFlow, Ch 2)"]
+    UI --> DOMAIN["domain: use cases (Ch 1)"]
+    DOMAIN --> REPO["repositories = SSOT (Ch 1)"]
+    REPO --> ROOM["Room SSOT (offline-first, Ch 5/29)"]
+    REPO --> NET["network (Retrofit/OkHttp, Ch 4) + pinning (Ch 22)"]
+    ROOM <--> SYNC["sync: outbox + idempotency + delta + conflict resolution (Ch 29/75)"]
+    SYNC <--> BACKEND["backend (source of truth)"]
+    NET --> BACKEND
+    REALTIME["real-time: WebSocket/SSE (Ch 63/65) + FCM push (Ch 50)"] <--> BACKEND
+    REALTIME --> ROOM
+    MEDIA["media: Media3/ExoPlayer + DRM (Ch 56/58)"] --> BACKEND
+    SEC["security: auth (Ch 20) + Keystore (Ch 24) + privacy/PII (Ch 28) + PCI (Ch 76)"] -.-> REPO
+    OBS["observability: analytics/crash/tracing/perf (Ch 82-85) - unified, PII-safe (Ch 87)"] -.-> UI
+    DI["Hilt DI (Ch 46) + modularization :app/:feature/:core (Ch 94)"] -.-> DOMAIN
+    DS["design system: theming (Ch 97) + a11y (Ch 96) + l10n (Ch 95)"] -.-> UI

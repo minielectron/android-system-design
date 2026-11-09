@@ -591,6 +591,7 @@ device matrix** (multiple OEMs) for real behavior — unit tests can't catch sta
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *BLE roles?* Central (phone, initiates) vs peripheral (advertises/exposes data).
 2. *GATT?* Services → characteristics → descriptors; read/write/notify/indicate.
 3. *Enable notifications?* `setCharacteristicNotification` + write the CCCD descriptor.
@@ -598,12 +599,14 @@ device matrix** (multiple OEMs) for real behavior — unit tests can't catch sta
 5. *Bonding?* Pairing → encrypted/authenticated link.
 
 **Serialization (the crux)**
+
 6. *Can you fire concurrent GATT ops?* No — one at a time; a second is silently dropped.
 7. *Solution?* A serialized operation queue (await each callback).
 8. *Why a timeout per op?* Buggy stacks sometimes never call back → avoid deadlock.
 9. *Wrapper?* Coroutines/Flow over `BluetoothGattCallback` (or a library).
 
 **Connection**
+
 10. *State machine?* Disconnected/Connecting/Connected via `onConnectionStateChange`.
 11. *Status 133?* `GATT_ERROR` catch-all — retry + backoff (Ch 2).
 12. *Always do what on disconnect?* `gatt.close()` (avoid stack exhaustion).
@@ -611,26 +614,31 @@ device matrix** (multiple OEMs) for real behavior — unit tests can't catch sta
 14. *GATT leak symptom?* "Can't connect anymore" until Bluetooth toggled.
 
 **Permissions (Ch 51)**
+
 15. *Android 12+?* `BLUETOOTH_SCAN`/`BLUETOOTH_CONNECT` runtime permissions.
 16. *`neverForLocation`?* Scan flag decoupling scanning from location (Ch 67).
 17. *Pre-12 scanning?* Needed `ACCESS_FINE_LOCATION`.
 18. *Scan empty bug?* Usually the permission matrix.
 
 **Scanning**
+
 19. *Efficient scan?* `ScanFilter` + `ScanSettings` (power mode); stop on found.
 20. *Battery?* Scanning is heavy — stop promptly; no continuous background scan.
 
 **Lifecycle/background**
+
 21. *Scope?* Active sessions (Ch 44); disconnect when done.
 22. *Ongoing connected session?* `connectedDevice` FGS (Ch 46).
 23. *Connect thread?* Main thread (some OEMs require it).
 
 **Fragmentation**
+
 24. *Why so hard?* OEM stack quirks (params, MTU, caching, bonding, timing).
 25. *Defensive measures?* Timeouts, retries, always-close, refresh hack, matrix testing.
 26. *Testing?* Device matrix instrumentation (unit tests miss quirks).
 
 **Security (Ch 28)**
+
 27. *Sensitive peripheral?* Bonding (encrypted) + app-layer auth.
 28. *Is proximity authorization?* No — verify an auth token/challenge (Ch 19).
 29. *Device identity?* MAC = PII; minimize, don't log; `neverForLocation` (Ch 28/67).
@@ -638,10 +646,12 @@ device matrix** (multiple OEMs) for real behavior — unit tests can't catch sta
 31. *Relay attacks?* Challenge-response for high-security (locks).
 
 **Data/SSOT**
+
 32. *Device readings?* Into the SSOT (Ch 3); UI observes (Ch 6).
 33. *Connection state?* Transient UI state.
 
 **Testing/Production**
+
 34. *Test the queue?* Fake GATT; assert serialization + timeout.
 35. *Test retry?* 133 → bounded backoff → Failed.
 36. *Flaky in prod?* Concurrent ops (serialize).
@@ -724,13 +734,20 @@ wrong permission matrix (empty scans); `autoConnect=true` (slow/quirky); continu
 background scanning (battery/restrictions); trusting proximity as authorization; not
 device-matrix testing; logging device identity.
 
-**Checklist:** ☐ coroutine/Flow wrapper (or library) over GATT ☐ serialized op queue (one
-at a time) + per-op timeout ☐ connection state machine + retry 133 + backoff (Ch 2) ☐
-always `gatt.close()` ☐ permission matrix (`BLUETOOTH_SCAN`/`CONNECT` + `neverForLocation` /
-legacy location, Ch 51) ☐ scan filters + stop promptly ☐ lifecycle scope + `connectedDevice`
-FGS for sessions (Ch 44/46) ☐ defensive timeouts/retries + device-matrix testing ☐ data →
-SSOT (Ch 3) ☐ bonding + app-layer auth (proximity ≠ authorization, Ch 19) ☐ device identity
-as PII (Ch 28) ☐ connect-success-by-OEM telemetry.
+**Checklist:**
+
+- [ ] coroutine/Flow wrapper (or library) over GATT
+- [ ] serialized op queue (one at a time) + per-op timeout
+- [ ] connection state machine + retry 133 + backoff (Ch 2)
+- [ ] always `gatt.close()`
+- [ ] permission matrix (`BLUETOOTH_SCAN`/`CONNECT` + `neverForLocation` / legacy location, Ch 51)
+- [ ] scan filters + stop promptly
+- [ ] lifecycle scope + `connectedDevice` FGS for sessions (Ch 44/46)
+- [ ] defensive timeouts/retries + device-matrix testing
+- [ ] data → SSOT (Ch 3)
+- [ ] bonding + app-layer auth (proximity ≠ authorization, Ch 19)
+- [ ] device identity as PII (Ch 28)
+- [ ] connect-success-by-OEM telemetry.
 
 **Key APIs:** `BluetoothManager`/`BluetoothAdapter`, `BluetoothDevice.connectGatt`
 (autoConnect=false, `TRANSPORT_LE`), `BluetoothGatt` (`discoverServices`/`readCharacteristic`/

@@ -509,6 +509,7 @@ eligibility gate (server). Fake API/uploader/outbox; Room in-memory.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Review submit?* Optimistic SSOT insert + photo upload + outbox with idempotency key
    (Ch 72/17/31/15).
 2. *Offline submit?* Outbox persists + retries; no double-post (Ch 31/15).
@@ -518,32 +519,38 @@ eligibility gate (server). Fake API/uploader/outbox; Room in-memory.
 5. *Why not client aggregates?* Needs all reviews; client drifts.
 
 **Display/ranking**
+
 6. *Review list?* Server-ranked, paginated (Ch 13/73); client renders + logs signals.
 7. *Who ranks?* The server (helpfulness/verified/recency).
 8. *Helpful vote?* Optimistic signal (Ch 72) feeding server ranking (Ch 73).
 9. *Sort options?* Server-ranked variants (helpful/recent/critical).
 
 **UGC safety**
+
 10. *Content trust?* Untrusted — sanitize render (Ch 52).
 11. *Moderation?* Server-side; pending reviews gated from public view.
 12. *Report/flag?* To server moderation.
 13. *Author sees pending?* Yes (own); others don't until approved.
 
 **Eligibility/consistency**
+
 14. *Who can review?* Server-enforced (verified purchase, Ch 23).
 15. *Client flag?* Shows/hides CTA; server authorizes submit.
 16. *Own review consistency?* SSOT one row + idempotent edit/delete (Ch 3/15).
 
 **Media**
+
 17. *Review photos?* Reliable upload (Ch 17); server media moderation.
 18. *Verified-purchase badge?* Server-provided.
 
 **Security**
+
 19. *Fake reviews?* Server-side abuse detection.
 20. *Injection?* Sanitize (Ch 52).
 21. *Author privacy?* Per policy (Ch 28).
 
 **Testing/Production**
+
 22. *Test submit?* Optimistic + upload + idempotent + offline retry.
 23. *Test aggregates?* Displayed from server (not computed).
 24. *Lost/double submit?* Outbox/idempotency.
@@ -612,12 +619,18 @@ aggregates (wrong/drift); client-ranked reviews (wrong order); trusting/not sani
 (injection); no moderation/pending gating; client-only eligibility (bypassable); own review
 inconsistent (not SSOT); unreliable photo upload.
 
-**Checklist:** ☐ submit optimistic + photo upload (Ch 17) + outbox + idempotency key
-(Ch 72/31/15) ☐ status Posting/Posted/PendingModeration/Failed ☐ server-ranked paginated
-list (Ch 13/73) ☐ server-computed aggregates (display only) ☐ sanitize untrusted content +
-server moderation + report (Ch 52/23) ☐ user's own review consistent in SSOT (edit/delete,
-Ch 3/15) ☐ server-enforced eligibility (verified purchase, Ch 23) ☐ helpful votes optimistic
-+ server signal (Ch 72/73) ☐ per-account (Ch 42) ☐ submit-funnel + moderation telemetry.
+**Checklist:**
+
+- [ ] submit optimistic + photo upload (Ch 17) + outbox + idempotency key (Ch 72/31/15)
+- [ ] status Posting/Posted/PendingModeration/Failed
+- [ ] server-ranked paginated list (Ch 13/73)
+- [ ] server-computed aggregates (display only)
+- [ ] sanitize untrusted content + server moderation + report (Ch 52/23)
+- [ ] user's own review consistent in SSOT (edit/delete, Ch 3/15)
+- [ ] server-enforced eligibility (verified purchase, Ch 23)
+- [ ] helpful votes optimistic + server signal (Ch 72/73)
+- [ ] per-account (Ch 42)
+- [ ] submit-funnel + moderation telemetry.
 
 **Key APIs:** Review SSOT (Room `@Entity`/`@Dao`, client/server id, Ch 3), Outbox +
 idempotency key (Ch 31/15), MediaUploader (Ch 17), Paging 3 + RemoteMediator (server-ranked,

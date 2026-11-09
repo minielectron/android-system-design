@@ -491,6 +491,7 @@ revoked → degrade (no crash). Device testing for real reboot/Doze behavior.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What does `AlarmManager` do?* Fires a `PendingIntent` at a time (→ receiver →
    notification/WorkManager).
 2. *Exact vs inexact?* Precise (privileged, battery-costly) vs batched/approximate
@@ -501,12 +502,14 @@ revoked → degrade (no crash). Device testing for real reboot/Doze behavior.
    IO).
 
 **Doze & methods**
+
 6. *Doze effect on alarms?* Inexact and `setExact` deferred to windows.
 7. *What fires in Doze?* `setExactAndAllowWhileIdle` (rate-limited) and `setAlarmClock`.
 8. *`setAlarmClock`?* User-visible alarm clock; most reliable; for alarm-clock UX.
 9. *Rate limit on exact-while-idle?* ~1 per 9 minutes per app.
 
 **Permission**
+
 10. *Android 12+ exact-alarm permission?* `SCHEDULE_EXACT_ALARM` (request) /
     `USE_EXACT_ALARM` (auto for qualifying apps).
 11. *Android 13+ change?* `SCHEDULE_EXACT_ALARM` not default-granted for most apps.
@@ -515,24 +518,29 @@ revoked → degrade (no crash). Device testing for real reboot/Doze behavior.
 14. *`USE_EXACT_ALARM` misuse?* Play rejection (only alarm/clock/calendar apps qualify).
 
 **Reboot/time**
+
 15. *Alarms after reboot?* Cleared — reschedule via `BOOT_COMPLETED` from SSOT.
 16. *Why SSOT for alarms?* `AlarmManager` isn't persistent storage.
 17. *Timezone/DST?* Recompute on `TIMEZONE_CHANGED`; store local time + zone.
 
 **PendingIntent**
+
 18. *`FLAG_IMMUTABLE`?* Required Android 12+; prevents tampering.
 19. *Update/cancel the right alarm?* `FLAG_UPDATE_CURRENT` + matching request code.
 
 **Mechanism selection**
+
 20. *Deferrable periodic work?* WorkManager, not an alarm.
 21. *Server event?* FCM, not an alarm.
 22. *When is an alarm right?* User-facing time-of-day trigger.
 
 **Security**
+
 23. *Receiver exported?* `AlarmReceiver` false; `BootReceiver` true (validate action).
 24. *Lock-screen leak?* Public/private notification (Ch 50).
 
 **Testing/production**
+
 25. *Test alarms?* Robolectric `ShadowAlarmManager`; `adb dumpsys alarm`/`deviceidle`.
 26. *Late reminders?* Inexact/Doze/no-permission.
 27. *Missing after reboot?* Boot receiver / OEM auto-start (Ch 47).
@@ -600,11 +608,18 @@ deferrable work (should be WorkManager) or server events (should be FCM); slow r
 (ANR); non-idempotent effect (duplicates); mutable `PendingIntent`; `USE_EXACT_ALARM`
 without qualifying.
 
-**Checklist:** ☐ classify alarm vs WorkManager vs FCM ☐ inexact by default, exact only if
-critical ☐ `setExactAndAllowWhileIdle`/`setAlarmClock` for Doze-exact ☐ exact-alarm
-permission check + degrade ☐ `FLAG_IMMUTABLE` PendingIntent ☐ receiver fast + idempotent
-☐ heavy work → WorkManager ☐ SSOT alarm definitions ☐ reschedule on reboot + timezone
-change ☐ receivers exported correctly.
+**Checklist:**
+
+- [ ] classify alarm vs WorkManager vs FCM
+- [ ] inexact by default, exact only if critical
+- [ ] `setExactAndAllowWhileIdle`/`setAlarmClock` for Doze-exact
+- [ ] exact-alarm permission check + degrade
+- [ ] `FLAG_IMMUTABLE` PendingIntent
+- [ ] receiver fast + idempotent
+- [ ] heavy work → WorkManager
+- [ ] SSOT alarm definitions
+- [ ] reschedule on reboot + timezone change
+- [ ] receivers exported correctly.
 
 **Key APIs:** `AlarmManager.set`/`setWindow`/`setInexactRepeating`/`setExact`/
 `setExactAndAllowWhileIdle`/`setAlarmClock`/`cancel`/`canScheduleExactAlarms`,

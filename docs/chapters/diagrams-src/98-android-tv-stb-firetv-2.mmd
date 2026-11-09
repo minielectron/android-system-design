@@ -1,0 +1,26 @@
+classDiagram
+    class FocusState {
+        +currentFocus: FocusTarget
+        +focusOrder (next up/down/left/right)
+        +initialFocus; +highlight; +noTraps
+    }
+    class TvNavigation {
+        +D-pad spatial move (FocusRequester/focusGroup)
+        +2D rows/grid; +media/voice keys (onKeyEvent)
+    }
+    class TenFootUI {
+        +leanback / androidx.tv Compose
+        +browse rows/cards; large, high-contrast
+    }
+    class MediaState {
+        +Media3 player (Ch 56); +DRM (Ch 58)
+        +transport (D-pad/media keys); +resume; +media session
+    }
+    class PlatformAbstraction {
+        +push/billing/voice/store (Android TV vs Fire TV vs STB)
+        +no Google Play Services fallback (Amazon)
+    }
+    FocusState --> TvNavigation
+    TvNavigation --> TenFootUI
+    TenFootUI --> MediaState
+    MediaState --> PlatformAbstraction

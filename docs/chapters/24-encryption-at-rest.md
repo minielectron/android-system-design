@@ -456,6 +456,7 @@ DEK zeroed after use, performance benchmark (Ch 88).
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Does Android encrypt app data already?* Yes (file-based encryption), but only
    while locked/off; not against rooted running devices or backups.
 2. *When do you add app-level encryption?* For high-value data (payments/health/
@@ -469,6 +470,7 @@ DEK zeroed after use, performance benchmark (Ch 88).
    specific columns (keep others queryable).
 
 **Mechanism**
+
 6. *How encrypt a Room DB?* SQLCipher `SupportOpenHelperFactory` with the DEK as
    passphrase.
 7. *Field-level in Room?* A `TypeConverter` that encrypts/decrypts the column.
@@ -476,6 +478,7 @@ DEK zeroed after use, performance benchmark (Ch 88).
 9. *Encrypt files?* `EncryptedFile`/Tink/manual AES-GCM (Ch 25).
 
 **Keys/threat model**
+
 10. *Where does the key live?* Keystore (KEK), non-extractable (Ch 20); DEK in
     memory transiently (zero it).
 11. *Rooted device?* Keystore protects key material; a running app can still be
@@ -486,26 +489,31 @@ DEK zeroed after use, performance benchmark (Ch 88).
 13. *Never embed keys?* Right — decompilable (Ch 27).
 
 **Lifecycle**
+
 14. *Rotation?* New DEK, re-encrypt (SQLCipher `rekey`), re-wrap.
 15. *Key invalidation (Ch 20)?* Wipe + re-provision; don't leak/crash.
 16. *Logout?* Clear DEK/KEK + encrypted stores (Ch 22).
 
 **Performance**
+
 17. *SQLCipher cost?* Modest page-encryption overhead; encrypt only sensitive DBs;
     measure on low-end.
 18. *Keep searchable?* Index plaintext columns; encrypt only the sensitive value.
 19. *Cold start?* Don't unwrap/init on the critical path (Ch 88).
 
 **Backup/portability**
+
 20. *Can encrypted local data migrate to a new device?* Not with a device-bound KEK
     — design re-login/re-fetch recovery instead.
 
 **Testing**
+
 21. *How test field encryption?* Round-trip + tamper → `AEADBadTag`.
 22. *How test SQLCipher?* Instrumentation: open with correct/wrong key, rekey.
 23. *What to statically check?* Backup exclusion; no embedded keys.
 
 **Production debugging**
+
 24. *"Can't open DB" after OS update?* KEK invalidation unhandled.
 25. *Sensitive data in backup?* Missing exclusion rules.
 26. *Slow start?* Unwrap/SQLCipher init on critical path.
@@ -567,10 +575,18 @@ encrypting everything (perf); trying to query encrypted columns; not excluding f
 backup; not zeroing the DEK; not handling KEK invalidation; expecting encrypted
 local data to migrate across devices.
 
-**Checklist:** ☐ classify sensitive data ☐ SQLCipher vs field-level chosen ☐ DEK
-wrapped by Keystore KEK ☐ zero DEK after use ☐ AES-GCM (authenticated) ☐ backup
-exclusion ☐ rotation path ☐ KEK-invalidation recovery ☐ auth-bind for highest
-value ☐ clear on logout.
+**Checklist:**
+
+- [ ] classify sensitive data
+- [ ] SQLCipher vs field-level chosen
+- [ ] DEK wrapped by Keystore KEK
+- [ ] zero DEK after use
+- [ ] AES-GCM (authenticated)
+- [ ] backup exclusion
+- [ ] rotation path
+- [ ] KEK-invalidation recovery
+- [ ] auth-bind for highest value
+- [ ] clear on logout.
 
 **Key APIs:** SQLCipher `SupportOpenHelperFactory`, `PRAGMA rekey`, Room
 `@TypeConverter`/`openHelperFactory`, Keystore (Ch 20), `Cipher`/`GCMParameterSpec`,

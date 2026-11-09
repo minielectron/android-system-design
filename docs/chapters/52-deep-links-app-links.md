@@ -561,6 +561,7 @@ hostile URIs.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Deep link?* A URI that opens a specific screen.
 2. *Custom scheme vs App Link?* Hijackable, no web launch vs verified https, direct,
    un-hijackable, web fallback.
@@ -570,6 +571,7 @@ hostile URIs.
 5. *When scheme vs App Link?* Scheme for internal/notification; App Links for public web.
 
 **Routing**
+
 6. *Why centralize routing?* Consistency + one place for validation/auth; avoid scattered
    parsing.
 7. *Typed destinations?* Map `Uri` → sealed/Navigation route (Ch 53).
@@ -577,17 +579,20 @@ hostile URIs.
 9. *Unknown link?* Fail safe (home/error), never crash.
 
 **Auth/accounts**
+
 10. *Gated destination, logged out?* Route to login, resume to target (Ch 21).
 11. *Carry the pending link?* Yes — consume once after login.
 12. *Multi-account link?* Resolve account; switch/confirm (Ch 42).
 
 **Launch states**
+
 13. *Cold start?* Launch intent → route after minimal init (Ch 45).
 14. *App running?* `singleTop` + `onNewIntent`.
 15. *From notification?* `PendingIntent` carries the link; mark inbox read (Ch 50).
 16. *Process death?* Link in the intent survives (Ch 8).
 
 **Security**
+
 17. *Params trust?* Untrusted — validate/allowlist; fail safe.
 18. *IDOR?* Authorize server-side against the authed user (Ch 23) — client id proves
     nothing.
@@ -596,6 +601,7 @@ hostile URIs.
 21. *Hijacking?* App Links verification prevents it; schemes can't be verified.
 
 **Testing/Production**
+
 22. *Test links?* `adb am start -d`; `pm get-app-links`; router unit tests.
 23. *Chooser shown?* App Links not verified.
 24. *Verify App Links?* `pm verify-app-links` / Play Console.
@@ -669,12 +675,20 @@ params (IDOR); opening arbitrary `url=` (open-redirect); sensitive actions strai
 link; not handling `onNewIntent`/cold start; cross-account rendering; crashing on
 malformed input.
 
-**Checklist:** ☐ verified App Links for web + scheme for internal ☐ `assetlinks.json` +
-`autoVerify` ☐ central router → typed destinations ☐ validate params (allowlist, fail
-safe) ☐ synthesize back stack ☐ auth gate + resume (Ch 21) ☐ handle cold/warm/
-notification/process-death ☐ server-side authz (IDOR, Ch 23) ☐ no arbitrary URL / no
-direct sensitive action ☐ multi-account switch/confirm (Ch 42) ☐ `FLAG_IMMUTABLE`
-PendingIntents ☐ open-funnel + verification telemetry.
+**Checklist:**
+
+- [ ] verified App Links for web + scheme for internal
+- [ ] `assetlinks.json` + `autoVerify`
+- [ ] central router → typed destinations
+- [ ] validate params (allowlist, fail safe)
+- [ ] synthesize back stack
+- [ ] auth gate + resume (Ch 21)
+- [ ] handle cold/warm/notification/process-death
+- [ ] server-side authz (IDOR, Ch 23)
+- [ ] no arbitrary URL / no direct sensitive action
+- [ ] multi-account switch/confirm (Ch 42)
+- [ ] `FLAG_IMMUTABLE` PendingIntents
+- [ ] open-funnel + verification telemetry.
 
 **Key APIs:** `<intent-filter>` `VIEW`/`BROWSABLE`/`DEFAULT` + `<data>` +
 `android:autoVerify`, `/.well-known/assetlinks.json`, `Activity.onNewIntent` +

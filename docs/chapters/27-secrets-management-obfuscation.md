@@ -441,6 +441,7 @@ scanning; mapping-file presence; serialization/reflection still works post-R8.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Can you keep a secret in an APK?* No — it's decompilable and hookable; anything
    shipped is extractable.
 2. *Where do true secrets go?* Server-side; the client gets revocable, scoped tokens
@@ -453,6 +454,7 @@ scanning; mapping-file presence; serialization/reflection still works post-R8.
    limited), non-secret config (BuildConfig/remote).
 
 **Keys/config**
+
 6. *Hardcoded API key — problem?* Trivially extracted; rotate + move server-side.
 7. *Unavoidable third-party client key?* Restrict (package+signature+API) +
    revocable + rotate.
@@ -461,6 +463,7 @@ scanning; mapping-file presence; serialization/reflection still works post-R8.
    values.
 
 **R8**
+
 10. *What does `isMinifyEnabled` do?* Enables R8 shrink + obfuscate.
 11. *Keep rules?* `-keep` preserves classes used via reflection/serialization.
 12. *Mapping file?* De-obfuscates crash stacks — must retain/upload (Ch 83).
@@ -468,12 +471,14 @@ scanning; mapping-file presence; serialization/reflection still works post-R8.
 14. *R8 performance?* Smaller/faster app; enable regardless of security.
 
 **Runtime protection**
+
 15. *Persisted secrets?* Keystore-encrypted (Ch 20), not constants.
 16. *String encryption in the APK?* The decrypt key+logic are also in the APK —
     reversible; cost-raiser only.
 17. *Native (NDK) secrets?* Harder but still reversible/hookable.
 
 **Model/limits**
+
 18. *Obfuscation vs server-side?* Obfuscation slows attackers; server-side actually
     protects. Use both.
 19. *If a client secret leaks?* Rotate + move server-side — not "obfuscate harder."
@@ -481,15 +486,18 @@ scanning; mapping-file presence; serialization/reflection still works post-R8.
     server enforcement.
 
 **Build/VCS**
+
 21. *How prevent committed secrets?* `.gitignore` + CI secret scanning (gitleaks).
 22. *Play App Signing?* Keeps the signing key off your machine; protect it.
 
 **Testing**
+
 23. *Why test the release build?* R8 can remove reflected classes → release-only
     crashes.
 24. *CI check for secrets?* Secret scanning fails the build on matches.
 
 **Production debugging**
+
 25. *Unreadable crash stacks?* Mapping file not uploaded/mismatched.
 26. *Release-only crash?* Missing `-keep` rule.
 27. *Key abused externally?* Restrictions missing; rotate.
@@ -556,10 +564,18 @@ obfuscation as protection; "encrypting" a hardcoded string; unrestricted third-p
 keys; committing secrets; disabling R8 (size/perf loss) or enabling it without keep
 rules/mapping; hiding security-critical logic in the client instead of the server.
 
-**Checklist:** ☐ no hardcoded true secrets ☐ server-side true secrets ☐ restricted+
-revocable third-party keys ☐ build-time injection (not VCS) + secret scanning
-☐ Keystore for persisted secrets ☐ R8 enabled + keep rules ☐ mapping retained/
-uploaded ☐ defense-in-depth ☐ rotate on leak ☐ test release build.
+**Checklist:**
+
+- [ ] no hardcoded true secrets
+- [ ] server-side true secrets
+- [ ] restricted+ revocable third-party keys
+- [ ] build-time injection (not VCS) + secret scanning
+- [ ] Keystore for persisted secrets
+- [ ] R8 enabled + keep rules
+- [ ] mapping retained/uploaded
+- [ ] defense-in-depth
+- [ ] rotate on leak
+- [ ] test release build.
 
 **Key APIs/tools:** Gradle `buildConfigField`/env providers, R8 (`isMinifyEnabled`,
 `isShrinkResources`, `proguardFiles`, `-keep`), `mapping.txt`, Play App Signing,

@@ -462,6 +462,7 @@ cancellation during backoff aborts promptly.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why backoff instead of immediate retry?* Immediate retries hammer a
    recovering server (retry storm); backoff spaces them.
 2. *Why jitter?* Decorrelates many clients so they don't retry in lockstep (self-
@@ -472,6 +473,7 @@ cancellation during backoff aborts promptly.
    responsiveness and server load.
 
 **Architecture**
+
 6. *Why a policy wrapper over an OkHttp interceptor?* The wrapper sees typed
    errors and domain idempotency; the interceptor is blind to both.
 7. *Where does reliability live?* `:core:network`, on top of `safeApiCall`.
@@ -479,24 +481,28 @@ cancellation during backoff aborts promptly.
    with a sensible default.
 
 **Kotlin/Android**
+
 9. *How do you wait without blocking?* `delay()` — cancellable, non-blocking.
 10. *Why `elapsedRealtime()` in the breaker?* Monotonic; immune to wall-clock
     changes.
 11. *How is the breaker thread-safe?* `Mutex`-guarded state.
 
 **Concurrency**
+
 12. *Thundering-herd refresh on mass 401?* Single-flight refresh (Ch 19), not a
     retry concern.
 13. *Cancellation during backoff?* `delay` throws `CancellationException`; loop
     exits; nothing leaks.
 
 **Networking**
+
 14. *Honoring `Retry-After`?* Parse the header; wait that long (capped) on
     429/503.
 15. *Retry on 401?* No — refresh instead.
 16. *Retry on 404/422?* No — client errors aren't transient.
 
 **Reliability/availability**
+
 17. *How prevent self-DDoS?* Jitter + attempt cap + retry budget + breaker; plus
     backend rate limiting.
 18. *Breaker states?* Closed → Open (on failures) → Half-Open (after cooldown) →
@@ -505,22 +511,26 @@ cancellation during backoff aborts promptly.
     needless complexity.
 
 **Battery/perf**
+
 20. *Retrying offline?* Avoid; wait for connectivity (Ch 68) or defer to
     WorkManager (Ch 30).
 21. *Bounding user wait?* Cap attempts and total time; fewer, faster retries for
     foreground.
 
 **Security**
+
 22. *Reliability as attack surface?* Over-aggressive retries can DoS your own
     backend; controls = jitter/budget/breaker + server limits.
 23. *Retry a payment safely?* Only with an idempotency key.
 
 **Testing**
+
 24. *How test backoff without waiting?* Virtual time (`runTest`,
     `advanceTimeBy`/`currentTime`).
 25. *How test the breaker?* Inject a fake clock; assert transitions and fast-fail.
 
 **Production debugging**
+
 26. *Breaker open for a host — meaning?* That backend/host is failing; likely an
     incident; app is correctly failing fast.
 27. *Attempts-per-success rising — cause?* Flaky backend or timeouts set too low.
@@ -578,9 +588,16 @@ breaker (Closed/Open/Half-Open), thundering herd.
 retries); `Thread.sleep` instead of `delay`; retrying 401/404; unbounded retries;
 retrying while offline; wall-clock in the breaker.
 
-**Checklist:** ☐ classify via `isRetryable` ☐ backoff+jitter ☐ attempt + time
-caps ☐ idempotency gate ☐ breaker per host ☐ honor `Retry-After` (capped)
-☐ cancellable `delay` ☐ metrics on attempts/breaker.
+**Checklist:**
+
+- [ ] classify via `isRetryable`
+- [ ] backoff+jitter
+- [ ] attempt + time caps
+- [ ] idempotency gate
+- [ ] breaker per host
+- [ ] honor `Retry-After` (capped)
+- [ ] cancellable `delay`
+- [ ] metrics on attempts/breaker.
 
 **Key APIs:** `delay`, `Mutex.withLock`, `SystemClock.elapsedRealtime`,
 `Random.nextLong`, `runTest`/`currentTime`, OkHttp `retryOnConnectionFailure`,

@@ -1,0 +1,31 @@
+classDiagram
+    class FeatureLayer {
+        +catalog/checkout/orders (Ch 71-79)
+        +Compose UI + ViewModel (UDF, Ch 2)
+    }
+    class DomainLayer {
+        +use cases (Ch 1) - business rules
+        +PlaceOrderUseCase (exactly-once, Ch 75)
+    }
+    class DataLayer {
+        +repositories = SSOT (Ch 1)
+        +Room (Ch 5) + network (Ch 4) + sync (Ch 29)
+    }
+    class SyncEngine {
+        +outbox + idempotency (Ch 29/75)
+        +delta sync + conflict resolution (Ch 29)
+    }
+    class RealtimeMedia {
+        +WebSocket/SSE (Ch 63/65) + FCM (Ch 50)
+        +Media3 + DRM (Ch 56/58)
+    }
+    class CrossCutting {
+        +security (Ch 20/24/28/76)
+        +observability (Ch 82-87); +DI/modules (Ch 46/94); +design system (Ch 95-97)
+    }
+    FeatureLayer --> DomainLayer
+    DomainLayer --> DataLayer
+    DataLayer --> SyncEngine
+    SyncEngine --> RealtimeMedia
+    CrossCutting ..> FeatureLayer
+    CrossCutting ..> DataLayer

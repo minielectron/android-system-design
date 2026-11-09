@@ -544,6 +544,7 @@ StrictMode leak/closeable detection; footprint audits (Memory Profiler). Field O
 > ≥40 questions (Complex).
 
 **Fundamentals**
+
 1. *Managed heap?* ART heap + GC + per-app limit.
 2. *What's a leak?* Reachable-from-GC-root object that should be freed.
 3. *OOM cause?* Exceeding the per-app limit (bitmaps, unbounded caches).
@@ -551,6 +552,7 @@ StrictMode leak/closeable detection; footprint audits (Memory Profiler). Field O
 5. *Why memory matters?* Jank, OOM crash, background kill.
 
 **Leak taxonomy**
+
 6. *#1 Android leak?* Activity/View/Context held by static/singleton (Ch 46).
 7. *Context fix?* applicationContext, not Activity.
 8. *Listener leak?* Not unregistering; pair register/unregister (Ch 44).
@@ -559,12 +561,14 @@ StrictMode leak/closeable detection; footprint audits (Memory Profiler). Field O
 11. *Handler leak?* Delayed Runnable pins Activity; removeCallbacks.
 
 **Fixes**
+
 12. *Master fix?* Lifecycle scoping (Ch 44/3).
 13. *WeakReference?* Unavoidable back-ref — doesn't pin host.
 14. *repeatOnLifecycle?* Collect only while started — no leak (Ch 44).
 15. *Unregister where?* Paired lifecycle callback (onStop/onDestroy).
 
 **Bitmaps/caches**
+
 16. *Why bitmaps?* Largest objects (w×h×4).
 17. *Avoid bitmap OOM?* Downsample to view size; managed loader (Ch 59).
 18. *Bounded cache?* LruCache size/count eviction.
@@ -572,29 +576,34 @@ StrictMode leak/closeable detection; footprint audits (Memory Profiler). Field O
 20. *Image loader?* Coil/Glide — bounded + lifecycle (Ch 59).
 
 **Memory pressure**
+
 21. *onTrimMemory?* OS pressure signal; release non-critical (Ch 44).
 22. *Trim levels?* UI_HIDDEN, RUNNING_LOW, COMPLETE.
 23. *Why respond?* Avoid OOM + killed less eagerly (Ch 44).
 24. *onLowMemory?* Older callback; evict caches.
 
 **Allocation/GC**
+
 25. *Per-frame alloc?* Hoist out of onDraw/recompose (Ch 90).
 26. *Autoboxing?* Avoid on hot path.
 27. *GC types?* ART generational; pauses drop frames.
 
 **Detection**
+
 28. *LeakCanary?* Debug — detects retained objects + reference chain.
 29. *Memory Profiler?* Footprint, allocations, heap dumps.
 30. *Field OOM?* Vitals/Crashlytics (Ch 85/83).
 31. *Heap dump?* Snapshot of reachable objects; compare.
 
 **Edge cases**
+
 32. *Rotation leaks?* New Activity each time → multiply; LeakCanary (Ch 44).
 33. *ViewModel leak?* Shouldn't hold View/Activity; survives rotation (Ch 44).
 34. *Static Context?* Never; app-level if needed (Ch 46).
 35. *Fragment view leak?* Null out view binding in onDestroyView.
 
 **Production**
+
 36. *OOM spike?* Release regression — bound/downsample (Ch 83).
 37. *Footprint regression?* Profiler + field percentiles (Ch 85).
 38. *Early bg kill?* Honor trim (Ch 44).
@@ -672,12 +681,18 @@ coroutines capturing lifecycle objects; not unregistering listeners/receivers; u
 hand-decoded bitmaps without downsampling (OOM); ignoring `onTrimMemory`; per-frame allocations
 (GC jank); not nulling Fragment view bindings; finding leaks only in production (no LeakCanary).
 
-**Checklist:** ☐ lifecycle-scoped coroutines/collection (viewModelScope, repeatOnLifecycle,
-Ch 3/44) ☐ unregister listeners/receivers in paired callback (Ch 44) ☐ applicationContext (not
-Activity) in long-lived objects; WeakReference for back-refs (Ch 46) ☐ bounded caches (LruCache)
-+ downsampled bitmaps / Coil (Ch 59) ☐ honor onTrimMemory → release non-critical (Ch 44) ☐ no
-per-frame/recomposition allocations (Ch 90) ☐ null Fragment view bindings in onDestroyView ☐
-LeakCanary in debug ☐ Memory Profiler footprint audits ☐ field OOM + trim monitoring (Ch 85/83).
+**Checklist:**
+
+- [ ] lifecycle-scoped coroutines/collection (viewModelScope, repeatOnLifecycle, Ch 3/44)
+- [ ] unregister listeners/receivers in paired callback (Ch 44)
+- [ ] applicationContext (not Activity) in long-lived objects; WeakReference for back-refs (Ch 46)
+- [ ] bounded caches (LruCache) + downsampled bitmaps / Coil (Ch 59)
+- [ ] honor onTrimMemory → release non-critical (Ch 44)
+- [ ] no per-frame/recomposition allocations (Ch 90)
+- [ ] null Fragment view bindings in onDestroyView
+- [ ] LeakCanary in debug
+- [ ] Memory Profiler footprint audits
+- [ ] field OOM + trim monitoring (Ch 85/83).
 
 **Key APIs:** `viewModelScope`/`lifecycleScope`/`repeatOnLifecycle`/`collectAsStateWithLifecycle`
 (Ch 3/44), `@ApplicationContext` / `applicationContext` (Ch 46), `java.lang.ref.WeakReference`,

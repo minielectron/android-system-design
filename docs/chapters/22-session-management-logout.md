@@ -473,6 +473,7 @@ Authenticator (Ch 19).
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What is session management?* Owning the authenticated-lifecycle: login →
    active → expiry/logout, as app-wide state.
 2. *Why is "clear the token" insufficient logout?* Leaves cached PII/drafts/media
@@ -485,6 +486,7 @@ Authenticator (Ch 19).
    vs device (theme/onboarding — keep).
 
 **Logout procedure**
+
 6. *What must logout clear?* Tokens/keys (Ch 20), session Room tables + caches,
    session prefs, downloaded media/keys, in-memory state.
 7. *How ensure nothing is forgotten?* A `SessionScopedStore` registry (Hilt
@@ -494,6 +496,7 @@ Authenticator (Ch 19).
    short TTL closes the window.
 
 **Logout everywhere**
+
 10. *How "log out all devices"?* Backend revokes all sessions (token version bump /
     per-session records); other devices log out on next call.
 11. *Version bump vs per-session?* Bump = global invalidation (simple); per-session
@@ -501,6 +504,7 @@ Authenticator (Ch 19).
 12. *When triggered?* Password change, suspected compromise, device-limit.
 
 **Reactive logout**
+
 13. *App-wide session-expired signal?* A `SharedFlow` (Ch 7) emitted on invalid
     refresh (Ch 19)/server revoke; a top-level collector runs logout.
 14. *Why decouple detection from reaction?* Many detectors (Authenticator, push),
@@ -509,11 +513,13 @@ Authenticator (Ch 19).
     signal.
 
 **Concurrency**
+
 16. *Logout with requests in flight?* Tokens cleared → 401/cancel; stores cleared;
     new graph ignores old results.
 17. *Explicit + reactive logout race?* Idempotent logout + `distinctUntilChanged`.
 
 **Security**
+
 18. *Residual data risk?* Next user sees previous user's data — registry ensures
     full clear.
 19. *Short access-token TTL role?* Bounds how long a revoked session stays usable
@@ -523,16 +529,19 @@ Authenticator (Ch 19).
     (Ch 42).
 
 **Scalability**
+
 22. *Device management ("your devices")?* Per-session records + revoke-one UI.
 23. *Idle timeout?* Auto-logout after inactivity for sensitive apps.
 
 **Testing**
+
 24. *How test complete logout?* Registry cleared + token wiped + device-scoped
     kept; "no residual data" integration test.
 25. *How test reactive logout?* Emit session-expired; assert logout.
 26. *How test logout-everywhere?* Assert `revokeAll` called.
 
 **Production debugging**
+
 27. *Previous user's data shows?* A store not registered/cleared.
 28. *Session survives "logout everywhere"?* Server not revoking / long TTL.
 
@@ -592,10 +601,18 @@ no server revocation; uncoordinated reaction (stale screens); forgetting to clea
 new session store; not wiping secrets/media; blocking logout on the network;
 leaking data across accounts.
 
-**Checklist:** ☐ session SSOT from token ☐ `SessionScopedStore` registry ☐ clear
-DB/caches/prefs/secrets/media ☐ nav-graph swap (in-memory reset) ☐ server revoke +
-revoke-all ☐ app-wide session-expired signal ☐ reactive logout (Ch 19) ☐ logout
-works offline ☐ device- vs session-scope ☐ per-account isolation (Ch 42).
+**Checklist:**
+
+- [ ] session SSOT from token
+- [ ] `SessionScopedStore` registry
+- [ ] clear DB/caches/prefs/secrets/media
+- [ ] nav-graph swap (in-memory reset)
+- [ ] server revoke + revoke-all
+- [ ] app-wide session-expired signal
+- [ ] reactive logout (Ch 19)
+- [ ] logout works offline
+- [ ] device- vs session-scope
+- [ ] per-account isolation (Ch 42).
 
 **Key APIs:** `StateFlow`/`SharedFlow` (Ch 6/7), Hilt `@IntoSet` multibinding,
 `distinctUntilChanged`, `TokenStore.clear` (Ch 19/20), nav graph swap,

@@ -560,6 +560,7 @@ place. Fake PSP + server with idempotency dedup.
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *Is checkout optimistic?* No — real server-confirmed state only (opposite of Ch 72).
 2. *The cardinal sin?* Double-charge / double-order.
 3. *Exactly-once mechanism?* Idempotency key, generated once, persisted, reused (Ch 15).
@@ -567,6 +568,7 @@ place. Fake PSP + server with idempotency dedup.
 5. *Card data on device?* No — PSP tokenization (PCI, Ch 23).
 
 **Idempotency (Ch 15)**
+
 6. *Generate the key when?* Once per checkout attempt.
 7. *Reuse when?* Every retry and after process restart.
 8. *Persist why?* So a restart reuses the same key (Ch 8).
@@ -574,16 +576,19 @@ place. Fake PSP + server with idempotency dedup.
 10. *Server behavior?* Dedups — same key → same order.
 
 **Interruption (Ch 8)**
+
 11. *Process dies after charge?* Recover by querying status by key — not blind re-submit.
 12. *Safe re-submit?* Only with the SAME key (server dedups).
 13. *Why not blind re-submit?* New/unknown state → double-charge.
 
 **Totals/validation**
+
 14. *Trust client total?* Never — server computes authoritative total (Ch 23).
 15. *Per-step validation?* Address/shipping/price/stock server-validated (Ch 53).
 16. *Price/stock changed mid-flow?* Re-validate + surface before place.
 
 **Payment/PSP**
+
 17. *Tokenization?* PSP SDK → token; no PAN on app/server (PCI).
 18. *SCA/3-DS?* Present challenge via SDK; async confirm.
 19. *Async confirmation?* PSP + server (webhook); client polls/receives final state.
@@ -592,15 +597,18 @@ place. Fake PSP + server with idempotency dedup.
 21. *Collapse to "failed"?* No — precise, actionable.
 
 **UI/state**
+
 22. *Show "placed" when?* Only after server confirms (real state).
 23. *During?* "Placing…".
 24. *Resumable?* Persist checkout state (SSOT, Ch 3/8).
 
 **Offline**
+
 25. *Place offline?* Can't — block (server must charge); clear message.
 26. *Outbox for charges?* No — not fire-and-forget; needs connectivity.
 
 **Security/PCI**
+
 27. *PCI scope?* Minimized via tokenization (no PAN).
 28. *Auth?* Authed place; re-auth sensitive (Ch 21).
 29. *Audit?* Server-side immutable record (Ch 19).
@@ -608,6 +616,7 @@ place. Fake PSP + server with idempotency dedup.
 31. *Logging?* No card/token/amount-with-identity (Ch 28).
 
 **Testing/Production**
+
 32. *Test exactly-once?* Retry/double-tap/restart → one order.
 33. *Test recovery?* Query by key, no blind re-submit.
 34. *Test real-state?* Placing → Confirmed, never premature.
@@ -688,14 +697,20 @@ retry (double-charge); not persisting the key (restart double-charges); blind re
 interruption (double-charge); trusting client totals (tampering/stale); handling card data in
 the app (PCI violation); collapsing payment failures to "failed"; queuing charges offline.
 
-**Checklist:** ☐ real server-confirmed state only (not optimistic, Ch 72) ☐ one idempotency
-key per attempt, **persisted**, **reused** on retry/restart (Ch 15/8) ☐ server dedups → zero
-double-charge ☐ server-authoritative totals/stock at place time (Ch 23) ☐ multi-step
-server-validated flow (Ch 53) ☐ PSP tokenization (no card on device, PCI) + SCA/3-DS + async
-confirm ☐ precise failure states (declined/insufficient/network/requires-auth/fraud) ☐
-interruption recovery via status query (never blind re-submit, Ch 8) ☐ authed + auditable
-(Ch 19) ☐ block place when offline ☐ per-account (Ch 42) ☐ double-charge-rate alert (page on
-any).
+**Checklist:**
+
+- [ ] real server-confirmed state only (not optimistic, Ch 72)
+- [ ] one idempotency key per attempt, **persisted**, **reused** on retry/restart (Ch 15/8)
+- [ ] server dedups → zero double-charge
+- [ ] server-authoritative totals/stock at place time (Ch 23)
+- [ ] multi-step server-validated flow (Ch 53)
+- [ ] PSP tokenization (no card on device, PCI) + SCA/3-DS + async confirm
+- [ ] precise failure states (declined/insufficient/network/requires-auth/fraud)
+- [ ] interruption recovery via status query (never blind re-submit, Ch 8)
+- [ ] authed + auditable (Ch 19)
+- [ ] block place when offline
+- [ ] per-account (Ch 42)
+- [ ] double-charge-rate alert (page on any).
 
 **Key APIs:** idempotency key (`UUID`, persisted in SSOT, Ch 15/3/8), `CheckoutApi.placeOrder(…,
 idempotencyKey)` / `orderStatusByIdempotencyKey` (recovery, Ch 8), PSP SDK (tokenize /

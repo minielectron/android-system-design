@@ -510,6 +510,7 @@ Fake config/analytics/sync; DataStore test.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Onboarding + discovery shared problem?* Show the right guidance once, measured,
    iterably.
 2. *Flow source?* Remote config/server (Ch 41) — changeable without release, A/B (Ch 87).
@@ -519,39 +520,47 @@ Fake config/analytics/sync; DataStore test.
 5. *Why per-step not one bit?* New steps + individual prompts handled independently.
 
 **State**
+
 6. *Persist where?* DataStore (Ch 4).
 7. *Reinstall-safe?* Server-synced to the account (Ch 32).
 8. *Check when?* Before showing each step/prompt.
 
 **Permissions**
+
 9. *Priming?* Explain value before the system request (Ch 51) → higher grants.
 10. *Cold prompt?* Bad — reflexive denial.
 11. *Prime everything at launch?* No — only soon-needed permissions.
 
 **UX**
+
 12. *Length?* Skippable, progressive, value-fast.
 13. *Progressive onboarding?* Teach features when first used (discovery).
 14. *Defer?* Optional steps (interests, permissions).
 
 **Discovery**
+
 15. *Discovery prompts?* Contextual, throttled, dismissible, once.
 16. *Throttle?* One active; queue by priority.
 17. *"What's new"?* Version-gated after update.
 18. *Badges?* Mark unexplored; clear on use.
 
 **Measurement/experiments**
+
 19. *Funnel?* Log step shown/completed/skipped + drop-off (Ch 14).
 20. *A/B?* Variant from config (Ch 87); pin per user; compare outcomes.
 21. *Why measure?* Iterate to activation.
 
 **Personalization**
+
 22. *Interests?* Seed personalization/recommendations cold-start (Ch 43/73).
 
 **Security/startup**
+
 23. *Priming ethics?* Persuade, not coerce (Ch 28).
 24. *Startup impact?* Startup-light; cache config (Ch 45/41).
 
 **Testing/Production**
+
 25. *Re-shown in prod?* State not persisted/checked.
 26. *Key metric?* Completion funnel + grant rate.
 
@@ -615,13 +624,19 @@ mishandles new steps); state not persisted/synced (re-shown, reinstall re-onboar
 permission prompts (low grants); long mandatory onboarding (drop-off); discovery spam (all at
 once); no funnel measurement; blocking cold start on config.
 
-**Checklist:** ☐ remote-config/server-driven flow + A/B variant (Ch 41/87) ☐ per-step/feature
-show-once state in DataStore (Ch 4), server-synced (Ch 32) ☐ check completion before showing
-☐ prime permissions before request (Ch 51), only soon-needed ☐ skippable/progressive,
-value-fast ☐ completion-funnel analytics (Ch 14) ☐ discovery contextual/throttled/dismissible/
-once ☐ seed personalization from interests (Ch 43/73) ☐ startup-light (cached config, Ch 45/
-41) ☐ per-account + consent + sanitized config copy (Ch 42/28/52) ☐ funnel + grant-rate
-telemetry.
+**Checklist:**
+
+- [ ] remote-config/server-driven flow + A/B variant (Ch 41/87)
+- [ ] per-step/feature show-once state in DataStore (Ch 4), server-synced (Ch 32)
+- [ ] check completion before showing
+- [ ] prime permissions before request (Ch 51), only soon-needed
+- [ ] skippable/progressive, value-fast
+- [ ] completion-funnel analytics (Ch 14)
+- [ ] discovery contextual/throttled/dismissible/once
+- [ ] seed personalization from interests (Ch 43/73)
+- [ ] startup-light (cached config, Ch 45/41)
+- [ ] per-account + consent + sanitized config copy (Ch 42/28/52)
+- [ ] funnel + grant-rate telemetry.
 
 **Key APIs:** remote config/experiments (Ch 41/87), DataStore `Preferences` (show-once state,
 Ch 4), delta sync for state (Ch 32), `ActivityResultContracts.RequestPermission` after priming

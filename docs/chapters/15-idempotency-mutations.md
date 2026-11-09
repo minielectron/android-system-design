@@ -451,6 +451,7 @@ MockWebServer returning the same result for a repeated key.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What is an idempotency key?* A client-generated unique token so the server
    performs a mutation's effect once across retries.
 2. *Why are mutations unsafe to retry?* The response can be lost after the effect
@@ -463,6 +464,7 @@ MockWebServer returning the same result for a repeated key.
    (persist it).
 
 **Architecture**
+
 6. *Where is the key generated?* At user-intent time (ViewModel/repository), not
    in the retry loop or HTTP layer.
 7. *Who guarantees exactly-once?* The backend (dedup store); the client supplies
@@ -471,6 +473,7 @@ MockWebServer returning the same result for a repeated key.
    reuses it (Ch 8/31).
 
 **Correctness**
+
 9. *The ambiguous-failure problem?* Lost response can't distinguish success from
    failure; the key makes retry safe either way.
 10. *Single-flight vs idempotency?* Single-flight = concurrent dedup (one
@@ -479,12 +482,14 @@ MockWebServer returning the same result for a repeated key.
     a key.
 
 **Lifetime/scope**
+
 12. *One key per what?* Per logical operation; new intent → new key.
 13. *Key lifetime?* Server expires after a window; client discards on confirm.
 14. *Lost the key before confirm?* Reconcile by querying business id; never blind
     re-submit a charge.
 
 **Security**
+
 15. *Must keys be unguessable?* Yes (UUID) and scoped to the user, to prevent
     probing/replay.
 16. *Is a key authorization?* No — server still authn/authz.
@@ -492,6 +497,7 @@ MockWebServer returning the same result for a repeated key.
     handles accidental duplicates.
 
 **Integration**
+
 18. *How does retry (Ch 2) use it?* Retries reuse the same key → safe.
 19. *How does the outbox (Ch 31) use it?* Each pending mutation stores its key;
     replay reuses it.
@@ -499,12 +505,14 @@ MockWebServer returning the same result for a repeated key.
     operation atomically.
 
 **Testing**
+
 21. *How test key reuse on retry?* Record keys; assert one distinct key across
     attempts.
 22. *How test resume?* Seed a pending mutation; assert the same key is resent.
 23. *How test new-intent?* Two submits → two keys.
 
 **Production debugging**
+
 24. *Duplicate charges — cause?* New key per attempt / key not persisted / missing
     key.
 25. *Stuck pending mutations?* Never marked complete after success.
@@ -568,10 +576,18 @@ persisting the key (process death → duplicate); treating the key as authorizat
 blind re-submit after losing the key; applying keys to already-idempotent
 requests; keys that are guessable/not user-scoped.
 
-**Checklist:** ☐ UUID key per intent ☐ generated once, persisted ☐ reused on all
-retries/resume ☐ `Idempotency-Key` header ☐ mark complete + discard ☐ single-
-flight for concurrent taps ☐ reconcile lost keys by business id ☐ backend dedup
-store ☐ keys unguessable + user-scoped ☐ redacted logs.
+**Checklist:**
+
+- [ ] UUID key per intent
+- [ ] generated once, persisted
+- [ ] reused on all retries/resume
+- [ ] `Idempotency-Key` header
+- [ ] mark complete + discard
+- [ ] single- flight for concurrent taps
+- [ ] reconcile lost keys by business id
+- [ ] backend dedup store
+- [ ] keys unguessable + user-scoped
+- [ ] redacted logs.
 
 **Key APIs:** `UUID.randomUUID()`, `@Header("Idempotency-Key")`, Room
 `PendingMutation` (outbox), `reliableCall` (Ch 2), `SingleFlight` (Ch 11),

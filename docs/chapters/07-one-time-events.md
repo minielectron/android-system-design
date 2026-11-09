@@ -434,6 +434,7 @@ shown once (not twice). Fake the use cases; assert on the effect flow.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *State vs effect?* State = re-rendered condition; effect = one-time occurrence
    (nav/snackbar).
 2. *Why not model navigation as state?* Re-fires on rotation (double navigation).
@@ -444,6 +445,7 @@ shown once (not twice). Fake the use cases; assert on the effect flow.
    buffered on return; avoid crashes.
 
 **Channel vs SharedFlow**
+
 6. *`Channel` semantics?* Each element to exactly one receiver; buffered; consumed
    once.
 7. *`SharedFlow` semantics?* Broadcast to all collectors; `replay` controls
@@ -457,6 +459,7 @@ shown once (not twice). Fake the use cases; assert on the effect flow.
     last effect (double-fire).
 
 **Kotlin/Compose**
+
 13. *How collect effects in Compose?* `LaunchedEffect` + `repeatOnLifecycle
     (STARTED)` (or `flowWithLifecycle`).
 14. *`trySend` vs `send`?* `trySend` is non-suspending (use with BUFFERED);
@@ -464,31 +467,37 @@ shown once (not twice). Fake the use cases; assert on the effect flow.
 15. *Why `receiveAsFlow()`?* Expose the channel read-only as a `Flow`.
 
 **Lifecycle**
+
 16. *Effect emitted in STOPPED — what happens?* Buffered; delivered on STARTED.
 17. *Rotation — do effects replay?* No (Channel consumed-once).
 18. *Process death + pending effect?* Lost by design; re-derive from restored
     state.
 
 **Correctness**
+
 19. *How prevent double navigation?* Effect (not state) + single collector +
     consumed-once.
 20. *Rendezvous channel pitfall?* `send` stalls if no collector; use BUFFERED.
 
 **Scalability**
+
 21. *Cross-feature "session expired" signal?* `SharedFlow` event bus.
 22. *Standardize effects?* `EffectViewModel<E>` base + lifecycle-aware collector.
 
 **Security**
+
 23. *Secrets in effect payloads?* No; pass ids; effects may be logged.
 24. *Is a nav effect authorization?* No; backend authorizes.
 
 **Testing**
+
 25. *How test effects?* Turbine on the effects flow; assert type + exactly-once +
     buffered.
 26. *How test no-double-fire on rotation?* Instrumentation rotate test; assert
     single snackbar.
 
 **Production debugging**
+
 27. *Snackbar repeats on rotation — cause/fix?* Effect-as-state; move to Channel.
 28. *Navigation lost after backgrounding — cause/fix?* No buffer / rendezvous /
     non-lifecycle collection.
@@ -546,9 +555,16 @@ buffering, `repeatOnLifecycle`, Channel vs SharedFlow.
 effects; multiple collectors; rendezvous channel (lost/stalled); collecting
 without lifecycle awareness; persisting effects.
 
-**Checklist:** ☐ effects separate from `UiState` ☐ `Channel.BUFFERED` +
-`receiveAsFlow` ☐ single collector ☐ `repeatOnLifecycle(STARTED)` ☐ `trySend`
-☐ no secrets in payload ☐ not persisted ☐ `SharedFlow` only for fan-out.
+**Checklist:**
+
+- [ ] effects separate from `UiState`
+- [ ] `Channel.BUFFERED` + `receiveAsFlow`
+- [ ] single collector
+- [ ] `repeatOnLifecycle(STARTED)`
+- [ ] `trySend`
+- [ ] no secrets in payload
+- [ ] not persisted
+- [ ] `SharedFlow` only for fan-out.
 
 **Key APIs:** `Channel`, `trySend`/`send`, `receiveAsFlow`,
 `MutableSharedFlow`/`asSharedFlow`, `BufferOverflow`, `repeatOnLifecycle`,

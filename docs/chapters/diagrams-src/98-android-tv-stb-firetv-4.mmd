@@ -1,0 +1,5 @@
+flowchart LR
+    APP[app logic] --> ABS[platform abstraction: push/billing/voice/store]
+    ABS --> ATV[Android TV impl: FCM/Play Billing/Assistant - Ch 50/77]
+    ABS --> FTV[Fire TV impl: Amazon ADM/IAP/Alexa - NO Google Play Services]
+    ABS --> STB[operator STB impl: custom services/remote]

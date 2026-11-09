@@ -512,6 +512,7 @@ progress emission; cancel; constraint gating; non-retryable 4xx fails.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why are mobile uploads hard?* Large files, flaky networks, backgrounding/
    process death, memory limits, duplicate risk.
 2. *Multipart vs resumable?* Multipart = one request (restart on fail);
@@ -523,12 +524,14 @@ progress emission; cancel; constraint gating; non-retryable 4xx fails.
    so you continue from the last received byte.
 
 **Architecture**
+
 6. *Where does the transfer run?* A WorkManager worker (foreground service for
    long uploads); the UI only observes progress.
 7. *What's persisted?* uploadId + offset + idempotency key (Room).
 8. *Who is the source of truth for resume?* The server's last-received offset.
 
 **Protocol**
+
 9. *Resumable steps?* init (get uploadId) → PUT chunks with `Content-Range` →
    status on failure → resume → finalize.
 10. *Idempotency in uploads?* The *init* (create) step carries a key (Ch 15);
@@ -537,6 +540,7 @@ progress emission; cancel; constraint gating; non-retryable 4xx fails.
     going.
 
 **Background/lifecycle**
+
 12. *Why a foreground service?* Long, user-visible uploads need it to run reliably
     and show a notification (Ch 46).
 13. *Process death mid-upload?* WorkManager reschedules; resume from persisted/
@@ -544,18 +548,21 @@ progress emission; cancel; constraint gating; non-retryable 4xx fails.
 14. *Navigate away?* Upload continues in the worker.
 
 **Resource/constraints**
+
 15. *Constraints?* Unmetered/charging for large uploads (Ch 30/47).
 16. *Chunk size trade-off?* Small = overhead; big = more re-send on failure; adapt
     to network.
 17. *Avoid duplicate uploads?* `enqueueUniqueWork(KEEP)` + idempotent init.
 
 **Security**
+
 18. *Server validation?* Type/size/content, malware scan, re-encode; never trust
     client MIME.
 19. *Signed URLs?* Short-lived, scoped; direct-to-storage offloads bandwidth.
 20. *Sensitive media?* Strip EXIF/GPS; consider client-side encryption.
 
 **Testing**
+
 21. *How test resume?* MockWebServer scripts init/fail/status/finish; assert
     continues from offset.
 22. *How test the worker?* `TestListenableWorkerBuilder`/`WorkManagerTestInitHelper`.
@@ -563,6 +570,7 @@ progress emission; cancel; constraint gating; non-retryable 4xx fails.
     without buffering).
 
 **Production debugging**
+
 24. *Large uploads never complete on flaky networks?* Not resumable — switch to
     chunked.
 25. *OOM on upload?* Buffering whole file — stream it.
@@ -625,10 +633,18 @@ ViewModel scope (die on navigation/death); whole-file restart on failure (never
 completes); non-idempotent init (duplicates); trusting client MIME/size; no unique
 work (duplicate transfers).
 
-**Checklist:** ☐ stream body ☐ multipart vs resumable by size ☐ WorkManager
-foreground worker ☐ constraints + backoff ☐ durable offset + server-status resume
-☐ idempotent init + unique work ☐ progress via `WorkInfo` ☐ cancel/pause ☐ server
-validates ☐ no PII in logs.
+**Checklist:**
+
+- [ ] stream body
+- [ ] multipart vs resumable by size
+- [ ] WorkManager foreground worker
+- [ ] constraints + backoff
+- [ ] durable offset + server-status resume
+- [ ] idempotent init + unique work
+- [ ] progress via `WorkInfo`
+- [ ] cancel/pause
+- [ ] server validates
+- [ ] no PII in logs.
 
 **Key APIs:** `RequestBody`/`BufferedSink` (streamed), `MultipartBody.Part`,
 `@Multipart`/`@Part`, `Content-Range`, `CoroutineWorker`/`@HiltWorker`,

@@ -1,0 +1,6 @@
+flowchart LR
+    CHANGE[state change] --> MODE{paired or standalone}
+    MODE -->|paired/bridged| DL[Data Layer via phone -> phone -> backend]
+    MODE -->|standalone LTE| BK[watch -> backend directly - own auth/network - Ch 20/67]
+    DL --> CONSISTENT[consistent cross-device state - Ch 29]
+    BK --> CONSISTENT

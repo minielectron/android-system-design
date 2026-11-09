@@ -511,6 +511,7 @@ push→pull→resolve integration, idempotent re-apply.
 > 40+ questions.
 
 **Fundamentals**
+
 1. *What is a sync conflict?* The same entity changed in two replicas (local +
    remote) since they last agreed.
 2. *How detect it?* Versions (base vs server) or vector clocks; local pending +
@@ -523,6 +524,7 @@ push→pull→resolve integration, idempotent re-apply.
    user-resolved.
 
 **Strategies**
+
 6. *LWW — pros/cons?* Simple, convergent; **loses** the other edit. Single values.
 7. *Server-wins?* Server authoritative; biased local loss (prices/inventory).
 8. *Field-level three-way merge?* Compare base/local/remote per field; take
@@ -532,6 +534,7 @@ push→pull→resolve integration, idempotent re-apply.
     progress/text).
 
 **CRDTs / causality**
+
 11. *Example CRDTs?* G-Counter (sum), LWW-Register, OR-Set (add/remove), max
     (progress).
 12. *Why do CRDTs converge?* Operations commute — any order yields the same state.
@@ -541,12 +544,14 @@ push→pull→resolve integration, idempotent re-apply.
     convergent.
 
 **Merge mechanics**
+
 15. *Three-way merge needs?* A base (last-synced) snapshot.
 16. *Both edit the same field?* Tiebreak (LWW) or user-resolved.
 17. *Delete vs edit?* Explicit policy (delete-wins / resurrect / user) — don't
     silently drop.
 
 **Engine**
+
 18. *Compose with push/pull?* Push outbox (Ch 31) → pull delta (Ch 32) → detect vs
     local pending → resolve → apply (Ch 3).
 19. *Why push before pull?* Fewer conflicts; send local first.
@@ -554,31 +559,37 @@ push→pull→resolve integration, idempotent re-apply.
 21. *Merged change?* Push the merged result up (new version).
 
 **Convergence/correctness**
+
 22. *How guarantee convergence?* Deterministic, order-independent resolution (LWW by
     version / CRDT / deterministic 3-way).
 23. *Merge loops?* Version monotonicity; CRDT commutativity.
 24. *Idempotent apply?* Version-gated upsert (Ch 15/32).
 
 **Security**
+
 25. *Who arbitrates?* Backend validates/authorizes merges; client resolves for UX.
 26. *Leak in user-resolved UI?* Respect access to the "remote" version.
 
 **Performance**
+
 27. *Resolution cost?* Cheap; fast-forward the common case; bound CRDT metadata.
 28. *Base snapshots cost?* Only where 3-way merge is used.
 
 **Testing**
+
 29. *How test convergence?* Apply changes in opposite orders → assert equal state.
 30. *How test resolvers?* Pure functions — LWW/merge/CRDT cases.
 31. *How test delete-vs-edit?* Assert the chosen policy outcome.
 
 **Production debugging**
+
 32. *Data loss complaints?* LWW where merge is needed → field-merge/CRDT.
 33. *Devices differ?* Non-convergent resolution.
 34. *False conflicts?* Versions flag causal changes → vector clocks.
 35. *Merge loops?* Non-monotonic versions.
 
 **Design**
+
 36. *Real-time collaborative text?* CRDT or OT (Ch 63).
 37. *When is LWW acceptable?* Single values where latest wins.
 38. *When CRDT worth it?* Concurrently-edited mergeable data.
@@ -644,11 +655,19 @@ conflicts from plain versions (use vector clocks); ignoring delete-vs-edit;
 auto-resolving high-value edits that need the user; non-idempotent/non-version-gated
 apply; unbounded CRDT metadata.
 
-**Checklist:** ☐ version/vector-clock detection ☐ per-type resolution policy
-☐ convergent (deterministic/commutative) ☐ three-way merge where fields differ
-☐ CRDTs for collaborative data ☐ user-resolved for high-value ☐ delete-vs-edit
-policy ☐ fast-forward common case ☐ push merged up ☐ backend validates merges
-☐ test convergence (order-independence).
+**Checklist:**
+
+- [ ] version/vector-clock detection
+- [ ] per-type resolution policy
+- [ ] convergent (deterministic/commutative)
+- [ ] three-way merge where fields differ
+- [ ] CRDTs for collaborative data
+- [ ] user-resolved for high-value
+- [ ] delete-vs-edit policy
+- [ ] fast-forward common case
+- [ ] push merged up
+- [ ] backend validates merges
+- [ ] test convergence (order-independence).
 
 **Key APIs/patterns:** `Versioned`(version/vectorClock/updatedAt), `ConflictResolver`
 + `Resolution` (Accept/Keep/Merged/NeedsUser), LWW/field-merge/CRDT resolvers,

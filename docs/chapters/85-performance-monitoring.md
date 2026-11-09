@@ -492,6 +492,7 @@ staged rollouts.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Field vs lab?* RUM (real users) vs Macrobenchmark (one device, CI gate, Ch 88) — use both.
 2. *Why field?* The long tail (slow devices/networks) isn't in the lab.
 3. *Percentiles vs averages?* Averages hide the tail; track p50/p90/p95/p99.
@@ -499,6 +500,7 @@ staged rollouts.
 5. *Segment by?* Device class, OS, release.
 
 **Signals**
+
 6. *Startup?* Cold/warm, TTID/TTFMC (Ch 45); Android vitals + custom.
 7. *Frames?* Janky + frozen (>700ms) via JankStats/`FrameMetrics`.
 8. *Screen load?* TTID/TTFMC per screen.
@@ -506,26 +508,31 @@ staged rollouts.
 10. *Why custom?* Track what matters to the product.
 
 **Reporting**
+
 11. *How report?* Analytics pipeline (Ch 82) + perf SDK + Android vitals.
 12. *Why the pipeline?* Reliable, batched, consented, PII-safe (Ch 82).
 13. *Android vitals?* Field startup/frames/ANR for free.
 14. *Correlate?* Device/network/version + correlation id (Ch 84).
 
 **Overhead/privacy**
+
 15. *Overhead?* Low — cheap listeners + batched; must not slow the app.
 16. *Sampling?* High-volume (frames) sampled/aggregated.
 17. *PII?* Timing + context only (Ch 28); consent (Ch 82).
 
 **Regression**
+
 18. *Detect?* Release-over-release percentiles by device/OS.
 19. *Act?* Alert + gate/rollback (Ch 83/41); SLOs/budgets.
 20. *Vitals ranking?* Bad perf affects store visibility.
 
 **Lab/field**
+
 21. *CI gate?* Macrobenchmark (Ch 88).
 22. *Field truth?* RUM.
 
 **Testing/Production**
+
 23. *Test capture?* Trace timing + PII-safe reporting.
 24. *"Average fine" complaints?* Look at p95/p99.
 25. *Jank in prod?* Frame metrics per screen.
@@ -593,12 +600,18 @@ segmentation (slow-device population hidden); not measuring frames/jank; heavy m
 slows the app; PII in perf data; ad-hoc reporting (not the pipeline); no regression detection/
 alerting (shipping slow blind).
 
-**Checklist:** ☐ field RUM + lab gate (Ch 88) ☐ capture startup (Ch 45) + frames (JankStats,
-janky/frozen) + screen loads + custom timings (traces, Ch 84) ☐ report via analytics pipeline
-+ Android vitals (Ch 82) ☐ percentiles (p50/p90/p95/p99), not averages ☐ segment by device/OS/
-release ☐ low-overhead + PII-safe + consent (Ch 28) ☐ correlate device/network/trace (Ch 84/
-68) ☐ regression alerting + SLOs/budgets + gate/rollback (Ch 83/41) ☐ sample high-volume
-frames ☐ tail (p95/p99) dashboards.
+**Checklist:**
+
+- [ ] field RUM + lab gate (Ch 88)
+- [ ] capture startup (Ch 45) + frames (JankStats, janky/frozen) + screen loads + custom timings (traces, Ch 84)
+- [ ] report via analytics pipeline + Android vitals (Ch 82)
+- [ ] percentiles (p50/p90/p95/p99), not averages
+- [ ] segment by device/OS/release
+- [ ] low-overhead + PII-safe + consent (Ch 28)
+- [ ] correlate device/network/trace (Ch 84/68)
+- [ ] regression alerting + SLOs/budgets + gate/rollback (Ch 83/41)
+- [ ] sample high-volume frames
+- [ ] tail (p95/p99) dashboards.
 
 **Key APIs:** `JankStats` (Jetpack frame metrics) / `Window.addOnFrameMetricsAvailableListener`,
 `ComponentActivity.reportFullyDrawn` (TTFMC, Ch 45), Firebase Performance / custom traces

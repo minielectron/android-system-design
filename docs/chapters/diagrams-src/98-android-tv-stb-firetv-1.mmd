@@ -1,0 +1,10 @@
+flowchart TD
+    INPUT["D-pad remote (no touch) + media/voice keys"] --> FOCUS["FOCUS-STATE model: exactly ONE focused element"]
+    FOCUS --> NAV["D-pad spatial navigation: focus order + initial focus + no traps"]
+    NAV --> HIGHLIGHT["clear 10-foot focus highlight (scale/glow/border)"]
+    HIGHLIGHT --> UI["10-foot UI: leanback / androidx.tv Compose (browse rows/cards, large, high-contrast)"]
+    UI --> MEDIA["media-centric state: player core (Media3/ExoPlayer) + DRM (Ch 56/58)"]
+    MEDIA --> TRANSPORT["D-pad/media-key transport: play/pause/seek + resume + media session"]
+    CONSTRAINTS["low-RAM/low-power: strict memory (Ch 89) + rendering (Ch 90) discipline"] -.-> UI
+    PLATFORM["platform abstraction: Android TV vs Fire TV vs STB (services/remote/store, no Google Play Services)"] -.-> MEDIA
+    TEXTENTRY["minimize text entry: voice / deep link / phone-QR sign-in"] -.-> UI

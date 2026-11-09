@@ -514,6 +514,7 @@ Ch 3); TTID/TTFD markers (`reportFullyDrawn`, Ch 45); field p95 by device (Ch 85
 > ≥40 questions (Complex).
 
 **Fundamentals**
+
 1. *Cold vs warm vs hot?* No process / process alive / activity in memory (Ch 45).
 2. *Cold-start path?* Fork → onCreate+init → first Activity → first frame (TTID) → fully drawn (TTFD).
 3. *Why optimize cold start?* First impression; retention; vitals ranking (Ch 85).
@@ -521,6 +522,7 @@ Ch 3); TTID/TTFD markers (`reportFullyDrawn`, Ch 45); field p95 by device (Ch 85
 5. *TTID vs TTFD?* First frame vs usable (`reportFullyDrawn`, Ch 45).
 
 **Application.onCreate**
+
 6. *Why the hotspot?* Runs synchronously on main before first frame.
 7. *Audit how?* Critical (crash/DI) vs deferrable (analytics/image/flags).
 8. *Defer where?* App Startup lazy / off-main (Ch 3).
@@ -528,34 +530,40 @@ Ch 3); TTID/TTFD markers (`reportFullyDrawn`, Ch 45); field p95 by device (Ch 85
 10. *Analytics init?* Deferable (Ch 82).
 
 **App Startup**
+
 11. *What is it?* `androidx.startup` — consolidate/order/defer library init.
 12. *ContentProvider cost?* Each library's auto-init provider costs; consolidate.
 13. *Ordering?* Explicit `dependencies()`.
 14. *Lazy init?* Non-critical initializers triggered after first frame.
 
 **Threading/I-O**
+
 15. *Main-thread I/O?* Never before first frame — off-main (Ch 3).
 16. *Which dispatcher?* IO for disk/DB, Default for CPU init (Ch 3).
 17. *DataStore/prefs?* Off-main / deferred (Ch 7).
 18. *DB open?* Lazy, off-main (Ch 5).
 
 **DI graph**
+
 19. *Eager graph problem?* Constructs unneeded objects at startup (Ch 46).
 20. *Lazy how?* `Lazy<T>`/`Provider<T>` — build on first use.
 21. *Scope?* Construct when needed, not at launch.
 
 **Splash**
+
 22. *SplashScreen API vs splash Activity?* No extra activity vs a whole extra launch.
 23. *Keep on screen?* `setKeepOnScreenCondition` — briefly, not on network.
 24. *Holding splash = ?* Slow start in disguise.
 
 **Baseline profiles / R8**
+
 25. *JIT-cold problem?* Interpreted/JIT on first launches — slow (Ch 92).
 26. *Baseline Profile?* AOT-compile startup path → 20–30% faster first launch (Ch 92).
 27. *R8?* Shrink/optimize — less to load/init (Ch 92).
 28. *How measured?* Macrobenchmark `CompilationMode.None` vs `Partial` (Ch 92).
 
 **Measurement**
+
 29. *Lab tool?* Macrobenchmark (`StartupTimingMetric`) — CI gate (Ch 92).
 30. *Field tool?* Android vitals — real distribution (Ch 85).
 31. *Why both?* Lab reproducible gate + field truth.
@@ -563,12 +571,14 @@ Ch 3); TTID/TTFD markers (`reportFullyDrawn`, Ch 45); field p95 by device (Ch 85
 33. *Device choice?* Representative/low-end, not flagship.
 
 **Edge cases**
+
 34. *First frame blocked on data?* Skeleton at TTID → TTFD (Ch 45/93).
 35. *Deferred-init race?* Gate feature / cached (Ch 40).
 36. *Warm start redoing cold work?* Distinguish; restore state (Ch 44).
 37. *Process death restoration?* Warm path, not full cold (Ch 44).
 
 **Production**
+
 38. *Regression gate?* Macrobenchmark CI (Ch 92).
 39. *Field regression?* Vitals p95 → rollback (Ch 85/41).
 40. *StrictMode?* Catch main-thread I/O at startup (Ch 3).
@@ -642,12 +652,19 @@ DI graph; a dedicated splash Activity; holding the splash on the network; blocki
 frame on data (no skeleton); no Baseline Profile (JIT-cold); optimizing/measuring only on a
 flagship; no Macrobenchmark CI gate; deferring security/consent init incorrectly (Ch 24/28).
 
-**Checklist:** ☐ audit + trim `Application.onCreate` (critical only) ☐ App Startup
-(consolidate/order/defer, lazy initializers) ☐ off-main / deferred I/O (no main-thread disk/DB,
-Ch 3) ☐ lazy DI graph (`Lazy`/`Provider`, Ch 46) ☐ SplashScreen API (no extra activity, brief)
-☐ skeleton at TTID → `reportFullyDrawn` TTFD (Ch 45/93) ☐ Baseline Profiles + R8 (Ch 92) ☐
-Macrobenchmark cold-start CI gate (`None` vs `Partial`) ☐ field vitals p95 by device class
-(Ch 85) ☐ representative low-end devices, percentiles ☐ don't defer security/consent (Ch 24/28).
+**Checklist:**
+
+- [ ] audit + trim `Application.onCreate` (critical only)
+- [ ] App Startup (consolidate/order/defer, lazy initializers)
+- [ ] off-main / deferred I/O (no main-thread disk/DB, Ch 3)
+- [ ] lazy DI graph (`Lazy`/`Provider`, Ch 46)
+- [ ] SplashScreen API (no extra activity, brief)
+- [ ] skeleton at TTID → `reportFullyDrawn` TTFD (Ch 45/93)
+- [ ] Baseline Profiles + R8 (Ch 92)
+- [ ] Macrobenchmark cold-start CI gate (`None` vs `Partial`)
+- [ ] field vitals p95 by device class (Ch 85)
+- [ ] representative low-end devices, percentiles
+- [ ] don't defer security/consent (Ch 24/28).
 
 **Key APIs:** `installSplashScreen` / `setKeepOnScreenCondition` (`androidx.core.splashscreen`),
 `androidx.startup.Initializer` + `dependencies()`, `ComponentActivity.reportFullyDrawn` (TTFD,

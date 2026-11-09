@@ -599,6 +599,7 @@ WorkManager; logout invalidation; permission-gated rendering (Ch 51); app-state 
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *Why not poll?* Doze blocks/defers it, battery/scale — use push (Ch 47).
 2. *What is FCM?* Battery-efficient OS-level server→client transport via Google infra;
    best-effort.
@@ -610,6 +611,7 @@ WorkManager; logout invalidation; permission-gated rendering (Ch 51); app-state 
    notification messages, data messages may be dropped/delayed.
 
 **Reliability**
+
 6. *Is delivery guaranteed?* No — best-effort; may drop/delay/collapse.
 7. *Golden rule?* Push is a trigger, not the source of truth.
 8. *How dropped push self-heals?* Delta sync on open/periodic (Ch 32).
@@ -617,6 +619,7 @@ WorkManager; logout invalidation; permission-gated rendering (Ch 51); app-state 
 10. *Critical flows (payment) on push alone?* Never — reconcile via sync.
 
 **Tokens**
+
 11. *Registration token?* Per-install id to target; can rotate.
 12. *`onNewToken`?* Rotation callback — upsert to backend.
 13. *Store token keyed by?* User + device (multi-device, per-account, Ch 42).
@@ -625,6 +628,7 @@ WorkManager; logout invalidation; permission-gated rendering (Ch 51); app-state 
 16. *Upsert durably?* WorkManager (survives process death).
 
 **Priority/Doze**
+
 17. *High vs normal priority?* High can wake in Doze (limited quota); normal may be
     delayed (Ch 47).
 18. *When high?* Time-sensitive (chat, order status) only.
@@ -632,16 +636,19 @@ WorkManager; logout invalidation; permission-gated rendering (Ch 51); app-state 
 20. *Follow-up work?* Expedited WorkManager, not inline.
 
 **Receiver**
+
 21. *`onMessageReceived` constraints?* Short budget, background thread, Doze-limited.
 22. *What to do inline?* Validate, per-account check, enqueue WorkManager, maybe
     lightweight notify.
 
 **Targeting**
+
 23. *Per-user token vs topic vs device group?* Control/secure vs broad pub/sub vs legacy.
 24. *Topics for sensitive content?* No — coarse/semi-public.
 25. *Subscribe/unsubscribe lifecycle?* On preference change; unsubscribe on logout.
 
 **Security**
+
 26. *Secrets/PII in payload?* Never (traverses Google).
 27. *Payload trust?* Untrusted — validate/allowlist; no blind deep-link (Ch 52).
 28. *Authenticate the effect?* Fetch over authed API (Ch 19).
@@ -650,16 +657,19 @@ WorkManager; logout invalidation; permission-gated rendering (Ch 51); app-state 
 30. *Token a secret?* No, but protect the send API; rotate/prune.
 
 **Push vs WebSocket**
+
 31. *When WebSocket?* Live foreground session (Ch 63).
 32. *When FCM?* Background/killed wake.
 33. *Use both?* Yes — WS foreground, FCM background, sync reconciles.
 
 **Permissions/UX**
+
 34. *Android 13+ display?* Needs `POST_NOTIFICATIONS` (Ch 51).
 35. *No permission?* Data still syncs; just not shown.
 36. *Notification rendering?* Central Notifier, channels/grouping (Ch 50).
 
 **Testing/Production**
+
 37. *Test the router?* Fake `RemoteMessage`; assert validation/per-account/enqueue.
 38. *Test idempotency?* Run sync twice → one notification.
 39. *Missing notifications in prod?* Drops (Doze/bucket) → rely on sync.
@@ -738,12 +748,20 @@ everything (quota throttle); PII in payload; trusting payload (blind deep-link);
 per-account check / no logout invalidation (cross-account leak); topics for sensitive
 targeting; no `POST_NOTIFICATIONS` handling; non-idempotent (duplicates).
 
-**Checklist:** ☐ data messages + deliberate priority ☐ token upsert (user+device, durable)
-+ `onNewToken` ☐ invalidate token + unsubscribe topics on logout ☐ receiver minimal →
-expedited WorkManager ☐ **push = trigger; reconcile via sync** ☐ idempotent dedupe by id
-☐ validate payload (allowlist, no blind deep-link) ☐ authed effect (Ch 19) ☐ per-account
-isolation (Ch 42) ☐ no secrets/PII in payload ☐ `POST_NOTIFICATIONS` gating ☐ delivery
-funnel + drop-by-bucket telemetry.
+**Checklist:**
+
+- [ ] data messages + deliberate priority
+- [ ] token upsert (user+device, durable) + `onNewToken`
+- [ ] invalidate token + unsubscribe topics on logout
+- [ ] receiver minimal → expedited WorkManager
+- [ ] **push = trigger; reconcile via sync**
+- [ ] idempotent dedupe by id
+- [ ] validate payload (allowlist, no blind deep-link)
+- [ ] authed effect (Ch 19)
+- [ ] per-account isolation (Ch 42)
+- [ ] no secrets/PII in payload
+- [ ] `POST_NOTIFICATIONS` gating
+- [ ] delivery funnel + drop-by-bucket telemetry.
 
 **Key APIs:** `FirebaseMessagingService`/`onMessageReceived`/`onNewToken`,
 `FirebaseMessaging.getToken`/`deleteToken`/`subscribeToTopic`/`unsubscribeFromTopic`,

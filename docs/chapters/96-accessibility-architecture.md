@@ -529,6 +529,7 @@ Access/large-font**.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why accessibility?* Usable by all; legal + ethical + reach.
 2. *Assistive tech?* TalkBack, large fonts, Switch Access, high-contrast, captions.
 3. *Semantics tree?* What assistive services consume (label/role/state/structure).
@@ -536,6 +537,7 @@ Access/large-font**.
 5. *Standard vs custom?* Standard free; custom needs explicit semantics.
 
 **Semantics**
+
 6. *Content description?* What a meaningful element is/does.
 7. *Decorative?* `contentDescription = null` → skipped.
 8. *Role/state?* Announce "checkbox, checked" etc.
@@ -545,6 +547,7 @@ Access/large-font**.
 12. *Traversal order?* Match logical/visual order.
 
 **Perception/motor**
+
 13. *Touch target?* ≥48dp (motor).
 14. *Contrast?* WCAG 4.5:1 + high-contrast.
 15. *Color-only?* Never — add icon/text.
@@ -552,16 +555,19 @@ Access/large-font**.
 17. *dp text?* Doesn't scale — avoid.
 
 **Media/motion**
+
 18. *Captions?* Media3 for deaf/HoH (Ch 56).
 19. *Reduced motion?* Honor the setting.
 20. *Live region?* Announce dynamic changes.
 
 **Testing**
+
 21. *Tools?* Accessibility Scanner, TalkBack, Switch Access.
 22. *Automated?* Semantics assertions / AccessibilityChecks.
 23. *Why test?* Regresses silently.
 
 **Architecture/production**
+
 24. *Where to bake a11y?* Design system (Ch 97).
 25. *Sensitive content?* No secrets in descriptions (Ch 28/76).
 26. *Large font + l10n?* Shared flexible-layout discipline (Ch 95).
@@ -634,12 +640,18 @@ text (doesn't scale); color-only information; no captions (Ch 56); ignoring redu
 dynamic changes (no live region); shipping untested with assistive tech; patching per-screen
 instead of design-system.
 
-**Checklist:** ☐ content descriptions (meaningful; null for decorative) ☐ role + state + actions on
-custom controls ☐ headings + grouping (mergeDescendants) + traversal order ☐ ≥48dp touch targets ☐
-WCAG contrast + high-contrast + non-color-only ☐ `sp` text + large-font layout resilience (Ch 95) ☐
-captions (Ch 56) + reduced motion + live regions ☐ a11y baked into design system (Ch 97) ☐ no
-secrets in content descriptions (Ch 28/76) ☐ test: TalkBack + Switch Access + large fonts + Scanner
-+ automated CI.
+**Checklist:**
+
+- [ ] content descriptions (meaningful; null for decorative)
+- [ ] role + state + actions on custom controls
+- [ ] headings + grouping (mergeDescendants) + traversal order
+- [ ] ≥48dp touch targets
+- [ ] WCAG contrast + high-contrast + non-color-only
+- [ ] `sp` text + large-font layout resilience (Ch 95)
+- [ ] captions (Ch 56) + reduced motion + live regions
+- [ ] a11y baked into design system (Ch 97)
+- [ ] no secrets in content descriptions (Ch 28/76)
+- [ ] test: TalkBack + Switch Access + large fonts + Scanner + automated CI.
 
 **Key APIs:** Compose `Modifier.semantics { }` (`contentDescription`, `role`, `stateDescription`,
 `heading()`, `liveRegion`, custom actions like `setProgress`), `mergeDescendants`, `traversalIndex`/

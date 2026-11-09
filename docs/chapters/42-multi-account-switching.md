@@ -475,6 +475,7 @@ instrumentation test for the account switcher UI.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What's the core of multi-account?* A current-account id that scopes all account
    data; switching changes it.
 2. *How is data scoped?* Every account-scoped store keyed by `accountId`; queries
@@ -487,6 +488,7 @@ instrumentation test for the account switcher UI.
    accountId.
 
 **Scoping/switch**
+
 6. *How do account-aware observers switch?* `flatMapLatest(currentId)` → cancel old,
    read new atomically.
 7. *Make the cart account-aware?* `currentAccount.flatMapLatest { dao.observe(it) }`
@@ -497,12 +499,14 @@ instrumentation test for the account switcher UI.
    encryption.
 
 **Correctness**
+
 10. *In-flight request during a switch?* Tag work with accountId; write to that
     account, not "current".
 11. *Background worker?* accountId in `inputData` (Ch 30).
 12. *Missing accountId filter?* Cross-account leak — the main bug.
 
 **Lifecycle**
+
 13. *Sign out one account?* Revoke that session (Ch 22) + clear that account's data/
     tokens; others intact.
 14. *Add an account?* Login → store per-account tokens → set current.
@@ -510,22 +514,26 @@ instrumentation test for the account switcher UI.
 16. *Token expired for one account?* Refresh that account (Ch 19); others unaffected.
 
 **Security/privacy**
+
 17. *Shared device?* Encrypt per-account data (Ch 24); auth to switch to sensitive
     account (Ch 21).
 18. *Who enforces access?* Backend per authenticated account; client scopes for UX.
 19. *Strong isolation?* Per-account DB + encryption key (Ch 24).
 
 **Performance**
+
 20. *Why is switch fast?* Change an id + re-read; no network/re-login.
 21. *Memory with many accounts?* Account-aware singletons; lazy per-account data;
     evict LRU.
 
 **Testing**
+
 22. *Key test?* Cross-account isolation.
 23. *How test fast switch?* Add two accounts; switch; assert each sees its own data.
 24. *How test sign-out-one?* Others intact; that account's tokens/data gone.
 
 **Production debugging**
+
 25. *Previous account's data shows?* Missing filter / not flatMapLatest.
 26. *Re-login on switch?* Not using per-account tokens.
 27. *Result in wrong account?* In-flight work not tagged.
@@ -590,11 +598,18 @@ switch (no per-account tokens); singleton assuming one account; in-flight work u
 "current" account (wrong writes); sign-out-one clearing all; unencrypted per-account
 data on shared devices; trusting the client's current-account for backend authz.
 
-**Checklist:** ☐ current-account id (AccountProvider) ☐ accountId on every account
-store ☐ per-account secure tokens (Ch 20) ☐ account-aware state `flatMapLatest(current)`
-☐ fast switch (re-point, no re-login) ☐ isolation: filter everywhere + test ☐ sign-out
--one (others intact) ☐ tag in-flight/background work with accountId ☐ encrypt
-per-account sensitive data (Ch 24) ☐ backend authorizes per account.
+**Checklist:**
+
+- [ ] current-account id (AccountProvider)
+- [ ] accountId on every account store
+- [ ] per-account secure tokens (Ch 20)
+- [ ] account-aware state `flatMapLatest(current)`
+- [ ] fast switch (re-point, no re-login)
+- [ ] isolation: filter everywhere + test
+- [ ] sign-out -one (others intact)
+- [ ] tag in-flight/background work with accountId
+- [ ] encrypt per-account sensitive data (Ch 24)
+- [ ] backend authorizes per account.
 
 **Key APIs/patterns:** `AccountProvider` (current id `StateFlow`), per-account
 `AccountTokenStore` (Ch 20), Room `accountId` column + `flatMapLatest(currentId)`

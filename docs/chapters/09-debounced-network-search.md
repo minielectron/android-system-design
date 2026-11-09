@@ -743,6 +743,7 @@ test asserting Loading→Results and Retry button visibility on error.
 ### A. Questions & answers
 
 **Fundamentals**
+
 1. *Why debounce instead of search-on-submit?* Submit is simplest and cheapest
    but loses the instant-feedback UX users expect; debounce balances
    responsiveness against load. For very large/expensive queries, submit (or a
@@ -760,6 +761,7 @@ test asserting Loading→Results and Retry button visibility on error.
    recomposition.
 
 **Architecture**
+
 6. *Where does the debounce belong — UI, ViewModel, or repository?* ViewModel.
    It's a presentation-timing concern; the repository stays a plain
    request/response boundary reusable by non-debounced callers.
@@ -772,6 +774,7 @@ test asserting Loading→Results and Retry button visibility on error.
    delegate; each feature provides its own repository/result type.
 
 **Kotlin / Flow internals**
+
 10. *How does `flatMapLatest` prevent the race?* It cancels the previous inner
     flow's collector when a new upstream value arrives, so the stale request's
     continuation resumes into a cancelled coroutine and never emits.
@@ -790,6 +793,7 @@ test asserting Loading→Results and Retry button visibility on error.
     `flow { emit(Loading); emit(result) }` is cold, recreated per query.
 
 **Concurrency**
+
 17. *How many requests are in flight at once?* At most one (flatMapLatest).
 18. *Do you need sequence numbers?* Not with `flatMapLatest`; yes with
     callbacks/imperative APIs.
@@ -800,6 +804,7 @@ test asserting Loading→Results and Retry button visibility on error.
 21. *RxJava equivalent?* `debounce` + `switchMap` (+ `distinctUntilChanged`).
 
 **Lifecycle**
+
 22. *What cancels in-flight work on navigation away?* `viewModelScope`
     cancellation.
 23. *Process death — what's lost and how restored?* In-memory results lost;
@@ -808,6 +813,7 @@ test asserting Loading→Results and Retry button visibility on error.
     last state (or you persist results if needed).
 
 **Persistence / caching**
+
 25. *Where would you cache results and why?* In-memory LRU for ephemeral speed;
     Room if results must persist/offline. Keyed by normalized query.
 26. *Cache invalidation?* Time-based TTL and/or on catalog change events;
@@ -815,6 +821,7 @@ test asserting Loading→Results and Retry button visibility on error.
 27. *Recent searches?* DataStore list, capped, deduped, cleared on logout.
 
 **Networking**
+
 28. *How is the networking core reused?* Same OkHttp/Retrofit + `Outcome`/
     `AppError` from Ch 1; search adds only an endpoint.
 29. *Handling 429?* Backoff (Ch 2), optionally raise debounce; backend must
@@ -822,6 +829,7 @@ test asserting Loading→Results and Retry button visibility on error.
 30. *401 during search?* Transparent token refresh (Ch 19) then replay.
 
 **Scalability**
+
 31. *10M users — what changes on the client?* Little on the client; debounce +
     dedup already bound load. The scaling is backend (index, autocomplete
     service); client may add FTS pre-filter and A/B-tuned debounce.
@@ -829,6 +837,7 @@ test asserting Loading→Results and Retry button visibility on error.
     client caching, prefix caching, local FTS, CDN-cached popular queries.
 
 **Security**
+
 33. *Is query text sensitive?* Often PII; redact/hash in logs; prefer not to
     send secrets as query params.
 34. *Can client debounce be a rate-limit control?* No — trivially bypassed;
@@ -836,6 +845,7 @@ test asserting Loading→Results and Retry button visibility on error.
 35. *Injection responsibility?* Backend; client sends `q` untrusted.
 
 **Performance**
+
 36. *How do you keep it off the main thread?* IO dispatcher for calls/parsing;
     StrictMode to verify.
 37. *Recomposition hotspots?* Emit distinct states; stable models; keyed lazy
@@ -843,12 +853,14 @@ test asserting Loading→Results and Retry button visibility on error.
 38. *How verify debounce in prod?* "Requests per search session" metric ≈ 1.
 
 **Testing**
+
 39. *How test debounce without real delays?* `StandardTestDispatcher` +
     `advanceTimeBy`; Turbine for emissions.
 40. *How test the out-of-order race?* Fake variable latency; assert the slow
     earlier query's result is dropped (test in §9.14).
 
 **Production debugging**
+
 41. *Users report "flicker to old results" — diagnose.* Out-of-order race →
     verify `flatMapLatest` (not `flatMapMerge`) and that the Flow isn't
     recreated per recomposition.
@@ -947,10 +959,20 @@ debounce defeat); fixed `debounce` delaying blank-clear; booleans instead of a
 sealed state; logging raw query text; treating client debounce as a rate-limit
 control.
 
-**Design checklist:** ☐ debounce (configurable) ☐ min-length ☐ instant clear
-☐ `flatMapLatest` ☐ `distinctUntilChanged` ☐ exhaustive states ☐ Retry
-retrigger ☐ `SavedStateHandle` ☐ IO off main ☐ bounded cache w/ mutex
-☐ redacted logs + correlation ID ☐ requests-per-session metric.
+**Design checklist:**
+
+- [ ] debounce (configurable)
+- [ ] min-length
+- [ ] instant clear
+- [ ] `flatMapLatest`
+- [ ] `distinctUntilChanged`
+- [ ] exhaustive states
+- [ ] Retry retrigger
+- [ ] `SavedStateHandle`
+- [ ] IO off main
+- [ ] bounded cache w/mutex
+- [ ] redacted logs + correlation ID
+- [ ] requests-per-session metric.
 
 **Key Kotlin/Flow APIs:** `MutableStateFlow`, `debounce`, `distinctUntilChanged`,
 `flatMapLatest`, `combine`, `stateIn`, `SharingStarted.WhileSubscribed`,

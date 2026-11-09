@@ -542,6 +542,7 @@ Fake the Nearby client for logic; **two real devices with Play services** for en
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What is P2P/Nearby for?* Offline, direct device-to-device transfer (no server/internet).
 2. *Primary API?* Nearby Connections (auto-selects BT/BLE/Wi-Fi).
 3. *Nearby vs Wi-Fi Direct?* High-level auto-radio vs low-level control / no Play services.
@@ -549,38 +550,45 @@ Fake the Nearby client for logic; **two real devices with Play services** for en
 5. *Radios used?* BLE for discovery, Wi-Fi for throughput (Nearby picks).
 
 **Handshake**
+
 6. *Steps?* Advertise/discover → request connection → verify mutual token → accept →
    transfer.
 7. *Authentication?* Both sides verify the same token (anti-MITM) + consent.
 8. *Service id?* Shared id both sides advertise/discover on.
 
 **Payloads**
+
 9. *Types?* BYTES (small), FILE (file), STREAM (continuous).
 10. *Large files?* FILE/STREAM streamed (Ch 61) — never BYTES (OOM).
 11. *Progress?* `onPayloadTransferUpdate`.
 12. *Drop mid-file?* Resume remainder (Ch 2/61).
 
 **Strategy**
+
 13. *Strategies?* P2P_POINT_TO_POINT / STAR / CLUSTER.
 14. *File share?* Point-to-point (bandwidth).
 15. *Group/multiplayer?* Star/cluster.
 
 **Permissions (Ch 51/69)**
+
 16. *Matrix?* Bluetooth (`SCAN`/`ADVERTISE`/`CONNECT`) + `NEARBY_WIFI_DEVICES` (13+) /
     legacy location.
 17. *`neverForLocation`?* If not deriving location (Ch 67).
 
 **Lifecycle/battery**
+
 18. *Scope?* Session; stop advertising/discovery/endpoints promptly (Ch 44).
 19. *Long transfer?* `connectedDevice` FGS (Ch 46).
 
 **Security (Ch 23/28)**
+
 20. *Trust model?* Physical proximity + authenticate peer + consent (no server).
 21. *Received data?* Untrusted — validate.
 22. *Device identity?* Sensitive — minimize/don't log.
 23. *Sensitive payloads?* App-layer encryption (Ch 25).
 
 **Testing/Production**
+
 24. *Test end-to-end?* Two real devices + Play services.
 25. *No discovery?* Permission matrix / service id.
 26. *OOM?* BYTES for large (use FILE).
@@ -649,13 +657,19 @@ proximity trust (authenticate/untrusted/consent).
 on drop); wrong permission matrix (no discovery); leaving radios on (battery); trusting
 received data; no consent; logging device identity.
 
-**Checklist:** ☐ Nearby Connections (default) vs Wi-Fi Direct / BLE ☐ strategy per use case
-(point-to-point/star/cluster) ☐ advertise/discover → verify mutual token + consent → accept
-☐ BYTES small / FILE-STREAM streamed + progress + resume (Ch 61/2) ☐ permission matrix
-(Bluetooth + `NEARBY_WIFI_DEVICES`/legacy location, Ch 51/69) ☐ retry + resume on drop
-(Ch 2/61) ☐ session-scoped radios + stop promptly + FGS for long transfer (Ch 44/46) ☐
-authenticate peer + untrusted data + consent (Ch 23/28) ☐ device identity minimized/not
-logged ☐ Wi-Fi Direct fallback (no Play services) ☐ connect/transfer telemetry.
+**Checklist:**
+
+- [ ] Nearby Connections (default) vs Wi-Fi Direct / BLE
+- [ ] strategy per use case (point-to-point/star/cluster)
+- [ ] advertise/discover → verify mutual token + consent → accept
+- [ ] BYTES small / FILE-STREAM streamed + progress + resume (Ch 61/2)
+- [ ] permission matrix (Bluetooth + `NEARBY_WIFI_DEVICES`/legacy location, Ch 51/69)
+- [ ] retry + resume on drop (Ch 2/61)
+- [ ] session-scoped radios + stop promptly + FGS for long transfer (Ch 44/46)
+- [ ] authenticate peer + untrusted data + consent (Ch 23/28)
+- [ ] device identity minimized/not logged
+- [ ] Wi-Fi Direct fallback (no Play services)
+- [ ] connect/transfer telemetry.
 
 **Key APIs:** `Nearby.getConnectionsClient`, `startAdvertising`/`startDiscovery`/
 `stopAdvertising`/`stopDiscovery`/`stopAllEndpoints`, `requestConnection`/`acceptConnection`,

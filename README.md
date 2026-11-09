@@ -36,37 +36,31 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 16 | API Schema Evolution & Backward Compatibility | [`docs/chapters/16-api-schema-evolution.md`](./docs/chapters/16-api-schema-evolution.md) | ✅ Draft |
 | 17 | Multipart & Resumable Uploads | [`docs/chapters/17-multipart-resumable-uploads.md`](./docs/chapters/17-multipart-resumable-uploads.md) | ✅ Draft |
 | 18 | File Download Manager | [`docs/chapters/18-file-download-manager.md`](./docs/chapters/18-file-download-manager.md) | ✅ Draft |
-
 | 19 | Authentication & Token Refresh | [`docs/chapters/19-authentication-token-refresh.md`](./docs/chapters/19-authentication-token-refresh.md) | ✅ Draft |
 | 20 | Credential & Token Storage (Android Keystore) | [`docs/chapters/20-credential-token-storage-keystore.md`](./docs/chapters/20-credential-token-storage-keystore.md) | ✅ Draft |
 | 21 | Biometric Authentication | [`docs/chapters/21-biometric-authentication.md`](./docs/chapters/21-biometric-authentication.md) | ✅ Draft |
 | 22 | Session Management & Logout-Everywhere | [`docs/chapters/22-session-management-logout.md`](./docs/chapters/22-session-management-logout.md) | ✅ Draft |
 | 23 | Secure Network Communication & Certificate Pinning | [`docs/chapters/23-secure-network-certificate-pinning.md`](./docs/chapters/23-secure-network-certificate-pinning.md) | ✅ Draft |
-
 | 24 | Encryption of Sensitive Data at Rest (SQLCipher) | [`docs/chapters/24-encryption-at-rest.md`](./docs/chapters/24-encryption-at-rest.md) | ✅ Draft |
 | 25 | Secure File Storage | [`docs/chapters/25-secure-file-storage.md`](./docs/chapters/25-secure-file-storage.md) | ✅ Draft |
 | 26 | App Integrity, Root & Tamper Detection (Play Integrity) | [`docs/chapters/26-app-integrity-root-detection.md`](./docs/chapters/26-app-integrity-root-detection.md) | ✅ Draft |
 | 27 | Secrets Management & Obfuscation (R8) | [`docs/chapters/27-secrets-management-obfuscation.md`](./docs/chapters/27-secrets-management-obfuscation.md) | ✅ Draft |
 | 28 | Secure Logging & PII Redaction | [`docs/chapters/28-secure-logging-pii-redaction.md`](./docs/chapters/28-secure-logging-pii-redaction.md) | ✅ Draft |
-
 | 29 | Offline-First Architecture | [`docs/chapters/29-offline-first-architecture.md`](./docs/chapters/29-offline-first-architecture.md) | ✅ Draft |
 | 30 | Background Synchronization with WorkManager | [`docs/chapters/30-background-sync-workmanager.md`](./docs/chapters/30-background-sync-workmanager.md) | ✅ Draft |
 | 31 | The Outbox Pattern for Reliable Writes | [`docs/chapters/31-outbox-pattern.md`](./docs/chapters/31-outbox-pattern.md) | ✅ Draft |
 | 32 | Delta / Incremental Sync | [`docs/chapters/32-delta-incremental-sync.md`](./docs/chapters/32-delta-incremental-sync.md) | ✅ Draft |
 | 33 | Conflict Resolution & a Sync Engine | [`docs/chapters/33-conflict-resolution-sync-engine.md`](./docs/chapters/33-conflict-resolution-sync-engine.md) | ✅ Draft |
-
 | 34 | Cache Invalidation Strategy | [`docs/chapters/34-cache-invalidation-strategy.md`](./docs/chapters/34-cache-invalidation-strategy.md) | ✅ Draft |
 | 35 | Local Full-Text Search (FTS) | [`docs/chapters/35-local-full-text-search-fts.md`](./docs/chapters/35-local-full-text-search-fts.md) | ✅ Draft |
 | 36 | Room Migrations & Schema Management | [`docs/chapters/36-room-migrations-schema.md`](./docs/chapters/36-room-migrations-schema.md) | ✅ Draft |
 | 37 | Data Export, Import & Backup | [`docs/chapters/37-data-export-import-backup.md`](./docs/chapters/37-data-export-import-backup.md) | ✅ Draft |
 | 38 | Shared Shopping Cart Across Screens | [`docs/chapters/38-shared-shopping-cart.md`](./docs/chapters/38-shared-shopping-cart.md) | ✅ Draft |
-
 | 39 | Global App State Management | [`docs/chapters/39-global-app-state-management.md`](./docs/chapters/39-global-app-state-management.md) | ✅ Draft |
 | 40 | Shared ViewModel Scoping | [`docs/chapters/40-shared-viewmodel-scoping.md`](./docs/chapters/40-shared-viewmodel-scoping.md) | ✅ Draft |
 | 41 | Feature Flags & Remote Config | [`docs/chapters/41-feature-flags-remote-config.md`](./docs/chapters/41-feature-flags-remote-config.md) | ✅ Draft |
 | 42 | Multi-Account & Account Switching | [`docs/chapters/42-multi-account-switching.md`](./docs/chapters/42-multi-account-switching.md) | ✅ Draft |
 | 43 | Personalization & User-Preference Sync | [`docs/chapters/43-personalization-preference-sync.md`](./docs/chapters/43-personalization-preference-sync.md) | ✅ Draft |
-
 | 44 | Application Lifecycle Management | [`docs/chapters/44-application-lifecycle-management.md`](./docs/chapters/44-application-lifecycle-management.md) | ✅ Draft |
 | 45 | App Startup Optimization | [`docs/chapters/45-app-startup-optimization.md`](./docs/chapters/45-app-startup-optimization.md) | ✅ Draft |
 | 46 | Foreground Services | [`docs/chapters/46-foreground-services.md`](./docs/chapters/46-foreground-services.md) | ✅ Draft |
@@ -79,7 +73,6 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 53 | Navigation Architecture (Multi-Module) | [`docs/chapters/53-navigation-architecture-multimodule.md`](./docs/chapters/53-navigation-architecture-multimodule.md) | ✅ Draft |
 | 54 | App Update & Forced-Upgrade Flow | [`docs/chapters/54-app-update-forced-upgrade.md`](./docs/chapters/54-app-update-forced-upgrade.md) | ✅ Draft |
 | 55 | Widgets & App Shortcuts | [`docs/chapters/55-widgets-app-shortcuts.md`](./docs/chapters/55-widgets-app-shortcuts.md) | ✅ Draft |
-
 | 56 | Image Loading & Caching (Coil) | [`docs/chapters/56-image-loading-caching-coil.md`](./docs/chapters/56-image-loading-caching-coil.md) | ✅ Draft |
 | 57 | Thumbnail Generation & Caching | [`docs/chapters/57-thumbnail-generation-caching.md`](./docs/chapters/57-thumbnail-generation-caching.md) | ✅ Draft |
 | 58 | Media Playback State (Media3/ExoPlayer) | [`docs/chapters/58-media-playback-state-media3.md`](./docs/chapters/58-media-playback-state-media3.md) | ✅ Draft |
@@ -87,7 +80,6 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 60 | Camera Capture Pipeline (CameraX) | [`docs/chapters/60-camera-capture-cameraX.md`](./docs/chapters/60-camera-capture-cameraX.md) | ✅ Draft |
 | 61 | Large File & Streaming Handling | [`docs/chapters/61-large-file-streaming-handling.md`](./docs/chapters/61-large-file-streaming-handling.md) | ✅ Draft |
 | 62 | File Sharing & Content Providers (SAF) | [`docs/chapters/62-file-sharing-content-providers-saf.md`](./docs/chapters/62-file-sharing-content-providers-saf.md) | ✅ Draft |
-
 | 63 | Real-Time Communication over WebSocket | [`docs/chapters/63-realtime-websocket.md`](./docs/chapters/63-realtime-websocket.md) | ✅ Draft |
 | 64 | Chat / Messaging Architecture | [`docs/chapters/64-chat-messaging-architecture.md`](./docs/chapters/64-chat-messaging-architecture.md) | ✅ Draft |
 | 65 | Presence & Typing Indicators | [`docs/chapters/65-presence-typing-indicators.md`](./docs/chapters/65-presence-typing-indicators.md) | ✅ Draft |
@@ -96,7 +88,6 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 68 | Network State Monitoring (Wi-Fi / Cellular / Metered) | [`docs/chapters/68-network-state-monitoring.md`](./docs/chapters/68-network-state-monitoring.md) | ✅ Draft |
 | 69 | Bluetooth Low Energy (BLE) Connectivity | [`docs/chapters/69-bluetooth-low-energy.md`](./docs/chapters/69-bluetooth-low-energy.md) | ✅ Draft |
 | 70 | Peer-to-Peer / Nearby Connections | [`docs/chapters/70-peer-to-peer-nearby-connections.md`](./docs/chapters/70-peer-to-peer-nearby-connections.md) | ✅ Draft |
-
 | 71 | Infinite Scrolling Feed (Social) | [`docs/chapters/71-infinite-scrolling-feed.md`](./docs/chapters/71-infinite-scrolling-feed.md) | ✅ Draft |
 | 72 | Optimistic Updates (Likes / Comments) | [`docs/chapters/72-optimistic-updates.md`](./docs/chapters/72-optimistic-updates.md) | ✅ Draft |
 | 73 | Recommendations Feed | [`docs/chapters/73-recommendations-feed.md`](./docs/chapters/73-recommendations-feed.md) | ✅ Draft |
@@ -108,7 +99,6 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 79 | Reviews & Ratings | [`docs/chapters/79-reviews-ratings.md`](./docs/chapters/79-reviews-ratings.md) | ✅ Draft |
 | 80 | Onboarding & Feature Discovery | [`docs/chapters/80-onboarding-feature-discovery.md`](./docs/chapters/80-onboarding-feature-discovery.md) | ✅ Draft |
 | 81 | In-App Feedback & Diagnostics | [`docs/chapters/81-in-app-feedback-diagnostics.md`](./docs/chapters/81-in-app-feedback-diagnostics.md) | ✅ Draft |
-
 | 82 | Centralized Logging & Analytics | [`docs/chapters/82-centralized-logging-analytics.md`](./docs/chapters/82-centralized-logging-analytics.md) | ✅ Draft |
 | 83 | Crash & ANR Reporting | [`docs/chapters/83-crash-anr-reporting.md`](./docs/chapters/83-crash-anr-reporting.md) | ✅ Draft |
 | 84 | Distributed Tracing & Correlation IDs | [`docs/chapters/84-distributed-tracing-correlation-ids.md`](./docs/chapters/84-distributed-tracing-correlation-ids.md) | ✅ Draft |
@@ -125,14 +115,17 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 95 | Localization, RTL & Regionalization | [`docs/chapters/95-localization-rtl-regionalization.md`](./docs/chapters/95-localization-rtl-regionalization.md) | ✅ Draft |
 | 96 | Accessibility Architecture | [`docs/chapters/96-accessibility-architecture.md`](./docs/chapters/96-accessibility-architecture.md) | ✅ Draft |
 | 97 | Theming & Dynamic Configuration | [`docs/chapters/97-theming-dynamic-configuration.md`](./docs/chapters/97-theming-dynamic-configuration.md) | ✅ Draft |
+| 98 | Android TV / STB / Fire TV State & Input Architecture | [`docs/chapters/98-android-tv-stb-firetv.md`](./docs/chapters/98-android-tv-stb-firetv.md) | ✅ Draft |
+| 99 | Wear OS Companion & Cross-Device State Sync | [`docs/chapters/99-wear-os-companion-sync.md`](./docs/chapters/99-wear-os-companion-sync.md) | ✅ Draft |
+| 100 | Capstone: StreamCart End-to-End System Design | [`docs/chapters/100-capstone-streamcart-end-to-end.md`](./docs/chapters/100-capstone-streamcart-end-to-end.md) | ✅ Draft |
 
-**Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
+**🎉 All 11 parts — I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
 Lifecycle, Background & Platform (Ch 44–55), VII — Media & Files
 (Ch 56–62), VIII — Real-Time & Connectivity (Ch 63–70), IX — Feature
-Architectures (Ch 71–81), and X — Performance, Observability & Quality
-(Ch 82–93)** are complete.
-**Part XI — Reach, Scale & Platform Breadth (Ch 94–100)** is in progress (Ch 94–97 done; Ch 98–100 — TV/STB, Wear, and the StreamCart capstone — remaining).
+Architectures (Ch 71–81), X — Performance, Observability & Quality
+(Ch 82–93), and XI — Reach, Scale & Platform Breadth (Ch 94–100)** — are
+**complete. All 100 chapters of *Designing Android at Scale* are drafted.**
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

@@ -445,6 +445,7 @@ lint).
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What is global state?* State read by many unrelated features, tied to app/session
    (session, connectivity, theme, flags, unread).
 2. *Global vs feature vs screen state?* Many features vs one feature (Ch 38) vs one
@@ -456,6 +457,7 @@ lint).
    Kotlin `object`.
 
 **Design**
+
 6. *Many holders vs central store?* Many focused holders (Android-idiomatic,
    modular); central store adds coupling/ceremony.
 7. *How do features consume global state?* Inject only needed holders; `combine` into
@@ -466,31 +468,37 @@ lint).
    recomputable.
 
 **Scoping/lifecycle**
+
 10. *Survives process death?* Durable holders (DataStore/Room); in-memory recomputes.
 11. *Device- vs session-scoped?* Theme/flags (device) vs session/profile (session,
     clear on logout).
 12. *Reset on logout?* Clear session-scoped global holders (Ch 22).
 
 **Consistency**
+
 13. *How avoid "is online" divergence?* One holder; all observe it.
 14. *Multiple observers?* `StateFlow` shares one conflated value.
 15. *Over-globalization risk?* Coupling; keep feature state in the feature (Ch 38).
 
 **Security**
+
 16. *Secrets in global holders?* No — Keystore (Ch 20); expose only non-sensitive
     derived state.
 17. *Flags as authorization?* No — backend re-validates (Ch 41/26).
 18. *Scope correctly?* Device vs session to avoid leaking user state.
 
 **Testing**
+
 19. *How test features with global state?* Fake holders; no real god object.
 20. *How test holders?* Behavior (callbacks/persistence) + reset.
 
 **Performance**
+
 21. *Cost of global `StateFlow`?* Minimal (conflated/shared); `WhileSubscribed`.
 22. *Memory?* Only global state is global — no UI bloat.
 
 **Production debugging**
+
 23. *Features disagree on a value?* Duplicated state, not one holder.
 24. *Lost on restart?* Not durable.
 25. *Hard to change a feature?* God-object coupling.
@@ -550,11 +558,18 @@ feature state (Ch 38); duplicated global state (divergence); `object` singletons
 (leaks/untestable); global state lost on process death (no durability); secrets in
 global holders; not resetting session-scoped global state on logout.
 
-**Checklist:** ☐ classify global/feature/screen ☐ focused `@Singleton` holder per
-global state ☐ read-only `StateFlow` + methods ☐ features combine only needed holders
-☐ durable via DataStore/Room where needed ☐ in-memory recompute otherwise ☐ reset
-session-scoped on logout ☐ device vs session scope ☐ no god object ☐ no secrets in
-holders.
+**Checklist:**
+
+- [ ] classify global/feature/screen
+- [ ] focused `@Singleton` holder per global state
+- [ ] read-only `StateFlow` + methods
+- [ ] features combine only needed holders
+- [ ] durable via DataStore/Room where needed
+- [ ] in-memory recompute otherwise
+- [ ] reset session-scoped on logout
+- [ ] device vs session scope
+- [ ] no god object
+- [ ] no secrets in holders.
 
 **Key APIs/patterns:** Hilt `@Singleton` holders, `StateFlow`/`stateIn`/
 `SharingStarted`, `combine`, `callbackFlow` (connectivity), DataStore-backed

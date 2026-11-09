@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[TV app problem] --> WHY{category}
+    WHY -->|unnavigable| FOCUS[explicit focus order + initial focus + no traps]
+    WHY -->|not legible| TENFOOT[10-foot UI: leanback/TV-Compose, big + high-contrast + highlight]
+    WHY -->|OOM/jank| CONSTRAIN[bounded memory + light rendering + real low-RAM test - Ch 89/90]
+    WHY -->|not portable| PLATFORM[abstraction: Android TV / Fire TV / STB - no GPS fallback]
+    WHY -->|no transport| KEYS[handle D-pad + media keys]

@@ -470,6 +470,7 @@ manually with mitmproxy on a debug build.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why isn't plain HTTPS enough for sensitive apps?* It trusts the whole device CA
    store, including user/enterprise/compromised CAs → MITM possible.
 2. *What is certificate pinning?* Restricting accepted certs to a known pin set
@@ -482,6 +483,7 @@ manually with mitmproxy on a debug build.
    *expiration* intentionally fails open as a safety valve.)
 
 **Mechanism**
+
 6. *OkHttp pinning?* `CertificatePinner.Builder().add(host, "sha256/...")`.
 7. *Network Security Config?* Declarative XML for cleartext policy, pins, trust
    anchors; auditable, system-wide.
@@ -490,6 +492,7 @@ manually with mitmproxy on a debug build.
    intermediate = robust to leaf rotation (wider trust).
 
 **Rotation (the hard part)**
+
 10. *How rotate pinned keys safely?* Ship the next key as a backup pin **before**
     rotating; then rotate; next release updates the backup.
 11. *Rotated without a shipped backup — consequence?* Outage for the installed base.
@@ -499,6 +502,7 @@ manually with mitmproxy on a debug build.
     a safety valve, not a feature to depend on.
 
 **Threat model**
+
 14. *What does pinning stop?* MITM via user/enterprise/compromised CAs on pinned
     hosts; TLS interception tools.
 15. *What does it NOT stop?* A compromised app on a rooted device, backend
@@ -508,23 +512,27 @@ manually with mitmproxy on a debug build.
     TrustManager) — never do it.
 
 **Security**
+
 17. *Debug interception without weakening release?* Debug-variant NSC with
     `src="user"`; audit release has none + pinning on.
 18. *Does pinning replace backend auth?* No — client hardening only.
 19. *Token TTL role?* Short access-token TTL (Ch 19) limits damage.
 
 **Operational**
+
 20. *How detect a botched rotation vs an attack?* Pin-failure spike correlated with
     your rotation schedule (botched) vs network-localized (attack).
 21. *includeSubdomains?* Pin subdomains too where the key is shared.
 
 **Testing**
+
 22. *How test fail-closed?* MockWebServer with an unpinned cert → assert
     `SSLPeerUnverifiedException`.
 23. *How test backup pin?* Present the backup key; assert allowed.
 24. *How guard release config?* Static/lint check: no user-CA trust, pinning on.
 
 **Production debugging**
+
 25. *Total failure to one host after a cert change?* Rotated without a shipped
     backup pin.
 26. *Scattered pin failures on some Wi-Fi?* User/enterprise CA MITM being blocked
@@ -590,10 +598,17 @@ a single leaf cert (breaks on renewal + bricks on rotation); no backup pin; catc
 pin failures and retrying unpinned; debug CA trust shipping to release; treating
 pinning as a complete security solution; rotating keys with no shipped backup pin.
 
-**Checklist:** ☐ HTTPS + cleartext off (NSC) ☐ pin SPKI (key, not leaf) ☐ ≥1 backup
-pin ☐ fail closed + report ☐ debug-only interception (variant) ☐ rotation runbook
-(backup ahead / remote pins / forced upgrade) ☐ never disable validation ☐ monitor
-pin-failure spikes ☐ combine with attestation/root detection for high assurance.
+**Checklist:**
+
+- [ ] HTTPS + cleartext off (NSC)
+- [ ] pin SPKI (key, not leaf)
+- [ ] ≥1 backup pin
+- [ ] fail closed + report
+- [ ] debug-only interception (variant)
+- [ ] rotation runbook (backup ahead / remote pins / forced upgrade)
+- [ ] never disable validation
+- [ ] monitor pin-failure spikes
+- [ ] combine with attestation/root detection for high assurance.
 
 **Key APIs:** OkHttp `CertificatePinner`, `SSLPeerUnverifiedException`, Network
 Security Config (`base-config`/`domain-config`/`pin-set`/`debug-overrides`),

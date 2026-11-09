@@ -1,0 +1,22 @@
+classDiagram
+    class GlanceableSurfaces {
+        +Tile (glanceable + quick action)
+        +Complication (watch-face data)
+        +Notification (bridged / watch-specific)
+    }
+    class CrossDeviceSync {
+        +DataClient (replicate DataItems)
+        +MessageClient (messages); +CapabilityClient (node discovery)
+        +shared backend (Ch 29); +conflict/reconcile (Ch 29)
+    }
+    class Connectivity {
+        +paired/bridged (via phone)
+        +standalone (Wi-Fi/LTE; own auth Ch 20)
+    }
+    class WearEfficiency {
+        +batch/defer sync; +push over poll (Ch 91)
+        +minimal compute; +small app; +efficient tile updates
+    }
+    GlanceableSurfaces --> CrossDeviceSync
+    CrossDeviceSync --> Connectivity
+    GlanceableSurfaces --> WearEfficiency

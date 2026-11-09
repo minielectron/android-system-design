@@ -515,6 +515,7 @@ config change (Ch 44). Visual-regression (screenshot) tests across schemes.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why a design system?* Consistency, adaptability, themeability from one source.
 2. *Design tokens?* Named semantic values (color/type/shape/spacing).
 3. *Single source of truth?* Theme drives all components.
@@ -522,33 +523,39 @@ config change (Ch 44). Visual-regression (screenshot) tests across schemes.
 5. *MaterialTheme?* Exposes colorScheme/typography/shapes.
 
 **Color**
+
 6. *Semantic vs literal?* Roles (primary/error/onSurface) adapt; literals don't.
 7. *Why roles?* Same component works across light/dark/dynamic/brand.
 8. *Dark mode?* Theme-level light + dark schemes (roles).
 9. *Per-screen dark logic?* Anti-pattern — use theme.
 
 **Dynamic color**
+
 10. *Material You?* Theme from wallpaper (Android 12+).
 11. *Fallback?* Static branded scheme for older/opted-out.
 12. *Risk?* Contrast — must stay accessible (Ch 96).
 
 **Accessibility**
+
 13. *Theme + a11y?* Contrast (tokens) + high-contrast + sp (Ch 95/96).
 14. *Contrast?* WCAG 4.5:1 in color roles.
 15. *Typography units?* sp (scales, Ch 95/96).
 16. *Large fonts?* Flexible layouts survive (Ch 95/96).
 
 **Config**
+
 17. *Config changes?* Dark/density/locale/orientation (Ch 44).
 18. *On change?* Activity recreates, theme re-resolves, state survives (Ch 44).
 
 **Runtime/packaging**
+
 19. *Runtime theming?* Brand/seasonal/experiment via remote config (Ch 40/86).
 20. *Why possible?* Token-driven, not hardcoded.
 21. *Where packaged?* `:core:designsystem` module (Ch 94).
 22. *Themed components?* Shared library reading tokens.
 
 **Edge/production**
+
 23. *Inconsistent components?* Design-system module (Ch 94).
 24. *Validate runtime theme?* Enforce contrast; reject malformed (Ch 40/96).
 25. *Test theming?* Screenshot across schemes + contrast checks.
@@ -620,12 +627,18 @@ logic; dynamic color breaking contrast (Ch 96); `dp` typography (doesn't scale, 
 state on config change (Ch 44); divergent components (no design-system module); theme config not
 validated (Ch 40); obscuring security-critical UI via theme (Ch 76).
 
-**Checklist:** ☐ design tokens (semantic color roles, `sp` type scale, shape, spacing) ☐
-`MaterialTheme` single source of truth; components read tokens (no hardcode) ☐ light/dark schemes
-via roles ☐ dynamic color (Material You) + static fallback ☐ WCAG contrast + high-contrast + `sp`
-(Ch 95/96) ☐ survive config changes (density/locale/orientation, Ch 44) ☐ runtime theming via
-remote config (Ch 40/86) ☐ package as `:core:designsystem` + themed components (Ch 94) ☐ validate
-runtime theme (contrast/visibility, Ch 96/76) ☐ screenshot + contrast tests across schemes.
+**Checklist:**
+
+- [ ] design tokens (semantic color roles, `sp` type scale, shape, spacing)
+- [ ] `MaterialTheme` single source of truth; components read tokens (no hardcode)
+- [ ] light/dark schemes via roles
+- [ ] dynamic color (Material You) + static fallback
+- [ ] WCAG contrast + high-contrast + `sp` (Ch 95/96)
+- [ ] survive config changes (density/locale/orientation, Ch 44)
+- [ ] runtime theming via remote config (Ch 40/86)
+- [ ] package as `:core:designsystem` + themed components (Ch 94)
+- [ ] validate runtime theme (contrast/visibility, Ch 96/76)
+- [ ] screenshot + contrast tests across schemes.
 
 **Key APIs:** `MaterialTheme` (`colorScheme`/`typography`/`shapes`), `lightColorScheme`/
 `darkColorScheme`, `dynamicLightColorScheme`/`dynamicDarkColorScheme` (Android 12+),
