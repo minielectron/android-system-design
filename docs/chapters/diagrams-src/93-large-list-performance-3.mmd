@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor User
+    participant Lazy as LazyColumn (Ch 90)
+    participant Paging as Paging 3 (Ch 71)
+    participant Item as Item composable
+    participant Coil as Coil (Ch 59)
+
+    User->>Lazy: scroll down
+    Lazy->>Lazy: recycle off-screen slots, compose NEWLY visible items only
+    Lazy->>Paging: nearing end -> load next page (prefetch distance, Ch 71)
+    Paging-->>Lazy: next page items (placeholders meanwhile)
+    Lazy->>Item: compose item (stable key -> correct reuse, skippable -> cheap, Ch 90)
+    Item->>Coil: AsyncImage(url) - decode OFF-MAIN, downsample, cache (Ch 59/89)
+    Coil-->>Item: bitmap (async - never blocks the scroll frame)
+    Item-->>User: frame within budget = smooth (Ch 90)
+    Note over Coil: load CANCELLED if item recycled before it finishes

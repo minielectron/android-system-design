@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[observability gap] --> WHY{category}
+    WHY -->|disconnected logs| CORRID[correlation id sent + server-logged]
+    WHY -->|no client context in trace| TRACEPARENT[inject W3C traceparent - continue trace]
+    WHY -->|cant join pillars| BIND[correlation id on analytics/crash/feedback - Ch 82/83/81]
+    WHY -->|PII| OPAQUE[opaque non-PII ids - Ch 28]
+    WHY -->|cost| SAMPLE[sample traces, correlation always-on]

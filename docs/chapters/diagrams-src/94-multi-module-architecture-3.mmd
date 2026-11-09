@@ -1,0 +1,5 @@
+flowchart LR
+    EDIT[edit :feature:checkout] --> AFFECTED[Gradle: affected = :feature:checkout + :app]
+    AFFECTED --> SKIP[":core:*, other :feature:* UNCHANGED -> from cache"]
+    SKIP --> PARALLEL[build affected in parallel + build cache]
+    PARALLEL --> FAST[fast incremental build - not the whole app]

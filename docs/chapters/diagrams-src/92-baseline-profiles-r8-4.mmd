@@ -1,0 +1,5 @@
+flowchart LR
+    NONE[CompilationMode.None - no AOT, JIT-cold] --> SLOW[baseline: slower startup/jank]
+    PARTIAL[CompilationMode.Partial - with baseline profile] --> FAST[AOT: faster startup/smoother]
+    SLOW --> DELTA[Macrobenchmark delta = the profile's win - Ch 85/88/90]
+    FAST --> DELTA

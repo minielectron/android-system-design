@@ -1,0 +1,25 @@
+classDiagram
+    class LazyListSetup {
+        +LazyColumn/Grid - visible only + recycle
+        +items with stable key by id and contentType
+    }
+    class ItemComposable {
+        +@Immutable params (skippable, Ch 90)
+        +hoisted work; shallow layout
+    }
+    class AsyncImageLoad {
+        +Coil AsyncImage - off-main decode (Ch 59)
+        +downsample to view size (Ch 89); cache; cancel on recycle
+    }
+    class PagedData {
+        +Paging 3 PagingData (Ch 71)
+        +prefetchDistance; placeholders
+    }
+    class ScrollState {
+        +derivedStateOf (scroll-driven, Ch 90)
+        +graphicsLayer defer; no per-scroll IO
+    }
+    LazyListSetup --> ItemComposable
+    ItemComposable --> AsyncImageLoad
+    LazyListSetup --> PagedData
+    LazyListSetup --> ScrollState

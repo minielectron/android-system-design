@@ -111,13 +111,28 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 
 | 82 | Centralized Logging & Analytics | [`docs/chapters/82-centralized-logging-analytics.md`](./docs/chapters/82-centralized-logging-analytics.md) | ✅ Draft |
 | 83 | Crash & ANR Reporting | [`docs/chapters/83-crash-anr-reporting.md`](./docs/chapters/83-crash-anr-reporting.md) | ✅ Draft |
+| 84 | Distributed Tracing & Correlation IDs | [`docs/chapters/84-distributed-tracing-correlation-ids.md`](./docs/chapters/84-distributed-tracing-correlation-ids.md) | ✅ Draft |
+| 85 | Performance Monitoring | [`docs/chapters/85-performance-monitoring.md`](./docs/chapters/85-performance-monitoring.md) | ✅ Draft |
+| 86 | A/B Testing & Experimentation | [`docs/chapters/86-ab-testing-experimentation.md`](./docs/chapters/86-ab-testing-experimentation.md) | ✅ Draft |
+| 87 | Error Classification & Telemetry Pipeline | [`docs/chapters/87-error-classification-telemetry-pipeline.md`](./docs/chapters/87-error-classification-telemetry-pipeline.md) | ✅ Draft |
+| 88 | Cold Start Optimization | [`docs/chapters/88-cold-start-optimization.md`](./docs/chapters/88-cold-start-optimization.md) | ✅ Draft |
+| 89 | Memory Management & Leak Prevention | [`docs/chapters/89-memory-management-leak-prevention.md`](./docs/chapters/89-memory-management-leak-prevention.md) | ✅ Draft |
+| 90 | Rendering Performance & Jank in Compose | [`docs/chapters/90-rendering-jank-compose.md`](./docs/chapters/90-rendering-jank-compose.md) | ✅ Draft |
+| 91 | Battery & Network Efficiency | [`docs/chapters/91-battery-network-efficiency.md`](./docs/chapters/91-battery-network-efficiency.md) | ✅ Draft |
+| 92 | Baseline Profiles & R8 Optimization | [`docs/chapters/92-baseline-profiles-r8.md`](./docs/chapters/92-baseline-profiles-r8.md) | ✅ Draft |
+| 93 | Large List Performance | [`docs/chapters/93-large-list-performance.md`](./docs/chapters/93-large-list-performance.md) | ✅ Draft |
+| 94 | Multi-Module Architecture at Enterprise Scale | [`docs/chapters/94-multi-module-architecture.md`](./docs/chapters/94-multi-module-architecture.md) | ✅ Draft |
+| 95 | Localization, RTL & Regionalization | [`docs/chapters/95-localization-rtl-regionalization.md`](./docs/chapters/95-localization-rtl-regionalization.md) | ✅ Draft |
+| 96 | Accessibility Architecture | [`docs/chapters/96-accessibility-architecture.md`](./docs/chapters/96-accessibility-architecture.md) | ✅ Draft |
+| 97 | Theming & Dynamic Configuration | [`docs/chapters/97-theming-dynamic-configuration.md`](./docs/chapters/97-theming-dynamic-configuration.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
 Lifecycle, Background & Platform (Ch 44–55), VII — Media & Files
-(Ch 56–62), VIII — Real-Time & Connectivity (Ch 63–70), and IX — Feature
-Architectures (Ch 71–81)** are complete.
-**Part X — Performance, Observability & Quality (Ch 82–93)** is in progress (Ch 82–83 done).
+(Ch 56–62), VIII — Real-Time & Connectivity (Ch 63–70), IX — Feature
+Architectures (Ch 71–81), and X — Performance, Observability & Quality
+(Ch 82–93)** are complete.
+**Part XI — Reach, Scale & Platform Breadth (Ch 94–100)** is in progress (Ch 94–97 done; Ch 98–100 — TV/STB, Wear, and the StreamCart capstone — remaining).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

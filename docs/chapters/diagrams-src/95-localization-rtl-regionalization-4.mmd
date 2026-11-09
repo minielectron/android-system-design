@@ -1,0 +1,4 @@
+flowchart LR
+    LAYOUT[layout uses start/end] --> LTR_V[LTR: start=left, end=right]
+    LAYOUT --> RTL_V[RTL: start=right, end=left - MIRRORS automatically]
+    HARDCODE[layout uses left/right] -.->|does NOT mirror| BROKEN[broken RTL layout]

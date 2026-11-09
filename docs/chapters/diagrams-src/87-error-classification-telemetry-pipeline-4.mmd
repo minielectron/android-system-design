@@ -1,0 +1,6 @@
+flowchart LR
+    ERR[error] --> KIND{transient or permanent}
+    KIND -->|transient - timeout/503| RETRY[retryable - low severity, sample - Ch 67/82]
+    KIND -->|permanent - 400/parse/bug| REPORT[surface as bug - higher severity - Ch 23]
+    RETRY -.-> HANDLE[handling: retry Ch 67]
+    REPORT -.-> HANDLE2[handling: report Ch 23]

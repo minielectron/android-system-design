@@ -1,0 +1,17 @@
+flowchart TD
+    APP[":app - composition root: wires ALL features (navigation + DI aggregation + Application)"] --> FCAT[":feature:catalog"]
+    APP --> FCHK[":feature:checkout"]
+    APP --> FORD[":feature:orders"]
+    FCAT --> CDATA[":core:data (repositories)"]
+    FCHK --> CDATA
+    FORD --> CDATA
+    FCAT --> CDS[":core:designsystem (Ch 97)"]
+    FCHK --> CDS
+    CDATA --> CNET[":core:network (Ch 4)"]
+    CDATA --> CDB[":core:database (Ch 5)"]
+    CNET --> CMODEL[":core:model + :core:common (lowest layer)"]
+    CDB --> CMODEL
+    CDS --> CMODEL
+    ISOLATION["features NEVER depend on each other - communicate via contracts/navigation (Ch 97)"] -.-> FCHK
+    DAG["one-way DAG: app -> feature -> core -> common. No cycles, no sideways/upward edges"] -.-> APP
+    BUILDLOGIC["build-logic convention plugins + version catalog -> consistent, tiny build.gradle"] -.-> APP

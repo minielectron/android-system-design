@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant Int as TracingInterceptor (Ch 1)
+    participant BE as Backend services
+    participant Obs as Observability (analytics/crash, Ch 82/83)
+
+    User->>App: start checkout
+    App->>App: correlationId + start trace (opaque, Ch 28)
+    App->>Obs: set correlationId (super-property/custom key)
+    App->>Int: placeOrder request
+    Int->>BE: inject traceparent + X-Correlation-Id + new span
+    BE->>BE: continue trace across services + log correlationId
+    BE-->>App: response (same trace recorded)
+    Note over App,BE: one correlationId joins client analytics/crash + backend traces

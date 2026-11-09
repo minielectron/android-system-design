@@ -1,0 +1,14 @@
+flowchart TD
+    USER["user (stable opaque id - PII-safe, Ch 28)"] --> ASSIGN["deterministic assignment: hash id and experiment -> bucket"]
+    ASSIGN --> FRACTION{bucket < fraction}
+    FRACTION -->|yes| TREATMENT["variant B treatment"]
+    FRACTION -->|no| CONTROL["variant A control"]
+    CONFIG["remote config / feature flags (Ch 40) - fraction, ramp, kill"] -.-> ASSIGN
+    TREATMENT --> EXPOSE["log EXPOSURE event when actually shown"]
+    CONTROL --> EXPOSE
+    EXPOSE --> PIPE["analytics pipeline (Ch 82) - exposure + outcome metrics"]
+    PIPE --> ANALYZE["measure primary metric + significance/power"]
+    ANALYZE --> GUARD{guardrails hold - crash Ch 83, latency Ch 85}
+    GUARD -->|breach| KILL["auto-stop / kill variant (Ch 40/41)"]
+    GUARD -->|ok + significant lift| SHIP["decide: ship / ramp to 100 percent"]
+    PRIVACY["PII-safe keys + consent (Ch 28/82)"] -.-> EXPOSE

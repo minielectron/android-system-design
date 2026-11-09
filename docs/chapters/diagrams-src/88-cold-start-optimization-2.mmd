@@ -1,0 +1,19 @@
+classDiagram
+    class StartupAuditor {
+        +critical: List~Init~   // crash (Ch 83), DI (Ch 46)
+        +deferred: List~Init~   // analytics, image, flags (Ch 40/59)
+    }
+    class AppStartupInitializer {
+        +create(): T   // androidx.startup, ordered, lazy/parallel
+        +dependencies(): List
+    }
+    class LazyGraph {
+        +Lazy~HeavyRepo~   // built on first use (Ch 46)
+    }
+    class StartupMetrics {
+        +ttid; +ttfd   // reportFullyDrawn (Ch 45)
+        +measureMacrobenchmark()  (Ch 92); +fieldVitals()  (Ch 85)
+    }
+    StartupAuditor --> AppStartupInitializer
+    AppStartupInitializer --> LazyGraph
+    StartupMetrics ..> AppStartupInitializer

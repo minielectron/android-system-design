@@ -1,0 +1,5 @@
+flowchart LR
+    INIT[Application init work] --> Q{needed before first frame}
+    Q -->|yes - crash/DI| CRIT[run on critical path - minimal]
+    Q -->|no - analytics/image/flags| DEF[defer/parallel/off-main - App Startup + Ch 3]
+    DEF -.-> AFTER[trigger after TTID]

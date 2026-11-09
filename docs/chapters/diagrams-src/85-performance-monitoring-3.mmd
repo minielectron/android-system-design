@@ -1,0 +1,12 @@
+sequenceDiagram
+    actor User
+    participant App as PerfMonitor
+    participant Pipe as Analytics pipeline (Ch 82)
+    participant Vitals as Android vitals + dashboards
+
+    User->>App: cold start / scroll / checkout
+    App->>App: capture startup / frame metrics / custom trace (Ch 45/84) - low overhead
+    App->>Pipe: report metric + context (device/OS/release/correlation) - PII-safe (Ch 28)
+    Pipe->>Vitals: batched upload (Ch 82)
+    Vitals->>Vitals: aggregate as p50/p90/p95/p99 by device/OS/release
+    Vitals-->>App: regression on new release -> alert + gate/rollback (Ch 83/41)

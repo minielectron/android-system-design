@@ -1,0 +1,22 @@
+classDiagram
+    class StableState {
+        +@Immutable model
+        +ImmutableList items   // not raw List
+        +remembered lambdas   // not fresh each recomposition
+    }
+    class NarrowRead {
+        +leaf read / derivedStateOf
+        +lambda defer (graphicsLayer/offset) - read in layout/draw
+    }
+    class HoistedWork {
+        +ViewModel computes off-main (Ch 3)
+        +remember(derived)
+    }
+    class Measurement {
+        +LayoutInspector recomposition counts
+        +compilerStabilityReport
+        +JankStats (field, Ch 85); +FrameTimingMetric (lab, Ch 92)
+    }
+    StableState ..> NarrowRead
+    NarrowRead ..> HoistedWork
+    Measurement ..> StableState

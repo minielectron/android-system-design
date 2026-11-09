@@ -1,0 +1,10 @@
+flowchart LR
+    USER[user locale / per-app language - Ch 44] --> SELECT[Android selects values-xx strings]
+    SELECT --> FALLBACK[missing -> fall back to default values]
+    USER --> FMT[locale-aware formatters: number/date/currency ICU]
+    USER --> DIR[layout direction: LTR or RTL - start/end mirrors]
+    USER --> REGION[region -> currency/tax/catalog/legal - Ch 28]
+    FALLBACK --> UI[natural, correct UI per locale]
+    FMT --> UI
+    DIR --> UI
+    REGION --> UI

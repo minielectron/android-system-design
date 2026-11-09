@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant Act as Activity (Ch 44)
+    participant Singleton as Singleton (Ch 46)
+    participant GC as Garbage Collector
+    participant LC as LeakCanary (dev)
+
+    Act->>Singleton: register listener / pass Activity Context (BUG)
+    Note over Singleton: holds Activity reference - app-lived
+    Act->>Act: onDestroy (rotation) - Activity SHOULD be freed
+    GC->>GC: cannot collect - still reachable from Singleton (GC root)
+    GC-->>LC: Activity retained after destroy
+    LC-->>Act: reports LEAK + reference chain (Singleton -> Activity)
+    Note over Act: FIX - applicationContext / unregister / WeakReference - Ch 46/44

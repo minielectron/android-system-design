@@ -1,0 +1,20 @@
+classDiagram
+    class PerfMonitor {
+        +trackStartup()  (Ch 45)
+        +trackFrames(window)  (JankStats)
+        +startTrace(name): Trace  (custom, Ch 84)
+    }
+    class PerfMetric {
+        +name; +durationMs; +type
+        +deviceClass; +osVersion; +release; +correlationId  (Ch 84)
+    }
+    class PerfReporter {
+        +report(metric)  // via analytics pipeline (Ch 82), PII-safe (Ch 28)
+    }
+    class RegressionWatcher {
+        +percentiles(metric): P50_P95_P99
+        +alertOnRegression()  (Ch 83/41)
+    }
+    PerfMonitor --> PerfMetric
+    PerfMonitor --> PerfReporter
+    RegressionWatcher ..> PerfMetric

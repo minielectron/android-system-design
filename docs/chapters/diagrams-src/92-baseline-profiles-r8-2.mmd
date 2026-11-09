@@ -1,0 +1,18 @@
+classDiagram
+    class BaselineProfile {
+        +rules: classes/methods   // startup + journeys
+        +generatedBy: Macrobenchmark (Ch 85)
+        +appliedBy: ProfileInstaller (at install)
+    }
+    class R8Config {
+        +minifyEnabled; +shrinkResources
+        +keepRules   // reflection/serialization/DI
+        +mappingFile   // -> deobfuscation (Ch 83)
+    }
+    class Verification {
+        +CompilationMode None vs Partial   // profile delta (Ch 85)
+        +StartupTimingMetric (Ch 88); +FrameTimingMetric (Ch 90)
+        +APK size analysis
+    }
+    BaselineProfile ..> Verification
+    R8Config ..> Verification

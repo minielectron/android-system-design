@@ -1,0 +1,23 @@
+classDiagram
+    class StringResources {
+        +strings.xml (default) + values-xx/ (per language)
+        +parameterized (%1$s) + plurals + translatable flag
+    }
+    class RtlSupport {
+        +start/end (not left/right) + supportsRtl
+        +autoMirrored drawables
+    }
+    class LocaleFormatters {
+        +NumberFormat/currency (locale)
+        +DateTimeFormatter (locale) - ICU
+    }
+    class RegionPolicy {
+        +currency; +tax; +catalog; +legal (Ch 28); +units
+    }
+    class LocaleManager {
+        +per-app language (Android 13+)
+        +locale config change (Ch 44)
+    }
+    StringResources ..> RtlSupport
+    LocaleFormatters ..> RegionPolicy
+    LocaleManager ..> StringResources

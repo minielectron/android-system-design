@@ -1,0 +1,8 @@
+flowchart TD
+    ISSUE[baseline profile / R8 problem] --> WHY{category}
+    WHY -->|slow first launch| PROFILE[Baseline Profile covering launch - Ch 88]
+    WHY -->|first-scroll jank| SCROLL[profile the scroll journey - Ch 90]
+    WHY -->|not applied| VERIFY[ProfileInstaller + Macrobenchmark None vs Partial - Ch 85]
+    WHY -->|release crash| KEEP[targeted -keep for reflection/serialization]
+    WHY -->|unreadable crashes| MAPPING[retain + upload mapping.txt - Ch 83]
+    WHY -->|large APK| SHRINK[R8 + shrinkResources + minimal keeps]

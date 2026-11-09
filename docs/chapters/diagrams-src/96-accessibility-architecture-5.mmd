@@ -1,0 +1,8 @@
+flowchart TD
+    ISSUE[accessibility problem] --> WHY{category}
+    WHY -->|no announcement| DESC[content description meaningful, null decorative]
+    WHY -->|custom unusable| ROLE[role + state + actions]
+    WHY -->|navigation inefficient| GROUP[mergeDescendants + headings + traversal]
+    WHY -->|motor| TARGET[>=48dp touch targets]
+    WHY -->|low vision| SCALE[sp text + contrast + high-contrast - Ch 95]
+    WHY -->|color vision| NONCOLOR[icon/text + color, not color alone]

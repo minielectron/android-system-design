@@ -1,0 +1,6 @@
+flowchart LR
+    CHANGE[change primary token / switch brand - Ch 40] --> THEME[MaterialTheme re-resolves colorScheme]
+    THEME --> READ[components read MaterialTheme.colorScheme.primary]
+    READ --> WHOLE[WHOLE app re-themes consistently - no per-screen edits]
+    MODE[system dark mode toggles] -.-> THEME
+    DYNAMIC[wallpaper changes - dynamic color] -.-> THEME

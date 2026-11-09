@@ -1,0 +1,21 @@
+classDiagram
+    class Experiment {
+        +id; +variants; +fraction; +primaryMetric; +guardrails
+    }
+    class Assigner {
+        +variantFor(experimentId, stableId): Variant   // deterministic hash (Ch 40)
+    }
+    class ExposureLogger {
+        +logExposure(experimentId, variant)   // via analytics (Ch 82), once-per-user
+    }
+    class ExperimentConfig {
+        +fraction; +enabled; +killed   // remote config (Ch 40)
+    }
+    class Analyzer {
+        +primaryEffect(): SignificanceResult
+        +guardrailsHold(): Boolean   // crash Ch 83, latency Ch 85 -> auto-stop (Ch 41)
+    }
+    Experiment --> Assigner
+    Assigner --> ExperimentConfig
+    Experiment --> ExposureLogger
+    Analyzer ..> ExposureLogger

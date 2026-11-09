@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant VM as ViewModel (Ch 2)
+    participant Comp as Composable tree
+    participant Leaf as Leaf composable
+    participant GPU as Layout + Draw
+
+    VM->>Comp: state changes (StateFlow)
+    Comp->>Comp: recompose readers only (smart recomposition)
+    alt params STABLE and unchanged
+        Comp->>Leaf: SKIP - not re-run (fast)
+    else params UNSTABLE (raw List / fresh lambda)
+        Comp->>Leaf: RE-RUN every time (jank risk)
+    end
+    Leaf->>GPU: layout + draw within frame budget (~16ms)
+    GPU-->>VM: frame on time = smooth, or late = jank (Ch 85)

@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[large-list problem] --> WHY{category}
+    WHY -->|scroll jank| ITEM[light/stable items + async images + stable keys - Ch 90/59]
+    WHY -->|position jumps| KEY[stable key = id]
+    WHY -->|OOM/memory| MEM[downsample + recycle + paging - Ch 89/71]
+    WHY -->|over-fetch| PAGE[Paging 3 - Ch 71]
+    WHY -->|first-scroll JIT| AOT[Baseline Profile scroll path - Ch 92]

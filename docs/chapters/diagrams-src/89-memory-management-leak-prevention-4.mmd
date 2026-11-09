@@ -1,0 +1,5 @@
+flowchart LR
+    OS[OS low on memory] --> TRIM[onTrimMemory level - Ch 44]
+    TRIM --> RELEASE[release non-critical: clear caches, free UI when hidden]
+    RELEASE --> AVOID[avoids OOM - Ch 83]
+    RELEASE --> KEEP[app killed less eagerly - Ch 44]

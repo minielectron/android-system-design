@@ -1,0 +1,5 @@
+flowchart LR
+    ELEMENT{meaningful or decorative} -->|meaningful icon/image| DESC[content description: what it is/does]
+    ELEMENT -->|decorative| NULL[contentDescription = null -> TalkBack SKIPS]
+    DESC --> ANNOUNCE[announced correctly]
+    NULL --> SKIP[not announced as unlabeled]

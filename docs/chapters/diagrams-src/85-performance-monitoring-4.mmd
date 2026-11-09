@@ -1,0 +1,5 @@
+flowchart LR
+    DATA[field startup times] --> AVG[average = 1.0s - looks fine]
+    DATA --> P95[p95 = 5.0s - users suffer on slow devices]
+    P95 --> ACT[optimize the TAIL - Ch 88]
+    AVG -.->|hides the tail| MISS[regression missed]

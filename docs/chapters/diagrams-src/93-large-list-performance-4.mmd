@@ -1,0 +1,4 @@
+flowchart LR
+    CHANGE[item inserted/removed] --> POS[position key: wrong reuse + state on wrong item + scroll jump]
+    CHANGE --> KEYED[stable key id: correct identity + minimal recomposition + stable scroll]
+    POS -.->|fix| KEYED
