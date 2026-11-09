@@ -1,0 +1,8 @@
+flowchart TD
+    ISSUE[theming problem] --> WHY{category}
+    WHY -->|inconsistent| TOKENS[single-source tokens + themed components - Ch 94]
+    WHY -->|dark mode| SCHEMES[theme-level light/dark via roles]
+    WHY -->|won't adapt| ROLES[semantic roles, not literals]
+    WHY -->|dynamic contrast| A11Y[contrast check + fallback - Ch 96]
+    WHY -->|config change| CONFIG[survive + re-resolve - Ch 44]
+    WHY -->|can't re-brand| RUNTIME[runtime theming via remote config - Ch 40]

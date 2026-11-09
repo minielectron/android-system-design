@@ -1,0 +1,15 @@
+flowchart TD
+    I18N["i18n: design to BE localizable - no hardcoded strings, no left/right, flexible layouts"] --> STRINGS["externalize ALL text -> strings.xml (R.string)"]
+    STRINGS --> TRANSLATE["translate per language -> values-es/ar/de/ja (Android auto-selects + fallback)"]
+    I18N --> RTL["RTL: start/end everywhere + supportsRtl + autoMirrored -> layout mirrors"]
+    I18N --> FORMAT["locale-aware formatting: numbers/dates/currencies via ICU (never concatenate)"]
+    I18N --> PLURALS["plurals resources / ICU MessageFormat (rules vary per language)"]
+    I18N --> FLEX["flexible layouts for text expansion (+30-200%) - test pseudolocales"]
+    TRANSLATE --> L10N["localized UI: natural in each language + direction + format"]
+    RTL --> L10N
+    FORMAT --> L10N
+    PLURALS --> L10N
+    FLEX --> L10N
+    L10N --> REGION["regionalize content + behavior: currency, tax, catalog, legal (Ch 28), units"]
+    PERAPP["per-app language (Android 13+) + locale config change (Ch 44)"] -.-> L10N
+    PIPELINE["translation pipeline + fallback + pseudolocalization"] -.-> TRANSLATE

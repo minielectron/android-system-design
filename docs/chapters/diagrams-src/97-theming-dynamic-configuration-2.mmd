@@ -1,0 +1,22 @@
+classDiagram
+    class DesignTokens {
+        +colorRoles (primary/surface/error/on*)
+        +typeScale (sp - Ch 95/96)
+        +shapes; +spacing; +elevation
+    }
+    class AppTheme {
+        +MaterialTheme(colorScheme, typography, shapes)
+        +light/dark + dynamic color + fallback
+    }
+    class ThemeConfig {
+        +mode (light/dark/system)
+        +brand/seasonal (remote config, Ch 40)
+        +highContrast (Ch 96)
+    }
+    class ThemedComponents {
+        +Button/Card/Text read tokens (no hardcode)
+        +accessible by default (Ch 96)
+    }
+    DesignTokens --> AppTheme
+    ThemeConfig --> AppTheme
+    AppTheme --> ThemedComponents

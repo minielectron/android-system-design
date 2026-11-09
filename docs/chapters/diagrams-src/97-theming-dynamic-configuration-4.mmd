@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant OS as System (config change)
+    participant Act as Activity (Ch 44)
+    participant Theme as MaterialTheme
+    participant VM as ViewModel
+
+    OS->>Act: dark mode / density / locale change (config change, Ch 44)
+    Act->>Act: recreate activity
+    Act->>VM: state survives (ViewModel/rememberSaveable, Ch 44)
+    Act->>Theme: re-resolve theme from NEW config (dark scheme / new density / locale)
+    Theme-->>Act: components recompose with new tokens - consistent, state intact

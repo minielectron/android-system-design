@@ -1,0 +1,12 @@
+flowchart TD
+    TOKENS["design tokens (single source of truth): color roles, typography, shape, spacing, elevation"] --> THEME["MaterialTheme - exposes colorScheme/typography/shapes"]
+    THEME --> COMPONENTS["every component reads tokens (MaterialTheme.colorScheme.primary) - NO hardcoded styles"]
+    COMPONENTS --> CONSISTENT["consistent UI - change a token re-themes whole app"]
+    THEME --> MODE{light or dark}
+    MODE -->|isSystemInDarkTheme| DARK["dark scheme"]
+    MODE -->|light| LIGHT["light scheme"]
+    DYNAMIC["dynamic color (Material You, Android 12+) + static branded fallback"] -.-> THEME
+    A11Y["accessibility: WCAG contrast + high-contrast + sp font scale (Ch 95/96)"] -.-> TOKENS
+    CONFIG["config changes: density/orientation/locale re-resolve theme + survive (Ch 44)"] -.-> THEME
+    RUNTIME["runtime theming: brand/seasonal/experiment via remote config (Ch 40/86)"] -.-> THEME
+    DSMODULE[":core:designsystem module + themed components (Ch 94)"] -.-> COMPONENTS

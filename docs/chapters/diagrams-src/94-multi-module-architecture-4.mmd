@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant Chk as :feature:checkout
+    participant Core as :core:data / :core:model (contract)
+    participant App as :app (navigation host)
+    participant Cat as :feature:catalog
+
+    Chk->>Core: use shared contract (model/interface) - NOT catalog internals
+    Chk->>App: navigate to product route (Ch 97) - app wired the graph
+    App->>Cat: resolve route -> catalog screen
+    Note over Chk,Cat: features never import each other - app composes them, core shares contracts

@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[modularization problem] --> WHY{category}
+    WHY -->|slow builds| MODULARIZE[modularize + incremental/parallel/cache]
+    WHY -->|cycle| DAG[break cycle - one-way DAG app->feature->core->common]
+    WHY -->|feature coupling| CONTRACT[contracts/navigation/api-impl - Ch 97]
+    WHY -->|recompile cascade| IMPL[api -> implementation]
+    WHY -->|config drift| CONVENTION[convention plugins - build-logic]

@@ -1,0 +1,14 @@
+sequenceDiagram
+    actor User as TalkBack user
+    participant TB as TalkBack
+    participant Sem as Semantics tree
+    participant UI as App UI
+
+    UI->>Sem: build semantics (descriptions, roles, state, headings, grouping)
+    User->>TB: explore / swipe to next element
+    TB->>Sem: query focused node
+    Sem-->>TB: "Add to cart, button" or "Rating, 4 of 5, slider"
+    TB-->>User: announces label + role + state
+    User->>TB: activate (double-tap) / adjust (Switch Access)
+    TB->>UI: perform action (click/toggle) via exposed accessibility action
+    Note over UI: dynamic change -> liveRegion announces "Added to cart" without navigating

@@ -121,6 +121,10 @@ Senior SDE / SDE-III / Staff / Android-Lead system-design interviews.
 | 91 | Battery & Network Efficiency | [`docs/chapters/91-battery-network-efficiency.md`](./docs/chapters/91-battery-network-efficiency.md) | ✅ Draft |
 | 92 | Baseline Profiles & R8 Optimization | [`docs/chapters/92-baseline-profiles-r8.md`](./docs/chapters/92-baseline-profiles-r8.md) | ✅ Draft |
 | 93 | Large List Performance | [`docs/chapters/93-large-list-performance.md`](./docs/chapters/93-large-list-performance.md) | ✅ Draft |
+| 94 | Multi-Module Architecture at Enterprise Scale | [`docs/chapters/94-multi-module-architecture.md`](./docs/chapters/94-multi-module-architecture.md) | ✅ Draft |
+| 95 | Localization, RTL & Regionalization | [`docs/chapters/95-localization-rtl-regionalization.md`](./docs/chapters/95-localization-rtl-regionalization.md) | ✅ Draft |
+| 96 | Accessibility Architecture | [`docs/chapters/96-accessibility-architecture.md`](./docs/chapters/96-accessibility-architecture.md) | ✅ Draft |
+| 97 | Theming & Dynamic Configuration | [`docs/chapters/97-theming-dynamic-configuration.md`](./docs/chapters/97-theming-dynamic-configuration.md) | ✅ Draft |
 
 **Parts I (Ch 1–8), II (Ch 9–18), III (Ch 19–28), IV — Offline-First &
 Synchronization (Ch 29–37), V — Shared & Global State (Ch 38–43), VI —
@@ -128,7 +132,7 @@ Lifecycle, Background & Platform (Ch 44–55), VII — Media & Files
 (Ch 56–62), VIII — Real-Time & Connectivity (Ch 63–70), IX — Feature
 Architectures (Ch 71–81), and X — Performance, Observability & Quality
 (Ch 82–93)** are complete.
-**Part XI — Reach, Scale & Platform Breadth (Ch 94–100)** is next.
+**Part XI — Reach, Scale & Platform Breadth (Ch 94–100)** is in progress (Ch 94–97 done; Ch 98–100 — TV/STB, Wear, and the StreamCart capstone — remaining).
 
 > Chapters are authored one topic at a time (or in batches on request). The
 > chapter numbering follows the blueprint's canonical order (§5); authoring order

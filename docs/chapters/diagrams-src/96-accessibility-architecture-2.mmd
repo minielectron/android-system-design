@@ -1,0 +1,22 @@
+classDiagram
+    class SemanticsNode {
+        +contentDescription (null if decorative)
+        +role; +stateDescription; +actions
+        +heading(); +mergeDescendants; +traversalIndex
+    }
+    class TouchTarget {
+        +minimum >=48dp (motor)
+    }
+    class ContrastPolicy {
+        +WCAG 4.5:1; +high-contrast; +non-color-only
+    }
+    class ScalableText {
+        +sp units - scales with font setting (Ch 95)
+        +layout survives large scale
+    }
+    class MediaA11y {
+        +captions (Ch 56); +reduced motion; +liveRegion
+    }
+    SemanticsNode ..> TouchTarget
+    SemanticsNode ..> MediaA11y
+    ContrastPolicy ..> ScalableText

@@ -1,0 +1,18 @@
+flowchart TD
+    UI["app UI (standard + custom components)"] --> SEM["semantics tree (assistive services consume)"]
+    SEM --> DESC["content descriptions: meaningful elements (null for decorative)"]
+    SEM --> ROLE["roles + state + actions on custom UI (button/checkbox/slider, checked/selected)"]
+    SEM --> STRUCT["headings + grouping/merging + traversal order"]
+    DESC --> TB["TalkBack announces correctly"]
+    ROLE --> TB
+    STRUCT --> TB
+    UI --> TARGETS["touch targets >=48dp (motor)"]
+    UI --> CONTRAST["contrast WCAG 4.5:1 + high-contrast + non-color-only (vision)"]
+    UI --> SCALE["scalable text (sp) - survives large fonts (Ch 95)"]
+    UI --> MEDIA["captions (Ch 56) + reduced motion + live-region announcements"]
+    TB --> USABLE["usable by everyone"]
+    TARGETS --> USABLE
+    CONTRAST --> USABLE
+    SCALE --> USABLE
+    MEDIA --> USABLE
+    TEST["test: TalkBack + large fonts + Switch Access + Accessibility Scanner + automated"] -.-> USABLE

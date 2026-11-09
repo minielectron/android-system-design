@@ -1,0 +1,24 @@
+classDiagram
+    class AppModule {
+        +composition root
+        +NavHost wires feature routes
+        +HiltAndroidApp aggregates DI (Ch 46)
+    }
+    class FeatureModule {
+        +UI + ViewModels (one flow)
+        +depends on :core only - NOT other features
+        +exposes nav route / contract
+    }
+    class CoreModule {
+        +shared capability (network/db/designsystem)
+        +@Module @InstallIn provides bindings (Ch 46)
+        +depends downward only
+    }
+    class ConventionPlugin {
+        +build-logic: android.feature / android.library
+        +centralizes Kotlin/Compose/test config
+    }
+    AppModule --> FeatureModule
+    FeatureModule --> CoreModule
+    ConventionPlugin ..> FeatureModule
+    ConventionPlugin ..> CoreModule

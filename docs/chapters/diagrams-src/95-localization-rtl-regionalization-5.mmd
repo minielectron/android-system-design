@@ -1,0 +1,9 @@
+flowchart TD
+    ISSUE[localization problem] --> WHY{category}
+    WHY -->|untranslated| EXT[externalize + translate values-xx]
+    WHY -->|broken RTL| RTL[start/end + supportsRtl + autoMirrored]
+    WHY -->|wrong format| ICU[locale-aware ICU formatters]
+    WHY -->|broken plurals| PLURAL[plurals / MessageFormat]
+    WHY -->|truncation| FLEX[flexible layouts + pseudolocale]
+    WHY -->|wrong word order| PARAM[parameterized strings %1$s]
+    WHY -->|wrong region behavior| REGION[RegionPolicy currency/tax/legal - Ch 28]
