@@ -1,0 +1,7 @@
+flowchart TD
+    FAILURE[system failure] --> WHY{domain}
+    WHY -->|money path| EXACTLY[idempotency + outbox -> exactly-once - Ch 75/29]
+    WHY -->|offline| QUEUE[outbox queue -> sync on reconnect - Ch 29]
+    WHY -->|conflict| RESOLVE[SSOT authoritative + conflict resolution - Ch 29]
+    WHY -->|crash/perf| OPERATE[vitals + rollback + baseline profiles - Ch 83/85/41/92]
+    WHY -->|real-time| RECONNECT[reconnect/backoff + FCM fallback - Ch 63/50]

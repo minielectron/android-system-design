@@ -1,0 +1,24 @@
+sequenceDiagram
+    actor User
+    participant UI as Compose UI (Ch 2)
+    participant VM as ViewModel (UDF, Ch 2)
+    participant Repo as Repository/SSOT (Ch 1)
+    participant Room as Room (Ch 5/29)
+    participant Sync as Sync engine (outbox+idempotency, Ch 29/75)
+    participant Backend
+
+    User->>UI: browse feed (Ch 71) - paged, async images (Ch 59/93)
+    UI->>VM: observe state (StateFlow)
+    VM->>Repo: products (Flow)
+    Repo->>Room: query (SSOT - instant, offline, Ch 29)
+    Room-->>UI: products -> render (smooth, Ch 90/93)
+    User->>UI: add to cart + checkout (Ch 73/75)
+    UI->>VM: PlaceOrder event
+    VM->>Repo: placeOrder (optimistic UI update, Ch 71)
+    Repo->>Room: write order + ENQUEUE outbox (idempotency key, Ch 29/75)
+    Repo-->>UI: optimistic "order placed" (instant)
+    Sync->>Backend: POST order with idempotency key (exactly-once, Ch 75) - PCI payment (Ch 76)
+    Backend-->>Sync: confirmed (retry-safe, dedupe on key)
+    Sync->>Room: reconcile confirmed state (Ch 29)
+    Backend-->>UI: real-time order status (WebSocket/FCM, Ch 63/50)
+    Note over UI,Backend: offline - order queued then syncs on reconnect Ch 29. Traced end-to-end Ch 84, errors classified Ch 87

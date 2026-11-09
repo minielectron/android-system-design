@@ -1,0 +1,12 @@
+flowchart TD
+    WATCH["Wear OS watch (tiny screen/battery/compute)"] --> SURFACES["glanceable surfaces: tiles + complications + notifications + short flows"]
+    SURFACES --> SYNC["cross-device state sync (treat as sync, Ch 29)"]
+    SYNC --> DATALAYER["Wear Data Layer: DataClient (replicate DataItems) + MessageClient + CapabilityClient"]
+    SYNC --> BACKEND["shared backend (source of truth, Ch 29) - esp. standalone"]
+    DATALAYER --> PHONE["phone (full app + sync hub when bridged)"]
+    BACKEND --> PHONE
+    CONN{paired or standalone} -->|paired/bridged| VIAPHONE["connectivity via phone, lean on phone auth/network"]
+    CONN -->|standalone Wi-Fi/LTE| DIRECT["talk to backend directly, own auth/network (Ch 20/67)"]
+    DISCONN["disconnection -> reconcile on reconnect, conflict resolution (Ch 29)"] -.-> SYNC
+    CONSTRAINTS["severe battery/size/compute: batch/defer/push-over-poll, minimal compute, small app (Ch 91)"] -.-> SURFACES
+    NOTIF["notifications: phone bridges + watch-specific, avoid duplicates, cross-device dismiss (Ch 50)"] -.-> SURFACES

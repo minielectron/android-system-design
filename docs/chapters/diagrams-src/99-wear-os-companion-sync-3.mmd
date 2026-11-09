@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant Backend as Backend (source of truth, Ch 29)
+    participant Phone as Phone app
+    participant DL as Wear Data Layer
+    participant Watch as Watch (tile/complication)
+
+    Backend-->>Phone: order status changed (push/sync, Ch 50/29)
+    Phone->>DL: putDataItem(order_status) - replicate to watch node (DataClient)
+    DL-->>Watch: DataItem synced (when connected)
+    Watch->>Watch: update TILE + COMPLICATION (glanceable) - efficient refresh (Ch 91)
+    Note over Watch: if DISCONNECTED - syncs on reconnect, conflict resolved - Ch 29
+    Note over Watch: standalone - watch syncs from BACKEND directly - own auth Ch 20

@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[Wear companion problem] --> WHY{category}
+    WHY -->|stale/diverged| SYNC[versioned Data Layer + backend reconcile - Ch 29]
+    WHY -->|battery| EFFICIENCY[batch/defer/push-over-poll + efficient tiles - Ch 91]
+    WHY -->|duplicate notifications| NOTIF[bridge once + cross-device dismiss - Ch 50]
+    WHY -->|standalone offline| STANDALONE[CapabilityClient + backend path + own auth - Ch 20/67]
+    WHY -->|not glanceable| GLANCE[tiles/complications + short flows, not a phone port]

@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant Remote as D-pad remote
+    participant Focus as Focus-state model
+    participant UI as 10-foot UI (rows/cards)
+    participant Player as Media3 player (Ch 56/58)
+
+    User->>Remote: press RIGHT
+    Remote->>Focus: move focus spatially (next focusable right)
+    Focus->>UI: update focus highlight (scale/glow) - visible at 10 feet
+    User->>Remote: press SELECT
+    Remote->>UI: activate focused card
+    UI->>Player: play content (DRM license if premium, Ch 58)
+    Player-->>UI: playing - leanback transport overlay (D-pad/media keys)
+    User->>Remote: press PLAY/PAUSE (media key)
+    Remote->>Player: transport control
+    Note over Focus,UI: every element reachable, clear initial focus, no focus traps
