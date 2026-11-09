@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant Gen as Baseline Profile generator (Macrobenchmark)
+    participant Build as Build (R8 + packaging)
+    participant Play as Play / install
+    participant ART as ART (device)
+
+    Gen->>Gen: exercise launch + feed scroll + key screens -> record classes/methods
+    Gen->>Build: baseline-prof.txt (profile rules)
+    Build->>Build: R8 shrink/optimize/obfuscate + shrinkResources -> APK + mapping.txt
+    Build->>Play: AAB with baseline profile + ProfileInstaller
+    Play->>ART: install -> ART AOT-compiles the profiled startup + journey code
+    ART-->>Play: first launch is FAST (Ch 88), first scroll SMOOTH (Ch 90) - not JIT-cold
+    Note over Build: upload mapping.txt -> crash deobfuscation - Ch 83

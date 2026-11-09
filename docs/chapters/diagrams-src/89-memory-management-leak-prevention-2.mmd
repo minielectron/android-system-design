@@ -1,0 +1,23 @@
+classDiagram
+    class LifecycleScopedRef {
+        +viewModelScope / lifecycleScope   // cancels with lifecycle (Ch 3/44)
+        +unregister listeners on destroy (Ch 44)
+    }
+    class SafeContextHolder {
+        +applicationContext   // NOT Activity/View (Ch 46)
+        +WeakReference~Host~   // unavoidable back-ref
+    }
+    class BoundedCache {
+        +LruCache(maxSize)   // size/count eviction
+        +clear() on trim (Ch 44)
+    }
+    class MemoryPressureHandler {
+        +onTrimMemory(level)   // release non-critical (Ch 44)
+    }
+    class LeakDetection {
+        +LeakCanary (dev reference chain)
+        +MemoryProfiler (heap dump); +fieldOOM (Ch 85/83)
+    }
+    LifecycleScopedRef ..> SafeContextHolder
+    BoundedCache ..> MemoryPressureHandler
+    LeakDetection ..> LifecycleScopedRef

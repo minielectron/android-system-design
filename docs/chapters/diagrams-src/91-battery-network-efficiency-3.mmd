@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant App
+    participant WM as WorkManager (Ch 48)
+    participant OS as Doze/App Standby (Ch 47)
+    participant Net as Network (Ch 68)
+
+    App->>App: need background sync (NOT time-critical)
+    App->>WM: enqueue with constraints - UNMETERED + batteryNotLow (Ch 48)
+    WM->>OS: defer to Doze maintenance window (batched with other work, Ch 47)
+    OS-->>WM: maintenance window opens (device awake briefly)
+    WM->>Net: check metered/Data Saver (Ch 68) - run only if unmetered
+    Net->>Net: delta sync + gzip + HTTP cache (Ch 29/67) - minimal bytes
+    Net-->>App: synced in ONE batched window - radio tail paid once
+    Note over App: time-critical updates come via FCM push Ch 50, not polling

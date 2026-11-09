@@ -1,0 +1,8 @@
+flowchart TD
+    DRAIN[battery/data problem] --> WHY{cause}
+    WHY -->|polling/wakeups| PUSH[push over poll + deferrable work - Ch 50/48]
+    WHY -->|wakelock| WM[WorkManager, no manual wakelocks - Ch 48]
+    WHY -->|fighting Doze| COOP[cooperate: deferrable + constraints - Ch 47]
+    WHY -->|chatty/large transfers| BATCH[batch/coalesce + delta/gzip/cache - Ch 82/29/67]
+    WHY -->|metered data| GATE[gate on unmetered + adapt - Ch 68/59]
+    WHY -->|location| LOC[lowest accuracy, batched, stop - Ch 65]

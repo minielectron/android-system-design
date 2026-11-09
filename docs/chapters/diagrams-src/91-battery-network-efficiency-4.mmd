@@ -1,0 +1,4 @@
+flowchart LR
+    CHATTY[many small requests over time] -->|each wakes radio + pays tail| DRAIN[high battery/data drain]
+    BATCHED[coalesce into ONE window] -->|wake + tail paid once| EFFICIENT[low drain]
+    DRAIN -.->|fix| BATCHED

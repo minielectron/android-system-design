@@ -1,0 +1,13 @@
+flowchart TD
+    WORK["background work / updates needed"] --> CRITICAL{time-critical and user-facing}
+    CRITICAL -->|yes - alarm/nav/playback| EXACT["exact alarm / typed FGS - sparingly (Ch 47/49)"]
+    CRITICAL -->|no - most work| DEFER["WorkManager + constraints (UNMETERED, charging, idle) - Doze-aware (Ch 47/48)"]
+    UPDATES["server-driven updates"] --> PUSH["push (FCM) over poll - radio wakes only on real news (Ch 50)"]
+    DEFER --> BATCH["batch + coalesce requests - amortize radio tail (Ch 82)"]
+    PUSH --> BATCH
+    BATCH --> METERED{metered or Data Saver}
+    METERED -->|yes| GATE["gate heavy transfers on Wi-Fi, adapt quality (Ch 68/59)"]
+    METERED -->|no - unmetered| TRANSFER["efficient transfer: delta sync + gzip + HTTP cache + backoff (Ch 29/67)"]
+    GATE --> TRANSFER
+    TRANSFER --> CITIZEN["good citizen: no excessive wakeups/wakelocks/background data"]
+    MEASURE["measure: Battery Historian + Android vitals + Network Inspector (Ch 85)"] -.-> CITIZEN

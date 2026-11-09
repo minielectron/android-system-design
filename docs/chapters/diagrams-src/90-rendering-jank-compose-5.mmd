@@ -1,0 +1,8 @@
+flowchart TD
+    JANK[jank / dropped frames] --> WHY{where is the time}
+    WHY -->|too much recomposition| STABLE[stable params + narrow reads - skippable]
+    WHY -->|expensive composition| HOIST[hoist off-main + remember - Ch 3]
+    WHY -->|GC pauses| ALLOC[no per-frame allocations - Ch 89]
+    WHY -->|list scroll| LIST[stable keys + light items + async images - Ch 93/59]
+    WHY -->|first run JIT| AOT[Baseline Profiles + R8 - Ch 92]
+    WHY -->|measured wrong| MEASURE[Layout Inspector + JankStats + Macrobenchmark - Ch 85/92]

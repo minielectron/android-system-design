@@ -1,0 +1,4 @@
+flowchart LR
+    BODY[sort/filter/format IN composable body] -->|runs EVERY recomposition| JANK[blows frame budget - jank]
+    HOIST[compute in ViewModel off-main - Ch 3] -->|stable state + remember| OK[cheap composition - smooth]
+    JANK -.->|fix| HOIST

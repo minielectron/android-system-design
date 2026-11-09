@@ -1,0 +1,11 @@
+flowchart TD
+    SOURCE["app code (DEX)"] --> R8["R8 (release): shrink + optimize + obfuscate + shrinkResources"]
+    R8 --> SMALLER["smaller/faster APK + mapping.txt"]
+    SMALLER --> MAPPING["retain + upload mapping.txt -> crash deobfuscation - Ch 83"]
+    GEN["Baseline Profile Gradle plugin + Macrobenchmark generator - exercise launch + journeys"] --> PROFILE["Baseline Profile: startup + critical-path classes/methods"]
+    PROFILE --> PACKAGE["package via ProfileInstaller (in AAB/APK)"]
+    PACKAGE --> INSTALL["at install: ART AOT-compiles the profiled code"]
+    INSTALL --> FAST["fast first launch (Ch 88) + smooth first scroll (Ch 90)"]
+    R8 --> INSTALL
+    VERIFY["verify: Macrobenchmark None vs Partial + APK Analyzer + field vitals (Ch 85)"] -.-> FAST
+    VERIFY -.-> SMALLER

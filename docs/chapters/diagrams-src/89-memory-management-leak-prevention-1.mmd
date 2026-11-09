@@ -1,0 +1,12 @@
+flowchart TD
+    HEAP["managed heap + GC + per-app limit"] --> REACH{object reachable from GC root}
+    REACH -->|should be gone but reachable| LEAK["LEAK - held by static/singleton, coroutine, listener, inner class"]
+    REACH -->|too much held at once| BLOAT["BLOAT - bitmaps (Ch 59), unbounded caches"]
+    LEAK --> SCOPE["FIX: scope to lifecycle (Ch 44) - cancel coroutine (Ch 3), unregister listener"]
+    LEAK --> CTX["FIX: applicationContext / WeakReference - never hold Activity/View (Ch 46)"]
+    BLOAT --> BOUND["FIX: bound caches (LruCache) + downsample images (Ch 59)"]
+    BLOAT --> TRIM["FIX: onTrimMemory -> release non-critical memory (Ch 44)"]
+    TRIM --> SURVIVE["avoids OOM (Ch 83) + killed less eagerly (Ch 44)"]
+    ALLOC["avoid per-frame allocations -> no GC jank (Ch 90)"] -.-> HEAP
+    DETECT["detect: LeakCanary (dev) + Memory Profiler + field OOM (Ch 85/83)"] -.-> LEAK
+    DETECT -.-> BLOAT

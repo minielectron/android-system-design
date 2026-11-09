@@ -1,0 +1,14 @@
+flowchart TD
+    FRAME["frame budget ~16ms/60Hz (less at 90/120Hz) - miss = jank, >700ms = frozen (Ch 85)"] --> PHASES["compose phases: composition -> layout -> draw"]
+    PHASES --> RECOMP{recomposing too much or too expensive}
+    RECOMP -->|too much| STABLE["FIX: stable/immutable params -> skippable (ImmutableList, @Immutable, remembered lambda)"]
+    RECOMP -->|too much| NARROW["FIX: read state low and late (leaf, lambda defer, derivedStateOf)"]
+    RECOMP -->|too expensive| HOIST["FIX: hoist work out of composition, off-main (ViewModel/IO, Ch 3), remember"]
+    RECOMP -->|GC jank| ALLOC["FIX: no per-frame allocations (Ch 89)"]
+    STABLE --> SMOOTH["every frame within budget = smooth"]
+    NARROW --> SMOOTH
+    HOIST --> SMOOTH
+    ALLOC --> SMOOTH
+    LIST["lists: stable keys + light items (Ch 93)"] -.-> RECOMP
+    AOT["Baseline Profiles + R8 - AOT render path (Ch 92)"] -.-> FRAME
+    MEASURE["measure: Layout Inspector counts + compiler stability + JankStats field (Ch 85) + Macrobenchmark frames (Ch 92)"] -.-> RECOMP

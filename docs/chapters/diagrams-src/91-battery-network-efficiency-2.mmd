@@ -1,0 +1,24 @@
+classDiagram
+    class WorkScheduler {
+        +enqueue(work, constraints)   // UNMETERED/charging/idle - Doze-aware (Ch 48)
+        +prefer deferrable over exact (Ch 47)
+    }
+    class PushVsPoll {
+        +FCM push (Ch 50)   // radio wakes only on real news
+        +fallback poll: long interval + backoff
+    }
+    class RequestCoalescer {
+        +batch uploads (analytics, Ch 82)
+        +coalesce syncs; minimize payload
+    }
+    class NetworkPolicy {
+        +isMetered / isDataSaver / type (Ch 68)
+        +gate heavy work on unmetered; adapt quality (Ch 59)
+    }
+    class EfficientTransfer {
+        +deltaSync (Ch 29); +gzip; +httpCache (Ch 67); +backoffJitter
+    }
+    WorkScheduler --> NetworkPolicy
+    PushVsPoll --> RequestCoalescer
+    RequestCoalescer --> EfficientTransfer
+    NetworkPolicy --> EfficientTransfer

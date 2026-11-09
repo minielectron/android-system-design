@@ -1,0 +1,7 @@
+flowchart TD
+    ISSUE[memory problem] --> WHY{category}
+    WHY -->|leak| SCOPE[lifecycle-scope + unregister + applicationContext/WeakReference - Ch 44/46]
+    WHY -->|OOM| BOUND[bound caches + downsample bitmaps - Ch 59]
+    WHY -->|GC jank| HOIST[hoist per-frame allocations - Ch 90]
+    WHY -->|killed early| TRIM[honor onTrimMemory - Ch 44]
+    WHY -->|found late| DETECT[LeakCanary dev + field OOM - Ch 85/83]
