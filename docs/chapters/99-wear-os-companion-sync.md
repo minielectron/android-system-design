@@ -545,6 +545,7 @@ bridged+standalone sync, and disconnection reconcile is **mandatory**.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Wear UX principle?* Glanceable (seconds) — not a shrunk phone app.
 2. *Primary surfaces?* Tiles, complications, notifications.
 3. *Tile?* Swipeable glanceable screen + quick action.
@@ -552,6 +553,7 @@ bridged+standalone sync, and disconnection reconcile is **mandatory**.
 5. *Core technical problem?* Cross-device state sync.
 
 **Sync**
+
 6. *Sync mechanisms?* Wear Data Layer + shared backend (Ch 29).
 7. *DataClient?* Replicates DataItems between nodes.
 8. *MessageClient?* One-off messages (needs connectivity).
@@ -561,23 +563,27 @@ bridged+standalone sync, and disconnection reconcile is **mandatory**.
 12. *Disconnection?* Reconcile on reconnect (Ch 29).
 
 **Connectivity**
+
 13. *Paired/bridged?* Connectivity via phone; lean on it.
 14. *Standalone?* Own Wi-Fi/LTE; backend directly; own auth (Ch 20).
 15. *Choose path?* CapabilityClient reachability.
 16. *Transition?* Handle phone going out of range.
 
 **Notifications**
+
 17. *Bridged?* Phone notifications auto-appear on watch.
 18. *Watch-specific?* Custom actions/layouts.
 19. *Duplicates?* Bridge once; cross-device dismiss (Ch 50).
 
 **Constraints**
+
 20. *Battery?* Tiny — strictest efficiency (Ch 91).
 21. *Efficiency levers?* Batch/defer/push-over-poll, efficient tiles (Ch 91).
 22. *Heavy work?* On phone/backend, not watch.
 23. *App size?* Small (constrained storage).
 
 **UX/production**
+
 24. *Glanceable UX?* Rotary, large targets, minimal text, glance+action.
 25. *What's on the watch vs phone?* Glance+quick action vs full app/source-of-truth.
 26. *Key metric?* Battery + sync health by watch model.
@@ -653,13 +659,18 @@ Ch 91); assuming the phone is always present (breaks standalone); naive last-wri
 Ch 29); duplicate notifications; putting sensitive/large data on the Data Layer (Ch 28); heavy work/
 source-of-truth on the watch; always-running tiles/compute; not testing battery on a real watch.
 
-**Checklist:** ☐ glanceable surfaces (tiles/complications/notifications + short flows) ☐ cross-device
-sync as sync (Data Layer small + backend authoritative, versioned/reconciled, Ch 29) ☐ paired vs
-standalone (CapabilityClient; own auth for standalone, Ch 20) ☐ disconnection reconcile + conflict
-resolution (Ch 29) ☐ notification coordination (bridge once + cross-device dismiss, Ch 50) ☐ severe
-efficiency (batch/defer/push-over-poll, efficient tiles, small app, Ch 91) ☐ minimal/non-sensitive
-synced data (Ch 28) ☐ heavy work + source-of-truth off the watch ☐ glanceable UX (rotary, large
-targets, minimal text) ☐ test battery + sync on a real watch.
+**Checklist:**
+
+- [ ] glanceable surfaces (tiles/complications/notifications + short flows)
+- [ ] cross-device sync as sync (Data Layer small + backend authoritative, versioned/reconciled, Ch 29)
+- [ ] paired vs standalone (CapabilityClient; own auth for standalone, Ch 20)
+- [ ] disconnection reconcile + conflict resolution (Ch 29)
+- [ ] notification coordination (bridge once + cross-device dismiss, Ch 50)
+- [ ] severe efficiency (batch/defer/push-over-poll, efficient tiles, small app, Ch 91)
+- [ ] minimal/non-sensitive synced data (Ch 28)
+- [ ] heavy work + source-of-truth off the watch
+- [ ] glanceable UX (rotary, large targets, minimal text)
+- [ ] test battery + sync on a real watch.
 
 **Key APIs:** Wear Data Layer (`DataClient.putDataItem`/`PutDataMapRequest`, `MessageClient`,
 `CapabilityClient.getCapability`), `WearableListenerService.onDataChanged`, Tiles (`TileService`/

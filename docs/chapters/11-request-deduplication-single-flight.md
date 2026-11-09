@@ -419,6 +419,7 @@ stress (100 coroutines, assert 1 call).
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What is single-flight?* Coalescing concurrent identical requests into one
    in-flight call whose result is shared.
 2. *Single-flight vs cache?* Single-flight de-dupes *concurrent* work; cache
@@ -431,6 +432,7 @@ stress (100 coroutines, assert 1 call).
    callers `await`.
 
 **Architecture**
+
 6. *Where does the shared work run?* A coordinator-owned `SupervisorJob` scope,
    not any caller's scope.
 7. *Why?* So one caller's cancellation doesn't cancel the shared work for others.
@@ -439,6 +441,7 @@ stress (100 coroutines, assert 1 call).
 9. *Is it a singleton?* Yes — shared across repositories.
 
 **Kotlin/concurrency**
+
 10. *Why must check-then-insert be atomic?* Otherwise two coroutines both see "no
     entry" and both start work (mutex guards it).
 11. *How is the entry cleaned up?* `finally { remove(key) }` — on success *and*
@@ -449,27 +452,32 @@ stress (100 coroutines, assert 1 call).
     caller's `await` throws.
 
 **Correctness**
+
 14. *Does single-flight cache results?* No — non-overlapping calls each fetch.
 15. *Can it dedupe a double-tapped mutation?* Concurrent taps yes; retries across
     time need an idempotency key (Ch 15).
 16. *Stale in-flight entry risk?* Prevented by `finally` cleanup.
 
 **Integration**
+
 17. *How does it relate to token refresh?* Refresh is a specialized single-flight
     (one refresh for many 401s, Ch 19).
 18. *How does it combine with a cache?* Cache check → miss → single-flight fetch →
     populate cache (anti-stampede).
 
 **Security**
+
 19. *Cross-account leakage?* Include account id in the key; clear on switch.
 20. *Keys and secrets?* Don't key on tokens; keys may be logged.
 
 **Performance**
+
 21. *Main benefit?* Fewer backend calls/parses/radio activations.
 22. *Overhead?* A map op under a short mutex — negligible.
 23. *How measure effectiveness?* Coalesce ratio; backend calls vs call sites.
 
 **Testing**
+
 24. *How test one-execution?* Gate the block; launch concurrent callers; assert
     one invocation.
 25. *How test caller-cancellation isolation?* Cancel one; assert the other still
@@ -529,9 +537,16 @@ caller's scope (cancellation kills shared work); not removing the entry (stale
 cache / wedge); treating single-flight as a cache or as idempotency; keys missing
 account id.
 
-**Checklist:** ☐ mutex-guarded map ☐ coordinator SupervisorJob scope ☐ shared
-`Deferred.await` ☐ `finally` cleanup ☐ account id in key ☐ per-call timeout
-☐ combine with cache for stampede ☐ no PII in keys/logs.
+**Checklist:**
+
+- [ ] mutex-guarded map
+- [ ] coordinator SupervisorJob scope
+- [ ] shared `Deferred.await`
+- [ ] `finally` cleanup
+- [ ] account id in key
+- [ ] per-call timeout
+- [ ] combine with cache for stampede
+- [ ] no PII in keys/logs.
 
 **Key APIs:** `CoroutineScope(SupervisorJob())`, `async`/`await`, `Mutex.withLock`,
 `Deferred`, `CompletableDeferred` (tests), `TestScope`/`backgroundScope`,

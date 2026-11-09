@@ -505,6 +505,7 @@ for scheduling.
 > 40+ questions.
 
 **Fundamentals**
+
 1. *What is WorkManager for?* Deferrable, guaranteed background work that survives
    process death/reboot and respects constraints.
 2. *When NOT to use it?* Immediate UI work (coroutine), exact-time triggers
@@ -517,6 +518,7 @@ for scheduling.
    `ListenableWorker` (callback).
 
 **Constraints/scheduling**
+
 6. *Constraints?* Network type, charging, battery-not-low, storage-not-low, idle —
    defer until met.
 7. *Backoff?* `Result.retry()` + exponential/linear backoff (Ch 2).
@@ -528,6 +530,7 @@ for scheduling.
 12. *Chaining?* `beginWith().then()`; `WorkContinuation`.
 
 **Correctness/reliability**
+
 13. *Why idempotent?* At-least-once execution → retries/re-runs must not duplicate
     (Ch 15).
 14. *Survives reboot?* Yes — persisted + rescheduled.
@@ -537,29 +540,34 @@ for scheduling.
 17. *`runAttemptCount`?* Cap it → failure (no infinite retry).
 
 **DI/observing**
+
 18. *Inject deps into a worker?* `@HiltWorker` + `@AssistedInject` +
     `HiltWorkerFactory` + `Configuration.Provider` (Ch 5).
 19. *Observe progress/result?* `getWorkInfo*Flow`; `setProgress`.
 20. *Pass data?* `inputData`/`outputData` (small, persisted — no secrets).
 
 **Doze/battery (Ch 47)**
+
 21. *Doze interaction?* Deferrable work runs in maintenance windows; WorkManager
     handles it.
 22. *Battery efficiency?* Constraints + batching + reasonable cadence; not polling.
 23. *Push-triggered sync?* FCM (Ch 49) → enqueue WorkManager.
 
 **Use-case routing**
+
 24. *Sync?* WorkManager (deferrable, constrained, idempotent).
 25. *Large upload/download?* WorkManager foreground (Ch 17/18).
 26. *Exact reminder?* `AlarmManager` (Ch 48), not WorkManager.
 27. *Immediate button action?* Coroutine.
 
 **Testing**
+
 28. *How test a worker?* `TestListenableWorkerBuilder.doWork()`; assert Result.
 29. *How test scheduling/constraints?* `WorkManagerTestInitHelper` + `TestDriver`.
 30. *How test uniqueness?* Enqueue twice KEEP → one job.
 
 **Production debugging**
+
 31. *Work never runs?* Constraints unmet / cancelled / missing
     `Configuration.Provider`.
 32. *Work runs repeatedly?* Not idempotent / wrong unique policy.
@@ -568,6 +576,7 @@ for scheduling.
 35. *How inspect?* Background Task Inspector.
 
 **Design/scale**
+
 36. *Coalesce sync storms on reconnect?* Unique work + backoff + batching.
 37. *Remote-tune cadence?* Remote config (Ch 41).
 38. *Prioritize among workers?* Expedited + scheduling policy (Ch 14).
@@ -632,11 +641,19 @@ work (duplicates on retry); no constraints (battery/data waste); overlapping job
 work; missing `Configuration.Provider` (Hilt worker won't inject); long work without
 foreground.
 
-**Checklist:** ☐ WorkManager for deferrable/guaranteed ☐ constraints
-(network/charging/battery) ☐ backoff + retry (transient only) ☐ `enqueueUniqueWork`
-☐ idempotent work (Ch 15) ☐ `@HiltWorker` + `Configuration.Provider` ☐ foreground
-for long work ☐ expedited for time-sensitive ☐ observe `WorkInfo` ☐ no secrets in
-`inputData` ☐ cancel user-scoped work on logout.
+**Checklist:**
+
+- [ ] WorkManager for deferrable/guaranteed
+- [ ] constraints (network/charging/battery)
+- [ ] backoff + retry (transient only)
+- [ ] `enqueueUniqueWork`
+- [ ] idempotent work (Ch 15)
+- [ ] `@HiltWorker` + `Configuration.Provider`
+- [ ] foreground for long work
+- [ ] expedited for time-sensitive
+- [ ] observe `WorkInfo`
+- [ ] no secrets in `inputData`
+- [ ] cancel user-scoped work on logout.
 
 **Key APIs:** `CoroutineWorker`/`doWork`/`Result`, `OneTimeWorkRequest`/
 `PeriodicWorkRequest`, `Constraints`, `setBackoffCriteria`, `enqueueUniqueWork`/

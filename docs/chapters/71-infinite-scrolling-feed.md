@@ -549,6 +549,7 @@ no-auto-scroll on refresh (pill); item-type rendering. Macrobenchmark for scroll
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *Feed architecture?* Paging 3 + RemoteMediator + Room SSOT (network→DB→UI).
 2. *Why SSOT-backed?* Caching, offline, process-death survival, in-place updates.
 3. *Network-only paging drawback?* No cache/offline; reloads; loses state.
@@ -556,6 +557,7 @@ no-auto-scroll on refresh (pill); item-type rendering. Macrobenchmark for scroll
 5. *Memory?* Windowed — only a window in memory, never load-all.
 
 **Pagination**
+
 6. *Cursor vs offset?* Cursor stable; offset drifts (dupes/skips) on insert/delete.
 7. *Why offset drifts?* Items change between page loads → offsets shift.
 8. *Dedup?* Stable id upsert.
@@ -563,12 +565,14 @@ no-auto-scroll on refresh (pill); item-type rendering. Macrobenchmark for scroll
 10. *REFRESH?* Clear + reload from top (transactional).
 
 **Freshness**
+
 11. *How fresh without yanking position?* Pill + in-place updates (not auto-scroll).
 12. *"New content" pill?* Detect new top items (delta/push); user taps to jump.
 13. *In-place updates?* SSOT row changes → Paging diffs in place (stable keys).
 14. *Background delta?* Update changed/removed in SSOT (Ch 32).
 
 **Performance (Ch 86/56)**
+
 15. *60fps levers?* Stable keys, item-type recycling, image right-sizing, lazy off-screen.
 16. *Top jank cause?* Images — right-size/downsample (Ch 56).
 17. *Video autoplay?* Visible item only (Ch 58).
@@ -576,30 +580,36 @@ no-auto-scroll on refresh (pill); item-type rendering. Macrobenchmark for scroll
 19. *Measure jank?* Macrobenchmark / frame metrics (Ch 86).
 
 **Scroll position**
+
 20. *Restore across config?* `rememberLazyListState` + Paging state.
 21. *Process death?* Paged SSOT + saved scroll key (Ch 8).
 22. *Tab switch?* Saved state (Ch 53).
 
 **Interactions**
+
 23. *Like/comment?* Optimistic SSOT mutation (Ch 72) → everywhere.
 24. *Consistency across screens?* One SSOT row (Ch 3).
 25. *Reconcile?* Outbox + server; rollback on failure (Ch 72/31).
 
 **Content/ranking**
+
 26. *Mixed content?* Item types; server-ranked (Ch 73); client presents + dedups.
 27. *Who ranks?* The server (Ch 73).
 28. *Ads?* Server inserts at ranked positions; label.
 
 **Offline**
+
 29. *Offline feed?* RemoteMediator serves cached Room items (Ch 3).
 30. *Error on load?* Serve cache; show error affordance.
 
 **Security**
+
 31. *Content visibility?* Server-authorized (Ch 23); client doesn't filter for security.
 32. *Untrusted content?* Sanitize/validate (Ch 52).
 33. *Per-account cache?* Isolate; clear on switch (Ch 42).
 
 **Testing/Production**
+
 34. *Test RemoteMediator?* Cursor paging + dedup + REFRESH + offline-cache.
 35. *Test restoration?* Recreate → position kept.
 36. *Jank in prod?* Images/bind/off-screen.
@@ -678,13 +688,19 @@ server-ranked mixed content, offline-from-cache.
 instead of SSOT mutations; client-side ranking; rendering untrusted content unsafely;
 shared cache across accounts.
 
-**Checklist:** ☐ Paging 3 + RemoteMediator + Room SSOT (network→DB→UI, Ch 13/3) ☐ cursor
-pagination + stable-id dedup ☐ offline from Room cache; survives process death (Ch 8) ☐
-freshness via pill + in-place updates (no auto-scroll, Ch 32) ☐ 60fps: stable keys +
-item-type recycling + image right-sizing (Ch 56) + lazy off-screen (Ch 86) ☐ scroll
-restoration (config/death/tab, Ch 8/53) ☐ optimistic interactions via SSOT (Ch 72) ☐
-server-ranked mixed content + dedup (Ch 73) ☐ authorized visibility + untrusted content
-(Ch 23/52) ☐ per-account cache (Ch 42) ☐ jank + first-content telemetry (Ch 86).
+**Checklist:**
+
+- [ ] Paging 3 + RemoteMediator + Room SSOT (network→DB→UI, Ch 13/3)
+- [ ] cursor pagination + stable-id dedup
+- [ ] offline from Room cache; survives process death (Ch 8)
+- [ ] freshness via pill + in-place updates (no auto-scroll, Ch 32)
+- [ ] 60fps: stable keys + item-type recycling + image right-sizing (Ch 56) + lazy off-screen (Ch 86)
+- [ ] scroll restoration (config/death/tab, Ch 8/53)
+- [ ] optimistic interactions via SSOT (Ch 72)
+- [ ] server-ranked mixed content + dedup (Ch 73)
+- [ ] authorized visibility + untrusted content (Ch 23/52)
+- [ ] per-account cache (Ch 42)
+- [ ] jank + first-content telemetry (Ch 86).
 
 **Key APIs:** Paging 3 `Pager`/`PagingConfig`/`RemoteMediator`/`PagingSource`/`LoadType`/
 `MediatorResult`/`cachedIn` (Ch 13), Room `@Dao` `pagingSource()`/`@Transaction`/upsert

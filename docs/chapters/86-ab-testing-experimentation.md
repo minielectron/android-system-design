@@ -493,6 +493,7 @@ Ch 85). Significance/power validated on real data; ramp via staged rollout (Ch 4
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What is A/B testing?* Controlled comparison of control vs treatment on a metric.
 2. *Why experiment?* Causal evidence a change helps — not opinion.
 3. *Assignment?* Deterministic hash of a stable id → sticky variant (Ch 40).
@@ -500,34 +501,40 @@ Ch 85). Significance/power validated on real data; ramp via staged rollout (Ch 4
 5. *Built on?* Flags/remote config (Ch 40) + analytics (Ch 82).
 
 **Assignment**
+
 6. *Deterministic how?* Hash(stableId + expId) → bucket < fraction.
 7. *Stateless?* Yes — no stored assignment; stable across devices.
 8. *Raise fraction?* Monotonic — adds users, doesn't re-bucket.
 9. *PII?* Opaque stable id, not PII (Ch 28).
 
 **Exposure/metrics**
+
 10. *Exposure vs assignment?* Log when actually shown, not just assigned.
 11. *Primary metric?* Pre-registered; the thing you move.
 12. *Guardrails?* Must-not-regress: crash (Ch 83), latency (Ch 85), uninstalls.
 13. *Where measured?* Analytics pipeline (Ch 82).
 
 **Statistics**
+
 14. *Significance?* Effect unlikely by chance (p<0.05 / CI excludes 0).
 15. *Power/sample size?* Enough exposed users to detect the effect.
 16. *p-hacking?* Pre-register; no peek-and-stop; no metric cherry-picking.
 17. *Peeking?* Inflates false positives; fixed horizon or sequential test.
 
 **Safety**
+
 18. *Guardrail breach?* Auto-kill via remote config (Ch 40/41).
 19. *Ramp?* Small fraction first (Ch 41), like staged rollout.
 20. *Kill switch?* Remote, no app update (Ch 40).
 
 **Edge cases**
+
 21. *Many experiments?* Layers / mutual exclusion to avoid interaction.
 22. *Flickering?* Deterministic sticky hash (Ch 40).
 23. *Privacy?* Opaque keys + consent (Ch 28/82).
 
 **Testing/Production**
+
 24. *Test assignment?* Determinism + fraction/kill gating.
 25. *No effect seen?* Check exposure logging + power.
 26. *Ship decision?* Significant lift + guardrails hold.
@@ -591,11 +598,18 @@ assignment instead of exposure; no guardrails (harmful treatment ships); p-hacki
 stop/underpowered (false wins); keying on PII; building a bespoke stack instead of reusing flags
 + analytics; no kill switch.
 
-**Checklist:** ☐ deterministic sticky assignment (hash stable id, Ch 40) ☐ fractional exposure
-+ ramp (Ch 41) ☐ log actual exposure + outcome via analytics (Ch 82) ☐ pre-registered primary
-metric ☐ significance + power (no p-hacking/peeking) ☐ guardrails (crash Ch 83, latency Ch 85)
-auto-kill (Ch 40/41) ☐ PII-safe keys + consent (Ch 28) ☐ reuse flags + analytics ☐ layers for
-many experiments ☐ ship/kill decision gate.
+**Checklist:**
+
+- [ ] deterministic sticky assignment (hash stable id, Ch 40)
+- [ ] fractional exposure + ramp (Ch 41)
+- [ ] log actual exposure + outcome via analytics (Ch 82)
+- [ ] pre-registered primary metric
+- [ ] significance + power (no p-hacking/peeking)
+- [ ] guardrails (crash Ch 83, latency Ch 85) auto-kill (Ch 40/41)
+- [ ] PII-safe keys + consent (Ch 28)
+- [ ] reuse flags + analytics
+- [ ] layers for many experiments
+- [ ] ship/kill decision gate.
 
 **Key APIs/concepts:** remote config / feature flags (assignment + fraction + kill, Ch 40),
 SHA-256 bucketing (deterministic sticky), analytics pipeline (exposure + outcomes, Ch 82),

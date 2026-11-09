@@ -560,6 +560,7 @@ stable); `derivedStateOf`/`remember` gating; no IO in composition (Ch 3); field 
 > ≥40 questions (Complex).
 
 **Fundamentals**
+
 1. *Frame budget?* ~16.7ms@60Hz, ~11ms@90Hz, ~8ms@120Hz.
 2. *Jank?* A late/dropped frame; >700ms = frozen (Ch 85).
 3. *Compose phases?* Composition → layout → draw.
@@ -567,12 +568,14 @@ stable); `derivedStateOf`/`remember` gating; no IO in composition (Ch 3); field 
 5. *#1 Compose jank?* Excessive/expensive recomposition.
 
 **Recomposition/skipping**
+
 6. *Skipping?* Compose skips a composable if params are stable + unchanged.
 7. *Smart recomposition?* Re-run only affected readers.
 8. *Why not skip?* Unstable parameter.
 9. *Goal?* Maximize skipping; recompose only the leaf.
 
 **Stability**
+
 10. *Stable type?* Immutable or observably mutable (`@Immutable`/`@Stable`, primitives).
 11. *Unstable examples?* Mutable class, raw `List`/`Map`, fresh lambda, unknown-stability type.
 12. *Fix collections?* `ImmutableList` (kotlinx.collections.immutable).
@@ -581,6 +584,7 @@ stable); `derivedStateOf`/`remember` gating; no IO in composition (Ch 3); field 
 15. *@Immutable vs @Stable?* Immutable (never changes) vs stable (changes observable).
 
 **State reads**
+
 16. *Narrow read?* Read at the leaf that uses it.
 17. *Defer read?* Lambda/`graphicsLayer`/`offset { }` — read in layout/draw.
 18. *derivedStateOf?* Recompute only when the derived result changes.
@@ -588,25 +592,30 @@ stable); `derivedStateOf`/`remember` gating; no IO in composition (Ch 3); field 
 20. *Read high vs low?* Low — narrows recomposition.
 
 **Work/hoisting**
+
 21. *Work in composition?* Runs every recomposition — hoist it.
 22. *Where?* ViewModel, off-main (Ch 3).
 23. *IO in composable?* Never (Ch 3).
 24. *remember?* Cache across recompositions.
 
 **Allocations/GC**
+
 25. *Per-frame alloc?* GC jank — hoist/remember (Ch 89).
 26. *onDraw allocations?* Hoist out (Ch 89).
 
 **Lists**
+
 27. *List jank?* Stable keys + light items + async images (Ch 93).
 28. *key?* Stable identity so items aren't recomposed/moved wrongly (Ch 93).
 29. *Heavy item?* Lighten / defer (Ch 93).
 
 **Baseline profiles**
+
 30. *First-scroll jank?* JIT-cold — Baseline Profile (Ch 92).
 31. *What it does?* AOT-compile render path (Ch 92).
 
 **Measurement**
+
 32. *Recomposition counts?* Layout Inspector.
 33. *Stability?* Compiler metrics.
 34. *Field jank?* JankStats (Ch 85).
@@ -614,6 +623,7 @@ stable); `derivedStateOf`/`remember` gating; no IO in composition (Ch 3); field 
 36. *Where time goes?* Perfetto/system trace.
 
 **Edge cases/production**
+
 37. *High-refresh?* Tighter budget (8–11ms).
 38. *Low-end jank?* Field p95 (Ch 85).
 39. *Regression gate?* Macrobenchmark frames CI (Ch 92).
@@ -698,13 +708,18 @@ derived values without `remember`/`derivedStateOf`; per-frame allocations (GC ja
 (no stable keys, heavy items, sync images, Ch 93/59); no Baseline Profile (first-scroll JIT jank);
 optimizing by guessing instead of measuring; testing only on a flagship.
 
-**Checklist:** ☐ stable/immutable params (`@Immutable`, `ImmutableList`, remembered lambdas) →
-skippable ☐ compiler stability metrics enabled (find unstable params) ☐ narrow + deferred reads
-(leaf, `derivedStateOf`, lambda defer) ☐ hoist work off composition + off-main (Ch 3); never IO in
-composition ☐ `remember` derived/allocated values ☐ no per-frame allocations (Ch 89) ☐ stable list
-keys + light items + async images (Ch 93/59) ☐ Baseline Profiles + R8 (Ch 92) ☐ Layout Inspector
-recomposition audit ☐ JankStats field (Ch 85) + Macrobenchmark `FrameTimingMetric` lab gate
-(Ch 92).
+**Checklist:**
+
+- [ ] stable/immutable params (`@Immutable`, `ImmutableList`, remembered lambdas) → skippable
+- [ ] compiler stability metrics enabled (find unstable params)
+- [ ] narrow + deferred reads (leaf, `derivedStateOf`, lambda defer)
+- [ ] hoist work off composition + off-main (Ch 3); never IO in composition
+- [ ] `remember` derived/allocated values
+- [ ] no per-frame allocations (Ch 89)
+- [ ] stable list keys + light items + async images (Ch 93/59)
+- [ ] Baseline Profiles + R8 (Ch 92)
+- [ ] Layout Inspector recomposition audit
+- [ ] JankStats field (Ch 85) + Macrobenchmark `FrameTimingMetric` lab gate (Ch 92).
 
 **Key APIs:** `@Immutable`/`@Stable`, `kotlinx.collections.immutable` (`ImmutableList`/
 `persistentListOf`), `remember`/`remember(key)`, `derivedStateOf`, `collectAsStateWithLifecycle`

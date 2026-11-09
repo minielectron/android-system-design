@@ -539,6 +539,7 @@ encapsulation (consumers can't see hidden deps); cross-module DI resolves (Ch 46
 > ≥40 questions (Complex).
 
 **Fundamentals**
+
 1. *Why modularize?* Build speed, parallel teams, enforced architecture, reuse.
 2. *Monolith problems?* Slow builds, collisions, architecture erosion.
 3. *Module types?* `:app`, `:feature:*`, `:core:*`.
@@ -546,6 +547,7 @@ encapsulation (consumers can't see hidden deps); cross-module DI resolves (Ch 46
 5. *Feature module?* One self-contained flow; depends on core only.
 
 **Dependency graph**
+
 6. *Dependency direction?* One-way: app → feature → core → common.
 7. *Cycles?* Forbidden — Gradle fails; it's a DAG.
 8. *Core depend on feature?* Never — downward only.
@@ -553,11 +555,13 @@ encapsulation (consumers can't see hidden deps); cross-module DI resolves (Ch 46
 10. *What enforces architecture?* The build graph (compile errors).
 
 **Feature isolation**
+
 11. *How do features interact?* Shared contract (core), navigation (app-wired), api/impl.
 12. *api/impl split?* `:feature:x:api` (interfaces) + `:impl` — depend on api only.
 13. *Why isolate?* Swappable, independently buildable, no tangle.
 
 **api vs implementation**
+
 14. *implementation?* Internal dep — hidden, no recompile cascade.
 15. *api?* Exposed dep — consumers use + recompile.
 16. *Default?* `implementation`.
@@ -565,17 +569,20 @@ encapsulation (consumers can't see hidden deps); cross-module DI resolves (Ch 46
 18. *Why it matters?* Build speed + encapsulation.
 
 **DI across modules**
+
 19. *Hilt across modules?* Core provides, feature consumes, app aggregates (Ch 46).
 20. *Bindings where?* In the owning module.
 21. *@HiltAndroidApp?* In `:app` — aggregates the graph.
 22. *Feature sees other's internals?* No — Hilt resolves across the graph.
 
 **Build config**
+
 23. *Convention plugins?* build-logic — centralize shared Gradle config.
 24. *Version catalogs?* Centralize dependency versions.
 25. *Why?* Hundreds of modules stay consistent; tiny build.gradle.
 
 **Granularity/build**
+
 26. *Granularity?* Per-feature + layered core; not too fine.
 27. *Too fine?* Gradle overhead + navigation pain.
 28. *Build speed from?* Incremental + parallel + build cache.
@@ -583,10 +590,12 @@ encapsulation (consumers can't see hidden deps); cross-module DI resolves (Ch 46
 30. *Configuration cache?* Skip configuration phase.
 
 **Dynamic features**
+
 31. *Dynamic feature module?* On-demand install (Play) — smaller install.
 32. *When?* Large/optional flows.
 
 **Edge cases/production**
+
 33. *Break a cycle?* Move shared code to a lower core module.
 34. *Recompile cascade?* An `api` dep — make it `implementation`.
 35. *Affected-only CI?* Build/test only touched modules + dependents.
@@ -666,12 +675,18 @@ dependencies (tangle); dependency cycles / upward edges; overusing `api` (recomp
 coupling); duplicating build config across modules; over-splitting into hundreds of tiny modules;
 putting DI bindings in the wrong module; `:app` holding business logic (should be a thin shell).
 
-**Checklist:** ☐ `:app` (thin composition root) + `:feature:*` + `:core:*` decomposition ☐ one-way
-DAG (app→feature→core→common); no cycles ☐ features never depend on each other (contracts/
-navigation/api-impl, Ch 97) ☐ `implementation` default; `api` only for public-surface types ☐
-cross-module Hilt (core provides, app aggregates, Ch 46) ☐ convention plugins (build-logic) +
-version catalogs ☐ right-size granularity (per-feature + layered core) ☐ parallel + build cache +
-configuration cache ☐ affected-module-only CI ☐ lint/graph rules forbidding illegal edges.
+**Checklist:**
+
+- [ ] `:app` (thin composition root) + `:feature:*` + `:core:*` decomposition
+- [ ] one-way DAG (app→feature→core→common); no cycles
+- [ ] features never depend on each other (contracts/navigation/api-impl, Ch 97)
+- [ ] `implementation` default; `api` only for public-surface types
+- [ ] cross-module Hilt (core provides, app aggregates, Ch 46)
+- [ ] convention plugins (build-logic) + version catalogs
+- [ ] right-size granularity (per-feature + layered core)
+- [ ] parallel + build cache + configuration cache
+- [ ] affected-module-only CI
+- [ ] lint/graph rules forbidding illegal edges.
 
 **Key Gradle/APIs:** `settings.gradle.kts` `include`/`includeBuild`, `project(":core:x")` deps,
 `api`/`implementation` configurations, `build-logic` convention plugins (`Plugin<Project>`), version

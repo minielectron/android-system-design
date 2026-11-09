@@ -514,6 +514,7 @@ persistence, proactive refresh, no token logging (assert redaction).
 > 40+ questions.
 
 **Fundamentals**
+
 1. *Access vs refresh token?* Access = short-lived, sent per request; refresh =
    long-lived, stored securely, used only to get a new access token.
 2. *Why separate them?* Limit exposure — a leaked access token expires soon; the
@@ -525,6 +526,7 @@ persistence, proactive refresh, no token logging (assert redaction).
    must collapse to one refresh.
 
 **The stampede (core)**
+
 6. *How do you ensure exactly one refresh?* `Mutex` + token version: a waiter that
    gets the lock checks whether the token already changed and reuses it.
 7. *What's "token versioning / compare-and-refresh"?* Capture the token the failed
@@ -535,6 +537,7 @@ persistence, proactive refresh, no token logging (assert redaction).
    shared by many waiters.
 
 **Rotation**
+
 10. *What is refresh-token rotation?* Server returns a new refresh token each time
     and invalidates the old.
 11. *Why does rotation need single-flight?* Two concurrent refreshes would both use
@@ -544,6 +547,7 @@ persistence, proactive refresh, no token logging (assert redaction).
     (theft signal).
 
 **Failure handling**
+
 14. *Invalid vs transient refresh failure?* Invalid (auth error) → logout;
     transient (network) → keep session, retry later.
 15. *Classic bug?* Logging out on a transient failure.
@@ -553,6 +557,7 @@ persistence, proactive refresh, no token logging (assert redaction).
     the Authenticator.
 
 **Proactive vs reactive**
+
 18. *Proactive refresh?* Refresh before expiry using `exp` + skew to avoid the 401
     round-trip.
 19. *Trade-off?* Fewer 401s on critical paths vs extra complexity + occasional
@@ -560,6 +565,7 @@ persistence, proactive refresh, no token logging (assert redaction).
 20. *Do both share a path?* Yes — route through the same mutex/version single-flight.
 
 **Storage/security**
+
 21. *Where is the refresh token stored?* Keystore-backed storage (Ch 20), never
     plaintext/Bundle.
 22. *Logging tokens?* Never — redact `Authorization` (Ch 1/28).
@@ -569,21 +575,25 @@ persistence, proactive refresh, no token logging (assert redaction).
 25. *Logout?* Clear locally **and** revoke server-side (Ch 22).
 
 **Lifecycle**
+
 26. *Process death?* Tokens persist in the store; resume normally.
 27. *Account switch mid-refresh?* Per-account tokens; clear on switch (Ch 42).
 
 **Scalability**
+
 28. *10M users — client concerns?* Little; refresh is per-user. Backend scales
     token service; client needs single-flight + secure storage.
 29. *Reduce refresh load?* Longer access-token TTL (trade-off), proactive refresh
     batching, server-side token caching.
 
 **Performance**
+
 30. *Overhead of single-flight?* Negligible; one mutex + a rare network call.
 31. *`runBlocking` in Authenticator — concern?* Briefly holds an OkHttp thread;
     keep refresh fast with a tight timeout.
 
 **Testing**
+
 32. *Test one-refresh-under-concurrency?* Fire N concurrent authenticate calls;
     assert one refresh call.
 33. *Test invalid vs transient?* Script 401 vs IOException; assert logout vs
@@ -591,12 +601,14 @@ persistence, proactive refresh, no token logging (assert redaction).
 34. *Test loop protection?* Prior-response count ≥ limit → null.
 
 **Production debugging**
+
 35. *Random logouts?* Transient-failure logout or stampede invalidating rotation.
 36. *Requests dropping at token expiry?* No transparent refresh.
 37. *Refresh storms in logs?* Missing version check (single-flight).
 38. *Session-expired spike?* Token theft / rotation incident / backend issue.
 
 **Trade-offs**
+
 39. *Opaque vs JWT?* JWT enables proactive refresh (read `exp`) but don't trust
     claims for authz; opaque is simpler.
 40. *Rotating vs static refresh token?* Rotation = more secure, needs single-flight;
@@ -664,10 +676,19 @@ logout); logging out on transient failures; refreshing through the Authenticator
 trusting JWT claims for client-side authz; clearing tokens locally without
 server revocation.
 
-**Checklist:** ☐ `Authenticator` on 401 ☐ single-flight refresh (`Mutex` +
-version) ☐ reuse when token already changed ☐ rotation persisted atomically
-☐ invalid→logout, transient→keep ☐ no-auth refresh client ☐ loop cap ☐ Keystore
-storage ☐ no token logging ☐ server-side revoke on logout ☐ proactive (optional).
+**Checklist:**
+
+- [ ] `Authenticator` on 401
+- [ ] single-flight refresh (`Mutex` + version)
+- [ ] reuse when token already changed
+- [ ] rotation persisted atomically
+- [ ] invalid→logout, transient→keep
+- [ ] no-auth refresh client
+- [ ] loop cap
+- [ ] Keystore storage
+- [ ] no token logging
+- [ ] server-side revoke on logout
+- [ ] proactive (optional).
 
 **Key APIs:** OkHttp `Authenticator`/`authenticate`, `Response.priorResponse`,
 `Mutex.withLock`, `runBlocking` (Authenticator bridge), `TokenStore` (Ch 20),

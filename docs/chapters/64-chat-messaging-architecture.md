@@ -549,6 +549,7 @@ Room in-memory.
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *Why is chat hard?* Combines reliable send, real-time receive, background, ordering,
    dedup, receipts, offline, multi-device.
 2. *Source of truth?* SSOT (rendered) + server (ordering/convergence); socket is a fast
@@ -559,6 +560,7 @@ Room in-memory.
 5. *Why server-seq?* Total order (clocks skew) + catch-up cursor.
 
 **Send**
+
 6. *Send path?* Optimistic insert → outbox → idempotent send → server-seq confirm
    (Ch 72/31/15).
 7. *Offline send?* Outbox persists; retries on reconnect (Ch 31/29).
@@ -567,6 +569,7 @@ Room in-memory.
 10. *Failed send?* status=Failed + manual retry.
 
 **Receive**
+
 11. *Foreground delivery?* WebSocket (Ch 63).
 12. *Background delivery?* FCM wake → REST catch-up → notification (Ch 49/50).
 13. *Why unified pipeline?* Dedup + consistency across WebSocket/FCM.
@@ -574,37 +577,44 @@ Room in-memory.
 15. *Dedup across paths?* Same idempotent merge by client-id/server-seq.
 
 **Ordering/catch-up**
+
 16. *Ordering?* By server-seq; optimistic at tail by localTs.
 17. *Missed messages?* Catch-up from last seq cursor (Ch 32/63).
 18. *Out-of-order?* Re-sort by server-seq on merge.
 
 **Receipts**
+
 19. *Receipt states?* Delivered/read, synced per-message.
 20. *Batching?* Up-to-seq, batched (Ch 14).
 21. *Incoming receipts?* Update our sent messages' status.
 22. *Privacy?* Configurable receipts (Ch 65/28).
 
 **Multi-device/history**
+
 23. *Device convergence?* Server-synced seq + read state; per-device cursors (Ch 32).
 24. *Read on one device?* Syncs read state to others.
 25. *History?* Paging from SSOT + RemoteMediator (Ch 13).
 26. *Conversation list?* Last message + unread from SSOT.
 
 **Groups/E2E**
+
 27. *Group chat?* Server fan-out; per-user state; same client model.
 28. *E2E?* Client-side crypto (Signal-style); server stores ciphertext; key management.
 
 **Security**
+
 29. *Transport auth?* WebSocket handshake / REST bearer (Ch 19/63).
 30. *Membership authz?* Server authorizes conversations (Ch 23).
 31. *Content safety?* Untrusted render; sanitize (Ch 52).
 32. *Per-account?* Isolate; close socket + scope SSOT on switch (Ch 42).
 
 **Process death/offline**
+
 33. *Unsent on death?* Outbox persisted (Ch 31/8).
 34. *Offline compose/read?* SSOT offline-first (Ch 29).
 
 **Testing/Production**
+
 35. *Test merge?* Dedup (echo/cross-path/seq) + ordering.
 36. *Test send?* Offline + idempotent retry + confirm.
 37. *Test catch-up?* Heals gaps from cursor.
@@ -678,12 +688,19 @@ WebSocket/FCM pipelines (dupes/inconsistency); client-timestamp ordering (skew);
 catch-up (gaps); unbatched receipts (spam); loading whole history (no paging); no
 membership authz; rendering untrusted content unsafely.
 
-**Checklist:** ☐ SSOT+server truth, socket = fast path ☐ client-id (idempotency) +
-server-seq (order/cursor) ☐ send: optimistic + outbox + idempotent + confirm (Ch 72/31/15)
-☐ unified receive: WebSocket + FCM + catch-up → one idempotent merge (Ch 63/49/32) ☐ order
-by server-seq, dedup by id ☐ catch-up on reconnect/open ☐ delivery/read receipts synced +
-batched (Ch 14/32) ☐ history paging (Ch 13) ☐ device convergence (Ch 32) ☐ membership
-authz + untrusted content + per-account (Ch 23/52/42) ☐ send/delivery-latency telemetry.
+**Checklist:**
+
+- [ ] SSOT+server truth, socket = fast path
+- [ ] client-id (idempotency) + server-seq (order/cursor)
+- [ ] send: optimistic + outbox + idempotent + confirm (Ch 72/31/15)
+- [ ] unified receive: WebSocket + FCM + catch-up → one idempotent merge (Ch 63/49/32)
+- [ ] order by server-seq, dedup by id
+- [ ] catch-up on reconnect/open
+- [ ] delivery/read receipts synced + batched (Ch 14/32)
+- [ ] history paging (Ch 13)
+- [ ] device convergence (Ch 32)
+- [ ] membership authz + untrusted content + per-account (Ch 23/52/42)
+- [ ] send/delivery-latency telemetry.
 
 **Key APIs:** Room `@Entity`/`@Dao`/`@Transaction` (unique client-id index, seq index,
 Ch 3), `UUID.randomUUID` (client-id), Outbox (Ch 31), WebSocket transport (Ch 63), FCM +

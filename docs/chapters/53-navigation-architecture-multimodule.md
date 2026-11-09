@@ -518,6 +518,7 @@ feature dependencies** (the architectural invariant).
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Single-Activity + Navigation?* One Activity hosts a NavHost; screens are destinations
    in a graph — centralizes back stack/lifecycle/deep links.
 2. *Why single-Activity?* Simpler back stack, deep links (Ch 52), transitions vs
@@ -527,6 +528,7 @@ feature dependencies** (the architectural invariant).
 5. *Type-safe routes?* Serialization-based routes — compile-checked destinations/args.
 
 **Module decoupling (the crux)**
+
 6. *Core problem in multi-module nav?* Feature→feature coupling.
 7. *How decouple?* Navigate via a contract (routes/Navigator) in `:core:navigation`;
    assemble in `:app`.
@@ -537,6 +539,7 @@ feature dependencies** (the architectural invariant).
 11. *Who knows all features?* Only `:app`.
 
 **Back stack**
+
 12. *`popUpTo`/`launchSingleTop`/inclusive?* Shape the stack (e.g., pop login after
     success; avoid duplicates).
 13. *Deep-link back stack?* Synthesized via graph (Ch 52).
@@ -545,19 +548,23 @@ feature dependencies** (the architectural invariant).
 16. *After logout?* Clear back stack (popUpTo start inclusive, Ch 22).
 
 **State/lifecycle**
+
 17. *Share state across a multi-step flow?* Nav-graph/entry-scoped ViewModel (Ch 40).
 18. *Process death?* Type-safe routes serialize args; `SavedStateHandle` (Ch 8).
 19. *Config change?* Nav-entry ViewModel survives (Ch 6).
 
 **Deep links**
+
 20. *Integrate deep links?* Same destinations/graph (`navDeepLink`) — one routing model
     (Ch 52).
 
 **Security**
+
 21. *Destination as attack surface?* Validate args + server authz (Ch 23); gate auth.
 22. *Logging args?* Templates only, no PII (Ch 28).
 
 **Testing/Production**
+
 23. *Test navigation?* `TestNavHostController` / Compose nav testing.
 24. *Enforce decoupling?* CI check: no feature→feature deps.
 25. *Unexpected Back/exit?* Back-stack/popUpTo bug.
@@ -629,12 +636,19 @@ Activity sprawl; string routes (runtime crashes); no back-stack synthesis (Back 
 app); tabs losing state; global singletons for flow state; separate deep-link stack;
 logging arg values (PII); not surviving process death.
 
-**Checklist:** ☐ single-Activity + NavHost ☐ per-feature sub-graphs ☐ decouple via
-`:core:navigation` routes/Navigator; assemble in `:app` ☐ no feature→feature deps (CI
-check) ☐ type-safe routes (args survive death) ☐ back stack: popUpTo/singleTop/per-tab/
-synthesized ☐ login gate + resume + clear-on-logout ☐ nav-entry/graph ViewModel scoping
-(Ch 40) ☐ unify deep links (Ch 52) ☐ authz at destination (Ch 23) ☐ log route templates
-only.
+**Checklist:**
+
+- [ ] single-Activity + NavHost
+- [ ] per-feature sub-graphs
+- [ ] decouple via `:core:navigation` routes/Navigator; assemble in `:app`
+- [ ] no feature→feature deps (CI check)
+- [ ] type-safe routes (args survive death)
+- [ ] back stack: popUpTo/singleTop/per-tab/synthesized
+- [ ] login gate + resume + clear-on-logout
+- [ ] nav-entry/graph ViewModel scoping (Ch 40)
+- [ ] unify deep links (Ch 52)
+- [ ] authz at destination (Ch 23)
+- [ ] log route templates only.
 
 **Key APIs:** `NavHost`/`NavController`/`rememberNavController`, `composable<Route>()` +
 `@Serializable` routes + `entry.toRoute<T>()`, `NavGraphBuilder` extensions (per-feature

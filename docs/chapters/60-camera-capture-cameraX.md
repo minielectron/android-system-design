@@ -503,6 +503,7 @@ instrumentation for real hardware behavior.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *CameraX vs Camera2?* Lifecycle-aware use cases + compatibility vs manual low-level
    control.
 2. *Four use cases?* Preview, ImageCapture, VideoCapture, ImageAnalysis.
@@ -511,29 +512,34 @@ instrumentation for real hardware behavior.
 5. *When Camera2?* Manual exposure/RAW/custom sessions.
 
 **Permissions**
+
 6. *What permission?* `CAMERA` (+ `RECORD_AUDIO` for video) — runtime (Ch 51).
 7. *Avoid it?* System camera intent / Photo Picker (no permission).
 8. *When CameraX over intent?* Custom in-app camera / real-time analysis.
 9. *Denied?* In-context rationale → settings; degrade (Ch 51).
 
 **Analysis**
+
 10. *ImageAnalysis thread?* Off-main (`Executor`).
 11. *Backpressure?* Keep-only-latest (drop stale frames).
 12. *ImageProxy?* Must close or pipeline stalls.
 13. *Resolution?* Analyze at lower res than capture.
 
 **Output/privacy**
+
 14. *Output storage?* App-internal (sensitive) vs MediaStore (user gallery) (Ch 25/62).
 15. *EXIF location?* Strip unless geotagging intended (Ch 28).
 16. *Orientation?* CameraX target rotation / EXIF.
 17. *Sensitive capture?* App-internal + `FLAG_SECURE`.
 
 **Resource/lifecycle**
+
 18. *Release camera?* Unbind / lifecycle stop — promptly.
 19. *Privacy indicator?* Use only when expected.
 20. *Rotation?* Rebind; target rotation.
 
 **Testing/Production**
+
 21. *Test EXIF strip?* Assert GPS tags removed.
 22. *Test analyzer?* Closes proxies.
 23. *Camera unavailable in prod?* Not released (lifecycle).
@@ -606,12 +612,18 @@ intent); analysis on the main thread / not closing `ImageProxy` (stall/jank); qu
 frames instead of keep-latest; leaking GPS EXIF; sensitive capture in shared storage; not
 releasing the camera on background.
 
-**Checklist:** ☐ prefer system intent / Photo Picker (no permission, Ch 51) ☐ CameraX use
-cases bound to lifecycle (auto release, Ch 44) ☐ in-context CAMERA/audio permission +
-graceful denial ☐ ImageAnalysis off-main + keep-only-latest + close proxies ☐ output
-app-internal/MediaStore + orientation (Ch 25/62) ☐ strip location EXIF (Ch 28) ☐ release
-camera promptly ☐ `FLAG_SECURE` + app-internal for sensitive capture ☐ per-account (Ch 42)
-☐ open/close-balance + capture-success telemetry.
+**Checklist:**
+
+- [ ] prefer system intent / Photo Picker (no permission, Ch 51)
+- [ ] CameraX use cases bound to lifecycle (auto release, Ch 44)
+- [ ] in-context CAMERA/audio permission + graceful denial
+- [ ] ImageAnalysis off-main + keep-only-latest + close proxies
+- [ ] output app-internal/MediaStore + orientation (Ch 25/62)
+- [ ] strip location EXIF (Ch 28)
+- [ ] release camera promptly
+- [ ] `FLAG_SECURE` + app-internal for sensitive capture
+- [ ] per-account (Ch 42)
+- [ ] open/close-balance + capture-success telemetry.
 
 **Key APIs:** `ProcessCameraProvider`/`bindToLifecycle`/`unbindAll`, `Preview`/
 `ImageCapture`/`VideoCapture`/`ImageAnalysis` (`STRATEGY_KEEP_ONLY_LATEST`/`setAnalyzer`),

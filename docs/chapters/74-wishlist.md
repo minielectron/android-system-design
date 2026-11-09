@@ -501,6 +501,7 @@ account isolation (Ch 42); consistency across screens (same row); offline persis
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Wishlist model?* Per-account, SSOT-backed, offline-first synced set of product ids.
 2. *Storage?* Room SSOT keyed by `(accountId, productId)` (Ch 3/42).
 3. *Why SSOT?* Instant, offline, consistent across screens, death-safe, syncable.
@@ -508,35 +509,42 @@ account isolation (Ch 42); consistency across screens (same row); offline persis
 5. *Consistency across screens?* One SSOT row (Ch 3).
 
 **Reliability**
+
 6. *Offline toggle?* Outbox persists + retries (Ch 31/29).
 7. *Double-tap/rapid toggle?* Idempotent set-membership (Ch 15) + coalesce (Ch 31).
 8. *Op model?* `add`/`remove` set-membership (idempotent), not a counter.
 9. *Genuine failure?* Rollback + tell user (Ch 72).
 
 **Cross-device**
+
 10. *Sync?* Delta sync membership (Ch 32); server authoritative.
 11. *Conflict (add A / remove B)?* Last-writer or add-wins (set tolerates, Ch 33).
 12. *Offline toggle vs server?* Reconcile on sync (Ch 32/33).
 
 **Per-account**
+
 13. *Isolation?* Key by accountId; observe active; swap on switch (Ch 42).
 14. *Leakage?* Never show A's saves under B.
 
 **Details**
+
 15. *Price/availability?* Refresh on render (Ch 12) — membership is ids; prices drift.
 16. *Out-of-stock/removed?* Flag on render.
 17. *Price drop?* Notify (Ch 49).
 
 **Scale/integration**
+
 18. *Large list?* Paging (Ch 13).
 19. *Move to cart?* Integrate with cart (Ch 38).
 20. *Reuse pattern?* Favorites/follows/watchlist (same synced-collection).
 
 **Security**
+
 21. *Authorization?* Server, per-user (Ch 23/42).
 22. *Privacy?* Wishlist is personal data (Ch 28).
 
 **Testing/Production**
+
 23. *Test toggle?* Optimistic + idempotent op; double-tap safe.
 24. *Test sync?* Convergence + conflict.
 25. *Lost saves in prod?* Outbox/offline.
@@ -599,13 +607,20 @@ per-screen state (inconsistent heart); non-idempotent toggle (double-add); no ou
 offline saves); no cross-device sync/conflict (divergence); snapshotting price at save
 (stale); cross-account leakage; loading the whole list (no paging).
 
-**Checklist:** ☐ per-account SSOT membership `(accountId, productId)` (Ch 3/42) ☐ optimistic
-toggle (Ch 72) ☐ heart observes SSOT (consistent everywhere) ☐ idempotent set-membership
-outbox op (Ch 31/15) ☐ offline-capable + rollback on genuine failure (Ch 29/72) ☐
-cross-device delta sync + conflict (last-writer/add-wins, Ch 32/33) ☐ per-account swap
-(Ch 42) ☐ refresh price/availability on render (Ch 12) ☐ page large list (Ch 13) ☐
-move-to-cart (Ch 38) ☐ per-user authz + privacy (Ch 23/28) ☐ toggle-latency + convergence
-telemetry.
+**Checklist:**
+
+- [ ] per-account SSOT membership `(accountId, productId)` (Ch 3/42)
+- [ ] optimistic toggle (Ch 72)
+- [ ] heart observes SSOT (consistent everywhere)
+- [ ] idempotent set-membership outbox op (Ch 31/15)
+- [ ] offline-capable + rollback on genuine failure (Ch 29/72)
+- [ ] cross-device delta sync + conflict (last-writer/add-wins, Ch 32/33)
+- [ ] per-account swap (Ch 42)
+- [ ] refresh price/availability on render (Ch 12)
+- [ ] page large list (Ch 13)
+- [ ] move-to-cart (Ch 38)
+- [ ] per-user authz + privacy (Ch 23/28)
+- [ ] toggle-latency + convergence telemetry.
 
 **Key APIs:** Room `@Entity` composite key `(accountId, productId)` + `@Dao` (`isSaved`
 Flow / `observeIds` / `pagingSource`, Ch 3/13), Outbox + idempotency key (Ch 31/15),

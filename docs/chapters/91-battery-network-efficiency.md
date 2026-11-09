@@ -529,6 +529,7 @@ batched uploads (Ch 82). Field battery via Historian/vitals (Ch 85).
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why battery/data matter?* Uninstalls, reviews, vitals flags, OS throttling.
 2. *Radio tail?* Radio stays high-power for seconds after a transfer.
 3. *Why batch?* Amortize the wake + tail across many requests.
@@ -536,11 +537,13 @@ batched uploads (Ch 82). Field battery via Historian/vitals (Ch 85).
 5. *Top drains?* Wakeups, wakelocks, polling, continuous location.
 
 **Push/poll**
+
 6. *Push vs poll?* Push wakes only on real news; poll wastes wakes.
 7. *Push mechanism?* FCM — shared OS connection (Ch 50).
 8. *When poll?* Fallback only — long interval + backoff.
 
 **Scheduling**
+
 9. *Deferrable work?* WorkManager + constraints (Ch 48).
 10. *Constraints?* UNMETERED, charging, idle, battery-not-low.
 11. *Doze/App Standby?* Defer work to maintenance windows (Ch 47).
@@ -549,18 +552,21 @@ batched uploads (Ch 82). Field battery via Historian/vitals (Ch 85).
 14. *Wakelock?* Avoid manual; WorkManager holds minimally.
 
 **Network**
+
 15. *Coalesce?* Batch uploads/syncs into one window (Ch 82).
 16. *Metered?* User pays per byte — gate heavy work on Wi-Fi (Ch 68).
 17. *Data Saver?* Honor restrictBackgroundStatus (Ch 68).
 18. *Adapt quality?* Lower on cellular (Ch 59/68).
 
 **Transfer**
+
 19. *Delta sync?* Only changes, not full re-download (Ch 29).
 20. *Compression?* gzip/brotli.
 21. *HTTP caching?* ETag/304 — don't re-fetch unchanged (Ch 67).
 22. *Retry?* Backoff + jitter (Ch 29).
 
 **Location/measure**
+
 23. *Location drain?* Lowest accuracy, batched, stop (Ch 65).
 24. *Measure battery?* Battery Historian + Android vitals (Ch 85).
 25. *Measure data?* Network Inspector + vitals background data.
@@ -630,12 +636,18 @@ stuck wakelocks; fighting Doze with exact alarms/FGS for deferrable work; chatty
 (radio tail); full re-downloads (no delta/cache); heavy transfers on metered/Data-Saver;
 continuous high-accuracy location; no measurement.
 
-**Checklist:** ☐ push (FCM) over poll (Ch 50) ☐ deferrable work via WorkManager + constraints
-(UNMETERED, battery-not-low, Doze-aware, Ch 47/48) ☐ reserve exact alarm/FGS for time-critical
-(Ch 47/49) ☐ batch/coalesce requests + minimize payload (Ch 82) ☐ honor metered/Data Saver; gate
-heavy work on Wi-Fi; adapt quality (Ch 68/59) ☐ delta sync + gzip + HTTP cache + backoff+jitter
-(Ch 29/67) ☐ lowest-accuracy, batched location (Ch 65) ☐ no manual wakelocks ☐ measure (Battery
-Historian, vitals, Network Inspector, Ch 85) ☐ watch excessive-background vitals flags.
+**Checklist:**
+
+- [ ] push (FCM) over poll (Ch 50)
+- [ ] deferrable work via WorkManager + constraints (UNMETERED, battery-not-low, Doze-aware, Ch 47/48)
+- [ ] reserve exact alarm/FGS for time-critical (Ch 47/49)
+- [ ] batch/coalesce requests + minimize payload (Ch 82)
+- [ ] honor metered/Data Saver; gate heavy work on Wi-Fi; adapt quality (Ch 68/59)
+- [ ] delta sync + gzip + HTTP cache + backoff+jitter (Ch 29/67)
+- [ ] lowest-accuracy, batched location (Ch 65)
+- [ ] no manual wakelocks
+- [ ] measure (Battery Historian, vitals, Network Inspector, Ch 85)
+- [ ] watch excessive-background vitals flags.
 
 **Key APIs:** `WorkManager` + `Constraints` (`setRequiredNetworkType(UNMETERED)`,
 `setRequiresBatteryNotLow`, `setBackoffCriteria`), `ExistingPeriodicWorkPolicy` (Ch 48),

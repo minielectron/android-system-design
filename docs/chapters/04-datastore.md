@@ -453,6 +453,7 @@ crash); SharedPreferences migration populates keys; Proto serializer round-trips
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why DataStore over SharedPreferences?* Async (no main-thread I/O),
    transactional, reactive `Flow`, typed (Proto), corruption handling.
 2. *Preferences vs Proto?* Preferences = untyped key-value; Proto = typed,
@@ -464,12 +465,14 @@ crash); SharedPreferences migration populates keys; Proto serializer round-trips
    domain model.
 
 **Architecture**
+
 6. *Where does DataStore sit?* `:core:datastore`; features depend on it via a
    repository; ViewModels never touch it directly.
 7. *DataStore vs Room?* Config/key-value vs relational/queryable/large data.
 8. *One instance per file?* Yes — required; a singleton via DI.
 
 **Kotlin/Android**
+
 9. *How are writes atomic?* `edit{}`/`updateData{}` run read-modify-write
    transactionally and serialize concurrent updates.
 10. *How read at startup without blocking?* `data.first()` in a background scope;
@@ -477,11 +480,13 @@ crash); SharedPreferences migration populates keys; Proto serializer round-trips
 11. *How handle read errors?* `.catch { emit(default) }` for `IOException`.
 
 **Concurrency**
+
 12. *Concurrent writes?* Serialized; no lost updates (unlike `apply()`).
 13. *Why not two instances for one file?* Breaks the single-writer guarantee;
     throws.
 
 **Persistence**
+
 14. *How migrate from SharedPreferences?* `SharedPreferencesMigration` in
     `produceMigrations`.
 15. *How evolve a Proto schema safely?* Only add fields; never reuse tag numbers
@@ -489,27 +494,32 @@ crash); SharedPreferences migration populates keys; Proto serializer round-trips
 16. *Corruption handling?* `ReplaceFileCorruptionHandler` returns a default.
 
 **Security**
+
 17. *Store a token in DataStore?* No — plaintext; use Keystore/`EncryptedFile`
     (Ch 20). Store only metadata (expiry/ids).
 18. *Backup risk?* Exclude sensitive files via backup rules (Ch 37).
 19. *Logout?* `updateData { default }` + delete the file (Ch 42).
 
 **Scalability**
+
 20. *Many settings/flags?* Split DataStores by concern; back flags with remote
     config (Ch 41).
 21. *Sync settings across devices?* Ch 43 with conflict resolution.
 
 **Performance**
+
 22. *Main-thread safety?* Automatic — no sync API.
 23. *Keep it fast?* Small files only; `distinctUntilChanged`; off critical path
     at startup.
 
 **Testing**
+
 24. *How test?* Real DataStore on a temp file + `TestScope`; round-trip and
     corruption tests.
 25. *What about migration tests?* Seed SharedPreferences, assert keys migrate.
 
 **Production debugging**
+
 26. *Setting not persisting — causes?* Multiple instances, wrong scope, or write
     error swallowed.
 27. *Crash loop on launch — cause?* Corrupt file without a corruption handler;
@@ -567,10 +577,18 @@ file; blocking startup on the first read; using DataStore for lists/relational
 data (should be Room); reusing Proto field tags; forgetting the corruption
 handler.
 
-**Checklist:** ☐ DataStore not SharedPreferences ☐ Preferences vs Proto chosen
-☐ one singleton/file ☐ repository exposes `Flow` ☐ defaults ☐ corruption handler
-☐ `IOException` `.catch` ☐ migration from SharedPrefs ☐ no secrets ☐ backup
-exclusion for sensitive files.
+**Checklist:**
+
+- [ ] DataStore not SharedPreferences
+- [ ] Preferences vs Proto chosen
+- [ ] one singleton/file
+- [ ] repository exposes `Flow`
+- [ ] defaults
+- [ ] corruption handler
+- [ ] `IOException` `.catch`
+- [ ] migration from SharedPrefs
+- [ ] no secrets
+- [ ] backup exclusion for sensitive files.
 
 **Key APIs:** `preferencesDataStore`, `dataStore`, `DataStore<Preferences>`,
 `edit {}`, `updateData {}`, `Serializer`, `ReplaceFileCorruptionHandler`,

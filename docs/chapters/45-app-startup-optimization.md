@@ -459,6 +459,7 @@ doesn't break first-use, `reportFullyDrawn` called exactly once.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Cold vs warm vs hot?* New process / process-alive-Activity-recreated / Activity-in-
    memory — decreasing cost.
 2. *Startup phases?* fork → Application → first Activity → first frame (TTID) → first
@@ -469,6 +470,7 @@ doesn't break first-use, `reportFullyDrawn` called exactly once.
    (`reportFullyDrawn`).
 
 **Optimizing**
+
 6. *Main lever?* Move non-essential work off the critical path (lazy/background/defer).
 7. *What to defer?* SDKs not needed for the first frame (analytics, ads).
 8. *Jetpack App Startup?* One `InitializationProvider` + ordered `Initializer`s vs
@@ -480,6 +482,7 @@ doesn't break first-use, `reportFullyDrawn` called exactly once.
 13. *SplashScreen API?* Perceived speed, no extra Activity.
 
 **Measurement**
+
 14. *How measure startup?* Startup traces, Macrobenchmark `StartupTimingMetric`,
     `reportFullyDrawn`, Android vitals.
 15. *Macrobenchmark vs manual?* Reproducible, CI-gateable, cold/warm/hot modes.
@@ -487,17 +490,20 @@ doesn't break first-use, `reportFullyDrawn` called exactly once.
 17. *Mark TTFMC?* `reportFullyDrawn()` when content is shown.
 
 **Pitfalls**
+
 18. *Deferring too much?* Deferred-but-needed init crashes first use.
 19. *Measuring wrong type?* Confusing warm/hot with cold misleads.
 20. *Blank launch cause?* First frame blocked on network.
 21. *Jank on first scroll?* Missing Baseline Profile.
 
 **Security**
+
 22. *Speed vs auth?* Still gate sensitive screens (re-auth); splash shows no protected
     content.
 23. *Deferred analytics + consent?* Defer timing, not consent.
 
 **Production**
+
 24. *Regression gate?* CI Macrobenchmark budget + vitals alert.
 25. *Field-only slowness?* Low-end device class — set per-class budgets.
 26. *Find the slow initializer?* Startup Perfetto trace.
@@ -559,10 +565,18 @@ blocking the first frame on the network; per-library auto-init providers; no Bas
 Profile (jank); deferring something the first screen needs (crash); measuring the wrong
 start type; no CI regression gate.
 
-**Checklist:** ☐ minimal `onCreate` ☐ defer/background non-essential init ☐ App Startup
-for ordering ☐ skeleton + cached first screen ☐ `reportFullyDrawn()` ☐ Baseline Profile
-+ R8 ☐ SplashScreen API ☐ Macrobenchmark cold-start in CI ☐ Android vitals monitoring
-☐ per-device-class budgets.
+**Checklist:**
+
+- [ ] minimal `onCreate`
+- [ ] defer/background non-essential init
+- [ ] App Startup for ordering
+- [ ] skeleton + cached first screen
+- [ ] `reportFullyDrawn()`
+- [ ] Baseline Profile + R8
+- [ ] SplashScreen API
+- [ ] Macrobenchmark cold-start in CI
+- [ ] Android vitals monitoring
+- [ ] per-device-class budgets.
 
 **Key APIs:** `Application`/`@HiltAndroidApp`, `androidx.startup.Initializer`/
 `InitializationProvider`, `Lazy<T>` (Hilt), `ComponentActivity.reportFullyDrawn()`,

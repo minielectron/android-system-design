@@ -558,6 +558,7 @@ What to test: **D-pad reachability** (every element, no traps) + **initial focus
 > ≥40 questions (Complex).
 
 **Fundamentals**
+
 1. *How is TV different?* D-pad (no touch), 10-foot, landscape, media-centric, low-RAM, fragmented.
 2. *#1 TV mistake?* Porting a phone app.
 3. *Central UI state?* Focus (exactly one focused element).
@@ -565,6 +566,7 @@ What to test: **D-pad reachability** (every element, no traps) + **initial focus
 5. *Input?* D-pad + select + media/voice keys.
 
 **Focus**
+
 6. *Focus guarantees?* Reachable, visible highlight, initial focus, no traps.
 7. *Focus trap?* Focus can't escape a region — unnavigable.
 8. *Spatial navigation?* D-pad moves focus geometrically (next in direction).
@@ -574,12 +576,14 @@ What to test: **D-pad reachability** (every element, no traps) + **initial focus
 12. *2D navigation?* Rows (left/right) + between rows (up/down).
 
 **10-foot UI**
+
 13. *10-foot?* Large text, high contrast, prominent focus highlight, landscape.
 14. *Toolkits?* Leanback (Views) / androidx.tv Compose.
 15. *Browse pattern?* Rows of cards (BrowseFragment / TvLazyRow).
 16. *Highlight?* Scale/glow/border on focused card.
 
 **Media**
+
 17. *Core job?* Playback (Media3/ExoPlayer, Ch 56).
 18. *DRM?* Widevine (L1 on TV) for premium OTT (Ch 58).
 19. *Transport?* D-pad + media keys (play/pause/seek).
@@ -587,12 +591,14 @@ What to test: **D-pad reachability** (every element, no traps) + **initial focus
 21. *Media session?* System/voice transport control (Ch 56).
 
 **Constraints**
+
 22. *RAM?* Low (512MB–2GB STB/dongle) — strict memory (Ch 89).
 23. *GPU?* Weak — strict rendering/jank (Ch 90/93).
 24. *Long sessions?* Amplify leaks — release player (Ch 89).
 25. *Test?* Real low-RAM device, not emulator.
 
 **Platform**
+
 26. *Android TV vs Fire TV?* Google vs Amazon ecosystem (fork).
 27. *Fire TV lacks?* Google Play Services (no FCM/Play Billing).
 28. *Fallback?* Amazon ADM/IAP/Alexa behind abstraction.
@@ -600,12 +606,14 @@ What to test: **D-pad reachability** (every element, no traps) + **initial focus
 30. *Abstract how?* Interfaces + per-platform DI (Ch 46).
 
 **Text/voice**
+
 31. *Text entry?* Painful (D-pad keyboard) — minimize.
 32. *Alternatives?* Voice, deep links, phone/QR sign-in.
 33. *Deep links?* Launch content directly (search/recs).
 34. *Voice?* Assistant (Android TV) / Alexa (Fire TV).
 
 **Edge/production**
+
 35. *Shared device?* Profiles + per-profile isolation (Ch 28).
 36. *Sign-in?* Device-code/QR (not typing on shared TV, Ch 20).
 37. *Payment?* Platform store (Play/Amazon IAP), not custom (Ch 77).
@@ -685,13 +693,18 @@ invisible highlight); dense/small 10-foot UI; hardcoding Google Play Services (c
 ignoring low-RAM/low-power (OOM/jank); not releasing the player (leaks, Ch 89); unhandled media/
 D-pad keys; forcing D-pad text entry; testing only on emulators (missing real low-RAM reality).
 
-**Checklist:** ☐ focus-state model (one focused, reachable, initial focus, visible highlight, no
-traps) ☐ D-pad spatial navigation (focus order, 2D rows/grid, FocusRequester/focusGroup) ☐ 10-foot
-UI (leanback / `androidx.tv` Compose, large, high-contrast) ☐ media-centric state (Media3 + DRM +
-transport + resume + media session, Ch 56/58) ☐ handle media/D-pad keys (`onKeyEvent`) ☐ strict
-memory + rendering for low-RAM/low-power (Ch 89/90) + release player ☐ platform abstraction (Android
-TV/Fire TV/STB; no-GPS fallback; DI, Ch 46) ☐ minimize text entry (voice/deep-link/QR sign-in) ☐
-profiles/isolation on shared device (Ch 28) ☐ test real low-RAM device + D-pad-only.
+**Checklist:**
+
+- [ ] focus-state model (one focused, reachable, initial focus, visible highlight, no traps)
+- [ ] D-pad spatial navigation (focus order, 2D rows/grid, FocusRequester/focusGroup)
+- [ ] 10-foot UI (leanback / `androidx.tv` Compose, large, high-contrast)
+- [ ] media-centric state (Media3 + DRM + transport + resume + media session, Ch 56/58)
+- [ ] handle media/D-pad keys (`onKeyEvent`)
+- [ ] strict memory + rendering for low-RAM/low-power (Ch 89/90) + release player
+- [ ] platform abstraction (Android TV/Fire TV/STB; no-GPS fallback; DI, Ch 46)
+- [ ] minimize text entry (voice/deep-link/QR sign-in)
+- [ ] profiles/isolation on shared device (Ch 28)
+- [ ] test real low-RAM device + D-pad-only.
 
 **Key APIs:** `androidx.tv.material3`/`androidx.tv.foundation` (`TvLazyRow`/`TvLazyColumn`, TV
 `Card`), `Modifier.focusGroup`/`focusRequester`/`onFocusChanged`/`focusProperties`,

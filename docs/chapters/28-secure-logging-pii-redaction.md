@@ -462,6 +462,7 @@ test output for secret patterns.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why is logging a security risk?* Logs reach Logcat/crash/analytics/third parties;
    secrets/PII in them are leaked.
 2. *Is Logcat private?* No — `adb`, tooling, and some apps/rooted devices can read
@@ -474,6 +475,7 @@ test output for secret patterns.
    cookies, emails/names/addresses, precise location, full bodies.
 
 **Redaction**
+
 6. *Typed redaction?* Wrap sensitive values in a `Sensitive` type whose `toString()`
    masks — can't accidentally print raw.
 7. *Pattern redaction?* Regex-scrub messages for tokens/emails/cards as a backstop.
@@ -482,39 +484,46 @@ test output for secret patterns.
 9. *Redact stack traces?* Yes — exceptions/messages can carry PII/secrets.
 
 **Levels/build**
+
 10. *Debug vs release logging?* Verbose/debug only in debug; release emits
     minimal scrubbed warn/error.
 11. *Why gate verbose out of release?* Leaks + performance/battery.
 12. *Remote log levels?* Adjust verbosity per release via remote config (Ch 41).
 
 **Correlation/structure**
+
 13. *How debug without logging PII?* Correlation IDs (Ch 1/84) + structured
     ids/types.
 14. *Structured vs stringly logs?* Structured (key/value) is searchable,
     redactable, correlatable.
 
 **Crash/analytics**
+
 15. *Crash breadcrumbs?* Types + ids, never content; scrub before upload (Ch 83).
 16. *Analytics PII?* Schema-validated params; reject PII-shaped values (Ch 82).
 17. *Third-party SDKs?* Treat as external sinks; scrub before data reaches them.
 
 **Privacy/consent**
+
 18. *GDPR/CCPA?* Honor consent; drop/anonymize telemetry for opted-out; minimize +
     retention.
 19. *Data-subject deletion?* Logs/analytics must support it (no permanent PII).
 
 **Performance**
+
 20. *Release logging cost?* Near-zero (no-op trees, lazy/structured; no eager
     concatenation).
 21. *Remote logging?* Async + batched + sampled.
 
 **Testing/governance**
+
 22. *How test redaction?* Assert masks for tokens/emails/cards; `Sensitive` never
     prints raw.
 23. *How enforce no raw Log?* Lint/CI rule failing the build.
 24. *CI PII scanning?* Scan logs/events for secret/PII patterns.
 
 **Production debugging**
+
 25. *Token in a log?* Raw `Log` or missing redaction → fix + lint.
 26. *PII in crash report?* Unscrubbed breadcrumb/key.
 27. *Can't correlate?* Missing correlation ID.
@@ -576,10 +585,18 @@ block-list-only redaction (misses formats); verbose logs in release; PII in cras
 breadcrumbs/analytics; eager string building on hot paths; ignoring consent;
 unredacted stack traces.
 
-**Checklist:** ☐ central logger (no raw `Log`) ☐ allow-list structured fields
-☐ typed `Sensitive` + pattern backstop ☐ `redactHeader(Authorization/Cookie)`
-☐ verbose debug-only ☐ scrubbed crash breadcrumbs (types/ids) ☐ analytics schema
-(no PII) ☐ correlation IDs ☐ consent-gated telemetry ☐ lint/CI enforcement.
+**Checklist:**
+
+- [ ] central logger (no raw `Log`)
+- [ ] allow-list structured fields
+- [ ] typed `Sensitive` + pattern backstop
+- [ ] `redactHeader(Authorization/Cookie)`
+- [ ] verbose debug-only
+- [ ] scrubbed crash breadcrumbs (types/ids)
+- [ ] analytics schema (no PII)
+- [ ] correlation IDs
+- [ ] consent-gated telemetry
+- [ ] lint/CI enforcement.
 
 **Key APIs/tools:** Timber (`Tree`), `android.util.Log` (banned outside core),
 `HttpLoggingInterceptor.redactHeader` (Ch 1), a `Sensitive<T>` value class,

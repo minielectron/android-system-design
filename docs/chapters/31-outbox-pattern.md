@@ -481,6 +481,7 @@ ordering, encrypted outbox (Ch 24), clear on logout.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What is the outbox pattern?* Durably record each local mutation and replay it to
    the server until acked.
 2. *Why durable (Room)?* Survive process death/offline so writes aren't lost.
@@ -492,37 +493,44 @@ ordering, encrypted outbox (Ch 24), clear on logout.
    DEAD_LETTER(permanent).
 
 **Ordering/idempotency**
+
 6. *Ordering guarantee?* Per-entity FIFO via `seq`.
 7. *Why idempotency keys?* Retries/replays must apply once (Ch 15).
 8. *Two offline edits same entity?* Ordered drain applies in sequence.
 
 **Failure handling**
+
 9. *Transient failure?* Leave PENDING; retry with backoff (Ch 30).
 10. *Permanent failure?* Dead-letter + surface; never drop; never retry forever.
 11. *Process death mid-send?* Durable; re-send next run (idempotent); reset SENDING.
 12. *Attempts cap?* Dead-letter after max attempts.
 
 **Optimization**
+
 13. *Compaction?* Merge redundant ops (keep latest progress) to cut volume.
 14. *Batching?* Drain many entries per run / one request.
 15. *Bounding?* Cap outbox; backpressure on long offline.
 
 **Integration**
+
 16. *Who drains it?* WorkManager (Ch 30) — survives kill, constrained.
 17. *Relation to offline-first?* It's the write path (Ch 29).
 18. *Relation to conflicts?* Drained mutations may conflict with remote (Ch 33).
 
 **Security**
+
 19. *Encrypt the outbox?* Yes if payloads sensitive (Ch 24).
 20. *Authorization?* Backend authorizes each drained mutation (Ch 29).
 21. *Logout?* Clear outbox; per-account (Ch 22/42).
 
 **Testing**
+
 22. *How test atomicity?* Assert entity + entry both present after a write.
 23. *How test dead-letter?* Permanent error → DEAD_LETTER + entity FAILED.
 24. *How test idempotency?* Double drain → one applied key.
 
 **Production debugging**
+
 25. *Writes lost?* Non-atomic/non-durable outbox.
 26. *Duplicates?* Missing idempotency.
 27. *Outbox growing?* Drain blocked or no compaction.
@@ -580,10 +588,19 @@ entry lifecycle.
 dropping (no dead-letter); unordered drain; unbounded/un-compacted outbox;
 unencrypted sensitive entries; not clearing on logout.
 
-**Checklist:** ☐ durable outbox (Room) ☐ atomic entity+entry (one tx) ☐ idempotency
-key (Ch 15) ☐ ordered drain (seq) ☐ WorkManager drainer (Ch 30) ☐ retry transient +
-dead-letter permanent ☐ surface failures (Ch 29) ☐ compaction for chatty ops
-☐ batch sends ☐ encrypt + clear (Ch 24/22) ☐ server authorizes.
+**Checklist:**
+
+- [ ] durable outbox (Room)
+- [ ] atomic entity+entry (one tx)
+- [ ] idempotency key (Ch 15)
+- [ ] ordered drain (seq)
+- [ ] WorkManager drainer (Ch 30)
+- [ ] retry transient + dead-letter permanent
+- [ ] surface failures (Ch 29)
+- [ ] compaction for chatty ops
+- [ ] batch sends
+- [ ] encrypt + clear (Ch 24/22)
+- [ ] server authorizes.
 
 **Key APIs/patterns:** Room `@Transaction`/`withTransaction`, outbox table +
 `OutboxDao`, `OutboxStatus` lifecycle, idempotency keys (Ch 15), WorkManager drainer

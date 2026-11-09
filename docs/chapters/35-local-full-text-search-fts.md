@@ -476,6 +476,7 @@ offline-only merge (Ch 10), large-table performance benchmark.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why not `LIKE '%q%'`?* Full scan (no index for leading wildcard), no ranking, no
    tokenization/prefix/phrase.
 2. *What is FTS?* SQLite full-text search — an inverted index enabling fast
@@ -485,6 +486,7 @@ offline-only merge (Ch 10), large-table performance benchmark.
 5. *Inverted index?* term→documents mapping; matches by token.
 
 **Design**
+
 6. *External-content table?* FTS indexes an existing table without duplicating data
    (`content=`).
 7. *Index sync?* Triggers (AFTER INSERT/UPDATE/DELETE) or transactional write-both.
@@ -494,37 +496,44 @@ offline-only merge (Ch 10), large-table performance benchmark.
    filters.
 
 **Ranking/UX**
+
 10. *Ranking?* FTS5 `bm25()` (weight columns: title > description); FTS4 `matchinfo`.
 11. *Snippet/highlight?* FTS5 `snippet()`/`highlight()`.
 12. *Typeahead?* Prefix `term*`; debounce (Ch 9).
 13. *Merge local+remote?* Local-first instant, then remote merge (Ch 10).
 
 **FTS4 vs FTS5**
+
 14. *Difference?* FTS5 has bm25/snippet/config but needs newer SQLite; FTS4 is
     Room-native/broadly supported.
 15. *Which to pick?* FTS4 for compatibility; FTS5 when you control SQLite/need
     ranking.
 
 **Correctness**
+
 16. *Index drift?* Triggers / atomic write keep FTS in sync.
 17. *Sanitize queries?* Yes — neutralize FTS operators; valid MATCH.
 18. *Bulk load?* Rebuild or incremental sync after.
 
 **Security**
+
 19. *Sensitive data?* Encrypt the DB (index included, Ch 24).
 20. *Per-account?* Clear index on logout (Ch 22/42).
 21. *Query PII?* Redact logs (Ch 28).
 
 **Performance**
+
 22. *Why FTS fast?* Inverted index vs full scan.
 23. *Storage?* External-content avoids duplication.
 24. *Large results?* Limit + page (Ch 13).
 
 **Testing**
+
 25. *How test?* In-memory Room; assert token/prefix/multi-term match + sync.
 26. *How test sanitizer?* Assert operators neutralized.
 
 **Production debugging**
+
 27. *Missing results?* Index drift.
 28. *Crash on query?* Unsanitized input.
 29. *Poor recall?* Tokenizer/diacritics.
@@ -581,10 +590,18 @@ highlight, index sync (triggers), local+remote merge.
 errors); FTS5 on devices without it (use FTS4); unencrypted sensitive index; not
 clearing on logout.
 
-**Checklist:** ☐ FTS (not LIKE) ☐ FTS4/5 chosen for compatibility ☐ external-content
-table ☐ MATCH (prefix/phrase) ☐ sanitize input ☐ BM25 + field weights (FTS5) ☐
-snippet/highlight ☐ index sync via triggers ☐ merge local+remote (Ch 10) ☐ encrypt
-DB + clear per-account.
+**Checklist:**
+
+- [ ] FTS (not LIKE)
+- [ ] FTS4/5 chosen for compatibility
+- [ ] external-content table
+- [ ] MATCH (prefix/phrase)
+- [ ] sanitize input
+- [ ] BM25 + field weights (FTS5)
+- [ ] snippet/highlight
+- [ ] index sync via triggers
+- [ ] merge local+remote (Ch 10)
+- [ ] encrypt DB + clear per-account.
 
 **Key APIs:** Room `@Fts4(contentEntity=...)`/`@Fts5`, `MATCH`, `bm25()`/`snippet()`/
 `highlight()` (FTS5), `matchinfo()`/`offsets()` (FTS4), `unicode61`/`remove_diacritics`

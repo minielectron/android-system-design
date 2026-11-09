@@ -496,6 +496,7 @@ Use large fake sources; verify memory stays flat under profiling.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Cardinal sin?* Loading a whole large file into memory (OOM).
 2. *Correct approach?* Stream in bounded chunks (constant memory).
 3. *Chunk size?* 8–64KB typical; tune throughput vs memory.
@@ -503,34 +504,40 @@ Use large fake sources; verify memory stays flat under profiling.
 5. *Toolkit?* okio (`Source`/`Sink`/`Buffer`) or `java.io` streams.
 
 **Threading/cancellation**
+
 6. *Where does IO run?* Off-main (`Dispatchers.IO`, Ch 1).
 7. *Why?* ANR otherwise.
 8. *Cancellation?* `ensureActive()` per chunk — natural checkpoint.
 9. *Progress?* Count bytes per chunk → Flow (Ch 6).
 
 **Transforms**
+
 10. *Compose transforms?* Streaming stages (hash→compress→encrypt→write), no full buffer.
 11. *Hashing large file?* Stream through `MessageDigest`/`HashingSink` (Ch 17).
 12. *Encrypt to disk?* `CipherSink`/`CipherOutputStream` streaming (Ch 25).
 13. *Chunking for upload?* Fixed-size parts (Ch 17).
 
 **Resources/storage**
+
 14. *Close streams?* `use {}` always (FD leaks).
 15. *Corrupt-safe output?* Temp-then-atomic-rename.
 16. *Space?* Check before large write; cleanup; handle `ENOSPC` (Ch 62).
 17. *Where do temp/output go?* App-specific/SAF (Ch 62/25).
 
 **Partial/resume**
+
 18. *Seek/slice?* `RandomAccessFile` / range — don't read whole.
 19. *Resume transfer?* Offset/range (Ch 17/18).
 20. *Backpressure?* Bounded buffer + suspending reads.
 
 **Security**
+
 21. *Sensitive data to disk?* Encrypt streaming (Ch 25).
 22. *Zip bomb?* Bound decompression output/ratio.
 23. *Integrity?* Streamed hash (Ch 17).
 
 **Testing/Production**
+
 24. *Test bounded memory?* Large fake source + heap profiling (flat).
 25. *OOM in prod?* A whole-file read somewhere.
 26. *"Too many open files"?* Unclosed streams.
@@ -595,11 +602,20 @@ unclosed streams (FD exhaustion); buffering a whole file to transform; write-in-
 (corrupt on crash); no space check / no temp cleanup; restarting instead of resuming;
 plaintext sensitive data to shared storage.
 
-**Checklist:** ☐ stream in bounded chunks (never whole-file) ☐ off-main (`Dispatchers.IO`)
-☐ per-chunk `ensureActive()` cancellation ☐ progress Flow ☐ streaming transforms (hash/
-compress/encrypt, Ch 17/25) ☐ `use {}` close ☐ temp-then-atomic-rename ☐ space check +
-temp cleanup (Ch 62) ☐ range/offset resume (Ch 17/18) ☐ encrypt sensitive to app-specific
-(Ch 25) ☐ bound sizes/decompression ☐ flat-memory + throughput telemetry.
+**Checklist:**
+
+- [ ] stream in bounded chunks (never whole-file)
+- [ ] off-main (`Dispatchers.IO`)
+- [ ] per-chunk `ensureActive()` cancellation
+- [ ] progress Flow
+- [ ] streaming transforms (hash/compress/encrypt, Ch 17/25)
+- [ ] `use {}` close
+- [ ] temp-then-atomic-rename
+- [ ] space check + temp cleanup (Ch 62)
+- [ ] range/offset resume (Ch 17/18)
+- [ ] encrypt sensitive to app-specific (Ch 25)
+- [ ] bound sizes/decompression
+- [ ] flat-memory + throughput telemetry.
 
 **Key APIs:** okio `Source`/`Sink`/`Buffer`/`BufferedSource`/`BufferedSink`/`HashingSink`/
 `GzipSink`/`cipherSink`/`readAll`/`writeAll`, `InputStream`/`OutputStream`/

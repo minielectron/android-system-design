@@ -508,6 +508,7 @@ resume continues from offset; constraint gating; disk-full handling.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *How do you make a download resumable?* HTTP `Range: bytes=offset-` → `206
    Partial Content`, continuing from a persisted offset / `.part` file.
 2. *How ensure resume is safe?* `If-Range` with a validator (ETag) → restart if
@@ -518,50 +519,59 @@ resume continues from offset; constraint gating; disk-full handling.
    `.part` → final.
 
 **Architecture**
+
 6. *Where does the transfer run?* A WorkManager foreground worker; UI observes.
 7. *What's persisted?* downloadId + offset + total + etag + checksum + status
    (Room).
 8. *How to manage many downloads?* A bounded, prioritized queue (Ch 14).
 
 **Protocol/resume**
+
 9. *206 vs 200?* 206 = partial (resume accepted); 200 = full (file changed/no
    range) → restart.
 10. *How track the resume point?* `.part` file length + persisted offset.
 11. *Integrity check?* Size + SHA-256; delete and re-download on mismatch.
 
 **Background/lifecycle**
+
 12. *Foreground service — why?* Long, visible downloads need it to run reliably +
     show a notification (Ch 46).
 13. *Process death?* WorkManager reschedules; resume from `.part`.
 14. *Pause/resume?* Cancel worker (keep `.part`); re-enqueue resumes from offset.
 
 **Storage**
+
 15. *Where to store?* App-internal for private; MediaStore/SAF for user-visible
     (scoped storage).
 16. *Eviction?* LRU under pressure; cap total; cleanup partials/on logout.
 17. *Atomic finalize?* Write `.part`, verify, rename — never surface a partial.
 
 **Alternatives**
+
 18. *System `DownloadManager` vs custom?* System is simple but opaque; custom gives
     control/integration/integrity.
 19. *Offline media?* ExoPlayer/Media3 download manager for adaptive/DRM (Ch 59).
 
 **Resource**
+
 20. *Bound concurrency?* Queue limit + priority (Ch 14).
 21. *Constraints?* Unmetered/charging for large (Ch 30/47).
 
 **Security**
+
 22. *Private content?* Signed URLs + auth; verify integrity; encrypt at rest
     (Ch 24).
 23. *Tampering?* Checksum + TLS/pinning.
 
 **Testing**
+
 24. *How test resume?* MockWebServer 206 + interruption; assert Range header +
     continuation.
 25. *How test integrity?* Serve corrupt body; assert failure + file deleted.
 26. *How test the worker?* `TestListenableWorkerBuilder`.
 
 **Production debugging**
+
 27. *Never completes on flaky networks?* No Range/resume.
 28. *Corrupt files?* No integrity verification.
 29. *Dies on navigation?* UI-scoped not WorkManager.
@@ -624,10 +634,19 @@ UI-scoped downloads (die on navigation); surfacing partial/corrupt files (no
 verify/finalize); unbounded concurrency; wrong storage location (ignoring scoped
 storage); no eviction (disk fills); no unique work (duplicates).
 
-**Checklist:** ☐ Range resume + `.part` ☐ `If-Range` validator ☐ stream to disk
-☐ WorkManager foreground ☐ constraints + backoff ☐ integrity (size+checksum)
-☐ atomic finalize ☐ bounded priority queue ☐ scoped storage + eviction ☐ unique
-work ☐ no PII in logs.
+**Checklist:**
+
+- [ ] Range resume + `.part`
+- [ ] `If-Range` validator
+- [ ] stream to disk
+- [ ] WorkManager foreground
+- [ ] constraints + backoff
+- [ ] integrity (size+checksum)
+- [ ] atomic finalize
+- [ ] bounded priority queue
+- [ ] scoped storage + eviction
+- [ ] unique work
+- [ ] no PII in logs.
 
 **Key APIs:** OkHttp `Range`/`If-Range`, `206 Partial Content`, `FileOutputStream`
 (append), `File.renameTo`, `MessageDigest` (SHA-256), `CoroutineWorker`/

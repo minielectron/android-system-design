@@ -531,6 +531,7 @@ locale-change state survival (Ch 44); regionalized behavior (RegionPolicy). CI r
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *i18n vs l10n?* Design-to-be-localizable vs translating for a locale.
 2. *Regionalization?* Adapt content + behavior per region (beyond language).
 3. *#1 i18n bug?* Hardcoded strings.
@@ -538,6 +539,7 @@ locale-change state survival (Ch 44); regionalized behavior (RegionPolicy). CI r
 5. *Locale selection?* Android auto-selects by locale; falls back to default.
 
 **RTL**
+
 6. *RTL languages?* Arabic, Hebrew, Persian, Urdu.
 7. *How support?* start/end + `supportsRtl` + autoMirrored.
 8. *left/right problem?* Doesn't mirror → broken RTL.
@@ -545,23 +547,27 @@ locale-change state survival (Ch 44); regionalized behavior (RegionPolicy). CI r
 10. *Test RTL?* Force RTL / pseudolocale ar-XB.
 
 **Formatting**
+
 11. *Why locale-aware format?* Separators/date order/currency vary.
 12. *Currency?* `NumberFormat.getCurrencyInstance(locale)` + currency.
 13. *Concatenation?* Locale-wrong — never.
 14. *Date?* `DateTimeFormatter.ofLocalizedDate` (locale).
 
 **Plurals/strings**
+
 15. *Plurals?* `plurals` resources / ICU MessageFormat.
 16. *Why?* Rules vary (Arabic 6 forms).
 17. *count+noun concat?* Always wrong.
 18. *Word order?* Parameterized strings (`%1$s`) — translators reorder.
 
 **Layout**
+
 19. *Text expansion?* +30–200%; flexible layouts.
 20. *Catch early?* Pseudolocalization (en-XA).
 21. *Fixed width?* Truncates — avoid.
 
 **Locale/region**
+
 22. *Per-app language?* Android 13+ (`LocaleManager`/AppCompat).
 23. *Locale change?* Config change — survive it (Ch 44).
 24. *Regionalize what?* Currency, tax, catalog, legal (Ch 28), units.
@@ -634,12 +640,18 @@ regionalization (currency/tax/catalog/legal/units, Ch 28), translation pipeline.
 (truncation); assuming region == language; losing state on locale change (Ch 44); no fallback; no
 pseudolocale testing; mistranslated legal/consent (Ch 28).
 
-**Checklist:** ☐ externalize all user-facing text (`strings.xml` + `values-xx/`) ☐ start/end +
-`supportsRtl` + autoMirrored (RTL) ☐ locale-aware ICU formatters (number/date/currency) ☐ plurals
-resources / MessageFormat ☐ parameterized strings (`%1$s`) for word order ☐ flexible layouts +
-pseudolocale (en-XA/ar-XB) testing ☐ per-app language (Android 13+) + locale config change (Ch 44)
-☐ regionalize currency/tax/catalog/legal/units (Ch 28) ☐ translation pipeline + fallback +
-`translatable=false` ☐ `HardcodedText` lint; locale-specific crash monitoring (Ch 83).
+**Checklist:**
+
+- [ ] externalize all user-facing text (`strings.xml` + `values-xx/`)
+- [ ] start/end + `supportsRtl` + autoMirrored (RTL)
+- [ ] locale-aware ICU formatters (number/date/currency)
+- [ ] plurals resources / MessageFormat
+- [ ] parameterized strings (`%1$s`) for word order
+- [ ] flexible layouts + pseudolocale (en-XA/ar-XB) testing
+- [ ] per-app language (Android 13+) + locale config change (Ch 44)
+- [ ] regionalize currency/tax/catalog/legal/units (Ch 28)
+- [ ] translation pipeline + fallback + `translatable=false`
+- [ ] `HardcodedText` lint; locale-specific crash monitoring (Ch 83).
 
 **Key APIs:** `stringResource`/`pluralStringResource`/`R.string`/`R.plurals`, `values-<lang>-r<REGION>/`
 qualifiers, `android:supportsRtl` + `start`/`end` + `Icons.AutoMirrored`, `NumberFormat.getCurrencyInstance(locale)`

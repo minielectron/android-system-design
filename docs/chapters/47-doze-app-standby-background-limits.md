@@ -510,6 +510,7 @@ testing on major OEMs is essential — emulator behavior under-represents OEM ki
 > ≥40 questions.
 
 **Doze**
+
 1. *What is Doze?* Device-idle mode batching background activity into maintenance
    windows; network/wakelocks suspended, alarms/jobs deferred outside them.
 2. *Deep vs light Doze?* Stationary+unplugged+screen-off (windows far apart) vs
@@ -520,6 +521,7 @@ testing on major OEMs is essential — emulator behavior under-represents OEM ki
 5. *Why Doze exists?* Battery life; top historical complaint.
 
 **App Standby Buckets**
+
 6. *What are buckets?* Active/working-set/frequent/rare/restricted usage tiers that
    throttle jobs/alarms/FCM/network.
 7. *How assigned?* By usage/recency (and misbehavior → restricted).
@@ -528,12 +530,14 @@ testing on major OEMs is essential — emulator behavior under-represents OEM ki
 10. *Read the bucket?* `UsageStatsManager.appStandbyBucket`.
 
 **Service/background limits**
+
 11. *Android 8 background service limit?* Can't start background services freely;
     `startService` from background throws.
 12. *What replaced free background services?* WorkManager/JobScheduler + FGS.
 13. *Background location limits?* Throttled; needs background-location permission (Ch 67).
 
 **Battery optimization / OEM**
+
 14. *Battery optimization?* Default state subjecting apps to Doze/Standby; allowlist
     exempts.
 15. *How request exemption?* `ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` (legitimate
@@ -544,6 +548,7 @@ testing on major OEMs is essential — emulator behavior under-represents OEM ki
 18. *Handling OEMs?* Detect + guide user; FGS for critical path.
 
 **Mechanism selection**
+
 19. *Deferrable work?* WorkManager.
 20. *Ongoing visible?* Foreground service (Ch 46).
 21. *Prompt time-sensitive wake?* High-priority FCM (Ch 49).
@@ -553,6 +558,7 @@ testing on major OEMs is essential — emulator behavior under-represents OEM ki
 24. *Why not background polling?* Blocked/deferred/battery-flagged — use FCM.
 
 **Constraints & degradation**
+
 25. *WorkManager constraints?* Network/charging/idle/battery — run in the right window.
 26. *Heavy sync constraint?* Unmetered + charging → runs in Doze windows cheaply.
 27. *Expedited work?* `setExpedited` for time-sensitive one-offs within quota.
@@ -561,18 +567,21 @@ testing on major OEMs is essential — emulator behavior under-represents OEM ki
 30. *Catch-up sync?* Sync since a cursor (Ch 32) regardless of timing.
 
 **Security/privacy**
+
 31. *Background location?* Only during active/foreground/FGS session; permission-gated.
 32. *Exemption honesty?* Don't trick users; Play policy + trust.
 33. *FCM payload in Doze?* Untrusted; no sensitive data in push.
 34. *OEM deep-link safety?* try/catch + fallback (component may not exist).
 
 **Testing**
+
 35. *Simulate Doze?* `adb dumpsys deviceidle force-idle`.
 36. *Set a bucket?* `adb am set-standby-bucket ... restricted`.
 37. *Why device-matrix?* OEM killing varies; emulator under-represents.
 38. *Test constraints?* WorkManager `TestDriver`.
 
 **Production**
+
 39. *Sync unreliable on one OEM?* OEM killing — guide user / FGS.
 40. *Always-delayed work?* Restricted bucket or wrong mechanism.
 41. *Battery flagged in vitals?* Wakelock/exact-alarm abuse — cooperate.
@@ -646,11 +655,18 @@ throttled); assuming AOSP guarantees on OEM devices; holding wakelocks; requesti
 exemptions for all apps (Play rejection); assuming exact background timing (not idempotent/
 catch-up); no completion telemetry by OEM/bucket; silent background location.
 
-**Checklist:** ☐ deferrable work → WorkManager + constraints ☐ ongoing visible → FGS
-☐ prompt wake → high-priority FCM → expedited work ☐ exact time → exact alarm (legit only)
-☐ idempotent catch-up sync + backoff ☐ standby-bucket awareness ☐ OEM detection + user
-guidance ☐ exemptions legitimate + consented ☐ no wakelock/exact-alarm abuse
-☐ completion telemetry by OEM × OS × bucket.
+**Checklist:**
+
+- [ ] deferrable work → WorkManager + constraints
+- [ ] ongoing visible → FGS
+- [ ] prompt wake → high-priority FCM → expedited work
+- [ ] exact time → exact alarm (legit only)
+- [ ] idempotent catch-up sync + backoff
+- [ ] standby-bucket awareness
+- [ ] OEM detection + user guidance
+- [ ] exemptions legitimate + consented
+- [ ] no wakelock/exact-alarm abuse
+- [ ] completion telemetry by OEM × OS × bucket.
 
 **Key APIs:** WorkManager `Constraints`/`setExpedited`/`enqueueUniquePeriodicWork`
 (Ch 30), `UsageStatsManager.appStandbyBucket`, `PowerManager.isIgnoringBatteryOptimizations`/

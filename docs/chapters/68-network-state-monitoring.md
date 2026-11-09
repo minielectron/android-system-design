@@ -543,6 +543,7 @@ instrumentation for real transitions.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Modern API?* `ConnectivityManager.NetworkCallback` (wrap in a Flow); not deprecated
    polling/broadcast.
 2. *Why not polling?* Stale, misses transitions/capabilities.
@@ -552,11 +553,13 @@ instrumentation for real transitions.
    bandwidth)).
 
 **Metered/transport**
+
 6. *Metered signal?* `NET_CAPABILITY_NOT_METERED` — not "is Wi-Fi".
 7. *Why not "is Wi-Fi"?* Some Wi-Fi is metered; some cellular isn't.
 8. *On metered?* Defer heavy transfers; lower quality; skip prefetch (Ch 30/58/56).
 
 **Reacting**
+
 9. *On recovery?* Reconnect real-time (Ch 63) + retry failed requests (Ch 2) — if
    validated.
 10. *While offline?* Pause reconnect (don't thrash); show banner.
@@ -565,21 +568,25 @@ instrumentation for real transitions.
     background.
 
 **Advisory**
+
 13. *Is network state a correctness gate?* No — advisory for UX/scheduling (offline-first,
     Ch 29).
 14. *Over-gating?* Blocking offline-capable features on connectivity — avoid.
 15. *Offline features work how?* From the SSOT (Ch 3); sync when online (Ch 32).
 
 **Correctness**
+
 16. *Captive portal?* Non-validated → treat as offline for UX.
 17. *Flaps?* Debounce (`distinctUntilChanged`) + jittered reconnect.
 18. *Single source?* One shared observer Flow.
 
 **Security**
+
 19. *Trust the network type?* No — TLS + pinning regardless (Ch 23).
 20. *Data Saver?* Respect `getRestrictBackgroundStatus`.
 
 **Testing/Production**
+
 21. *Test observer?* Shadow `ConnectivityManager` → capabilities → state.
 22. *Test reactor?* Reconnect/retry only on validated.
 23. *Fake online in prod?* Not checking validated.
@@ -656,13 +663,19 @@ WorkManager constraints for background transfers; gating offline-capable feature
 connectivity (over-gating); scattered per-screen checks; no flap debounce (reconnect
 storms); trusting the network type for security.
 
-**Checklist:** ☐ `NetworkCallback` Flow (single shared source), not polling ☐ check
-`VALIDATED` (connected ≠ internet) ☐ use `NOT_METERED` capability (not "is Wi-Fi") ☐ react
-to validated recovery: reconnect (Ch 63) + retry (Ch 2) ☐ metered-aware quality/prefetch
-(Ch 58/56) ☐ defer heavy transfers via WorkManager UNMETERED (Ch 30/47) ☐ debounce flaps +
-jittered reconnect ☐ advisory, not a gate — offline-first SSOT (Ch 29) ☐ TLS+pinning
-regardless of transport (Ch 23) ☐ respect Data Saver ☐ validated-rate + metered-usage
-telemetry.
+**Checklist:**
+
+- [ ] `NetworkCallback` Flow (single shared source), not polling
+- [ ] check `VALIDATED` (connected ≠ internet)
+- [ ] use `NOT_METERED` capability (not "is Wi-Fi")
+- [ ] react to validated recovery: reconnect (Ch 63) + retry (Ch 2)
+- [ ] metered-aware quality/prefetch (Ch 58/56)
+- [ ] defer heavy transfers via WorkManager UNMETERED (Ch 30/47)
+- [ ] debounce flaps + jittered reconnect
+- [ ] advisory, not a gate — offline-first SSOT (Ch 29)
+- [ ] TLS+pinning regardless of transport (Ch 23)
+- [ ] respect Data Saver
+- [ ] validated-rate + metered-usage telemetry.
 
 **Key APIs:** `ConnectivityManager.registerDefaultNetworkCallback`/`registerNetworkCallback`/
 `unregisterNetworkCallback`, `NetworkCallback` (`onAvailable`/`onLost`/

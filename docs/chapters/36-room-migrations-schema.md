@@ -472,6 +472,7 @@ transformed**), full-chain 1→N, unsynced outbox survival, encrypted-DB migrati
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why migrate instead of recreate?* The local DB holds user data (incl. unsynced,
    Ch 31) — recreating loses it.
 2. *What triggers a migration?* Incrementing `@Database(version)`.
@@ -482,6 +483,7 @@ transformed**), full-chain 1→N, unsynced outbox survival, encrypted-DB migrati
    installed → current version (or a direct path).
 
 **Auto vs manual**
+
 6. *Auto-migrations?* Room generates them from exported schemas for simple additive
    changes.
 7. *`AutoMigrationSpec`?* Resolves ambiguous changes (rename/delete) via
@@ -491,12 +493,14 @@ transformed**), full-chain 1→N, unsynced outbox survival, encrypted-DB migrati
    review diffs; commit them.
 
 **Complex changes**
+
 10. *Change a column type in SQLite?* Can't ALTER — create new table, copy/transform,
     drop old, rename.
 11. *Data transformation?* Do it in the copy SQL (e.g., `CAST`/compute).
 12. *Recreate indexes/triggers?* Yes — after the table recreate.
 
 **Safety**
+
 13. *`fallbackToDestructiveMigration` danger?* Deletes the whole DB on a missing/
     failed migration — forbidden for user data in release.
 14. *When is it OK?* Purely disposable cache / debug; even then prefer cache
@@ -504,6 +508,7 @@ transformed**), full-chain 1→N, unsynced outbox survival, encrypted-DB migrati
 15. *Is a migration transactional?* Yes — fails and rolls back if the SQL errors.
 
 **Testing**
+
 16. *Why must migrations be tested?* The normal suite runs on a fresh DB; untested
     migrations crash/corrupt in production.
 17. *How?* `MigrationTestHelper`: create old DB + data → migrate → validate schema +
@@ -512,18 +517,21 @@ transformed**), full-chain 1→N, unsynced outbox survival, encrypted-DB migrati
     transformed.
 
 **Relations**
+
 19. *vs API schema evolution (Ch 16)?* Storage schema vs network DTO — coordinate on
     model changes.
 20. *vs cache versioning (Ch 34)?* DB migration preserves; cache versioning wipes
     stale cache shape — different data.
 
 **Security/perf**
+
 21. *Encrypted DB migration (Ch 24)?* Runs inside the SQLCipher DB; key at open; test
     it.
 22. *Migrations slow startup?* Keep fast; index after copy; off-main open; incremental
     for huge data.
 
 **Production debugging**
+
 23. *Crash-on-open after release?* Missing/failing migration.
 24. *Data-loss reports?* Destructive fallback or lossy transform.
 25. *Corrupt data?* Bad transform SQL (test with data).
@@ -584,11 +592,18 @@ fallback danger, encrypted-DB migration.
 (prod corruption); trying to ALTER a column type (recreate instead); not exporting/
 committing schemas; losing unsynced outbox data; heavy migrations blocking startup.
 
-**Checklist:** ☐ bump version ☐ auto-migration for additive / manual for complex
-☐ data-preserving transform ☐ `exportSchema=true` + commit JSON ☐ `AutoMigrationSpec`
-for rename/delete ☐ test every migration (schema+data) in CI ☐ no destructive
-fallback (release) ☐ migrate encrypted DB (Ch 24) ☐ recreate indexes/triggers ☐ keep
-migrations fast.
+**Checklist:**
+
+- [ ] bump version
+- [ ] auto-migration for additive / manual for complex
+- [ ] data-preserving transform
+- [ ] `exportSchema=true` + commit JSON
+- [ ] `AutoMigrationSpec` for rename/delete
+- [ ] test every migration (schema+data) in CI
+- [ ] no destructive fallback (release)
+- [ ] migrate encrypted DB (Ch 24)
+- [ ] recreate indexes/triggers
+- [ ] keep migrations fast.
 
 **Key APIs:** `@Database(version, exportSchema=true, autoMigrations=[...])`,
 `@AutoMigration`, `AutoMigrationSpec` + `@RenameColumn`/`@RenameTable`/`@DeleteColumn`/

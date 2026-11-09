@@ -532,6 +532,7 @@ analytics/API; reuse Ch 71 test infra.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Division of labor?* Server/ML ranks + personalizes; client renders + logs +
    experiments.
 2. *Why not rank on client?* Needs global data/models the client lacks; breaks experiments.
@@ -540,6 +541,7 @@ analytics/API; reuse Ch 71 test infra.
 5. *Can the client re-order?* No (beyond trivial allowed filters) — render server order.
 
 **Signals**
+
 6. *What signals?* Impressions, clicks, dwell, conversions (add-to-cart/purchase/like),
    dismissals.
 7. *Impression accuracy?* Log on **true visibility** (viewport), deduped — not on load.
@@ -548,28 +550,33 @@ analytics/API; reuse Ch 71 test infra.
 10. *Bad signals →?* Bad recommendations (garbage in).
 
 **Cold-start**
+
 11. *New user?* Server fallback: popular/trending, onboarding prefs (Ch 43), contextual.
 12. *Who decides fallback?* The server; client renders + logs.
 13. *Warming up?* Signals personalize over time.
 
 **Freshness**
+
 14. *Cache?* SSOT for instant/offline (Ch 71).
 15. *Refresh?* On open/pull/significant action; don't show stale as fresh.
 16. *Who controls recency?* Server.
 
 **Experiments**
+
 17. *A/B?* Remote config assigns variant (Ch 41/87); client renders it + logs outcomes.
 18. *Client must?* Render assigned variant faithfully; log consistently.
 19. *Breaking an experiment?* Client re-ranking / ignoring assignment / inconsistent
     logging.
 
 **Privacy (Ch 28)**
+
 20. *Consent?* For behavioral personalization; honor opt-out.
 21. *Transparency?* "Because you viewed X" + controls.
 22. *Signals sensitivity?* PII-adjacent — minimize, consent, secure.
 23. *Regulatory?* GDPR/CCPA opt-out/see-why/delete.
 
 **Testing/Production**
+
 24. *Test logging?* Impression once-on-visible deduped; click/conversion/dismiss.
 25. *Test rendering?* Server order preserved; assigned variant.
 26. *Models not improving?* Signal gaps/inaccuracy.
@@ -644,13 +651,17 @@ signals (models can't learn); no cold-start fallback (empty for new users); show
 recs as fresh; ignoring the experiment assignment or inconsistent logging (invalid A/B); no
 consent/opt-out/transparency (trust/regulatory); treating ranking as a client problem.
 
-**Checklist:** ☐ server ranks; client renders server order (no re-rank) ☐ built on Ch 71
-feed infra (Paging + SSOT) ☐ reliable signal logging via Ch 14 (impressions-on-visible
-deduped, clicks, dwell, conversions, dismiss) ☐ cold-start server fallback (popular/
-onboarding/contextual, Ch 43) ☐ cache + refresh (instant yet fresh, Ch 71) ☐ render assigned
-A/B variant + log outcomes (Ch 41/87) ☐ privacy: consent + opt-out + transparency + "not
-interested" (Ch 28) ☐ server-authorized content + per-account (Ch 23/42) ☐ CTR/conversion +
-signal-reliability telemetry.
+**Checklist:**
+
+- [ ] server ranks; client renders server order (no re-rank)
+- [ ] built on Ch 71 feed infra (Paging + SSOT)
+- [ ] reliable signal logging via Ch 14 (impressions-on-visible deduped, clicks, dwell, conversions, dismiss)
+- [ ] cold-start server fallback (popular/onboarding/contextual, Ch 43)
+- [ ] cache + refresh (instant yet fresh, Ch 71)
+- [ ] render assigned A/B variant + log outcomes (Ch 41/87)
+- [ ] privacy: consent + opt-out + transparency + "not interested" (Ch 28)
+- [ ] server-authorized content + per-account (Ch 23/42)
+- [ ] CTR/conversion + signal-reliability telemetry.
 
 **Key APIs:** reuse Paging 3 + RemoteMediator + Room SSOT (Ch 71/13/3), analytics/event
 pipeline (Ch 14) for signals, viewport-visibility impression tracking (Compose

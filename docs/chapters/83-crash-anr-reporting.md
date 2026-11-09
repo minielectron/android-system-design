@@ -496,6 +496,7 @@ Staged rollout to watch crash-free/ANR rate before full release (Ch 41).
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What to capture?* JVM exceptions, native (NDK) crashes, and ANRs.
 2. *ANR?* Main thread blocked too long (input >5s).
 3. *Why not upload during the crash?* Process is dying — persist + send on next launch.
@@ -503,22 +504,26 @@ Staged rollout to watch crash-free/ANR rate before full release (Ch 41).
 5. *Reporter?* Mature SDK (Crashlytics/Sentry) — handles native/ANR/grouping.
 
 **Readability**
+
 6. *Why gibberish stacks?* R8 obfuscation (Ch 27).
 7. *Fix?* Upload mapping file/symbols → deobfuscate/symbolicate.
 8. *Disable R8 instead?* No — lose size/security; deobfuscate via mapping.
 
 **Context**
+
 9. *Beyond the stack?* Breadcrumbs (Ch 89) + device/app state + logs + correlation id.
 10. *Breadcrumbs?* Recent action/screen sequence → repro.
 11. *Correlation id?* Opaque link to analytics/feedback (Ch 81/82).
 12. *Custom keys?* Flags/screen/memory — redacted (Ch 28).
 
 **Privacy**
+
 13. *PII in reports?* Redact messages/breadcrumbs/keys; never secrets (Ch 28).
 14. *Consent?* Crash reporting respects consent (Ch 28/82).
 15. *Mapping file security?* Keep secure; not in the APK.
 
 **Monitoring**
+
 16. *KPIs?* Crash-free users/sessions + ANR rate (Android vitals).
 17. *Granularity?* By release/device/OS; trends.
 18. *Grouping?* By stack signature into issues (triage by impact).
@@ -526,11 +531,13 @@ Staged rollout to watch crash-free/ANR rate before full release (Ch 41).
 20. *Why vitals matter?* Play ranks/demotes on crash/ANR behavior.
 
 **Reliability/robustness**
+
 21. *Reporter crashes app?* Must be robust/low-overhead.
 22. *Duplicate reports?* Group/dedup.
 23. *Delivery?* Persist + next launch.
 
 **Testing/Production**
+
 24. *Test capture?* Force a crash → verify deobfuscated + context.
 25. *Test ANR?* `ApplicationExitInfo` / block main thread.
 26. *Invisible crashes?* Not capturing / not sending next launch.
@@ -600,13 +607,19 @@ ANRs; bare stacks with no context; PII in exception messages/keys/logs; no conse
 monitoring crash-free/ANR rate or not alerting/rolling back on regressions; a reporter that
 adds overhead or crashes the app.
 
-**Checklist:** ☐ capture JVM + native + ANR (`ApplicationExitInfo` API 30+) ☐ send on next
-launch (persist; don't upload during crash) ☐ attach breadcrumbs (Ch 89) + device state +
-correlation id (Ch 81/82) ☐ keep R8 + upload mapping/symbols → deobfuscate (Ch 27) ☐ redact
-PII + consent (Ch 28/82) ☐ group/dedup into issues ☐ non-fatals with context ☐ monitor
-crash-free/ANR rate in Android vitals by release/device ☐ alert + velocity rollback (Ch 41)
-☐ mature, low-overhead reporter that never crashes the app ☐ secure authed upload + mapping
-security (Ch 19/23/27).
+**Checklist:**
+
+- [ ] capture JVM + native + ANR (`ApplicationExitInfo` API 30+)
+- [ ] send on next launch (persist; don't upload during crash)
+- [ ] attach breadcrumbs (Ch 89) + device state + correlation id (Ch 81/82)
+- [ ] keep R8 + upload mapping/symbols → deobfuscate (Ch 27)
+- [ ] redact PII + consent (Ch 28/82)
+- [ ] group/dedup into issues
+- [ ] non-fatals with context
+- [ ] monitor crash-free/ANR rate in Android vitals by release/device
+- [ ] alert + velocity rollback (Ch 41)
+- [ ] mature, low-overhead reporter that never crashes the app
+- [ ] secure authed upload + mapping security (Ch 19/23/27).
 
 **Key APIs:** crash reporter SDK (Crashlytics/Sentry — `recordException`/`log`/`setCustomKey`),
 `Thread.setDefaultUncaughtExceptionHandler`, `ActivityManager.getHistoricalProcessExitReasons`/

@@ -511,6 +511,7 @@ simulate — document manual test), backup exclusion.
 > 40+ questions.
 
 **Fundamentals**
+
 1. *What is the Android Keystore?* A system key container that generates/holds keys
    in hardware-isolated storage; keys are non-extractable.
 2. *Why not store a token in SharedPreferences?* Plaintext; readable on rooted
@@ -523,6 +524,7 @@ simulate — document manual test), backup exclusion.
    needs a unique IV.
 
 **Keystore internals**
+
 6. *TEE vs StrongBox?* TEE = trusted execution environment (common); StrongBox = a
    dedicated secure element (stronger, not universal) — request with fallback.
 7. *What does "non-extractable" guarantee?* The app can *use* the key but can't
@@ -534,6 +536,7 @@ simulate — document manual test), backup exclusion.
    server-side.
 
 **Auth-bound keys**
+
 10. *`setUserAuthenticationRequired`?* `Cipher.init` requires recent user auth
     (biometric/credential) → ties secret use to presence (Ch 21).
 11. *Per-use vs time-bound auth?* Per-use requires a prompt each time; time-bound
@@ -544,6 +547,7 @@ simulate — document manual test), backup exclusion.
     decrypt without a prompt.
 
 **Pattern**
+
 14. *Where do IV + ciphertext go?* Ordinary storage (DataStore/file) — safe
     because the key is in hardware.
 15. *IV reuse danger?* Reusing an IV with the same GCM key breaks confidentiality;
@@ -553,6 +557,7 @@ simulate — document manual test), backup exclusion.
 17. *Store payment token how?* Auth-bound key (biometric gate, Ch 21).
 
 **Invalidation/failure**
+
 18. *`KeyPermanentlyInvalidatedException`?* Key invalidated (biometric re-enroll/
     lock removed); wipe + re-provision.
 19. *How recover?* Delete key+secret; force re-login; don't crash.
@@ -560,17 +565,20 @@ simulate — document manual test), backup exclusion.
 21. *StrongBox unavailable?* `StrongBoxUnavailableException` → fall back to TEE.
 
 **Backup/scope**
+
 22. *Why exclude from backup?* Secrets shouldn't go to cloud/`adb backup`.
 23. *Per-account?* Scope keys/blobs per account; clear on switch (Ch 42).
 24. *Logout?* Delete key + ciphertext (and revoke server-side, Ch 19/22).
 
 **Deprecation**
+
 25. *EncryptedSharedPreferences?* Deprecated (Jetpack Security Crypto) — use
     Keystore-direct or Tink.
 26. *Tink?* Google's misuse-resistant crypto lib; uses Keystore for its master
     key.
 
 **Security model**
+
 27. *Does Keystore defeat a rooted device?* It protects the *key material*; it
     doesn't stop a rooted app from *using* an unbound key while running → add
     auth-binding/attestation/root detection (Ch 26).
@@ -579,11 +587,13 @@ simulate — document manual test), backup exclusion.
     still needs short tokens/rotation/revocation.
 
 **Performance**
+
 30. *Is crypto a bottleneck?* No (hardware-accelerated); but cache the key
     reference, don't regenerate per op.
 31. *StrongBox perf?* Slower key ops; fine for infrequent access.
 
 **Testing**
+
 32. *Why hard to unit-test?* Keystore needs a device/emulator; abstract behind
     `SecureStore` and test consumers with a fake.
 33. *How test crypto?* Instrumentation round-trip + tamper → `AEADBadTag`.
@@ -591,11 +601,13 @@ simulate — document manual test), backup exclusion.
     path.
 
 **Production debugging**
+
 35. *Re-login spikes?* Unhandled key invalidation.
 36. *Can't decrypt token?* Key rotated/deleted without wiping blob.
 37. *Secrets in backup?* Missing exclusion rules.
 
 **Design**
+
 38. *Which keys auth-bound?* High-value (payments); not the refresh token.
 39. *Rotate keys?* Re-encrypt secrets under a new key; handle old-key decrypt
     during migration.
@@ -659,10 +671,18 @@ backup; not clearing on logout; crashing on key invalidation; using the deprecat
 EncryptedSharedPreferences; over-claiming what the Keystore protects on a rooted
 device.
 
-**Checklist:** ☐ Keystore AES-GCM key ☐ StrongBox + TEE fallback ☐ envelope
-encrypt (IV+ciphertext) ☐ unique IV ☐ auth-bind sensitive secrets ☐ backup
-exclusion ☐ clear on logout + per-account ☐ handle `KeyPermanentlyInvalidated`
-☐ no hardcoded keys ☐ no secret logging.
+**Checklist:**
+
+- [ ] Keystore AES-GCM key
+- [ ] StrongBox + TEE fallback
+- [ ] envelope encrypt (IV+ciphertext)
+- [ ] unique IV
+- [ ] auth-bind sensitive secrets
+- [ ] backup exclusion
+- [ ] clear on logout + per-account
+- [ ] handle `KeyPermanentlyInvalidated`
+- [ ] no hardcoded keys
+- [ ] no secret logging.
 
 **Key APIs:** `KeyStore("AndroidKeyStore")`, `KeyGenParameterSpec`,
 `setIsStrongBoxBacked`, `setUserAuthenticationRequired`/`Parameters`,

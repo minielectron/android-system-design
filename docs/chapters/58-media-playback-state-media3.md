@@ -545,6 +545,7 @@ notification/Bluetooth control.
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *Why is playback state hard?* It lives across UI, notification, lock screen, Bluetooth,
    Auto, background, process death.
 2. *Engine?* Media3/ExoPlayer (ABR, HLS/DASH, DRM, track selection).
@@ -554,6 +555,7 @@ notification/Bluetooth control.
 5. *Single source of playback state?* The `MediaSession`.
 
 **Session/controller**
+
 6. *What does `MediaSession` expose?* Authoritative state + command target.
 7. *Who controls it?* UI (`MediaController`), notification, lock screen, Bluetooth, Auto,
    Assistant.
@@ -563,29 +565,34 @@ notification/Bluetooth control.
 11. *Multiple controllers conflict?* Session serializes; one player.
 
 **System integration**
+
 12. *Audio focus?* Request; pause/duck on loss; resume on regain (Media3-managed).
 13. *Becoming noisy?* Pause on headphone unplug (`setHandleAudioBecomingNoisy`).
 14. *Media buttons/Bluetooth/Auto?* Routed to the session automatically.
 15. *Notification?* System media notification via the service (Ch 46/50).
 
 **Streaming**
+
 16. *Adaptive streaming?* HLS/DASH + ABR (Media3).
 17. *Track selection?* Quality/audio/subtitle via `TrackSelectionParameters`.
 18. *Buffering/seeking?* Handled; surface state from the player.
 19. *Playlist/queue?* `setMediaItems`, seekToNext/Previous.
 
 **Persistence/resume**
+
 20. *Process death?* Save mediaId+position to SSOT; restore on relaunch (Ch 8).
 21. *When to save?* Periodically + on pause/stop/transition.
 22. *Continue watching cross-device?* Persist + sync position (Ch 32).
 
 **Lifecycle**
+
 23. *Background audio?* Continue (FGS, Ch 46).
 24. *Background video?* Pause (unless PiP/audio-only) for battery.
 25. *When to release?* When done (no controllers + stopped / service destroyed).
 26. *Interruptions (call)?* Pause via audio focus; resume after.
 
 **DRM/security**
+
 27. *Protected content?* Widevine via `DrmSessionManager` (Ch 59); platform-held keys.
 28. *Block screen capture?* `FLAG_SECURE`/secure surface.
 29. *URLs/manifests?* Authed, pinned, signed/expiring (Ch 19/23).
@@ -593,12 +600,14 @@ notification/Bluetooth control.
 31. *Logging?* No URLs/keys/PII (Ch 28).
 
 **Perf/QoE**
+
 32. *Top battery lever?* Release the player when done.
 33. *ABR on cellular?* Cap quality (track selection).
 34. *QoE metrics?* Startup latency, rebuffer ratio, bitrate, dropped frames.
 35. *Buffer policy?* Tune load control (start vs memory).
 
 **Testing/Production**
+
 36. *Test playback?* `TestExoPlayerBuilder`/`FakeMediaSource`; state in isolation.
 37. *Test persistence?* Save/restore position.
 38. *Drift in prod?* UI holding state, not observing session.
@@ -673,12 +682,18 @@ playback state (drift with notification/Bluetooth); hand-rolling the player/`Med
 death) or not synced (no cross-device resume); never releasing the player (battery);
 leaving video rendering in the background; no DRM/secure output for protected content.
 
-**Checklist:** ☐ Media3 player in `MediaSessionService` (Ch 46) ☐ `MediaSession` = single
-truth ☐ UI via `MediaController` (no local state, UDF) ☐ audio focus + becoming-noisy +
-interruptions ☐ adaptive streaming + track selection ☐ persist position (SSOT/process
-death, Ch 3/8) ☐ continue-watching sync (Ch 32) ☐ bg-continue audio / pause video / release
-when done ☐ DRM + `FLAG_SECURE` + authed/signed URLs + entitlement (Ch 59/23/42) ☐ QoE
-telemetry (startup latency, rebuffer ratio).
+**Checklist:**
+
+- [ ] Media3 player in `MediaSessionService` (Ch 46)
+- [ ] `MediaSession` = single truth
+- [ ] UI via `MediaController` (no local state, UDF)
+- [ ] audio focus + becoming-noisy + interruptions
+- [ ] adaptive streaming + track selection
+- [ ] persist position (SSOT/process death, Ch 3/8)
+- [ ] continue-watching sync (Ch 32)
+- [ ] bg-continue audio / pause video / release when done
+- [ ] DRM + `FLAG_SECURE` + authed/signed URLs + entitlement (Ch 59/23/42)
+- [ ] QoE telemetry (startup latency, rebuffer ratio).
 
 **Key APIs:** `ExoPlayer.Builder` (`setAudioAttributes(handleAudioFocus)`/
 `setHandleAudioBecomingNoisy`), `MediaSessionService`/`MediaSession.Builder`/`onGetSession`,

@@ -507,6 +507,7 @@ recomposition test for stability. Fake use cases/repos; keep the reducer pure.
 > 40+ questions.
 
 **Fundamentals**
+
 1. *What is UDF?* State flows down from one owner; events flow up; UI is a pure
    function of state.
 2. *Why a single immutable state object?* Snapshots, no torn/partial UI, easy
@@ -519,6 +520,7 @@ recomposition test for stability. Fake use cases/repos; keep the reducer pure.
    Compose-native.
 
 **Architecture**
+
 6. *Who owns screen state?* The ViewModel; the UI is stateless.
 7. *Where does the debounce/business logic go?* ViewModel/use cases, not the UI.
 8. *How do two screens stay consistent?* Derive state from the SSOT (Ch 3); both
@@ -527,6 +529,7 @@ recomposition test for stability. Fake use cases/repos; keep the reducer pure.
    channel (more testable, more boilerplate).
 
 **Kotlin/Compose**
+
 10. *`collectAsState` vs `collectAsStateWithLifecycle`?* The latter stops in
     STOPPED — correct default.
 11. *What does `stateIn(WhileSubscribed(5000))` do?* Starts on subscription, stops
@@ -537,6 +540,7 @@ recomposition test for stability. Fake use cases/repos; keep the reducer pure.
     lambdas, keyed lists.
 
 **Concurrency**
+
 14. *Are state emissions ordered?* Yes — `StateFlow` serializes and conflates.
 15. *Double-tap causing double submit?* Idempotent SSOT write, `mutating` flag, or
     debounce (Ch 9).
@@ -544,49 +548,58 @@ recomposition test for stability. Fake use cases/repos; keep the reducer pure.
     (Ch 7).
 
 **Lifecycle**
+
 17. *Rotation — refetch?* No; `viewModelScope` + `WhileSubscribed` replay state.
 18. *Process death?* `SavedStateHandle` (Ch 8).
 19. *Why not hold state in the composable?* Lost on rotation/process death;
     untestable.
 
 **Events/effects**
+
 20. *Why not model navigation as a boolean state?* It re-fires on rotation
     (double navigation); use a one-time effect.
 21. *`Channel` vs `SharedFlow` for effects?* Channel = exactly-once single
     consumer; SharedFlow = multiple/replay (Ch 7).
 
 **Scalability**
+
 22. *Complex transitions across many features?* MVI reducer + a shared base
     contract; unit-test transitions.
 23. *Huge lists in state?* Paging (Ch 13), not one big `Content`.
 
 **Security**
+
 24. *Secrets in UI state?* No — in-memory/crash-logged/persisted; keep out.
 25. *Is a nav effect authorization?* No; backend authorizes.
 
 **Performance**
+
 26. *Biggest recomposition pitfall?* Unstable types/lambdas and non-distinct
     state.
 27. *How measure?* Layout Inspector recomposition counts; compiler stability
     report.
 
 **Testing**
+
 28. *How test a ViewModel?* `TestDispatcher` + fakes + Turbine on `uiState`/
     `effects`; no UI.
 29. *Benefit of a pure reducer?* Transition tests without coroutines.
 30. *How test effects fire once?* Assert a single emission on the effects flow.
 
 **Production debugging**
+
 31. *Snackbar reappears on rotation?* Effect stored as state; move to Channel.
 32. *Screen blanks on rotation?* State owned by View, not ViewModel.
 33. *Two screens disagree?* Not deriving from SSOT.
 
 **Trade-offs**
+
 34. *LiveData vs StateFlow?* StateFlow default; LiveData legacy.
 35. *Sealed vs data-class state?* Mode-exclusive vs coexisting parts.
 36. *When skip MVI?* Simple/static screens.
 
 **Deeper**
+
 37. *How combine several data sources into one state?* `combine(...)` then `stateIn`.
 38. *How model partial/optimistic updates?* `mutating` flag / optimistic value +
     rollback (Ch 72).
@@ -647,10 +660,18 @@ state vs effect, conflation, `WhileSubscribed`, reducer/MVI.
 one-time events as state (double snackbar/nav); `collectAsState` without
 lifecycle; non-distinct/unstable state (recomposition storms); secrets in state.
 
-**Checklist:** ☐ single `UiState` ☐ sealed where mode-exclusive ☐ `onEvent`
-entry point ☐ effects via `Channel` ☐ derive from SSOT ☐
-`collectAsStateWithLifecycle` ☐ `stateIn(WhileSubscribed)` ☐ immutable/`@Stable`
-state ☐ VM unit-tested ☐ no secrets in state.
+**Checklist:**
+
+- [ ] single `UiState`
+- [ ] sealed where mode-exclusive
+- [ ] `onEvent` entry point
+- [ ] effects via `Channel`
+- [ ] derive from SSOT
+- [ ] `collectAsStateWithLifecycle`
+- [ ] `stateIn(WhileSubscribed)`
+- [ ] immutable/`@Stable` state
+- [ ] VM unit-tested
+- [ ] no secrets in state.
 
 **Key APIs:** `StateFlow`, `MutableStateFlow`, `stateIn`,
 `SharingStarted.WhileSubscribed`, `collectAsStateWithLifecycle`,

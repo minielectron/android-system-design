@@ -570,6 +570,7 @@ integration; instrumentation for real network changes (Ch 68).
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *What is a WebSocket?* A persistent full-duplex connection after an HTTP upgrade; both
    sides push anytime.
 2. *WS vs REST?* Stateful persistent bidirectional push vs stateless request/response.
@@ -579,12 +580,14 @@ integration; instrumentation for real network changes (Ch 68).
 5. *WS vs FCM (Ch 49)?* Live foreground vs background wake-up — use both.
 
 **Lifecycle/battery**
+
 6. *When to connect/disconnect?* Connect foreground/active; disconnect on background
    (Ch 44).
 7. *Why not keep it open in background?* Battery + Doze kills it (Ch 47).
 8. *Background events?* FCM (Ch 49); reconnect + catch up on return.
 
 **Reliability**
+
 9. *Detect dead connection?* Heartbeat ping-pong + watchdog.
 10. *Why heartbeat?* Connections die silently (NAT/network).
 11. *Reconnect strategy?* Jittered exponential backoff (Ch 2).
@@ -593,6 +596,7 @@ integration; instrumentation for real network changes (Ch 68).
 14. *Duplicates/out-of-order?* Idempotent SSOT + dedupe by seq (Ch 15).
 
 **Consistency**
+
 15. *Source of truth?* REST/sync (Ch 32) — socket is a fast path.
 16. *Why not socket-as-truth?* Drops = permanent loss; dup = corruption.
 17. *Events → UI?* Flow → idempotent SSOT → UI observes (UDF, Ch 3/6).
@@ -600,6 +604,7 @@ integration; instrumentation for real network changes (Ch 68).
 19. *Send reliability?* Optimistic + ack + retry + idempotency key (Ch 15/31).
 
 **Auth/security**
+
 20. *Handshake auth?* Token in header/subprotocol (not long-lived in URL).
 21. *Transport?* WSS (TLS) + pinning (Ch 23).
 22. *Token expiry mid-connection?* Refresh + reconnect (Ch 19).
@@ -608,12 +613,14 @@ integration; instrumentation for real network changes (Ch 68).
 25. *Per-account?* Reconnect with new identity on switch; no cross-account (Ch 42).
 
 **Backpressure/scale**
+
 26. *High-rate events?* Coalesce/sample/debounce (backpressure).
 27. *Many channels?* Multiplex over one socket.
 28. *Reconnect storms?* Jittered backoff + server scaling.
 29. *Network change (Ch 68)?* Reconnect on recovery; don't thrash offline.
 
 **Testing/Production**
+
 30. *Test WS?* `MockWebServer` WS; dedupe/backoff/resume in isolation.
 31. *Test idempotency?* Replay seq → one effect.
 32. *No updates in prod?* Dead socket / not reconnecting.
@@ -697,13 +704,21 @@ death); fixed/immediate reconnect (storms); no resume/catch-up (gaps); no idempo
 tokens; trusting inbound messages / client-side channel subscription; cross-account
 delivery.
 
-**Checklist:** ☐ authed WSS + TLS pinning (Ch 19/23) ☐ connect foreground / disconnect
-background + FCM handoff (Ch 44/49) ☐ heartbeat ping-pong ☐ jittered exponential-backoff
-reconnect (Ch 2) ☐ resume cursor + REST catch-up (Ch 32) ☐ events → Flow → idempotent SSOT
-(Ch 3/15) ☐ REST = source of truth ☐ backpressure/coalescing ☐ token refresh mid-connection
-☐ untrusted-message validation + server channel authz (Ch 23) ☐ per-account isolation
-(Ch 42) ☐ send optimistic+ack+retry+idempotency (Ch 15/31) ☐ uptime/reconnect/latency
-telemetry.
+**Checklist:**
+
+- [ ] authed WSS + TLS pinning (Ch 19/23)
+- [ ] connect foreground / disconnect background + FCM handoff (Ch 44/49)
+- [ ] heartbeat ping-pong
+- [ ] jittered exponential-backoff reconnect (Ch 2)
+- [ ] resume cursor + REST catch-up (Ch 32)
+- [ ] events → Flow → idempotent SSOT (Ch 3/15)
+- [ ] REST = source of truth
+- [ ] backpressure/coalescing
+- [ ] token refresh mid-connection
+- [ ] untrusted-message validation + server channel authz (Ch 23)
+- [ ] per-account isolation (Ch 42)
+- [ ] send optimistic+ack+retry+idempotency (Ch 15/31)
+- [ ] uptime/reconnect/latency telemetry.
 
 **Key APIs:** OkHttp `newWebSocket`/`WebSocketListener` (`onOpen`/`onMessage`/`onFailure`/
 `onClosed`)/`WebSocket.send`/`close`, `wss://`, `MutableSharedFlow`(`BufferOverflow`/

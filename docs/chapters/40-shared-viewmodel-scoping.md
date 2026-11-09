@@ -440,6 +440,7 @@ restore. A LeakCanary check that no VM/Context leaks after the flow.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *How is a ViewModel "shared"?* Multiple screens request it from the **same**
    `ViewModelStoreOwner` → same instance.
 2. *What determines scope?* The `ViewModelStoreOwner` you request from (screen/
@@ -451,6 +452,7 @@ restore. A LeakCanary check that no VM/Context leaks after the flow.
    (Ch 38/39).
 
 **Scoping**
+
 6. *Nav-graph vs Activity scope?* Graph spans the flow (auto-released); Activity spans
    everything (lingers) — pick the narrowest that fits.
 7. *Over-scoping problem?* Stale state on re-entry + extra memory.
@@ -460,6 +462,7 @@ restore. A LeakCanary check that no VM/Context leaks after the flow.
 10. *Fragments?* `by activityViewModels()` / `hiltNavGraphViewModels(graphId)`.
 
 **Lifecycle**
+
 11. *Survives config change?* Yes (ViewModel).
 12. *Survives process death?* No — use `SavedStateHandle` (Ch 8).
 13. *When cleared?* When the owner (graph entry/Activity) is permanently gone.
@@ -467,26 +470,31 @@ restore. A LeakCanary check that no VM/Context leaks after the flow.
     recomposition.
 
 **Shared-VM vs SSOT**
+
 15. *Why not a shared VM for the cart?* Not durable/offline/synced; dies with scope
     (Ch 38).
 16. *Why not a shared VM for session?* App-wide + durable → SSOT/holder (Ch 39).
 17. *Good shared-VM use case?* A checkout wizard's form.
 
 **Passing data**
+
 18. *Shared VM vs nav args?* VM for rich/mutable shared state; nav args for small
     immutable params.
 
 **Security**
+
 19. *Secrets in a shared VM?* No (in-memory); Keystore (Ch 20).
 20. *SavedState + secrets?* Never (disk); non-sensitive only (Ch 8).
 21. *Narrow scope benefit?* Clears sensitive flow state when the flow ends.
 
 **Testing**
+
 22. *How test the shared VM?* As a normal ViewModel (unit, Ch 6).
 23. *How test sharing?* Navigation/instrumentation: step 2 sees step 1's data.
 24. *How verify no leak?* LeakCanary; VM cleared on exit.
 
 **Production debugging**
+
 25. *Step 2 missing data?* Per-screen VM, not graph-scoped.
 26. *Stale form on re-entry?* Activity-scoped (too broad).
 27. *Blank after backgrounding?* No SavedState.
@@ -547,10 +555,17 @@ SSOT); not `remember`ing the graph entry (new instance per recomposition); no
 SavedState (lost on process death); secrets in a shared VM/SavedState; holding View/
 Context refs (leak).
 
-**Checklist:** ☐ shared VM vs SSOT decided ☐ narrowest owner that spans the group
-☐ nav-graph scope for flows ☐ `hiltViewModel(graphEntry)` + `remember` ☐ SavedState
-for important flow state ☐ cleared on flow exit (no leak) ☐ no View/Context refs
-☐ no secrets in VM/SavedState ☐ nav args for small immutable params.
+**Checklist:**
+
+- [ ] shared VM vs SSOT decided
+- [ ] narrowest owner that spans the group
+- [ ] nav-graph scope for flows
+- [ ] `hiltViewModel(graphEntry)` + `remember`
+- [ ] SavedState for important flow state
+- [ ] cleared on flow exit (no leak)
+- [ ] no View/Context refs
+- [ ] no secrets in VM/SavedState
+- [ ] nav args for small immutable params.
 
 **Key APIs:** `ViewModelStoreOwner`, `hiltViewModel(owner)`, `navController.
 getBackStackEntry(graphRoute)`, `navigation(route=...)` nested graph, `by

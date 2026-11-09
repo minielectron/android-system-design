@@ -531,6 +531,7 @@ resume (outbox). Fake API/outbox; Room in-memory.
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *Optimistic update?* Apply the action to the UI immediately, confirm/revert on server
    response.
 2. *Why?* Instant feel; no per-tap spinner.
@@ -539,18 +540,21 @@ resume (outbox). Fake API/outbox; Room in-memory.
 5. *Persist how?* Outbox (Ch 31) with an idempotency key (Ch 15).
 
 **Idempotency/model**
+
 6. *Why idempotency?* Double-tap/retry must not double-apply (Ch 15).
 7. *Set-state vs increment?* Set-state is idempotent; increment double-counts.
 8. *Comment idempotency?* Client-generated id (Ch 64).
 9. *Rapid like→unlike→like?* Latest set-state wins; outbox coalesces (Ch 31).
 
 **Reconciliation**
+
 10. *Is the optimistic value truth?* No — a guess; server is authoritative.
 11. *Reconcile?* Replace guess with server value (real count, Ch 32).
 12. *Why counts differ?* Others act too; server reflects everyone.
 13. *Boolean vs count?* Your boolean honored; count reconciled to server.
 
 **Rollback**
+
 14. *When roll back?* Genuine failure (4xx: forbidden/blocked/validation).
 15. *When keep?* Transient (5xx/network) → retry (Ch 2).
 16. *Why distinguish?* Rolling back on transient causes flicker; never rolling back leaves
@@ -559,21 +563,25 @@ resume (outbox). Fake API/outbox; Room in-memory.
 18. *User feedback?* Snackbar/toast on rollback.
 
 **Consistency/concurrency**
+
 19. *Same item many screens?* One SSOT row → all consistent (Ch 3).
 20. *Process death?* Outbox persisted (Ch 31).
 21. *Offline?* Queue; reconcile/conflict on sync (Ch 29/33).
 22. *Conflicts?* Server value / conflict policy (Ch 33).
 
 **Create (comment)**
+
 23. *Comment states?* Sending → Sent/Failed; client id; reconcile to server id.
 24. *Failed comment?* Mark failed + manual retry.
 
 **Safety**
+
 25. *Don't optimize what?* Irreversible/high-stakes (payments/orders/deletes).
 26. *Why?* Rollback after perceived success is unacceptable.
 27. *Server role?* Authorize/validate/dedup (Ch 23); optimism is client convenience.
 
 **Testing/Production**
+
 28. *Test optimistic?* Instant SSOT apply + idempotent op.
 29. *Test reconcile?* Count → server value.
 30. *Test rollback?* Genuine 4xx reverts; transient retries.
@@ -586,6 +594,7 @@ resume (outbox). Fake API/outbox; Room in-memory.
 37. *Key metrics?* Rollback rate, optimistic latency, double-count.
 
 **Composition**
+
 38. *Used by?* Feed (Ch 71), chat send (Ch 64), cart (Ch 38).
 39. *Reuse?* One pattern (SSOT+outbox+idempotency+reconcile+rollback).
 40. *Cross-device?* Reconcile via sync (Ch 32).
@@ -657,13 +666,20 @@ guess (count drifts); rolling back on transient errors (flicker); never rolling 
 state); not reconciling; optimizing irreversible actions (unacceptable rollback);
 per-screen state instead of SSOT; ignoring server authorization.
 
-**Checklist:** ☐ optimistic apply to the SSOT row (store pre-action value, Ch 3) ☐ instant +
-consistent across screens (one row, UDF Ch 6) ☐ outbox + idempotency key (Ch 31/15) ☐
-idempotent set-state (not increment) ☐ reconcile count/id to server value (Ch 32) ☐ roll
-back on genuine 4xx (+ user feedback); keep+retry on transient (Ch 2) ☐ rapid-toggle
-coalescing (Ch 31) ☐ conflicts via server/policy (Ch 33) ☐ offline-capable (Ch 29) ☐ NOT
-optimistic for irreversible/high-stakes actions ☐ server authorizes (Ch 23) ☐ rollback-rate
-+ double-count telemetry.
+**Checklist:**
+
+- [ ] optimistic apply to the SSOT row (store pre-action value, Ch 3)
+- [ ] instant + consistent across screens (one row, UDF Ch 6)
+- [ ] outbox + idempotency key (Ch 31/15)
+- [ ] idempotent set-state (not increment)
+- [ ] reconcile count/id to server value (Ch 32)
+- [ ] roll back on genuine 4xx (+ user feedback); keep+retry on transient (Ch 2)
+- [ ] rapid-toggle coalescing (Ch 31)
+- [ ] conflicts via server/policy (Ch 33)
+- [ ] offline-capable (Ch 29)
+- [ ] NOT optimistic for irreversible/high-stakes actions
+- [ ] server authorizes (Ch 23)
+- [ ] rollback-rate + double-count telemetry.
 
 **Key APIs:** Room `@Dao` set-state mutation + reconcile (Ch 3), Outbox + `OutboxOp` +
 idempotency key (Ch 31/15), WorkManager retry (Ch 30/2), `UUID.randomUUID` (comment client

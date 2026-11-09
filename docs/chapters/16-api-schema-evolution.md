@@ -445,6 +445,7 @@ payloads (catch breaking changes in CI); round-trip for request DTOs.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why is schema evolution harder on mobile?* You can't force updates; many app
    versions call one backend simultaneously.
 2. *Tolerant reader pattern?* Parse what you need, ignore unknown, default
@@ -456,6 +457,7 @@ payloads (catch breaking changes in CI); round-trip for request DTOs.
    `coerceInputValues`; map to a safe default.
 
 **Architecture**
+
 6. *Why DTO/domain separation?* DTO absorbs churn; a mapper keeps the domain/UI
    stable (Ch 3).
 7. *Where do renames get handled?* In the mapper (dual-read both names during
@@ -464,6 +466,7 @@ payloads (catch breaking changes in CI); round-trip for request DTOs.
    ignore them.
 
 **Compatibility**
+
 9. *Safe backend changes?* Add optional field, add enum value (with client
    fallback), add endpoint.
 10. *Unsafe changes?* Remove/rename/retype a field, make optional required, change
@@ -474,30 +477,35 @@ payloads (catch breaking changes in CI); round-trip for request DTOs.
     min-version gate (Ch 54).
 
 **Kotlin/serialization**
+
 13. *kotlinx config for tolerance?* `ignoreUnknownKeys`, `coerceInputValues`,
     `explicitNulls=false`, defaults on fields.
 14. *Moshi equivalent?* `@Json` adapters; `EnumJsonAdapter.withUnknownFallback`.
 15. *Nullable + default?* Model new/optional fields as nullable with a default.
 
 **Rollout/versioning**
+
 16. *URL vs header versioning?* Both work; prefer additive single-version for
     mobile to avoid sprawl.
 17. *Canary/gradual rollout?* Flags + percentage; watch drift telemetry.
 18. *Mixed-version responses during A/B?* Tolerant DTOs decode both shapes.
 
 **Security**
+
 19. *Trust a new `isPremium` field?* No — server-validate entitlements; field may
     be absent/spoofed.
 20. *Can clients enforce min version alone?* No — backend must also reject old
     clients.
 
 **Testing**
+
 21. *How test compatibility?* Golden-JSON (old + new payloads) decode without
     crash; contract tests vs OpenAPI.
 22. *How catch breaking changes in CI?* Consumer-driven/contract tests against
     the schema.
 
 **Production debugging**
+
 23. *Crash spike after backend deploy?* Non-tolerant parsing or a breaking change.
 24. *Wrong values post-deploy?* A rename not dual-read.
 25. *Rising unknown-enum rate?* New server value not yet mapped (add it).
@@ -561,10 +569,17 @@ server values (crashes on new values); coupling DTO to UI; trusting optional
 fields for access; relying on the client's min-version check alone; no drift
 telemetry.
 
-**Checklist:** ☐ `ignoreUnknownKeys` + `coerceInputValues` ☐ nullable+default new
-fields ☐ `UNKNOWN` enum fallback ☐ DTO/domain separation + mapper ☐ dual-read
-renames ☐ flags for new fields ☐ additive by default ☐ min-version gate for
-breaking (server-enforced too) ☐ drift telemetry.
+**Checklist:**
+
+- [ ] `ignoreUnknownKeys` + `coerceInputValues`
+- [ ] nullable+default new fields
+- [ ] `UNKNOWN` enum fallback
+- [ ] DTO/domain separation + mapper
+- [ ] dual-read renames
+- [ ] flags for new fields
+- [ ] additive by default
+- [ ] min-version gate for breaking (server-enforced too)
+- [ ] drift telemetry.
 
 **Key APIs:** `Json { ignoreUnknownKeys; coerceInputValues; explicitNulls=false }`,
 `@SerialName`, default parameters, Moshi `EnumJsonAdapter.withUnknownFallback`,

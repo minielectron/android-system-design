@@ -551,6 +551,7 @@ with idempotency.
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *Play Billing vs PSP (Ch 75)?* Digital goods/subs via Play (policy); physical via PSP.
 2. *Who processes payment?* Google (owns the purchase record) — not your app/PSP.
 3. *App's job?* Launch flow, verify server-side, grant entitlement, acknowledge/consume,
@@ -560,6 +561,7 @@ with idempotency.
 5. *Entitlement?* Backend-owned state the app reads (Ch 3), not the raw purchase.
 
 **Acknowledge/consume**
+
 6. *Acknowledge rule?* Must acknowledge/consume within ~3 days or Google auto-refunds.
 7. *Consumable?* `consumeAsync` (re-purchasable).
 8. *Non-consumable/sub?* `acknowledgePurchase`.
@@ -567,6 +569,7 @@ with idempotency.
 10. *#1 bug?* Not acknowledging → auto-refund.
 
 **Verification/entitlement**
+
 11. *Why server-side verify?* Client is spoofable (piracy) — verify token via Developer API
     (Ch 23).
 12. *Who grants?* The backend (not the client).
@@ -574,24 +577,28 @@ with idempotency.
 14. *Client-only entitlement?* Trivially pirated.
 
 **Restore**
+
 15. *Reinstall/new device?* `queryPurchases` → verify+grant → restore (tied to Google
     account).
 16. *Listener only?* No — also `queryPurchases` (purchases arrive off-listener).
 17. *Explicit restore?* Provide a "Restore purchases" action.
 
 **Subscriptions**
+
 18. *Lifecycle events?* Renew/cancel/grace/hold/pause/upgrade/refund.
 19. *How tracked?* RTDN → backend → entitlement (Ch 49).
 20. *Client infer sub state?* No — read backend entitlement.
 21. *Grace/hold?* Entitlement states the backend reflects.
 
 **Pending/idempotency**
+
 22. *Pending purchase?* Don't grant until PURCHASED.
 23. *Idempotency?* Grant once per purchase token (Ch 15).
 24. *Interruption (Ch 8)?* `queryPurchases` reconcile on launch.
 25. *Double-grant source?* Listener + queryPurchases both processing → idempotent-by-token.
 
 **Security**
+
 26. *Anti-piracy?* Server-side verification + backend grant (Ch 23).
 27. *RTDN authenticity?* Validate server-side.
 28. *Refund?* Revoke entitlement (RTDN).
@@ -599,6 +606,7 @@ with idempotency.
 30. *Card data?* App never handles it (Google does).
 
 **Testing/Production**
+
 31. *Test purchases?* License testers / test tracks.
 32. *Test acknowledge?* Granted then acknowledged; not on failed verify.
 33. *Test restore?* `queryPurchases` grants entitlement.
@@ -679,13 +687,20 @@ lifecycle, pending purchases, idempotency-by-token + interruption recovery, Play
 non-idempotent grant (double-credit); inferring subscription state on the client instead of
 RTDN-driven backend entitlement.
 
-**Checklist:** ☐ Play Billing for digital/subs (PSP for physical, Ch 75) ☐ verify purchase
-token server-side + grant entitlement on backend (Ch 23) ☐ acknowledge (non-consumable/sub) /
-consume (consumable) within window ☐ entitlement = backend SSOT the app reads (Ch 3) ☐ restore
-via `queryPurchases` on launch/login/new device + explicit action ☐ RTDN → backend subscription
-lifecycle (Ch 49) ☐ don't grant PENDING ☐ idempotent grant by purchase token (Ch 15) ☐
-interruption recovery via queryPurchases (Ch 8) ☐ per-account/Google-account binding (Ch 42) ☐
-revoke on refund ☐ auto-refund-rate alert (→ 0).
+**Checklist:**
+
+- [ ] Play Billing for digital/subs (PSP for physical, Ch 75)
+- [ ] verify purchase token server-side + grant entitlement on backend (Ch 23)
+- [ ] acknowledge (non-consumable/sub) / consume (consumable) within window
+- [ ] entitlement = backend SSOT the app reads (Ch 3)
+- [ ] restore via `queryPurchases` on launch/login/new device + explicit action
+- [ ] RTDN → backend subscription lifecycle (Ch 49)
+- [ ] don't grant PENDING
+- [ ] idempotent grant by purchase token (Ch 15)
+- [ ] interruption recovery via queryPurchases (Ch 8)
+- [ ] per-account/Google-account binding (Ch 42)
+- [ ] revoke on refund
+- [ ] auto-refund-rate alert (→ 0).
 
 **Key APIs:** Play Billing `BillingClient`/`enablePendingPurchases`/`launchBillingFlow`/
 `PurchasesUpdatedListener`/`queryPurchasesAsync`/`queryProductDetailsAsync`/

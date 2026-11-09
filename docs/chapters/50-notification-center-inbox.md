@@ -517,6 +517,7 @@ public version. Instrumentation on Android 13+ for permission-off inbox-still-wo
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Two notification systems?* System (status bar, transient) + in-app inbox (durable
    record).
 2. *Which is the record?* The inbox (SSOT + sync); the system notification is a transient
@@ -526,6 +527,7 @@ public version. Instrumentation on Android 13+ for permission-off inbox-still-wo
 5. *Can you change importance later?* No — user owns it; choose categories carefully.
 
 **Rendering**
+
 6. *Why a central Notifier?* Consistency (channels/styles/ids/privacy); avoid scattered
    calls.
 7. *Grouping?* Summary + children by group key — avoid spam/muting.
@@ -534,27 +536,32 @@ public version. Instrumentation on Android 13+ for permission-off inbox-still-wo
 10. *Lock-screen privacy?* `VISIBILITY_PRIVATE` + `setPublicVersion`.
 
 **Inbox**
+
 11. *Inbox storage?* Room SSOT (Ch 3), synced (Ch 32).
 12. *Read/unread?* Synced boolean field.
 13. *Survives dismissal/reinstall?* Yes (persisted/server-backed).
 14. *UI?* Observe Flow → Compose (Ch 6); paging for history (Ch 13).
 
 **Linking**
+
 15. *Tap behavior?* Deep link (Ch 52) → screen + mark read + cancel.
 16. *In-app read?* Optionally cancel system notification; sync read state.
 17. *Read across devices?* Sync the read field (Ch 32).
 
 **Permission**
+
 18. *Android 13+ no permission?* System suppressed; inbox still works.
 19. *Request permission?* Ch 51 (rationale, in-context).
 20. *Settings deep-link?* `ACTION_CHANNEL_NOTIFICATION_SETTINGS`.
 
 **Security/UX**
+
 21. *Lock-screen sensitive content?* Private + public version.
 22. *Per-account?* Filter inbox by active account; per-account channel group (Ch 42).
 23. *Avoid muting?* Group, correct importance, separate promo channel.
 
 **Testing/Production**
+
 24. *Test notifications?* Robolectric shadow `NotificationManager`.
 25. *Dedupe duplicates?* Stable notification id.
 26. *Key UX metric?* Per-channel mute/opt-out rate.
@@ -626,11 +633,20 @@ read state not synced (divergence); sensitive content on lock screen; channels c
 lazily (first notification dropped); no per-account filtering; inbox broken without
 permission.
 
-**Checklist:** ☐ inbox = durable record (SSOT + sync) ☐ channels by category at startup
-☐ central Notifier (style/group/privacy/ids) ☐ grouping (summary+children) ☐
-`MessagingStyle` for chat ☐ lock-screen private + public version ☐ `FLAG_IMMUTABLE`
-deep-link PendingIntents ☐ stable ids (dedupe) ☐ tap → mark read + cancel ☐ synced read
-state ☐ permission-gated display; inbox resilient ☐ per-account isolation.
+**Checklist:**
+
+- [ ] inbox = durable record (SSOT + sync)
+- [ ] channels by category at startup
+- [ ] central Notifier (style/group/privacy/ids)
+- [ ] grouping (summary+children)
+- [ ] `MessagingStyle` for chat
+- [ ] lock-screen private + public version
+- [ ] `FLAG_IMMUTABLE` deep-link PendingIntents
+- [ ] stable ids (dedupe)
+- [ ] tap → mark read + cancel
+- [ ] synced read state
+- [ ] permission-gated display; inbox resilient
+- [ ] per-account isolation.
 
 **Key APIs:** `NotificationChannel`/`NotificationManager.createNotificationChannels`,
 `NotificationCompat.Builder`/`BigTextStyle`/`InboxStyle`/`MessagingStyle`/

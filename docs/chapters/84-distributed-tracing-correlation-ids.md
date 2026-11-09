@@ -510,6 +510,7 @@ flows. Fake OkHttp chain + observability pillars; (integration) verify server lo
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Distributed tracing?* Trace + span ids propagated across service boundaries → one
    end-to-end trace.
 2. *Correlation id?* Stable opaque id joining a session's client activity + server logs.
@@ -519,35 +520,42 @@ flows. Fake OkHttp chain + observability pillars; (integration) verify server lo
 5. *`traceparent`?* trace id + span id + sampled flag.
 
 **Propagation**
+
 6. *How propagate?* One OkHttp interceptor injects headers on every request (Ch 1).
 7. *Why interceptor?* Consistency — never miss a request.
 8. *Backend role?* Continue the trace + log the correlation id.
 
 **Cross-pillar**
+
 9. *Join crash↔analytics↔trace?* Correlation id on all pillars (Ch 82/83/81).
 10. *Analytics?* Super-property; **crash?** custom key; **feedback?** attachment.
 11. *Why one id?* Jump between observability pillars.
 
 **Semantics**
+
 12. *Per-request vs per-session?* New span per request; correlation persists per session.
 13. *Retry?* New span, same trace/correlation (Ch 2).
 14. *Trace id vs idempotency key?* Distinct (tracing ≠ dedup, Ch 15).
 
 **Privacy**
+
 15. *Ids and PII?* Opaque, non-PII (Ch 28) — identify a flow, not a person.
 16. *Consent?* Same regime as analytics (Ch 28/82).
 17. *Sensitive data in traces?* Redact; no PII/secrets in spans/logs.
 
 **Cost**
+
 18. *Tracing cost?* Sample traces.
 19. *Correlation cost?* Cheap — always-on.
 20. *Sampled flag?* In `traceparent`; backend agrees.
 
 **Mobile/standards**
+
 21. *OpenTelemetry on mobile?* Emerging; use W3C propagation for backend continuation.
 22. *Custom vs standard?* Standard (interop + continuation).
 
 **Testing/Production**
+
 23. *Test propagation?* Interceptor injects valid headers on every request.
 24. *Test join?* Correlation id on all pillars.
 25. *Disconnected logs in prod?* Id not sent / server not logging.
@@ -620,12 +628,18 @@ not binding the correlation id to crash/analytics (can't join pillars); PII in i
 everything (cost — sample); reusing span ids across retries (wrong trace graph); custom
 non-standard propagation (backend can't continue).
 
-**Checklist:** ☐ opaque correlation/session id + W3C `traceparent` (non-PII, Ch 28) ☐ single
-OkHttp interceptor injects both on every request (Ch 1) ☐ backend continues trace + logs
-correlation id ☐ bind correlation id to analytics/crash/feedback (Ch 82/83/81) ☐ new span
-per request/retry, same trace (Ch 2) ☐ sample traces, correlation always-on ☐ consent regime
-(Ch 28) ☐ no PII/secrets in spans/logs ☐ reset on logout (Ch 42) ☐ propagation-coverage +
-correlation-join telemetry.
+**Checklist:**
+
+- [ ] opaque correlation/session id + W3C `traceparent` (non-PII, Ch 28)
+- [ ] single OkHttp interceptor injects both on every request (Ch 1)
+- [ ] backend continues trace + logs correlation id
+- [ ] bind correlation id to analytics/crash/feedback (Ch 82/83/81)
+- [ ] new span per request/retry, same trace (Ch 2)
+- [ ] sample traces, correlation always-on
+- [ ] consent regime (Ch 28)
+- [ ] no PII/secrets in spans/logs
+- [ ] reset on logout (Ch 42)
+- [ ] propagation-coverage + correlation-join telemetry.
 
 **Key APIs:** W3C Trace Context `traceparent` header, OkHttp `Interceptor` (Ch 1),
 `UUID`/128-bit random ids (opaque), analytics super-property (Ch 82), crash `setCustomKey`

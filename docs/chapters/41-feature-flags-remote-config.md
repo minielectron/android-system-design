@@ -462,6 +462,7 @@ snapshot, value validation/clamping, and that **entitlement is backend-enforced*
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Feature flags / remote config — why?* Decouple release from deploy: flip features,
    tune params, roll out, and kill-switch without an app release.
 2. *Deploy vs release?* Ship code (deploy) vs turn it on for users (release); flags
@@ -472,6 +473,7 @@ snapshot, value validation/clamping, and that **entitlement is backend-enforced*
    mobile rollback.
 
 **Fetch/cache/eval**
+
 6. *Why non-blocking fetch?* Don't stall startup / fail offline; read cached/default
    synchronously.
 7. *Precedence?* Fetched/cached → default.
@@ -479,6 +481,7 @@ snapshot, value validation/clamping, and that **entitlement is backend-enforced*
 9. *Live vs snapshot flags?* Kill switch live; rollout variant stable for the session.
 
 **Rollout/targeting**
+
 10. *Gradual rollout?* Percentage (10%→100%) via remote.
 11. *Targeting?* By version/country/segment.
 12. *Server- vs client-side evaluation?* Server resolves (consistent, needs network);
@@ -486,11 +489,13 @@ snapshot, value validation/clamping, and that **entitlement is backend-enforced*
 13. *A/B?* Variants + measurement (Ch 86).
 
 **Types/consistency**
+
 14. *Flag types?* bool/int/string/json; typed accessors.
 15. *Tolerate missing/unknown?* Defaults; tolerant parse (Ch 16).
 16. *Validate values?* Clamp/bound (debounce/retry) — untrusted-ish.
 
 **Security (critical)**
+
 17. *Are flags authorization?* **No** — tamperable client hints; backend enforces
     entitlements (Ch 26).
 18. *Secrets in remote config?* Never — client-readable.
@@ -498,16 +503,19 @@ snapshot, value validation/clamping, and that **entitlement is backend-enforced*
 20. *Kill switch as security?* Yes — disable a vulnerable feature instantly.
 
 **Performance**
+
 21. *Startup impact?* Background fetch; cached reads; no block.
 22. *Battery?* Throttle fetch interval; push for urgent (Ch 49).
 23. *Stale flags?* Clean up removed flags.
 
 **Testing**
+
 24. *How test defaults/offline?* No cache → default; assert app works.
 25. *How test gating?* Fake flags; assert UI gated.
 26. *How test premium-not-bypassable?* Flag on + entitlement off → not shown.
 
 **Production debugging**
+
 27. *Feature won't toggle?* Fetch/activation/default issue.
 28. *Broken offline/first-launch?* Missing defaults.
 29. *Premium unlocked by flag?* Not backend-enforced.
@@ -569,10 +577,18 @@ first-launch); treating flags as authorization (bypassable, Ch 26); flags flippi
 mid-session (fetch=activate); secrets in config; unvalidated config values; stale
 flags left in code.
 
-**Checklist:** ☐ background non-blocking fetch ☐ DataStore cache + compiled defaults
-☐ typed flags (Ch 39 holder) ☐ fetch≠activate (stable eval) ☐ kill switches for risky
-features ☐ gradual rollout/targeting ☐ validate/clamp values ☐ secure fetch (Ch 23)
-☐ flags ≠ authz — backend enforces (Ch 26) ☐ clean up stale flags.
+**Checklist:**
+
+- [ ] background non-blocking fetch
+- [ ] DataStore cache + compiled defaults
+- [ ] typed flags (Ch 39 holder)
+- [ ] fetch≠activate (stable eval)
+- [ ] kill switches for risky features
+- [ ] gradual rollout/targeting
+- [ ] validate/clamp values
+- [ ] secure fetch (Ch 23)
+- [ ] flags ≠ authz — backend enforces (Ch 26)
+- [ ] clean up stale flags.
 
 **Key APIs/patterns:** Firebase Remote Config (`fetchAndActivate`,
 `minimumFetchInterval`, `setDefaultsAsync`) or custom config API, DataStore cache

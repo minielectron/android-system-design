@@ -513,6 +513,7 @@ reflection crash); mapping file produced/uploaded + sample deobfuscation (Ch 83)
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Interpreted/JIT/AOT?* Interpret first → JIT hot methods → AOT ahead-of-time.
 2. *Why first launch slow?* Code is interpreted/JIT-cold until warm.
 3. *Baseline Profile?* Ship class/method list → ART AOT-compiles at install.
@@ -520,6 +521,7 @@ reflection crash); mapping file produced/uploaded + sample deobfuscation (Ch 83)
 5. *R8?* Shrink + optimize + obfuscate the release build.
 
 **Baseline Profiles**
+
 6. *Generate how?* Baseline Profile Gradle plugin + Macrobenchmark generator.
 7. *Coverage?* Launch + real critical journeys (not launch-only).
 8. *Apply how?* Packaged + ProfileInstaller (install time).
@@ -527,6 +529,7 @@ reflection crash); mapping file produced/uploaded + sample deobfuscation (Ch 83)
 10. *Cloud/Startup Profiles?* Play-aggregated / DEX-layout variants.
 
 **R8**
+
 11. *Shrinking?* Tree-shake dead code from entry points.
 12. *Optimization?* Inlining, dead-code elimination, class merging.
 13. *Obfuscation?* Rename to short names — smaller + harder to RE.
@@ -534,6 +537,7 @@ reflection crash); mapping file produced/uploaded + sample deobfuscation (Ch 83)
 15. *shrinkResources?* Remove unused resources.
 
 **Keep rules**
+
 16. *Why needed?* R8 can't see reflection/serialization/JNI.
 17. *Too few?* Runtime crash (removed/renamed class).
 18. *Too many?* Defeats shrinking.
@@ -541,11 +545,13 @@ reflection crash); mapping file produced/uploaded + sample deobfuscation (Ch 83)
 20. *Test?* On the minified release build.
 
 **Obfuscation/debuggability**
+
 21. *Crash stack traces?* Obfuscated gibberish without mapping.
 22. *Fix?* Retain + upload mapping.txt (Ch 83).
 23. *Mapping sensitive?* Yes — internal only.
 
 **Verify**
+
 24. *Measure profile win?* Macrobenchmark `None` vs `Partial` (Ch 85).
 25. *Measure size?* APK Analyzer.
 26. *Confirm in field?* Vitals cold start/jank (Ch 85).
@@ -616,12 +622,18 @@ scroll win, Ch 90); profile not applied (unverified); R8 off (large/slow); too f
 crash); keep-all (no shrink); forgetting the mapping file (undebuggable crashes, Ch 83); assuming
 the win without Macrobenchmark (Ch 85); not testing the minified release build.
 
-**Checklist:** ☐ Baseline Profile covering launch + top journeys (feed scroll, Ch 90) ☐ generated
-via Gradle plugin + Macrobenchmark; applied via ProfileInstaller ☐ verify `None` vs `Partial`
-startup (Ch 88) + frames (Ch 90) ☐ R8 on (`minifyEnabled`) + `shrinkResources` ☐ minimal targeted
-`-keep` rules (reflection/serialization/DI) ☐ test the minified release build ☐ retain + upload
-`mapping.txt` for deobfuscation (Ch 83) ☐ APK Analyzer size delta ☐ field vitals confirm (Ch 85)
-☐ CI gates for startup/frames/size (Ch 41).
+**Checklist:**
+
+- [ ] Baseline Profile covering launch + top journeys (feed scroll, Ch 90)
+- [ ] generated via Gradle plugin + Macrobenchmark; applied via ProfileInstaller
+- [ ] verify `None` vs `Partial` startup (Ch 88) + frames (Ch 90)
+- [ ] R8 on (`minifyEnabled`) + `shrinkResources`
+- [ ] minimal targeted `-keep` rules (reflection/serialization/DI)
+- [ ] test the minified release build
+- [ ] retain + upload `mapping.txt` for deobfuscation (Ch 83)
+- [ ] APK Analyzer size delta
+- [ ] field vitals confirm (Ch 85)
+- [ ] CI gates for startup/frames/size (Ch 41).
 
 **Key APIs/Gradle:** `BaselineProfileRule` (generator) + Baseline Profile Gradle plugin,
 `ProfileInstaller`, `CompilationMode.None`/`Partial` + `StartupTimingMetric` (Ch 88)/

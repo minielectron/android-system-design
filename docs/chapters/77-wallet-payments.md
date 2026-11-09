@@ -520,6 +520,7 @@ assert **no card data** anywhere local.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Card data on device?* Never — PSP/Google Pay **tokens** only (PCI, Ch 23/75).
 2. *Who owns the balance?* The server (authoritative ledger).
 3. *Client's role?* Display synced balance/history; request server-validated ops.
@@ -527,36 +528,43 @@ assert **no card data** anywhere local.
 5. *Sensitive actions?* Authenticated (session + biometric/re-auth, Ch 21).
 
 **Balance/double-spend**
+
 6. *Why server-authoritative?* Prevents double-spend, negative balance, tampering.
 7. *Spend?* Request a server-validated, idempotent debit — never spend local.
 8. *Concurrent spends two devices?* Server atomic debit (authoritative).
 9. *Insufficient funds?* Server rejects; no negative.
 
 **Tokens/cards**
+
 10. *Add a card?* PSP SDK tokenizes; backend stores token + brand/last4.
 11. *Display?* "Visa ••1234" from metadata (no PAN).
 12. *Charge?* By token via PSP (Ch 75).
 13. *Compromised device?* Leaks tokens (useless without authed backend), not PAN.
 
 **Google Pay**
+
 14. *Google Pay returns?* A payment token → PSP charge; no card data on device.
 
 **Auth**
+
 15. *Which actions need biometric?* Add/remove card, spend, top-up, view details.
 16. *Why within a session?* Borrowed-unlocked phone shouldn't drain the wallet (Ch 21).
 
 **History/consistency**
+
 17. *History?* Server-owned, auditable ledger; client syncs/displays (Ch 3/32).
 18. *Cross-device?* Server-authoritative + sync (Ch 32).
 19. *Refunds?* Server ledger entries the client syncs.
 
 **Security/PCI**
+
 20. *PCI scope?* Minimized via tokenization (no PAN).
 21. *Local token references?* Keystore (Ch 20).
 22. *Per-account?* Wallet scoped to the user (Ch 42).
 23. *Logging?* No card data/tokens/balances-with-identity (Ch 28).
 
 **Testing/Production**
+
 24. *Test spend?* Server-validated + idempotent; no local mutation; biometric gate.
 25. *Double-spend in prod?* Client-trusted balance / non-idempotent.
 26. *Key KPI?* Double-spend rate (0).
@@ -622,12 +630,18 @@ trusted balance (double-spend, negative, tampering); non-idempotent money ops (d
 double-spend); session-only sensitive actions (borrowed-phone fraud); optimistic money UI;
 client-owned ledger; per-account leakage; logging card data/balances.
 
-**Checklist:** ☐ no card data on device — PSP/Google Pay tokens only (PCI, Ch 23/75) ☐
-server-authoritative balance; never spend local ☐ server-validated + idempotent debit/credit
-(Ch 15) ☐ biometric/re-auth on sensitive actions (Ch 19/21) ☐ Google Pay/PSP tokenized
-charging (Ch 75) ☐ server-owned auditable history + sync (Ch 3/32) ☐ Keystore for local token
-references (Ch 20) ☐ per-account isolation (Ch 42) ☐ no card data/tokens/balances in logs
-(Ch 28) ☐ double-spend-rate alert (→ 0).
+**Checklist:**
+
+- [ ] no card data on device — PSP/Google Pay tokens only (PCI, Ch 23/75)
+- [ ] server-authoritative balance; never spend local
+- [ ] server-validated + idempotent debit/credit (Ch 15)
+- [ ] biometric/re-auth on sensitive actions (Ch 19/21)
+- [ ] Google Pay/PSP tokenized charging (Ch 75)
+- [ ] server-owned auditable history + sync (Ch 3/32)
+- [ ] Keystore for local token references (Ch 20)
+- [ ] per-account isolation (Ch 42)
+- [ ] no card data/tokens/balances in logs (Ch 28)
+- [ ] double-spend-rate alert (→ 0).
 
 **Key APIs:** PSP SDK (tokenize card → token), Google Pay API (`PaymentsClient`/
 `loadPaymentData` → payment token), idempotency key (Ch 15), `WalletApi` (server-authoritative

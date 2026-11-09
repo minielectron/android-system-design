@@ -523,6 +523,7 @@ URI handled. Instrumentation/UiAutomator for the real system pickers.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Scoped storage?* App-specific storage free (no permission); shared via MediaStore/SAF;
    no broad filesystem access.
 2. *Cross-app file rule?* Pass `content://` URIs, never `file://`.
@@ -531,22 +532,26 @@ URI handled. Instrumentation/UiAutomator for the real system pickers.
 5. *App's own files?* App-specific storage, no permission (Ch 25).
 
 **FileProvider**
+
 6. *Purpose?* Expose app files as content URIs to other apps.
 7. *Grant flags?* `FLAG_GRANT_READ_URI_PERMISSION` (temporary, minimal).
 8. *`file_paths`?* Restricts what can be shared (prevents traversal).
 9. *Exported?* `false` + `grantUriPermissions=true` (access via grants only).
 
 **SAF**
+
 10. *What is SAF?* System UI for the user to pick/save/browse → content URI, no permission.
 11. *OPEN vs CREATE vs TREE?* Pick file / save file / grant a folder.
 12. *Persist access?* `takePersistableUriPermission` + store the URI.
 13. *Read/write the URI?* Stream via `ContentResolver` (Ch 61) — no path.
 
 **MediaStore**
+
 14. *Shared media?* MediaStore (insert your own without broad permission).
 15. *Read media without permission?* Photo Picker (Ch 51).
 
 **Security**
+
 16. *Why not file://?* Crash + no access control.
 17. *Grant minimality?* Read-only, temporary; revoke; persist only if needed.
 18. *Provider over-export?* Attack surface — restrict + validate (Ch 23).
@@ -554,10 +559,12 @@ URI handled. Instrumentation/UiAutomator for the real system pickers.
 20. *Path traversal?* Restrict `file_paths`.
 
 **Streaming/perf**
+
 21. *Big content URI?* Stream off-main (Ch 61) — no path, no whole-file.
 22. *Avoid copying?* Grant a URI instead of copying when read-only.
 
 **Testing/Production**
+
 23. *Test share?* Assert content URI + read grant (not file://).
 24. *`FileUriExposedException` in prod?* A `file://` somewhere.
 25. *SAF lost after restart?* Not persisted.
@@ -631,12 +638,19 @@ persisting SAF access (lost after restart); treating a content URI as a path (fa
 loading a content URI wholly into memory (OOM — stream it); over-broad `file_paths`
 (traversal); trusting incoming URIs.
 
-**Checklist:** ☐ app files in app-specific storage (Ch 25) ☐ share out via FileProvider
-content URI + minimal read grant (never file://) ☐ restrictive `file_paths` ☐ SAF for
-pick/save/tree; persist only if needed ☐ MediaStore/Photo Picker for media ☐ stream
-content URIs via ContentResolver (Ch 61) ☐ provider not over-exported + validated (Ch 23)
-☐ untrusted incoming URIs ☐ sensitive files app-internal, per-account (Ch 25/42) ☐ no
-broad storage permissions ☐ exposure/security-error telemetry.
+**Checklist:**
+
+- [ ] app files in app-specific storage (Ch 25)
+- [ ] share out via FileProvider content URI + minimal read grant (never file://)
+- [ ] restrictive `file_paths`
+- [ ] SAF for pick/save/tree; persist only if needed
+- [ ] MediaStore/Photo Picker for media
+- [ ] stream content URIs via ContentResolver (Ch 61)
+- [ ] provider not over-exported + validated (Ch 23)
+- [ ] untrusted incoming URIs
+- [ ] sensitive files app-internal, per-account (Ch 25/42)
+- [ ] no broad storage permissions
+- [ ] exposure/security-error telemetry.
 
 **Key APIs:** `FileProvider.getUriForFile`/`file_paths.xml`/`grantUriPermissions`,
 `Intent.FLAG_GRANT_READ/WRITE_URI_PERMISSION`/`ACTION_SEND`, `ActivityResultContracts.

@@ -447,6 +447,7 @@ over-cascade.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why is invalidation "the hard part"?* Deciding *when* a value is invalid and
    *what else* depends on it.
 2. *Invalidation triggers?* Time (TTL), write-through, server push/version, cache
@@ -458,6 +459,7 @@ over-cascade.
    (Ch 49/32).
 
 **Scope/cascade**
+
 6. *Invalidation scope options?* Entry, tag/group, dependency cascade, all.
 7. *Dependency cascade?* Invalidating an entity invalidates derived views (listings/
    search/counts) via tags/graph.
@@ -466,6 +468,7 @@ over-cascade.
    dependencies precisely.
 
 **Cross-release/layer**
+
 10. *Cache versioning?* Bump a version when the cached shape changes → wipe old data
     on upgrade (complements DB migration, Ch 36).
 11. *Cross-layer coherence?* Evict in memory+DB+HTTP together; Room SSOT
@@ -474,25 +477,30 @@ over-cascade.
     you only know it changed.
 
 **Correctness**
+
 13. *Push vs local pending write?* Don't evict un-synced local changes (Ch 31/33).
 14. *SWR?* Serve stale, refetch in background (non-critical).
 15. *Freshness-critical data?* Short TTL + invalidate on change; never SWR.
 
 **Security**
+
 16. *Logout?* Invalidate all (prevent cross-user leak).
 17. *Trust a push?* Refetch over authenticated/pinned channel; backend authorizes.
 18. *Entitlement data?* Invalidate on change (don't cache a stale "premium").
 
 **Performance**
+
 19. *Avoid storms?* Precise scope; update-in-place; batch; bound cascades.
 20. *Measure?* Stale-serve rate, refetch volume, hit-rate.
 
 **Testing**
+
 21. *How test cascade?* Link dependents; write; assert all invalidated.
 22. *How test cache version?* Mismatch → wipe.
 23. *How test push-vs-local?* Push shouldn't evict pending local.
 
 **Production debugging**
+
 24. *Stale-after-write?* Missing write-through/cascade.
 25. *Mis-mapped after release?* Cache version not bumped.
 26. *Cross-account stale?* Not invalidating on logout.
@@ -551,11 +559,18 @@ server-driven invalidation, update-in-place vs invalidate, SWR.
 missing dependent cascade; no cache versioning (cross-release mis-map); evicting
 pending local writes; not invalidating on logout; inconsistent layers.
 
-**Checklist:** ☐ write-through invalidate on mutation ☐ dependency cascade (tags/
-graph) ☐ server push/version invalidation ☐ cache version bump per shape change
-☐ evict all layers coherently ☐ invalidate-all on logout ☐ don't evict un-synced
-writes ☐ update-in-place when possible ☐ SWR for non-critical ☐ metrics on
-stale-serve/refetch.
+**Checklist:**
+
+- [ ] write-through invalidate on mutation
+- [ ] dependency cascade (tags/graph)
+- [ ] server push/version invalidation
+- [ ] cache version bump per shape change
+- [ ] evict all layers coherently
+- [ ] invalidate-all on logout
+- [ ] don't evict un-synced writes
+- [ ] update-in-place when possible
+- [ ] SWR for non-critical
+- [ ] metrics on stale-serve/refetch.
 
 **Key APIs/patterns:** write-through eviction, tag/dependency maps, `CacheVersion`
 (DataStore), `Invalidator` (entry/tag/cascade/all), OkHttp `Cache.evictAll`,

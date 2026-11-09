@@ -526,6 +526,7 @@ What to test: classification (transient/permanent/domain/severity, Ch 67); stabl
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Telemetry pillars?* Logs, metrics (Ch 85), traces (Ch 84), events (Ch 82), errors (Ch 83).
 2. *Why unify?* One correlated story across pillars (Ch 84).
 3. *Why classify errors?* Turn noise into actionable, routed signal.
@@ -533,33 +534,39 @@ What to test: classification (transient/permanent/domain/severity, Ch 67); stabl
 5. *Why fingerprint?* Group duplicates into one counted issue (Ch 83).
 
 **Classification**
+
 6. *Fatal vs non-fatal?* Crash (Ch 83) vs handled (Ch 23).
 7. *Transient vs permanent?* Retryable (timeout/503, Ch 67) vs bug (400/parse).
 8. *Why it matters?* Drives handling (retry vs report) + severity.
 9. *Domain?* Network/db/ui/payment — routing + ownership.
 
 **Fingerprinting**
+
 10. *How?* Type + top app frame/location (not raw message).
 11. *Why not message?* Dynamic values make each unique → 10k issues.
 12. *What's kept?* Count, first/last seen, users, versions (Ch 83).
 
 **Severity/routing**
+
 13. *Rank by?* Impact: fatal + volume + velocity + new-in-release.
 14. *Route?* Page (fatal/high-impact), dashboard (rare), sample (transient).
 15. *Sampling?* Keep all fatals, sample transients (Ch 82).
 16. *Velocity?* Spiking matters as much as volume.
 
 **Correlation/privacy**
+
 17. *Correlate?* Trace/correlation/session ids (Ch 84).
 18. *Why?* Link error to trace/metrics/context.
 19. *PII?* Redact at boundary — errors are the top leak (Ch 28).
 20. *Consent?* Follows the analytics regime (Ch 82).
 
 **Reliability**
+
 21. *Crash report survives?* Durable buffer, persist-before-death (Ch 83).
 22. *Cost?* Batch + severity-sample (Ch 82).
 
 **Testing/Production**
+
 23. *Test classification?* Transient/permanent/severity cases.
 24. *Alert fatigue?* Severity routing — page fatals only.
 25. *Error flood?* Fingerprint/dedup + sampling.
@@ -628,11 +635,18 @@ by raw message (duplicate issues); paging on transients (alert fatigue); no seve
 (cost/noise); PII in error text; losing the crash's own report; unclassified errors (can't
 route or handle).
 
-**Checklist:** ☐ unified pipeline ingesting errors/logs/metrics/traces/events (Ch 82/83/84/85)
-☐ classify fatal/non-fatal + transient/permanent + domain ☐ fingerprint/dedup by type+location
-(Ch 83) ☐ rank by severity + velocity ☐ route page/dashboard/sample ☐ correlate via ids (Ch 84)
-☐ redact PII + consent (Ch 28) ☐ durable buffer (crash survives, Ch 83) ☐ severity sampling
-(keep fatals, Ch 82) ☐ classification drives handling (Ch 23/67).
+**Checklist:**
+
+- [ ] unified pipeline ingesting errors/logs/metrics/traces/events (Ch 82/83/84/85)
+- [ ] classify fatal/non-fatal + transient/permanent + domain
+- [ ] fingerprint/dedup by type+location (Ch 83)
+- [ ] rank by severity + velocity
+- [ ] route page/dashboard/sample
+- [ ] correlate via ids (Ch 84)
+- [ ] redact PII + consent (Ch 28)
+- [ ] durable buffer (crash survives, Ch 83)
+- [ ] severity sampling (keep fatals, Ch 82)
+- [ ] classification drives handling (Ch 23/67).
 
 **Key APIs/concepts:** Crashlytics fatal + non-fatal (`recordException`, Ch 83), custom keys/
 fingerprints (Ch 83), structured telemetry events, SHA-256 signature fingerprinting, severity/

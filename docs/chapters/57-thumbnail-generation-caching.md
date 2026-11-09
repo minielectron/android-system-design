@@ -524,6 +524,7 @@ bitmap). Instrumentation for real `MediaMetadataRetriever`/`PdfRenderer`.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What's a thumbnail?* A small preview derived from a larger source.
 2. *Core decision?* Where to generate — CDN/server (remote) vs client (local).
 3. *Remote assets?* CDN right-sized URL (Ch 56), edge-cached, zero client cost.
@@ -531,6 +532,7 @@ bitmap). Instrumentation for real `MediaMetadataRetriever`/`PdfRenderer`.
 5. *Why not download originals for previews?* Wastes bandwidth/CPU/memory.
 
 **Local generation**
+
 6. *Image?* Downsample decode (`inSampleSize`/Coil size target).
 7. *Video?* `MediaMetadataRetriever.getFrameAtTime` / `ThumbnailUtils` / Media3.
 8. *PDF?* `PdfRenderer`.
@@ -538,6 +540,7 @@ bitmap). Instrumentation for real `MediaMetadataRetriever`/`PdfRenderer`.
 10. *Thread?* Off-main (WorkManager/coroutine) — heavy, ANR risk.
 
 **Caching/invalidation**
+
 11. *Cache tiers?* Memory + disk (app-internal), keyed by source+size (+version).
 12. *Why cache?* Generation is expensive; reuse.
 13. *Invalidation?* Version/mtime/hash in key; delete on source delete (Ch 34).
@@ -545,17 +548,20 @@ bitmap). Instrumentation for real `MediaMetadataRetriever`/`PdfRenderer`.
 15. *Storage?* App-internal (Ch 25).
 
 **Concurrency**
+
 16. *Concurrent same thumbnail?* Single-flight by key (Ch 11).
 17. *Retriever leak?* `use`/release.
 18. *Batch generation?* WorkManager, bounded concurrency (Ch 30).
 
 **Security/privacy**
+
 19. *Sensitive thumbnails?* App-internal, per-account (Ch 25/42).
 20. *Metadata?* Strip EXIF/location (Ch 60/28).
 21. *Remote private thumbnails?* Signed URLs/auth (Ch 19/23).
 22. *Decompression bomb?* Cap decode dimensions (Ch 56).
 
 **Testing/Production**
+
 23. *Test invalidation?* Version in key → changed source misses.
 24. *Key metrics?* Cache hit rate, generation time, bandwidth saved.
 25. *High bandwidth?* Downloading originals instead of CDN.
@@ -625,11 +631,18 @@ version (stale); not deleting orphaned thumbnails; storing sensitive thumbnails 
 storage; leaking EXIF; not bounding decode size (OOM); unbounded concurrent video
 extraction.
 
-**Checklist:** ☐ remote → CDN right-sized URL (Ch 56) ☐ local → client generate off-main
-(Ch 30) ☐ right API per source type ☐ cache memory+disk keyed by source+size+version ☐
-invalidate on source change/delete (Ch 34) ☐ app-internal storage (Ch 25), per-account
-(Ch 42) ☐ WebP/AVIF compact ☐ single-flight (Ch 11) ☐ strip metadata / signed URLs for
-private ☐ cache-hit + generation-cost telemetry.
+**Checklist:**
+
+- [ ] remote → CDN right-sized URL (Ch 56)
+- [ ] local → client generate off-main (Ch 30)
+- [ ] right API per source type
+- [ ] cache memory+disk keyed by source+size+version
+- [ ] invalidate on source change/delete (Ch 34)
+- [ ] app-internal storage (Ch 25), per-account (Ch 42)
+- [ ] WebP/AVIF compact
+- [ ] single-flight (Ch 11)
+- [ ] strip metadata / signed URLs for private
+- [ ] cache-hit + generation-cost telemetry.
 
 **Key APIs:** `BitmapFactory`/`inSampleSize`/`inJustDecodeBounds`,
 `MediaMetadataRetriever.getFrameAtTime`/`ThumbnailUtils.createVideoThumbnail`, `PdfRenderer`,

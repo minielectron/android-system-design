@@ -502,6 +502,7 @@ process-death restore (Ch 8). Fake live channel/FCM/sync.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Who owns order status?* The server (state machine) — the client reflects it (Ch 3).
 2. *Client invent status?* No — renders server-owned status.
 3. *Freshness mechanism?* Per app state: live channel (watching) + FCM (background) + sync
@@ -510,6 +511,7 @@ process-death restore (Ch 8). Fake live channel/FCM/sync.
 5. *Source of status truth?* Server; SSOT reflects it.
 
 **Mechanism per state**
+
 6. *While watching?* Live channel (WebSocket Ch 63 / SSE Ch 66) — low-latency + driver map.
 7. *Backgrounded?* FCM (Ch 49) + notification (Ch 50).
 8. *Backstop?* Sync (Ch 32) on open/periodic.
@@ -517,27 +519,32 @@ process-death restore (Ch 8). Fake live channel/FCM/sync.
 10. *WebSocket vs SSE here?* SSE fine for one-way status; WebSocket if bidirectional.
 
 **Reliability**
+
 11. *Dropped push/live event?* Sync self-heals (Ch 32).
 12. *Out-of-order?* Apply by server timestamp/sequence (no regress).
 13. *Process death?* SSOT + sync restore (Ch 8/32).
 14. *Cross-device?* Server-authoritative + sync (Ch 32).
 
 **Notifications**
+
 15. *Status notifications?* FCM-driven (Ch 49/50), consistent with in-app (one SSOT).
 16. *Tap behavior?* Deep-link to tracking screen (Ch 52), same status.
 
 **Live location**
+
 17. *Driver map?* Live location (Ch 67) while watching; smoothed; server ETA.
 18. *When streamed?* Only during active delivery while watching.
 19. *Driver side?* `location` FGS (Ch 67).
 
 **Security**
+
 20. *Access?* Server-authorized (own orders only, Ch 23).
 21. *Driver location privacy?* Sensitive — authorized customer only, during delivery
     (Ch 67/28).
 22. *Payloads?* Untrusted triggers; reconcile via authed sync (Ch 49/63/23).
 
 **Testing/Production**
+
 23. *Test self-heal?* Dropped update → sync corrects (Ch 32).
 24. *Test lifecycle?* Live channel start/stop with watching.
 25. *Stale status in prod?* Sync backstop/mechanism gap.
@@ -607,12 +614,18 @@ WebSocket in the background (battery/Doze); trusting push/live without a sync ba
 (stale on drop); notification inconsistent with in-app status (two sources); holding the
 driver stream off-screen; unauthorized order/location access.
 
-**Checklist:** ☐ server-owned status reflected in SSOT (never invent, Ch 3) ☐ live channel
-(Ch 63/66) only while watching + driver location + ETA (Ch 67) ☐ FCM background status +
-notification (Ch 49/50) ☐ sync backstop self-heals missed updates (Ch 32) ☐ one SSOT drives
-screen + notification ☐ close live channel on leave (Ch 44/47) ☐ process-death survival +
-cross-device (Ch 8/32) ☐ authorized order access + driver-location privacy (Ch 23/67/28) ☐
-untrusted payloads reconciled via authed sync ☐ status-freshness + self-heal telemetry.
+**Checklist:**
+
+- [ ] server-owned status reflected in SSOT (never invent, Ch 3)
+- [ ] live channel (Ch 63/66) only while watching + driver location + ETA (Ch 67)
+- [ ] FCM background status + notification (Ch 49/50)
+- [ ] sync backstop self-heals missed updates (Ch 32)
+- [ ] one SSOT drives screen + notification
+- [ ] close live channel on leave (Ch 44/47)
+- [ ] process-death survival + cross-device (Ch 8/32)
+- [ ] authorized order access + driver-location privacy (Ch 23/67/28)
+- [ ] untrusted payloads reconciled via authed sync
+- [ ] status-freshness + self-heal telemetry.
 
 **Key APIs:** Order SSOT (Room `@Entity`/`@Dao`, Ch 3), live channel (WebSocket/SSE, Ch 63/66)
 watching-scoped via `DisposableEffect`/lifecycle (Ch 44), FCM high-priority (Ch 49) + Notifier

@@ -519,6 +519,7 @@ streaming/held responses.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *SSE?* A long-lived HTTP `text/event-stream`; server streams events one-way.
 2. *SSE built-ins?* Auto-reconnect + `Last-Event-ID` resume + HTTP-native.
 3. *Long polling?* Client request the server holds open until data/timeout, then re-request.
@@ -526,6 +527,7 @@ streaming/held responses.
 5. *Direction of SSE?* One-way (server→client).
 
 **Choosing**
+
 6. *SSE vs WebSocket (Ch 63)?* One-way HTTP+resume vs bidirectional stateful.
 7. *When WebSocket?* Client must also send (chat/auctions).
 8. *When long poll?* SSE/WS unavailable or events rare; basic infra.
@@ -533,6 +535,7 @@ streaming/held responses.
 10. *Default for a read-only feed?* SSE.
 
 **Reliability**
+
 11. *Resume (SSE)?* `Last-Event-ID` header → server replays from there.
 12. *Resume (long-poll)?* Cursor in each request.
 13. *Reconnect?* Jittered backoff (Ch 2).
@@ -541,17 +544,20 @@ streaming/held responses.
 16. *Missed events?* Resume + REST catch-up self-heal.
 
 **Lifecycle/efficiency**
+
 17. *Foreground only?* Yes — held connection drains battery, Doze-killed (Ch 47).
 18. *Background?* FCM handoff (Ch 49).
 19. *High-rate?* Coalesce/sample (Ch 63).
 20. *Proxy-restrictive nets?* SSE/long-poll traverse better than WS.
 
 **Security**
+
 21. *Auth?* Normal authed HTTPS + pinning (Ch 19/23); reuses REST stack.
 22. *Stream authz?* Server authorizes which feed (Ch 23).
 23. *Events trust?* Untrusted — validate (Ch 52).
 
 **Testing/Production**
+
 24. *Test SSE?* `MockWebServer` stream + resume/dedup.
 25. *Test selection?* Matrix (one-way→SSE, bidir→WS, bg→FCM).
 26. *WS blocked in prod?* Fall back to SSE/long-poll.
@@ -618,12 +624,18 @@ polling frequent data (laggy/wasteful); no resume (gaps); no idempotent merge (d
 on replay); treating the stream as truth; holding SSE/long-poll in the background (battery/
 Doze); plain HTTP / no stream authz; non-jittered reconnect (storms).
 
-**Checklist:** ☐ pick transport by matrix (SSE one-way / WS bidirectional / long-poll
-fallback / FCM background) ☐ SSE with `Last-Event-ID` resume + auto-reconnect ☐ long-poll
-hold-open + cursor (single in-flight) ☐ jittered backoff (Ch 2) ☐ events → idempotent SSOT
-merge (Ch 3/15) ☐ SSOT/REST = truth; catch-up (Ch 32) ☐ foreground-scoped + FCM background
-(Ch 44/49) ☐ coalesce high-rate (Ch 63) ☐ authed HTTPS + pinning + stream authz + untrusted
-events (Ch 19/23/52) ☐ stream-health telemetry.
+**Checklist:**
+
+- [ ] pick transport by matrix (SSE one-way / WS bidirectional / long-poll fallback / FCM background)
+- [ ] SSE with `Last-Event-ID` resume + auto-reconnect
+- [ ] long-poll hold-open + cursor (single in-flight)
+- [ ] jittered backoff (Ch 2)
+- [ ] events → idempotent SSOT merge (Ch 3/15)
+- [ ] SSOT/REST = truth; catch-up (Ch 32)
+- [ ] foreground-scoped + FCM background (Ch 44/49)
+- [ ] coalesce high-rate (Ch 63)
+- [ ] authed HTTPS + pinning + stream authz + untrusted events (Ch 19/23/52)
+- [ ] stream-health telemetry.
 
 **Key APIs:** OkHttp `EventSources`/`EventSource`/`EventSourceListener` (`onEvent`/`onFailure`)
 + `Accept: text/event-stream` + `Last-Event-ID` header, OkHttp long-poll (held GET + cursor),

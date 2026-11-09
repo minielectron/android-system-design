@@ -446,6 +446,7 @@ anti-replay. Verify **no security decision** is made purely client-side.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why can't the client prove it's untampered by itself?* Any local check runs in
    the attacker-controlled app and is bypassable (hook/patch).
 2. *Attestation vs local detection?* Attestation = Google-signed, server-verified
@@ -458,6 +459,7 @@ anti-replay. Verify **no security decision** is made purely client-side.
    challenge.
 
 **Architecture**
+
 6. *Where is the trust decision made?* The backend — it verifies the signature +
    nonce + verdict.
 7. *Role of the client?* An untrusted courier that fetches and forwards the token.
@@ -467,6 +469,7 @@ anti-replay. Verify **no security decision** is made purely client-side.
    — compose, don't conflate.
 
 **Response policy**
+
 10. *Risk-based vs hard block?* Graduated (step-up/limit/block) avoids false
     positives; hard block only for the riskiest.
 11. *Handle no Play Services?* Fallback policy (limit/alternate/allow low-value);
@@ -475,6 +478,7 @@ anti-replay. Verify **no security decision** is made purely client-side.
     risk-based.
 
 **Defense-in-depth**
+
 13. *What else to combine?* Keystore key attestation (Ch 20), pinning (Ch 23),
     obfuscation/R8 (Ch 27), server anomaly detection.
 14. *Keystore attestation vs Play Integrity?* Hardware key-backing proof vs app/
@@ -482,23 +486,27 @@ anti-replay. Verify **no security decision** is made purely client-side.
 15. *Why defense-in-depth?* No single layer is sufficient; each raises cost.
 
 **Limits**
+
 16. *Is attestation unbeatable?* No — raises cost, depends on Play Services; a
     passing verdict ≠ fully trusted client.
 17. *Should every request be gated?* No — sensitive actions only (cost/UX).
 
 **Operational**
+
 18. *Replay of a valid verdict?* Prevented by nonce binding + server check.
 19. *MITM swapping verdicts?* Pinned channel (Ch 23); server verifies signature.
 20. *Migration from SafetyNet?* SafetyNet Attestation is deprecated → Play
     Integrity.
 
 **Testing**
+
 21. *What can client tests cover?* Nonce forwarding, fallback, token attachment —
     not the verdict itself.
 22. *Where is the real test?* Server-side verification + risk policy + anti-replay.
 23. *Key property to assert?* No client-side-only security decision.
 
 **Production debugging**
+
 24. *Legit users blocked?* Over-strict/no non-GMS handling.
 25. *Fraud slipping through?* Trusting client booleans / no server verification.
 26. *Verdict failures spike?* Play Services/quota, or an attack/bad release.
@@ -562,11 +570,18 @@ server verification; no nonce (replay); hard-blocking all imperfect verdicts (fa
 positives / non-GMS lockout); conflating integrity with authentication; relying on a
 single layer; invasive fingerprinting.
 
-**Checklist:** ☐ Play Integrity verdict ☐ server-issued nonce (anti-replay) ☐
-server-side verification ☐ risk-based response (not hard block) ☐ gate sensitive
-actions only ☐ defense-in-depth (Ch 20/23/27) ☐ no-GMS/offline fallback ☐ no
-client-side security decision ☐ allow-list test devices ☐ monitor verdict
-distribution/false positives.
+**Checklist:**
+
+- [ ] Play Integrity verdict
+- [ ] server-issued nonce (anti-replay)
+- [ ] server-side verification
+- [ ] risk-based response (not hard block)
+- [ ] gate sensitive actions only
+- [ ] defense-in-depth (Ch 20/23/27)
+- [ ] no-GMS/offline fallback
+- [ ] no client-side security decision
+- [ ] allow-list test devices
+- [ ] monitor verdict distribution/false positives.
 
 **Key APIs:** `IntegrityManagerFactory`/`IntegrityManager`,
 `IntegrityTokenRequest`/`StandardIntegrityManager`, `setNonce`,

@@ -482,6 +482,7 @@ version (schema migration, Ch 36).
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Is Android auto-backup on by default?* Yes — it copies app data to Drive unless
    you exclude it.
 2. *What must you exclude?* Secrets/tokens, encryption keys, sensitive DBs/files, and
@@ -494,12 +495,14 @@ version (schema migration, Ch 36).
    with include/exclude by domain.
 
 **Restore**
+
 6. *Restore risks?* Stale/old-version data; absent device-bound secrets.
 7. *Handle old schema?* Room migrations run on open (Ch 36).
 8. *Absent secrets after restore?* Re-authenticate (Ch 19); treat as logged out.
 9. *Restored encrypted data, key gone?* Undecryptable by design; re-provision/re-sync.
 
 **Export/import (GDPR)**
+
 10. *Why export?* Data portability (GDPR/CCPA).
 11. *Format?* Open, documented, versioned (JSON/ZIP); encrypt if sensitive.
 12. *Where?* User-chosen via SAF (Ch 25).
@@ -508,28 +511,34 @@ version (schema migration, Ch 36).
 14. *Right to erasure?* Delete device data + request backend deletion (Ch 22).
 
 **Device transfer**
+
 15. *Do secrets transfer?* No — Keystore keys are device-bound; re-auth.
 16. *Better durability for important data?* Cloud sync (Ch 32), device-independent.
 
 **Backup vs sync**
+
 17. *When backup?* Local-only settings/offline state; safety net.
 18. *When sync?* Important user data (authoritative, real-time, portable).
 
 **Security**
+
 19. *Sensitive export?* Encrypt (Ch 24) + user-controlled destination.
 20. *Caches in backup?* Exclude (quota/bandwidth).
 21. *Transport security?* Google-encrypted, but don't rely on it for secrets.
 
 **Performance**
+
 22. *Reduce backup size?* Exclude caches; back up only durable small state.
 23. *Large export?* Stream (Ch 25); background.
 
 **Testing**
+
 24. *How test export/import?* Round-trip; reject corrupt/newer-format.
 25. *How verify exclusions?* Static check rules; `adb bmgr` backup/restore;
     assert secrets absent.
 
 **Production debugging**
+
 26. *Secret in backup?* Missing exclusion.
 27. *Crash on restore?* Schema not migrated.
 28. *Backup skipped?* Quota (caches not excluded).
@@ -590,10 +599,17 @@ no schema migration on restore (crash); proprietary/unversioned export; blind im
 (corruption/injection); no deletion support (non-compliant); over-relying on device
 backup instead of sync.
 
-**Checklist:** ☐ backup rules exclude secrets+caches ☐ `allowBackup` controlled by
-rules ☐ restore: migrate (Ch 36) + re-auth ☐ portable versioned export (SAF, encrypt
-sensitive) ☐ validated conflict-aware import ☐ deletion (device+backend) ☐ prefer
-sync (Ch 32) for important data ☐ test with `adb bmgr` + round-trip ☐ no data in logs.
+**Checklist:**
+
+- [ ] backup rules exclude secrets+caches
+- [ ] `allowBackup` controlled by rules
+- [ ] restore: migrate (Ch 36) + re-auth
+- [ ] portable versioned export (SAF, encrypt sensitive)
+- [ ] validated conflict-aware import
+- [ ] deletion (device+backend)
+- [ ] prefer sync (Ch 32) for important data
+- [ ] test with `adb bmgr` + round-trip
+- [ ] no data in logs.
 
 **Key APIs/config:** `android:dataExtractionRules`/`fullBackupContent`,
 `<cloud-backup>`/`<device-transfer>` include/exclude, `android:allowBackup`,

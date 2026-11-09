@@ -475,6 +475,7 @@ merge conflict, consent gating, per-account isolation, offline optimistic apply.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Device- vs account-scoped prefs?* Device-specific (don't sync: per-device text
    size) vs user-level (sync: theme, filters).
 2. *Why does scope matter?* Syncing the wrong one is annoying (changes all devices) or
@@ -486,6 +487,7 @@ merge conflict, consent gating, per-account isolation, offline optimistic apply.
    controlled (rolled out, Ch 41) — don't conflate.
 
 **Conflict**
+
 6. *Preference conflict?* Same pref edited on two devices.
 7. *Resolution?* Per-key LWW (scalars) or set-merge/OR-Set (collections, Ch 33).
 8. *Why per-key not blob?* Concurrent edits to different prefs both survive; blob LWW
@@ -493,36 +495,43 @@ merge conflict, consent gating, per-account isolation, offline optimistic apply.
 9. *Muted topics conflict?* Set-merge (both devices' adds/removes survive).
 
 **Storage/scope**
+
 10. *Where device prefs?* Local DataStore (Ch 4), never synced.
 11. *Where account prefs?* Synced store (Room offline-first), per-account (Ch 42).
 12. *Per-account?* Scope by accountId; clear on logout (Ch 42/22).
 
 **Personalization**
+
 13. *What are personalization signals?* Viewing/liking/skipping, preferred categories —
     sensitive.
 14. *Privacy?* Consent-gated, minimized, exportable/deletable (Ch 37).
 15. *Feeds what?* Backend recommendations (Ch 73).
 
 **Correctness**
+
 16. *Offline edit?* Optimistic local + outbox; syncs later.
 17. *Edit during sync?* Version + conflict resolve (Ch 33).
 18. *Account switch mid-edit?* Account-scoped + flatMapLatest (Ch 42).
 
 **Exposure**
+
 19. *How consumed app-wide?* Global state holder (Ch 39); applies instantly.
 20. *Apply latency?* Instant local (optimistic); cross-device via sync.
 
 **Security**
+
 21. *Encrypt synced prefs?* If sensitive (Ch 24).
 22. *Who authorizes?* Backend per account.
 23. *Export/delete prefs?* GDPR (Ch 37).
 
 **Testing**
+
 24. *How test scope?* Device pref doesn't queue sync; account pref does.
 25. *How test conflict?* LWW for scalar; merge for collection.
 26. *How test consent?* Denied → not recorded.
 
 **Production debugging**
+
 27. *Pref didn't follow device?* Wrong scope / sync failing.
 28. *Concurrent change lost?* Whole-blob not per-key.
 29. *Device setting changed all devices?* Wrongly account-scoped.
@@ -583,11 +592,19 @@ whole-blob LWW (loses concurrent edits); no precedence model; conflating user pr
 with remote config; syncing personalization without consent; not per-account scoping;
 unencrypted sensitive synced prefs.
 
-**Checklist:** ☐ classify device vs account ☐ device-local (DataStore) ☐ account-synced
-offline-first (Ch 29) ☐ per-key entries ☐ per-key conflict (LWW/set-merge, Ch 33)
-☐ precedence local-unsynced→synced→default ☐ per-account (Ch 42) ☐ global-state
-exposure (Ch 39) ☐ consent-gated personalization ☐ export/delete (Ch 37) ☐ distinct
-from remote config (Ch 41).
+**Checklist:**
+
+- [ ] classify device vs account
+- [ ] device-local (DataStore)
+- [ ] account-synced offline-first (Ch 29)
+- [ ] per-key entries
+- [ ] per-key conflict (LWW/set-merge, Ch 33)
+- [ ] precedence local-unsynced→synced→default
+- [ ] per-account (Ch 42)
+- [ ] global-state exposure (Ch 39)
+- [ ] consent-gated personalization
+- [ ] export/delete (Ch 37)
+- [ ] distinct from remote config (Ch 41).
 
 **Key APIs/patterns:** DataStore (device, Ch 4), account-pref Room entries (per-key,
 per-account Ch 42), offline-first sync (Ch 29/31/32), `PrefConflictResolver` (LWW/

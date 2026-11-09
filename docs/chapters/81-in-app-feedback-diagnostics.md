@@ -517,6 +517,7 @@ throttle/once (Ch 80). Fake redactor/uploader/outbox/review-manager.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What's in a bug report?* User text + consent-gated diagnostic bundle (logs/device info/
    breadcrumbs/screenshot).
 2. *Why a bundle?* Text-only is undebuggable; context enables reproduction.
@@ -526,35 +527,42 @@ throttle/once (Ch 80). Fake redactor/uploader/outbox/review-manager.
 5. *Correlation id?* Opaque id linking crash/analytics without PII (Ch 82/83).
 
 **Privacy/consent**
+
 6. *Upload logs silently?* No — consent-gated.
 7. *What to redact?* Names, emails, tokens, messages, card data (logs + screenshot) (Ch 28).
 8. *User control?* Preview/toggle/blur attachments.
 9. *Screenshot risk?* Can capture others' data/payment screens — redact/blur/exclude.
 
 **Reliability**
+
 10. *Lost report?* Outbox + resumable upload (Ch 31/17).
 11. *Large bundle interrupted?* Resumable upload (Ch 17).
 12. *Offline?* Queue + retry.
 
 **Rating prompts**
+
 13. *How to ask for a rating?* Play In-App Review API.
 14. *Custom "rate us" dialog?* Policy violation + backfires.
 15. *When?* Good moment (positive action), rate-limited, not after a crash.
 
 **Surveys**
+
 16. *Survey UX?* Targeted, throttled, dismissible, once (Ch 80/41).
 17. *Fatigue?* Throttle; measure response (Ch 82).
 
 **Correlation/breadcrumbs**
+
 18. *Link report to crash?* Correlation id (Ch 82/83).
 19. *Breadcrumb buffer?* Bounded ring buffer (Ch 89).
 
 **Security**
+
 20. *Upload channel?* Authed + TLS-pinned (Ch 19/23).
 21. *Correlation id PII?* No — opaque.
 22. *Retention/deletion?* Diagnostics are personal data (Ch 28/42).
 
 **Testing/Production**
+
 23. *Test redaction?* Assert PII/tokens removed.
 24. *Test consent?* No bundle when declined.
 25. *PII leaked in prod?* Redaction gap (alert).
@@ -621,13 +629,19 @@ no consent; incomplete redaction (tokens/PII slip); fire-and-forget upload (lost
 custom "rate us" dialog / prompting after a crash (policy/backfire); survey fatigue;
 correlation id containing PII; capturing sensitive screens.
 
-**Checklist:** ☐ report = text + consent-gated diagnostic bundle ☐ bundle: redacted logs +
-device info + breadcrumbs (Ch 89) + optional screenshot ☐ explicit consent + PII redaction +
-user preview/control (Ch 28) ☐ reliable outbox + resumable upload (Ch 31/17) ☐ opaque
-correlation id → crash/analytics (Ch 82/83) ☐ authed + TLS-pinned upload (Ch 19/23) ☐ Play
-in-app review at a good moment, rate-limited (no custom dialog) ☐ targeted/throttled/
-dismissible surveys (Ch 80/41) ☐ per-account + retention/deletion (Ch 42/28) ☐ no raw
-PII/secrets uploaded ☐ redaction-coverage + report-funnel telemetry.
+**Checklist:**
+
+- [ ] report = text + consent-gated diagnostic bundle
+- [ ] bundle: redacted logs + device info + breadcrumbs (Ch 89) + optional screenshot
+- [ ] explicit consent + PII redaction + user preview/control (Ch 28)
+- [ ] reliable outbox + resumable upload (Ch 31/17)
+- [ ] opaque correlation id → crash/analytics (Ch 82/83)
+- [ ] authed + TLS-pinned upload (Ch 19/23)
+- [ ] Play in-app review at a good moment, rate-limited (no custom dialog)
+- [ ] targeted/throttled/dismissible surveys (Ch 80/41)
+- [ ] per-account + retention/deletion (Ch 42/28)
+- [ ] no raw PII/secrets uploaded
+- [ ] redaction-coverage + report-funnel telemetry.
 
 **Key APIs:** `PiiRedactor` (Ch 28), `BreadcrumbBuffer`/`LogBuffer` ring buffers (Ch 89),
 Outbox + `ResumableUploader` (Ch 31/17), correlation id (Ch 82/83), Play In-App Review

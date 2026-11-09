@@ -416,6 +416,7 @@ restoration; `rememberSaveable` state restoration via `StateRestorationTester`.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Config change vs process death?* ViewModel survives config change, not process
    death; the latter destroys all memory and recreates from saved state.
 2. *What survives process death?* `SavedStateHandle`/`rememberSaveable` (Bundle) +
@@ -428,6 +429,7 @@ restoration; `rememberSaveable` state restoration via `StateRestorationTester`.
    re-fetch — not the Bundle.
 
 **Architecture**
+
 6. *What belongs in `SavedStateHandle` vs Room?* Small transient journey keys vs
    large/durable/relational data.
 7. *How re-derive the screen after death?* Restore minimal keys, read SSOT,
@@ -435,6 +437,7 @@ restoration; `rememberSaveable` state restoration via `StateRestorationTester`.
 8. *Pure-UI state across death?* `rememberSaveable` (+ custom `Saver`).
 
 **Kotlin/Android**
+
 9. *How is `SavedStateHandle` provided?* By Hilt/`SavedStateViewModelFactory`;
    `@Parcelize` for custom types.
 10. *`remember` vs `rememberSaveable`?* `remember` survives recomposition only;
@@ -442,6 +445,7 @@ restoration; `rememberSaveable` state restoration via `StateRestorationTester`.
 11. *Custom type in `rememberSaveable`?* Provide a `Saver`.
 
 **Concurrency/correctness**
+
 12. *Duplicate side effect on resume?* Persist an idempotency key (Ch 15);
     re-derive, don't replay.
 13. *In-flight coroutine on death?* Lost; use WorkManager for durable work
@@ -449,21 +453,25 @@ restoration; `rememberSaveable` state restoration via `StateRestorationTester`.
 14. *Restore vs newer SSOT data conflict?* Prefer the SSOT (authoritative).
 
 **Limits**
+
 15. *Bundle size limit?* ~1 MB per Binder transaction; keep saves to bytes/KB.
 16. *What triggers `TransactionTooLargeException`?* Oversized saved state (lists,
     bitmaps).
 
 **Security**
+
 17. *Secrets in the Bundle?* Never — unencrypted on disk; use Keystore (Ch 20).
 18. *PII drafts?* Persist to encrypted Room (Ch 24), excluded from backup (Ch 37).
 
 **Scalability**
+
 19. *Multi-screen journey restoration?* A restorable-state contract + nav back
     stack restoration (Ch 53).
 20. *Scroll position in huge lists?* Paging + saved key; `rememberLazyListState`
     saver.
 
 **Testing**
+
 21. *How test restoration?* Seed `SavedStateHandle` in a unit test; assert derived
     state.
 22. *How force process death?* *Don't keep activities* / `adb shell am kill`.
@@ -471,6 +479,7 @@ restoration; `rememberSaveable` state restoration via `StateRestorationTester`.
     Bundle restore.
 
 **Production debugging**
+
 24. *Users lose form input — cause?* State only in ViewModel/composable, not
     `SavedStateHandle`.
 25. *Duplicate order after returning — cause?* Re-submit on restore without an
@@ -534,10 +543,16 @@ death); big objects in the Bundle (`TransactionTooLargeException`); secrets in t
 Bundle; re-submitting operations on restore (duplicates); persisting one-time
 effects (Ch 7).
 
-**Checklist:** ☐ transient keys in `SavedStateHandle` ☐ durable data from SSOT
-☐ Bundle tiny ☐ `@Parcelize`/`Saver` for custom types ☐ idempotency key for
-in-flight mutations ☐ no secrets/PII in Bundle ☐ long drafts → Room ☐ tested via
-*Don't keep activities*.
+**Checklist:**
+
+- [ ] transient keys in `SavedStateHandle`
+- [ ] durable data from SSOT
+- [ ] Bundle tiny
+- [ ] `@Parcelize`/`Saver` for custom types
+- [ ] idempotency key for in-flight mutations
+- [ ] no secrets/PII in Bundle
+- [ ] long drafts → Room
+- [ ] tested via *Don't keep activities*.
 
 **Key APIs:** `SavedStateHandle` (`get`/`set`/`getStateFlow`/`contains`),
 `@Parcelize`, `rememberSaveable`, `Saver`/`mapSaver`/`listSaver`,

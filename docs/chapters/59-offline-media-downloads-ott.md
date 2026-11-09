@@ -572,6 +572,7 @@ license. Instrumentation with test DRM content for end-to-end.
 > ≥40 questions.
 
 **Fundamentals**
+
 1. *Why is offline OTT hard?* Adaptive + DRM + huge + licensed + player-integrated.
 2. *The real asset?* The **offline license**, not the bytes.
 3. *Download engine?* Media3 download stack (`DownloadManager`/`DownloadService`/
@@ -581,6 +582,7 @@ license. Instrumentation with test DRM content for end-to-end.
 5. *Where does the download run?* `DownloadService` (FGS, Ch 46), background, resumable.
 
 **DRM/license**
+
 6. *Offline license?* Widevine license acquired at download, stored securely, expiry-bound.
 7. *What gates playback?* A valid offline license (not file presence).
 8. *Expiry?* Hard expiry / playback window; block + renew on expiry.
@@ -589,6 +591,7 @@ license. Instrumentation with test DRM content for end-to-end.
 11. *Keys in app code?* No — platform DRM stack holds them.
 
 **Download mechanics**
+
 12. *Track selection?* `DownloadHelper` — download one rendition + chosen audio/subtitle.
 13. *Why one rendition?* Storage (not all bitrates).
 14. *Constraints?* Wi-Fi-only/charging (Ch 47).
@@ -596,6 +599,7 @@ license. Instrumentation with test DRM content for end-to-end.
 16. *Parallelism?* `maxParallelDownloads`.
 
 **SSOT/storage**
+
 17. *State model?* Room SSOT: queued/downloading/paused/completed/failed/expired +
     progress (Ch 3).
 18. *Storage location?* App-specific internal/external/SD (Ch 62), not shared.
@@ -603,22 +607,26 @@ license. Instrumentation with test DRM content for end-to-end.
 20. *Per-account?* Filter + isolate downloads/licenses (Ch 42).
 
 **Playback**
+
 21. *Offline playback?* Same Media3 player reads the download cache + offline license
     (Ch 58).
 22. *Online↔offline switch?* Player picks source by availability/preference (transparent).
 23. *Completion meaning?* Media fully downloaded AND license stored.
 
 **Licensing policy**
+
 24. *Limits (titles/devices)?* Server-authorized (Ch 19/23).
 25. *Entitlement/geo?* Server-enforced; client UX only.
 26. *Can a modified client self-grant?* No — server issues the license.
 
 **Security**
+
 27. *Protected playback capture?* `FLAG_SECURE`/secure surface (Ch 58).
 28. *Network for license/manifest?* Authed + pinned (Ch 19/23).
 29. *Logging?* No keys/signed URLs/PII (Ch 28).
 
 **Testing/Production**
+
 30. *Test completion?* Requires media + license.
 31. *Test delete?* Atomic (media+license+row).
 32. *Test expiry?* Blocks playback; renewal re-acquires.
@@ -705,13 +713,21 @@ license at play (illegal continued play); client-only limit enforcement (bypassa
 hand-rolling adaptive+DRM download; no resume/Scheduler (lost on reboot); shared storage;
 cross-account leakage.
 
-**Checklist:** ☐ Media3 download stack (`DownloadHelper`/`DownloadManager`/`DownloadService`
-FGS, Ch 46) ☐ download one chosen rendition ☐ Wi-Fi-only/charging constraints (Ch 47) ☐
-resume via Scheduler, survive reboot/death (Ch 30) ☐ offline Widevine license acquire/
-store/expiry/renew (Ch 25) ☐ playback gated by license validity ☐ atomic delete (media +
-license + SSOT row) ☐ SSOT model (Ch 3), app-specific/SD storage (Ch 62) ☐ transparent
-offline playback (Ch 58) ☐ server-enforced entitlement/limits/geo/expiry (Ch 19/23) ☐
-per-account (Ch 42) ☐ `FLAG_SECURE` for protected playback ☐ storage cleanup/pressure.
+**Checklist:**
+
+- [ ] Media3 download stack (`DownloadHelper`/`DownloadManager`/`DownloadService` FGS, Ch 46)
+- [ ] download one chosen rendition
+- [ ] Wi-Fi-only/charging constraints (Ch 47)
+- [ ] resume via Scheduler, survive reboot/death (Ch 30)
+- [ ] offline Widevine license acquire/store/expiry/renew (Ch 25)
+- [ ] playback gated by license validity
+- [ ] atomic delete (media + license + SSOT row)
+- [ ] SSOT model (Ch 3), app-specific/SD storage (Ch 62)
+- [ ] transparent offline playback (Ch 58)
+- [ ] server-enforced entitlement/limits/geo/expiry (Ch 19/23)
+- [ ] per-account (Ch 42)
+- [ ] `FLAG_SECURE` for protected playback
+- [ ] storage cleanup/pressure.
 
 **Key APIs:** Media3 `DownloadManager`/`DownloadService`/`DownloadHelper`/`DownloadRequest`/
 `Download`, `DownloadNotificationHelper`, `WorkManagerScheduler`/`Requirements` (Ch 30/47),

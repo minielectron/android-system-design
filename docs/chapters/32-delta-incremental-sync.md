@@ -475,6 +475,7 @@ sync, large-page paging.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What is delta sync?* Fetch only changes since the last sync (token/cursor),
    not the whole dataset.
 2. *vs full sync?* Full refetches everything (simple, doesn't scale); delta scales
@@ -487,6 +488,7 @@ sync, large-page paging.
    be inferred in a delta.
 
 **Mechanics**
+
 6. *Paging deltas?* `nextToken`/`hasMore`; apply each page, advance token.
 7. *Resumability?* Advance the token only after applying a page; durable token →
    resume from last good.
@@ -496,6 +498,7 @@ sync, large-page paging.
 10. *Token too old?* Server signals invalid → full re-sync.
 
 **Correctness**
+
 11. *Timestamp boundary bug?* `updatedAt >= since` with skew/same-ms →
     missed/duplicated; use tokens.
 12. *Out-of-order delete?* Version-gated delete (`version <`).
@@ -503,6 +506,7 @@ sync, large-page paging.
 14. *Delta vs local pending write?* Conflict resolution (Ch 33).
 
 **Integration**
+
 15. *Where does it fit?* The pull half of offline-first sync (Ch 29); push = outbox
     (Ch 31).
 16. *Scheduling?* WorkManager (Ch 30); push-triggered (FCM, Ch 49) for near-real-
@@ -510,22 +514,26 @@ sync, large-page paging.
 17. *Apply to SSOT?* Upsert/delete into Room transactionally (Ch 3).
 
 **Security**
+
 18. *Authorize deltas?* Server filters by entitlement per user.
 19. *Tombstone leaks?* Respect access; don't reveal deleted private items.
 20. *Clear on logout?* Tokens + data; per-account (Ch 22/42).
 
 **Performance/scale**
+
 21. *Efficiency win?* Cost ∝ changes; small deltas on battery/cellular.
 22. *Large initial sync?* Paged + resumable + background.
 23. *Near-real-time?* Push-triggered deltas (Ch 49/63).
 
 **Testing**
+
 24. *How test deltas?* Fake API: creates/updates/tombstones/paging; assert SSOT +
     token.
 25. *How test resume?* Fail mid-sync; assert resume from saved token.
 26. *How test full re-sync?* 410 token → full load.
 
 **Production debugging**
+
 27. *Missing updates?* Timestamp/token handling.
 28. *Ghost (undeleted) items?* Tombstones not applied.
 29. *Frequent full re-syncs?* Token TTL/tombstone retention too short.
@@ -587,11 +595,18 @@ bugs → missed/duplicated); inferring deletes by absence (no tombstones); advan
 the token before applying (lost changes on crash); non-idempotent/non-version-aware
 apply (duplicates/corruption/clobbered edits); no full-resync fallback.
 
-**Checklist:** ☐ opaque server token (durable) ☐ `changes-since` + tombstones
-☐ paged + resumable (advance after apply) ☐ idempotent version-aware upsert
-☐ version-gated delete ☐ initial paged load ☐ full-resync on expired token
-☐ conflict with local (Ch 33) ☐ authorize per user + clear on logout ☐ transactional
-apply.
+**Checklist:**
+
+- [ ] opaque server token (durable)
+- [ ] `changes-since` + tombstones
+- [ ] paged + resumable (advance after apply)
+- [ ] idempotent version-aware upsert
+- [ ] version-gated delete
+- [ ] initial paged load
+- [ ] full-resync on expired token
+- [ ] conflict with local (Ch 33)
+- [ ] authorize per user + clear on logout
+- [ ] transactional apply.
 
 **Key APIs/patterns:** `changes-since(token)` endpoint, `SyncTokenStore` (DataStore),
 `DeltaPage`(changes/tombstones/nextToken/hasMore), version field, `@Upsert` +

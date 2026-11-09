@@ -437,6 +437,7 @@ and a leak check (LeakCanary) in instrumentation.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Lifecycle hierarchy?* Process → Application → Activity/Fragment/Compose, plus
    app-wide foreground/background.
 2. *What runs once per process?* `Application.onCreate` (every cold start).
@@ -446,6 +447,7 @@ and a leak check (LeakCanary) in instrumentation.
    `lifecycleScope`, `viewModelScope` — auto start/stop/cancel.
 
 **App fg/bg**
+
 6. *Detect app foreground/background?* `ProcessLifecycleOwner` (ON_START/ON_STOP).
 7. *Why not a single Activity's onStop?* Fires on rotation/multi-activity → false
    background.
@@ -454,30 +456,36 @@ and a leak check (LeakCanary) in instrumentation.
 9. *On foreground?* Reconnect/refresh.
 
 **Scoping**
+
 10. *Visible-only work?* Screen scope (`repeatOnLifecycle(STARTED)`).
 11. *Survive config/nav?* `viewModelScope`.
 12. *Survive UI/process?* WorkManager (Ch 30).
 13. *Classic scoping bug?* Long work in a screen scope (cancelled on leave).
 
 **Leaks**
+
 14. *How avoid leaks?* Lifecycle-aware observation; no Activity refs; auto-unregister.
 15. *`collectAsState` vs `collectAsStateWithLifecycle`?* The latter stops in STOPPED.
 16. *Compose lifecycle?* `LocalLifecycleOwner`, `DisposableEffect`/`LaunchedEffect`.
 
 **Init**
+
 17. *Where app-wide init?* `Application.onCreate` (light) or App Startup (Ch 45).
 18. *Why keep onCreate light?* Cold-start critical path.
 19. *Per-feature init?* Lazy via DI (Ch 5).
 
 **Security**
+
 20. *Sensitive content in recents?* `FLAG_SECURE`/privacy screen on background.
 21. *Pause sensitive work?* Location/camera/streams when hidden.
 
 **Testing**
+
 22. *How test fg/bg?* Fake observer + onStart/onStop; assert reactions.
 23. *How test lifecycle collection?* `TestLifecycleOwner` + move states.
 
 **Production debugging**
+
 24. *Battery drain?* Work not paused/wrong scope.
 25. *Crash after leaving screen?* Non-lifecycle-aware collection.
 26. *Stale on resume?* No foreground refresh.
@@ -538,10 +546,16 @@ leak avoidance, Compose lifecycle.
 Activity's `onStop`; heavy `Application.onCreate`; retained Activity refs; sensitive
 content in recents.
 
-**Checklist:** ☐ scope work correctly (screen/VM/WorkManager) ☐ lifecycle-aware
-collection ☐ `ProcessLifecycleOwner` for app fg/bg ☐ flush/pause on background +
-refresh on foreground ☐ light `Application.onCreate` ☐ no retained Activity refs
-☐ `FLAG_SECURE`/privacy on background (sensitive) ☐ release resources on teardown.
+**Checklist:**
+
+- [ ] scope work correctly (screen/VM/WorkManager)
+- [ ] lifecycle-aware collection
+- [ ] `ProcessLifecycleOwner` for app fg/bg
+- [ ] flush/pause on background + refresh on foreground
+- [ ] light `Application.onCreate`
+- [ ] no retained Activity refs
+- [ ] `FLAG_SECURE`/privacy on background (sensitive)
+- [ ] release resources on teardown.
 
 **Key APIs:** `Application`/`@HiltAndroidApp`, `ProcessLifecycleOwner`,
 `DefaultLifecycleObserver`, `Lifecycle.State`/`repeatOnLifecycle`, `lifecycleScope`/

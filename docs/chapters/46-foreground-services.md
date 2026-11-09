@@ -477,6 +477,7 @@ actions. Instrumentation on real devices for Android-13/14 start-legality behavi
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *What is an FGS?* A service with a persistent notification, treated as user-aware
    ongoing work; low kill priority; exempt from most background limits while running.
 2. *FGS vs WorkManager?* Ongoing user-visible must-run-now vs deferrable guaranteed-
@@ -488,6 +489,7 @@ actions. Instrumentation on real devices for Android-13/14 start-legality behavi
    etc.; declared + permissioned (Android 14+ enforced).
 
 **Rules**
+
 6. *Android 12+ background start?* Forbidden without exemption →
    `ForegroundServiceStartNotAllowed`.
 7. *Exemptions?* High-priority FCM, exact alarm, notification action, companion device,
@@ -497,28 +499,33 @@ actions. Instrumentation on real devices for Android-13/14 start-legality behavi
 10. *Time-limited types?* `dataSync`/`shortService`.
 
 **Lifecycle**
+
 11. *How start?* `startForegroundService` (then `startForeground`).
 12. *How stop?* `stopSelf`/`stopForeground` when done (critical).
 13. *Restart semantics?* `START_STICKY`/`NOT_STICKY`/`REDELIVER_INTENT` per need (Ch 8).
 14. *Stuck notification cause?* Service not stopped.
 
 **Mechanisms**
+
 15. *Long download best practice?* WorkManager `setForeground`.
 16. *Playback best practice?* `MediaSessionService` (Media3).
 17. *Why not hand-roll playback FGS?* Media3 handles FGS/notification/controls/
     compliance.
 
 **Security**
+
 18. *Exported?* `false` for internal services.
 19. *Least privilege?* Declare only used types; `location`/`camera` need runtime perms.
 20. *Lock-screen leak?* Public/private notification versions.
 
 **Testing**
+
 21. *How test an FGS?* Robolectric service controller; assert `startForeground`/
     `stopSelf`.
 22. *How test `setForeground` worker?* `TestListenableWorkerBuilder` (Ch 30).
 
 **Production**
+
 23. *`ForegroundServiceStartNotAllowed`?* Background start — use foreground/exemption/
     WorkManager.
 24. *Silent FGS?* Missing notification permission.
@@ -583,10 +590,18 @@ done**. Keep services `exported=false` and types least-privilege.
 (stuck notification/battery); wrong/undeclared type (Android 14+ crash/rejection); silent
 FGS (no notification permission); hand-rolling playback.
 
-**Checklist:** ☐ classify FGS vs WorkManager ☐ correct type + permissions ☐ legal start
-(foreground/exemption) ☐ `startForeground` promptly ☐ compliant notification +
-`POST_NOTIFICATIONS` ☐ stop on completion ☐ restart semantics ☐ `MediaSessionService`
-for media ☐ `setForeground` for long downloads ☐ `exported=false` + least privilege.
+**Checklist:**
+
+- [ ] classify FGS vs WorkManager
+- [ ] correct type + permissions
+- [ ] legal start (foreground/exemption)
+- [ ] `startForeground` promptly
+- [ ] compliant notification + `POST_NOTIFICATIONS`
+- [ ] stop on completion
+- [ ] restart semantics
+- [ ] `MediaSessionService` for media
+- [ ] `setForeground` for long downloads
+- [ ] `exported=false` + least privilege.
 
 **Key APIs:** `Service`/`startForeground`/`stopSelf`/`stopForeground`,
 `ContextCompat.startForegroundService`, `ServiceInfo.FOREGROUND_SERVICE_TYPE_*`,

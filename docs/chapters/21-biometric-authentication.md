@@ -454,6 +454,7 @@ cancel-vs-error, and (device) that success yields a usable `CryptoObject`.
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why is a boolean `isUnlocked` after biometric insecure?* A rooted attacker
    skips the prompt and sets the flag — no protection.
 2. *What makes biometric auth actually secure?* Tying success to a `CryptoObject`
@@ -465,6 +466,7 @@ cancel-vs-error, and (device) that success yields a usable `CryptoObject`.
 5. *Which strength for payments?* STRONG (required for Keystore CryptoObject).
 
 **Keystore binding (ties to Ch 20)**
+
 6. *How bind a key to biometric?* `setUserAuthenticationRequired(true)` +
    `setUserAuthenticationParameters(timeout, AUTH_BIOMETRIC_STRONG)`.
 7. *Per-use vs time-bound?* Timeout 0 = prompt each use; >0 = valid for a window.
@@ -472,6 +474,7 @@ cancel-vs-error, and (device) that success yields a usable `CryptoObject`.
    attacker-enrolls-finger; handle `KeyPermanentlyInvalidatedException`.
 
 **Flow/states**
+
 9. *Check capability?* `BiometricManager.canAuthenticate(STRONG)` → SUCCESS/
    NONE_ENROLLED/NO_HARDWARE/HW_UNAVAILABLE.
 10. *Fallbacks?* DEVICE_CREDENTIAL in the prompt, or app login.
@@ -481,11 +484,13 @@ cancel-vs-error, and (device) that success yields a usable `CryptoObject`.
     lockout.
 
 **Lifecycle/concurrency**
+
 13. *Host the prompt where?* Activity/Fragment; lifecycle-aware; handle rotation.
 14. *Rotation during prompt?* Re-create; don't leak the callback.
 15. *Lockout?* Respect `ERROR_LOCKOUT`/`LOCKOUT_PERMANENT`; back off / fall back.
 
 **Security**
+
 16. *Does biometric authenticate to the backend?* No — proves local presence; the
     server authenticates via tokens (Ch 19)/passkeys.
 17. *Where does biometric data live?* In the TEE; the app never sees it.
@@ -494,22 +499,26 @@ cancel-vs-error, and (device) that success yields a usable `CryptoObject`.
 19. *Step-up?* Re-prompt for sensitive actions within a valid session.
 
 **Alternatives**
+
 20. *Biometric vs passkeys?* Local presence/unlock vs phishing-resistant cross-
     device auth (FIDO2/CredentialManager).
 21. *AndroidX Biometric vs FingerprintManager?* AndroidX (unified, maintained);
     FingerprintManager deprecated.
 
 **UX/compat**
+
 22. *Device without biometrics?* Capability check → credential/login fallback.
 23. *Don't annoy users?* Reasonable window; don't re-prompt needlessly; don't
     block startup.
 
 **Testing**
+
 24. *How unit-test?* Abstract behind an interface; test capability/fallback/
     invalidation branches.
 25. *How test the prompt?* Instrumentation with an enrolled/simulated biometric.
 
 **Production debugging**
+
 26. *Security review flags a flag-based unlock?* Migrate to CryptoObject.
 27. *Re-login spikes?* Enrollment invalidation not handled (Ch 20).
 28. *High fallback usage?* Device fragmentation; ensure graceful WEAK/none handling.
@@ -570,10 +579,17 @@ invalidation, step-up auth, passkeys/FIDO2.
 missing enrollment invalidation; no fallback/state handling; treating biometric as
 backend auth; blocking startup; using deprecated `FingerprintManager`.
 
-**Checklist:** ☐ `CryptoObject` not a flag ☐ STRONG for sensitive ☐ auth-bound
-Keystore key (Ch 20) ☐ `setInvalidatedByBiometricEnrollment` + handle invalidation
-☐ capability check + fallback ☐ step-up for sensitive ☐ lifecycle-safe prompt
-☐ no biometric data logged/sent ☐ biometric ≠ backend auth.
+**Checklist:**
+
+- [ ] `CryptoObject` not a flag
+- [ ] STRONG for sensitive
+- [ ] auth-bound Keystore key (Ch 20)
+- [ ] `setInvalidatedByBiometricEnrollment` + handle invalidation
+- [ ] capability check + fallback
+- [ ] step-up for sensitive
+- [ ] lifecycle-safe prompt
+- [ ] no biometric data logged/sent
+- [ ] biometric ≠ backend auth.
 
 **Key APIs:** `BiometricManager.canAuthenticate`, `BiometricPrompt`/`PromptInfo`,
 `setAllowedAuthenticators`, `BiometricPrompt.CryptoObject`, `AuthenticationResult.

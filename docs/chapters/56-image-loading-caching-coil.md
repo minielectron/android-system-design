@@ -499,6 +499,7 @@ Use Coil's fake engine for deterministic unit tests; instrumentation for memory/
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Why a library (Coil)?* Off-main decode, two-tier cache, lifecycle cancel, downsample —
    all hard to hand-roll.
 2. *Coil vs Glide/Fresco?* Kotlin/Compose-native vs legacy/Views vs memory-constrained;
@@ -509,17 +510,20 @@ Use Coil's fake engine for deterministic unit tests; instrumentation for memory/
 5. *Why off-main decode?* Avoid jank.
 
 **Memory/OOM**
+
 6. *Bitmap memory?* `w × h × bytesPerPixel` (not file size).
 7. *OOM cause/fix?* Full-size decode into small view → downsample to target.
 8. *Memory cache sizing?* % of heap; tune by device; release on pressure.
 9. *Decompression bomb?* Cap decode dimensions; validate sources.
 
 **Correctness**
+
 10. *Recycled-view wrong image?* Request tied to view/composition, cancelled on recycle.
 11. *In-flight dedupe?* Same URL downloads once (single-flight, Ch 11).
 12. *Layout jump?* Fixed size/aspect + placeholder.
 
 **Quality/perf**
+
 13. *Placeholders/crossfade?* Perceived speed + no pop-in.
 14. *Transformations?* Pipeline, cache-keyed.
 15. *Modern formats?* WebP/AVIF (smaller).
@@ -527,16 +531,19 @@ Use Coil's fake engine for deterministic unit tests; instrumentation for memory/
 17. *Preloading?* Warm cache for predictable content; don't over-preload.
 
 **Caching**
+
 18. *Cache flow?* Memory → disk → network.
 19. *Respect cache headers?* Yes (Ch 12).
 20. *Cross-session persistence?* Disk cache.
 
 **Security**
+
 21. *Sensitive images?* App-internal cache; maybe no disk cache; per-account (Ch 42/28).
 22. *Untrusted URLs?* Allowlist; cap decode size (Ch 52).
 23. *EXIF?* Strip for privacy (Ch 60/28).
 
 **Testing/Production**
+
 24. *Test images?* Coil fake engine; instrumentation for OOM/jank.
 25. *Key metrics?* Cache hit rate, decode time, bitmap memory, bandwidth.
 26. *OOM in prod?* Not downsampling / caching originals.
@@ -605,11 +612,19 @@ binding (wrong image in recycled views); separate unpinned client for images; do
 originals instead of CDN right-sizing; over-preloading; caching sensitive images
 insecurely.
 
-**Checklist:** ☐ use Coil + shared OkHttp (Ch 1/19/23) ☐ two-tier cache (memory %, disk)
-☐ size-target/downsample to display ☐ off-main decode ☐ lifecycle/composition-bound
-requests ☐ placeholders/error/crossfade ☐ cache-keyed transformations ☐ CDN right-sizing +
-WebP/AVIF (Ch 57) ☐ tune memory cache by device + release on pressure ☐ sensitive images
-app-internal, per-account (Ch 42/28) ☐ validate untrusted URLs + cap decode size.
+**Checklist:**
+
+- [ ] use Coil + shared OkHttp (Ch 1/19/23)
+- [ ] two-tier cache (memory %, disk)
+- [ ] size-target/downsample to display
+- [ ] off-main decode
+- [ ] lifecycle/composition-bound requests
+- [ ] placeholders/error/crossfade
+- [ ] cache-keyed transformations
+- [ ] CDN right-sizing + WebP/AVIF (Ch 57)
+- [ ] tune memory cache by device + release on pressure
+- [ ] sensitive images app-internal, per-account (Ch 42/28)
+- [ ] validate untrusted URLs + cap decode size.
 
 **Key APIs:** `ImageLoader.Builder` (`.okHttpClient`/`.memoryCache`/`.diskCache`/
 `.crossfade`/`.respectCacheHeaders`), `AsyncImage`/`rememberAsyncImagePainter`,

@@ -588,6 +588,7 @@ Retrofit interfaces when the thing under test *is* the networking core.
 ### A. Questions & answers
 
 **Fundamentals**
+
 1. *Why one `OkHttpClient`?* Shared connection pool, dispatcher, cache → reuse,
    HTTP/2 multiplexing, lower battery/latency. Multiple clients waste resources.
 2. *Application vs network interceptor?* App interceptor runs once per logical
@@ -601,6 +602,7 @@ Retrofit interfaces when the thing under test *is* the networking core.
    interface + a small DI module calling `retrofit.create(...)`.
 
 **Architecture**
+
 6. *How does the core get the auth token without depending on auth?* Dependency
    inversion: core defines `TokenProvider`; `:data:auth` implements it.
 7. *Interceptor order — does it matter?* Yes. Correlation ID first (so logging/
@@ -610,6 +612,7 @@ Retrofit interfaces when the thing under test *is* the networking core.
    config, no shared pool.
 
 **Kotlin / Android internals**
+
 10. *How does cancellation reach the socket?* `suspend` Retrofit call is
     cancellable; coroutine cancellation → `Call.cancel()`.
 11. *Why rethrow `CancellationException` in the mapper?* Converting it to a
@@ -623,23 +626,27 @@ Retrofit interfaces when the thing under test *is* the networking core.
     IO thread, within `safeApiCall`'s `withContext(io)`.
 
 **Concurrency**
+
 15. *How is parallelism bounded?* `Dispatcher` max requests (64 total / 5 per
     host by default); tune per host rather than adding clients.
 16. *Are interceptors thread-safe?* They must be; keep them stateless.
 17. *Can `errorBody()` be read twice?* No — it's a one-shot stream; read once.
 
 **Lifecycle**
+
 18. *What happens to in-flight calls on screen destruction?* `viewModelScope`
     cancels → calls cancel.
 19. *Does the client survive config change?* Yes — it's an app-scoped singleton.
 
 **Persistence / caching**
+
 20. *Does the core cache?* It wires an OkHttp `Cache` (HTTP cache) hook; the
     caching *strategy* (what/when) is Ch 12; offline SSOT is Ch 29.
 21. *HTTP cache vs repository cache?* HTTP cache honors server headers; repo/DB
     cache is app-controlled and offline-capable.
 
 **Networking**
+
 22. *How do you handle 401?* An `Authenticator` refreshes and retries once
     (Ch 19), not the interceptor.
 23. *429?* Map to `RateLimited`; backoff (Ch 2); backend must enforce limits.
@@ -647,12 +654,14 @@ Retrofit interfaces when the thing under test *is* the networking core.
 25. *gzip?* Automatic when you don't set `Accept-Encoding` yourself.
 
 **Scalability**
+
 26. *10M users — what changes in the core?* Little; it's stateless per call.
     Scaling is backend + CDN; client adds pinning, tuned timeouts, observability.
 27. *How to cut mobile data?* gzip, HTTP cache, field filtering/`fields` params,
     protobuf for hot endpoints.
 
 **Security**
+
 28. *Where does cert pinning go?* `CertificatePinner` on the client (Ch 23);
     client protection, not authz.
 29. *How do you avoid logging tokens?* `redactHeader`, debug-only logging, PII
@@ -661,12 +670,14 @@ Retrofit interfaces when the thing under test *is* the networking core.
     hygiene. Backend: authn/authz, rate limits, validation.
 
 **Performance**
+
 31. *Biggest mobile networking win?* Connection reuse via a shared client
     (fewer handshakes).
 32. *How to measure networking perf?* Network Inspector, OkHttp `EventListener`,
     per-endpoint latency metrics.
 
 **Testing**
+
 33. *How test without a real server?* MockWebServer with real OkHttp/Retrofit.
 34. *What do you deliberately NOT mock?* The converter/interceptors — bugs live
     there.
@@ -674,6 +685,7 @@ Retrofit interfaces when the thing under test *is* the networking core.
     assert `AppError`.
 
 **Production debugging**
+
 36. *Users report intermittent failures — how triage?* Correlation IDs to join
     client + backend; check error-type breakdown; look for a bad deploy.
 37. *Serialization errors spike post-deploy — cause?* Backend schema change;
@@ -682,6 +694,7 @@ Retrofit interfaces when the thing under test *is* the networking core.
     `EventListener`; could be captive portal/MITM (watch TLS errors).
 
 **Design/trade-off**
+
 39. *Retrofit vs Ktor?* Retrofit for Android REST maturity; Ktor for KMP.
 40. *CallAdapter returning `Outcome` vs `safeApiCall`?* CallAdapter removes
     boilerplate but adds indirection; wrapper is explicit and debuggable.
@@ -758,9 +771,18 @@ suspend-call cancellation, uniform result type, correlation IDs.
 logging tokens; reading `errorBody()` twice; building Retrofit per repository;
 throwing exceptions into the domain layer instead of returning `Outcome`.
 
-**Checklist:** ☐ single client ☐ interceptor order ☐ redacted debug logging
-☐ timeouts + `callTimeout` ☐ `safeApiCall` everywhere ☐ exhaustive `toAppError`
-☐ cancellation rethrown ☐ correlation ID ☐ `ignoreUnknownKeys` ☐ pinning hook.
+**Checklist:**
+
+- [ ] single client
+- [ ] interceptor order
+- [ ] redacted debug logging
+- [ ] timeouts + `callTimeout`
+- [ ] `safeApiCall` everywhere
+- [ ] exhaustive `toAppError`
+- [ ] cancellation rethrown
+- [ ] correlation ID
+- [ ] `ignoreUnknownKeys`
+- [ ] pinning hook.
 
 **Key APIs:** `OkHttpClient.Builder`, `Interceptor`, `Authenticator` (Ch 19),
 `Cache`, `HttpLoggingInterceptor.redactHeader`, `Retrofit`,

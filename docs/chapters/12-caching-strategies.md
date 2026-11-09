@@ -486,6 +486,7 @@ clears memory; per-account clear on logout.
 > 40+ questions.
 
 **Fundamentals**
+
 1. *Why cache?* Speed, offline, reduced load/battery/data; trade freshness and
    memory/disk.
 2. *Three layers?* HTTP (OkHttp), in-memory (LRU), disk/DB (Room). Each has
@@ -498,6 +499,7 @@ clears memory; per-account clear on logout.
    critical data.
 
 **Architecture**
+
 6. *Who owns cache policy?* The repository — one place decides freshness/layer.
 7. *How do layers relate?* Memory derived from DB (SSOT); DB from network; read
    up, write/invalidate down.
@@ -507,6 +509,7 @@ clears memory; per-account clear on logout.
    (Ch 11).
 
 **Invalidation**
+
 10. *Why isn't TTL enough?* Read-after-write skew — a mutation must invalidate/
     update the cache.
 11. *Invalidation triggers?* Time, write-through, events (push/version/refresh).
@@ -516,50 +519,59 @@ clears memory; per-account clear on logout.
     `must-revalidate`.
 
 **Eviction**
+
 14. *Memory eviction policy?* LRU by count/bytes; evict under `onTrimMemory`.
 15. *Disk eviction?* Bounded size, LRU; handle disk-full.
 16. *Avoiding OOM?* Bound the memory cache; respond to memory callbacks.
 
 **Freshness policy**
+
 17. *How decide TTL?* By data class — catalog long, config short, balance ~0.
 18. *When never cache?* Security/auth decisions, freshness-critical values.
 19. *304 flow?* Send `If-None-Match`/`If-Modified-Since`; 304 → bump TTL, reuse
     body; 200 → replace.
 
 **Concurrency**
+
 20. *Stampede — what and fix?* Mass simultaneous miss → single-flight coalesces.
 21. *Memory/DB divergence?* DB is SSOT; invalidate memory on DB write.
 22. *Revalidate vs concurrent write?* Prefer newer (`updatedAt`/version);
     conflict policy (Ch 33).
 
 **Networking**
+
 23. *OkHttp cache behavior?* Honors `Cache-Control`/`ETag`; stores responses on
     disk; serves 304s transparently.
 24. *Override weak server headers?* Network interceptor adds `Cache-Control`
     (carefully).
 
 **Security**
+
 25. *Sensitive responses?* `no-store`/exclude from disk cache; encrypt sensitive
     DB (Ch 24).
 26. *Per-account?* Key by account; clear on logout/switch (Ch 42).
 27. *Cached entitlements?* Don't trust for access; backend re-validates.
 
 **Performance**
+
 28. *Biggest perceived-perf lever?* Serving cache on cold start; revalidate in
     background.
 29. *How measure?* Hit-rate per layer, 304 rate, cache-serve-on-cold-start.
 
 **Scalability**
+
 30. *10M users — cache concerns?* Backend cache/CDN scale; client needs TTL/ETag
     discipline + size budgets.
 31. *Remote-tune TTLs?* Policy from remote config (Ch 41).
 
 **Testing**
+
 32. *How test TTL/eviction?* Fake clock; assert expiry/LRU.
 33. *How test 304?* MockWebServer 304; assert conditional header + reuse.
 34. *How test anti-stampede?* 20 concurrent misses → assert 1 fetch.
 
 **Production debugging**
+
 35. *Stale prices on one screen?* Missing write-through invalidation.
 36. *High data usage?* No ETag/low 304; caching disabled.
 37. *OOM crashes?* Unbounded memory cache.
@@ -627,10 +639,18 @@ cache stampede, memory derived from SSOT.
 clear-on-logout (cross-account leak); serving stale critical data; treating the
 HTTP cache as queryable.
 
-**Checklist:** ☐ layer per data class ☐ repository owns policy ☐ TTL + ETag
-☐ write-through invalidation ☐ LRU + `onTrimMemory` bounds ☐ single-flight fetch
-☐ memory invalidated on DB write ☐ per-account + clear on logout ☐ no-store for
-sensitive ☐ hit-rate/304 metrics.
+**Checklist:**
+
+- [ ] layer per data class
+- [ ] repository owns policy
+- [ ] TTL + ETag
+- [ ] write-through invalidation
+- [ ] LRU + `onTrimMemory` bounds
+- [ ] single-flight fetch
+- [ ] memory invalidated on DB write
+- [ ] per-account + clear on logout
+- [ ] no-store for sensitive
+- [ ] hit-rate/304 metrics.
 
 **Key APIs:** OkHttp `Cache`, `Cache-Control`/`ETag`/`If-None-Match`, `LruCache`/
 `LinkedHashMap(accessOrder)`, Room `updatedAt`/`etag`, `onTrimMemory`/

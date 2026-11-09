@@ -519,6 +519,7 @@ re-check on resume after settings. UiAutomator for real system-dialog interactio
 > ≥25 questions.
 
 **Fundamentals**
+
 1. *Normal vs dangerous?* Install-time (manifest) vs runtime consent.
 2. *Mechanism?* Activity Result API (`registerForActivityResult`/
    `rememberLauncherForActivityResult`).
@@ -527,6 +528,7 @@ re-check on resume after settings. UiAutomator for real system-dialog interactio
 5. *Why rationale?* Explain value → higher grant rate.
 
 **State machine**
+
 6. *The states?* Not-asked / granted / denied-can-ask / permanently-denied.
 7. *Distinguish denied vs permanent?* `shouldShowRequestPermissionRationale` (true =
    can ask; false + asked + not granted = permanent).
@@ -534,15 +536,18 @@ re-check on resume after settings. UiAutomator for real system-dialog interactio
 9. *Why persist "alreadyAsked"?* System doesn't expose not-asked vs permanent directly.
 
 **Check at use**
+
 10. *Cache granted?* No — can be revoked / auto-reset.
 11. *Auto-reset?* Android 11+ revokes unused apps' permissions.
 12. *Re-check when?* At use + on resume (after settings).
 
 **Degradation**
+
 13. *On denial?* Disable just that feature; never crash/block/nag.
 14. *Settings path?* Deep-link to app settings with explanation.
 
 **Modern APIs**
+
 15. *Notifications?* `POST_NOTIFICATIONS` runtime (13+); request on opt-in; inbox still
     works if denied (Ch 50).
 16. *Media?* Prefer Photo Picker (no permission); else granular `READ_MEDIA_*` + partial
@@ -551,11 +556,13 @@ re-check on resume after settings. UiAutomator for real system-dialog interactio
     background separate/after (Ch 67).
 
 **Security/UX**
+
 18. *Least privilege?* Minimal permission (coarse, Photo Picker) — privacy + Play.
 19. *Play justification?* Declared/justified sensitive use or rejection.
 20. *Respect "no"?* Degrade, don't coerce/nag.
 
 **Testing/Production**
+
 21. *Test the state machine?* Unit test the 4 states.
 22. *Test real dialogs?* UiAutomator / `GrantPermissionRule`.
 23. *Low grant rate cause?* Out-of-context / weak rationale.
@@ -629,11 +636,18 @@ re-requesting when permanently denied (silent no-op); caching "granted" (crash o
 revoke); blocking the whole app / nagging on denial; over-broad requests (full media,
 precise/background location) hurting grants and Play approval; using deprecated APIs.
 
-**Checklist:** ☐ request in context ☐ Activity Result API ☐ 4-state machine via
-`shouldShowRationale` + persisted "alreadyAsked" ☐ rationale UI ☐ settings deep-link on
-permanent denial (Ch 52) ☐ check at use + re-check on resume ☐ degrade just the feature
-☐ Photo Picker / approximate location (least privilege) ☐ notifications in context
-(inbox resilient) ☐ grant-funnel telemetry.
+**Checklist:**
+
+- [ ] request in context
+- [ ] Activity Result API
+- [ ] 4-state machine via `shouldShowRationale` + persisted "alreadyAsked"
+- [ ] rationale UI
+- [ ] settings deep-link on permanent denial (Ch 52)
+- [ ] check at use + re-check on resume
+- [ ] degrade just the feature
+- [ ] Photo Picker / approximate location (least privilege)
+- [ ] notifications in context (inbox resilient)
+- [ ] grant-funnel telemetry.
 
 **Key APIs:** `ContextCompat.checkSelfPermission`, `ActivityResultContracts.
 RequestPermission`/`RequestMultiplePermissions`/`PickVisualMedia`,

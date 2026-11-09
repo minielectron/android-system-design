@@ -524,6 +524,7 @@ consistency (Ch 63); payment tokenization/PCI path (Ch 76); accessibility + loca
 > capstone's dual purpose.
 
 **The interview structure (what to do, in order):**
+
 1. **Clarify requirements (§100.2) — don't skip.** Functional scope, non-functional targets, scale,
    constraints. Ask: offline? consistency (exactly-once)? platforms? scale numbers? Narrow scope.
 2. **High-level architecture (§100.4).** Draw the layered diagram (UI→VM→domain→data→sources, Ch 1),
@@ -675,14 +676,19 @@ unneeded scale while getting the data spine/money path wrong; separate apps per 
 shared core; not naming trade-offs; designing every subsystem at max complexity instead of per
 requirements.
 
-**Checklist (designing a full Android system):** ☐ clarify requirements/scale/constraints first ☐
-one layered architecture + UDF + DI + modules (Ch 1/2/46/94) ☐ offline-first SSOT + sync (outbox/
-idempotency/delta/conflict, Ch 29/75) ☐ optimistic UI reconciled to SSOT (Ch 71/29) ☐ real-time
-(WebSocket/FCM) + media (Media3/DRM) into SSOT (Ch 63/50/56/58) ☐ exactly-once money path + PCI
-tokenization (Ch 75/76/77) ☐ security woven through (auth/Keystore/pinning/privacy, Ch 20/22/24/28)
-☐ performance (startup/jank/memory/battery/baseline profiles, Ch 88–92) ☐ unified PII-safe
-observability + gating/rollback (Ch 82–87/41) ☐ reach (l10n/a11y/theming/TV/Wear, Ch 95–99) ☐ name
-the interacting trade-offs and choose per requirements.
+**Checklist (designing a full Android system):**
+
+- [ ] clarify requirements/scale/constraints first
+- [ ] one layered architecture + UDF + DI + modules (Ch 1/2/46/94)
+- [ ] offline-first SSOT + sync (outbox/idempotency/delta/conflict, Ch 29/75)
+- [ ] optimistic UI reconciled to SSOT (Ch 71/29)
+- [ ] real-time (WebSocket/FCM) + media (Media3/DRM) into SSOT (Ch 63/50/56/58)
+- [ ] exactly-once money path + PCI tokenization (Ch 75/76/77)
+- [ ] security woven through (auth/Keystore/pinning/privacy, Ch 20/22/24/28)
+- [ ] performance (startup/jank/memory/battery/baseline profiles, Ch 88–92)
+- [ ] unified PII-safe observability + gating/rollback (Ch 82–87/41)
+- [ ] reach (l10n/a11y/theming/TV/Wear, Ch 95–99)
+- [ ] name the interacting trade-offs and choose per requirements.
 
 **The book, in one sentence:** *a production Android app is the coherent composition of a consistent
 layered, modular architecture; an offline-first single-source-of-truth data spine with exactly-once
