@@ -82,9 +82,27 @@ def build(vol):
     os.makedirs(outdir, exist_ok=True)
     parts_list = ", ".join(part_keys)
 
-    doc = []
-    # YAML title block
-    doc.append(
+    import re as _re
+    def _slug(t):
+        return _re.sub(r'[\s_]+', '-', _re.sub(r'[^\w\s-]', '', t.lower())).strip('-')
+
+    toc = []  # (level, label, anchor); level 1 = chapter (indented under its part), 0 = part/section
+
+    def _front_back(md):
+        # fence-aware: add an explicit {#id} to every H1 heading and record it for the TOC
+        out, incode = [], False
+        for ln in md.split("\n"):
+            if ln.lstrip().startswith("```"):
+                incode = not incode; out.append(ln); continue
+            m = _re.match(r'^# (.+?)\s*$', ln)
+            if (not incode) and m:
+                title = m.group(1); a = _slug(title)
+                out.append(f"# {title} {{#{a}}}"); toc.append((0, title, a))
+            else:
+                out.append(ln)
+        return "\n".join(out)
+
+    yaml = (
         "---\n"
         'title: "Designing Android at Scale"\n'
         f'subtitle: "Volume {vol} — {subtitle}"\n'
@@ -93,24 +111,35 @@ def build(vol):
         "lang: en-US\n"
         "---\n"
     )
-    # Front matter
-    doc.append(open(f"{outdir}/00-front-matter.md", encoding="utf-8").read().rstrip() + "\n")
+    front = _front_back(open(f"{outdir}/00-front-matter.md", encoding="utf-8").read().rstrip())
 
-    # Parts + chapters
+    chunks = []
     for pk in part_keys:
         title, chapters, blurb = PARTS[pk]
-        doc.append(PAGEBREAK)
-        doc.append(f"# Part {pk} — {title}\n\n{blurb}\n")
+        pa = _slug(f"part-{pk}-{title}")
+        toc.append((0, f"Part {pk} — {title}", pa))
+        chunks.append(PAGEBREAK)
+        chunks.append(f"# Part {pk} — {title} {{#{pa}}}\n\n{blurb}\n")
         for n in chapters:
-            doc.append(PAGEBREAK)
-            doc.append(strip_meta(open(chapter_file(n), encoding="utf-8").read()))
+            lines = strip_meta(open(chapter_file(n), encoding="utf-8").read()).split("\n")
+            for i, ln in enumerate(lines):          # the chapter's first H1 is its title
+                m = _re.match(r'^# (.+?)\s*$', ln)
+                if m:
+                    toc.append((1, m.group(1), f"ch-{n}"))
+                    lines[i] = f"# {m.group(1)} {{#ch-{n}}}"
+                    break
+            chunks.append(PAGEBREAK)
+            chunks.append("\n".join(lines))
+    back = _front_back(open(f"{outdir}/99-back-matter.md", encoding="utf-8").read().rstrip())
 
-    # Back matter
-    doc.append(PAGEBREAK)
-    doc.append(open(f"{outdir}/99-back-matter.md", encoding="utf-8").read().rstrip() + "\n")
+    # Build a real hyperlinked Table of Contents (bookmarks + internal links -> KDP-recognized)
+    toc_lines = ["# Table of Contents {#table-of-contents}", ""]
+    for lvl, label, anchor in toc:
+        toc_lines.append(("    " if lvl == 1 else "") + f"- [{label}](#{anchor})")
+    toc_md = "\n".join(toc_lines)
 
+    doc = [yaml, PAGEBREAK, toc_md, PAGEBREAK, front] + chunks + [PAGEBREAK, back]
     body = "\n\n".join(doc)
-    import re as _re
     body = _re.sub(r'(!\[[^\]]*\]\(images/[^)]+\.png\))', r'\1{width=4.2in}', body)
     merged = f"{outdir}/_merged.md"
     open(merged, "w", encoding="utf-8").write(body)
@@ -119,7 +148,7 @@ def build(vol):
     subprocess.run([
         "pandoc", merged,
         "-f", "markdown+task_lists+autolink_bare_uris",
-        "--toc", "--toc-depth=1", "--dpi=140",
+        "--dpi=140",
         "--reference-doc", f"{BOOK}/reference-compact.docx",
         f"--resource-path={CH}",
         "-o", out,
