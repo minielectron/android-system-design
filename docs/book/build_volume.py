@@ -163,7 +163,7 @@ def build(vol):
     out = f"{outdir}/Designing-Android-at-Scale-Vol{vol}.docx"
     subprocess.run([
         "pandoc", merged,
-        "-f", "markdown+task_lists+autolink_bare_uris",
+        "-f", "markdown+task_lists+autolink_bare_uris+lists_without_preceding_blankline",
         "--dpi=140",
         "--reference-doc", f"{BOOK}/reference-compact.docx",
         f"--resource-path={CH}",
