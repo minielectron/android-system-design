@@ -140,7 +140,23 @@ def build(vol):
 
     doc = [yaml, PAGEBREAK, toc_md, PAGEBREAK, front] + chunks + [PAGEBREAK, back]
     body = "\n\n".join(doc)
-    body = _re.sub(r'(!\[[^\]]*\]\(images/[^)]+\.png\))', r'\1{width=4.2in}', body)
+
+    # Size each diagram so it never overflows the 7x10 page: cap width at 4.2in, but when a tall
+    # (portrait) diagram would exceed the text height, constrain by height instead (aspect kept).
+    import struct as _struct
+    MAX_W, MAX_H = 4.2, 7.4   # inches; text area on a 7x10 page is ~5.7 x 8.6in
+    def _png_dims(path):
+        with open(path, "rb") as f:
+            f.read(16); return _struct.unpack(">II", f.read(8))   # (width, height) px
+    def _img_attr(m):
+        link, rel = m.group(1), m.group(2)
+        try:
+            w, h = _png_dims(f"{CH}/{rel}")
+            return link + ("{width=%sin}" % MAX_W if (MAX_W * (h / w)) <= MAX_H
+                           else "{height=%sin}" % MAX_H)
+        except Exception:
+            return link + "{width=%sin}" % MAX_W
+    body = _re.sub(r'(!\[[^\]]*\]\((images/[^)]+\.png)\))', _img_attr, body)
     merged = f"{outdir}/_merged.md"
     open(merged, "w", encoding="utf-8").write(body)
 
