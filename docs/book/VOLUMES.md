@@ -7,7 +7,7 @@ is a coherent, self-contained unit.
 
 > **Series title:** *Designing Android at Scale*
 > **Reference app across all volumes:** StreamCart (e-commerce + streaming)
-> **Author byline:** `{{AUTHOR NAME}}` — replace in every volume's metadata/front/back matter.
+> **Author byline:** `Prakash Sharma` — replace in every volume's metadata/front/back matter.
 
 ## The five volumes
 
@@ -71,7 +71,7 @@ matter, then runs pandoc → `docs/book/volN/Designing-Android-at-Scale-VolN.doc
 
 ## TODO before publishing (per volume)
 
-- [ ] Replace `{{AUTHOR NAME}}`, `{{YEAR}}`, and `{{AUTHOR BIO}}` placeholders.
+- [ ] Replace `Prakash Sharma`, `{{YEAR}}`, and `{{AUTHOR BIO}}` placeholders.
 - [ ] Generate the cover (see `COVER-PROMPTS.md`) at 1600×2560 and review.
 - [ ] Open the DOCX in Word/LibreOffice, confirm styles/TOC, fix any wide-code overflow.
 - [ ] Validate in Kindle Previewer.

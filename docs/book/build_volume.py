@@ -88,7 +88,7 @@ def build(vol):
         "---\n"
         'title: "Designing Android at Scale"\n'
         f'subtitle: "Volume {vol} — {subtitle}"\n'
-        'author: "{{AUTHOR NAME}}"\n'
+        'author: "Prakash Sharma"\n'
         'date: "First Edition · 2026"\n'
         "lang: en-US\n"
         "---\n"

@@ -1,80 +1,47 @@
 # Glossary & Index of Key Terms
 
-A quick reference to the core terms introduced in this volume, with the chapters where each is
-treated. (Chapter numbers above 18 point to later volumes of the series.)
+A quick reference to the core terms introduced in this volume, with the chapters where each is treated. (Chapter numbers outside this volume's range point to other volumes of the series.)
 
-**Backoff** — Progressively increasing the delay between retries (often exponential, with jitter)
-to avoid hammering a failing server. Ch 2.
+**Backoff** — Progressively increasing the delay between retries (often exponential, with jitter) to avoid hammering a failing server. Ch 2.
 
-**Backpressure** — Handling a producer that emits faster than a consumer can process, without
-unbounded buffering. Ch 3, Ch 13.
+**Circuit breaker** — A reliability pattern that stops calling a failing dependency for a cooldown, then probes before resuming. Ch 2.
 
-**Cache invalidation** — Deciding when cached data is stale and must be refetched or evicted; the
-*strategy* (what/when), distinct from the HTTP cache mechanism. Ch 12.
+**Coroutine** — Kotlin's unit of structured, cancellable asynchronous work; the foundation of off-main-thread execution. Ch 3.
 
-**Circuit breaker** — A reliability pattern that stops calling a failing dependency for a cooldown
-period after repeated failures, then probes before fully resuming. Ch 2.
+**Debounce** — Waiting for input to settle before acting, so rapid events (keystrokes) collapse into one action. Ch 9.
 
-**Coroutine** — Kotlin's unit of structured, cancellable asynchronous work; the foundation of
-off-main-thread execution. Ch 3.
+**Dependency injection (DI)** — Supplying an object's dependencies from outside rather than constructing them internally; here via Hilt. Ch 5.
 
-**Debounce** — Waiting for input to settle (a quiet interval) before acting, so rapid events
-(keystrokes) collapse into one action. Ch 9.
+**DataStore** — The modern typed replacement for SharedPreferences, for app configuration (Preferences and Proto). Ch 4.
 
-**Dependency injection (DI)** — Supplying an object's dependencies from outside rather than
-constructing them internally; here via Hilt. Ch 5.
+**Flow** — A cold, asynchronous stream of values in Kotlin coroutines; the backbone of reactive data. Ch 3, Ch 6.
 
-**Dispatcher** — The thread pool a coroutine runs on (e.g. `Dispatchers.IO` for blocking I/O,
-`Default` for CPU work). Ch 3.
+**Idempotency key** — A client-supplied key that lets a server safely de-duplicate retried mutations. Ch 15; applied to checkout in Ch 75.
 
-**Flow** — A cold, asynchronous stream of values in Kotlin coroutines; the backbone of reactive
-data in this architecture. Ch 3, Ch 6.
+**Interceptor** — An OkHttp hook that observes or modifies requests/responses; application vs network interceptors. Ch 1.
 
-**Idempotency key** — A client-supplied key that lets a server safely de-duplicate retried
-mutations, giving exactly-once semantics. Ch 15; applied to checkout in Ch 75.
+**Mapper / DTO** — A DTO is the wire shape of data; a mapper converts DTOs to domain models, isolating the app from API changes. Ch 1, Ch 16.
 
-**Interceptor** — An OkHttp hook that observes or modifies requests/responses; *application*
-interceptors run once per logical call, *network* interceptors once per hop. Ch 1.
+**Pagination** — Loading a large list in pages as the user scrolls, bounding memory and network. Ch 13.
 
-**Mapper / DTO** — A data-transfer object is the wire shape of data; a mapper converts DTOs to
-domain models, isolating the app from API changes. Ch 1, Ch 6.
+**Process death** — The OS reclaiming a backgrounded app's process; state must be restored on return. Ch 8.
 
-**Optimistic concurrency** — Assuming writes won't conflict, proceeding, and reconciling if a
-version mismatch is detected. Ch 15; conflict resolution in Ch 33.
+**Repository** — The data layer's single entry point for a domain type; owns the sources, exposes the single source of truth. Ch 1, Ch 3.
 
-**Pagination** — Loading a large list in pages as the user scrolls, bounding memory and network.
-Ch 13; Paging 3 and large lists in Ch 71, Ch 93.
+**Result / Outcome type** — A uniform success/failure return type that keeps exceptions out of domain and UI. Ch 1.
 
-**Repository** — The data layer's single entry point for a domain type; it owns the sources and
-exposes the single source of truth. Ch 1, Ch 3.
+**Retrofit** — A declarative HTTP client that turns a Kotlin interface into networked calls over OkHttp. Ch 1.
 
-**Result / Outcome type** — A uniform success/failure return type that keeps exceptions out of the
-domain and UI and makes error handling exhaustive. Ch 1, Ch 23.
+**Request de-duplication** — Collapsing concurrent identical in-flight requests into one shared call. Ch 11.
 
-**Retrofit** — A declarative HTTP client that turns a Kotlin interface into networked calls over
-OkHttp. Ch 1.
+**Single source of truth (SSOT)** — One authoritative local store (Room) that the UI reads from; the network updates it, the UI observes it. Ch 3.
 
-**Retry** — Re-attempting a failed, *retryable* request (e.g. a timeout or 5xx), ideally with
-backoff and a bound. Ch 2.
+**StateFlow / UDF** — A hot, state-holding Flow driving unidirectional data flow — state down, events up. Ch 6.
 
-**Single source of truth (SSOT)** — The principle that one authoritative local store (here, Room)
-is the one place the UI reads from; the network updates it, the UI observes it. Ch 3, Ch 5;
-offline-first in Ch 29.
+**Timeout (call/connect/read/write)** — Bounds on how long a network operation may take; callTimeout bounds the whole call. Ch 1, Ch 2.
 
-**StateFlow** — A hot, state-holding Flow that always has a current value; the standard way a
-ViewModel exposes UI state. Ch 6.
+**Resumable upload** — An upload that can continue from where it left off after interruption. Ch 17; downloads in Ch 18.
 
-**Structured concurrency** — Scoping coroutines to a lifecycle so they are cancelled together and
-none are leaked. Ch 3.
-
-**Thundering herd** — Many clients retrying or refreshing at once and overwhelming a server;
-mitigated with jitter and request de-duplication. Ch 2, Ch 14.
-
-**Timeout (call / connect / read / write)** — Bounds on how long a network operation may take;
-`callTimeout` bounds the entire call, the others bound individual phases. Ch 1, Ch 2.
-
-**Request de-duplication** — Collapsing concurrent identical in-flight requests into one shared
-call. Ch 11.
 
 ---
 
@@ -92,18 +59,17 @@ Retrofit, Hilt/Dagger, and Media3 — whose work makes modern Android developmen
 
 And thank you, the reader, for investing in the craft of building software that lasts.
 
+
 ---
 
 # About the Author
 
-{{AUTHOR BIO — replace this with your bio. Suggested content: your name, years of Android
-experience, the kinds of apps and platforms you've shipped (mobile, TV, STB, Fire TV, Wear), your
-areas of depth (Kotlin, Java, architecture), and a line on why you wrote this series. Example
-opening: "{{AUTHOR NAME}} is an Android engineer with over eight years of experience building
-production applications across phones, TV, set-top boxes, and wearables..."}}
+Prakash Sharma is a Senior Software Engineer at Deutsche Telekom with a decade of experience building Android applications across mobile, television (TV), and set-top-box (STB) platforms. Over those years he has shipped and maintained large, long-lived Android codebases — the kind where architecture, offline behavior, security, performance, and multi-team maintainability are not optional extras but the whole job.
 
-*Connect / errata:* {{OPTIONAL — website, GitHub, LinkedIn, or contact for corrections and
-updates.}}
+He writes about Android architecture and engineering on **Medium**, and is the author of technical books on modern Android development. He wrote *Designing Android at Scale* to close the gap he kept seeing — and interviewing for — between *knowing Android APIs* and *designing systems* that survive real-world scale, constraints, and teams.
+
+*Follow Prakash on **Medium** for articles, updates, and corrections to this series: {{MEDIUM PROFILE URL}}*
+
 
 ---
 
@@ -111,19 +77,15 @@ updates.}}
 
 If this volume was useful, the series continues:
 
-- **Volume 2 — Security, Offline-First & State** (Chapters 19–43): authentication, cryptography
-  and the Keystore, secure storage and PII, offline-first architecture, the outbox pattern, delta
-  sync and conflict resolution, and shared/global state.
-- **Volume 3 — Lifecycle, Background & Media** (Chapters 44–62): lifecycle and process death,
-  WorkManager, Doze, notifications, navigation, and media playback with Media3/ExoPlayer and DRM.
-- **Volume 4 — Real-Time & Feature Architectures** (Chapters 63–81): WebSocket/SSE, presence, live
-  location, BLE, and the commerce feature stack — feeds, recommendations, cart, checkout,
-  payments, and order tracking.
-- **Volume 5 — Performance, Scale & Platform Breadth** (Chapters 82–100): analytics, crash,
-  tracing, performance, memory, rendering, battery, baseline profiles, modularization,
-  localization, accessibility, theming, Android TV and Wear OS, and the end-to-end capstone.
+- **Volume 2 — Security, Offline-First & State** (Chapters 19–43) — authentication and token management, cryptography and the Keystore, secure storage and PII handling, offline-first architecture, the outbox pattern, delta sync and conflict resolution, and shared/global state.
 
-All five volumes build on the **StreamCart** reference application introduced in this volume.
+- **Volume 3 — Lifecycle, Background & Media** (Chapters 44–62) — the Android lifecycle and startup, foreground and background work, WorkManager, Doze and background limits, notifications, deep links and navigation, plus media playback with Media3/ExoPlayer, DRM, the camera, and file handling.
 
-*Reviews help other engineers find the series. If this book helped you, please consider leaving a
-rating or review.*
+- **Volume 4 — Real-Time & Feature Architectures** (Chapters 63–81) — WebSocket and SSE, presence and typing, live location, BLE and nearby connections, and the commerce feature stack — feeds, recommendations, cart, checkout, payments, order tracking, reviews, and onboarding.
+
+- **Volume 5 — Performance, Scale & Platform Breadth** (Chapters 82–100) — analytics, crash reporting, distributed tracing, performance and memory, rendering and jank, battery, baseline profiles, modularization, localization, accessibility, theming, Android TV and Wear OS, and the end-to-end StreamCart capstone.
+
+All five volumes build on the **StreamCart** reference application and the foundations introduced in Volume 1.
+
+*Reviews help other engineers find the series. If this book helped you, please consider leaving a rating or review.*
+

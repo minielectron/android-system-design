@@ -67,7 +67,7 @@ Place this text, cleanly and correctly spelled:
 - Lower third (large, bold, off-white): Foundations
 - Beneath it (medium, teal): Networking & Local Data
 - Small line under that (muted grey): Core Infrastructure · Networking Patterns · Chapters 1–18
-- Bottom (small, off-white): {{AUTHOR NAME}}
+- Bottom (small, off-white): Prakash Sharma
 1600 x 2560 px, portrait, high resolution.
 ```
 
@@ -77,7 +77,7 @@ Place this text, cleanly and correctly spelled:
 - Title: `Foundations`
 - Subtitle: `Networking & Local Data`
 - Strip: `Core Infrastructure · Networking Patterns · Chapters 1–18`
-- Author: `{{AUTHOR NAME}}`
+- Author: `Prakash Sharma`
 
 ---
 
@@ -94,7 +94,7 @@ Place this text, cleanly and correctly spelled:
 - Giant translucent accent numeral: 2
 - Lower third (large, bold): Security, Offline-First & State
 - Small line under that (muted grey): Auth & Security · Offline Sync · Shared State · Chapters 19–43
-- Bottom: {{AUTHOR NAME}}
+- Bottom: Prakash Sharma
 1600 x 2560 px, portrait, high resolution.
 ```
 
@@ -102,7 +102,7 @@ Place this text, cleanly and correctly spelled:
 - Series: `DESIGNING ANDROID AT SCALE` · Volume mark: `VOL. 2`
 - Title: `Security, Offline-First & State`
 - Strip: `Authentication & Security · Offline-First & Sync · Shared State · Chapters 19–43`
-- Author: `{{AUTHOR NAME}}`
+- Author: `Prakash Sharma`
 
 ---
 
@@ -121,7 +121,7 @@ Place this text, cleanly and correctly spelled:
 - Giant translucent accent numeral: 3
 - Lower third (large, bold): Lifecycle, Background & Media
 - Small line under that (muted grey): Lifecycle & Background · Media & Files · Chapters 44–62
-- Bottom: {{AUTHOR NAME}}
+- Bottom: Prakash Sharma
 1600 x 2560 px, portrait, high resolution.
 ```
 
@@ -129,7 +129,7 @@ Place this text, cleanly and correctly spelled:
 - Series: `DESIGNING ANDROID AT SCALE` · Volume mark: `VOL. 3`
 - Title: `Lifecycle, Background & Media`
 - Strip: `Lifecycle, Background & Platform · Media & Files · Chapters 44–62`
-- Author: `{{AUTHOR NAME}}`
+- Author: `Prakash Sharma`
 
 ---
 
@@ -148,7 +148,7 @@ Place this text, cleanly and correctly spelled:
 - Giant translucent accent numeral: 4
 - Lower third (large, bold): Real-Time & Feature Architectures
 - Small line under that (muted grey): Real-Time & Connectivity · Feature Architectures · Chapters 63–81
-- Bottom: {{AUTHOR NAME}}
+- Bottom: Prakash Sharma
 1600 x 2560 px, portrait, high resolution.
 ```
 
@@ -156,7 +156,7 @@ Place this text, cleanly and correctly spelled:
 - Series: `DESIGNING ANDROID AT SCALE` · Volume mark: `VOL. 4`
 - Title: `Real-Time & Feature Architectures`
 - Strip: `Real-Time & Connectivity · Feature Architectures · Chapters 63–81`
-- Author: `{{AUTHOR NAME}}`
+- Author: `Prakash Sharma`
 
 ---
 
@@ -175,7 +175,7 @@ Place this text, cleanly and correctly spelled:
 - Giant translucent accent numeral: 5
 - Lower third (large, bold): Performance, Scale & Platform Breadth
 - Small line under that (muted grey): Performance & Observability · Reach & Platform Breadth · Chapters 82–100
-- Bottom: {{AUTHOR NAME}}
+- Bottom: Prakash Sharma
 1600 x 2560 px, portrait, high resolution.
 ```
 
@@ -183,7 +183,7 @@ Place this text, cleanly and correctly spelled:
 - Series: `DESIGNING ANDROID AT SCALE` · Volume mark: `VOL. 5`
 - Title: `Performance, Scale & Platform Breadth`
 - Strip: `Performance, Observability & Quality · Reach, Scale & Platform Breadth · Chapters 82–100`
-- Author: `{{AUTHOR NAME}}`
+- Author: `Prakash Sharma`
 
 ---
 
