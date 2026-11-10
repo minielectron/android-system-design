@@ -1,0 +1,15 @@
+classDiagram
+    class CatalogRepository {
+        -SingleFlight single
+        +config() Outcome~Config~
+    }
+    class SingleFlight {
+        -Map~String,Deferred~ inFlight
+        -Mutex mutex
+        -CoroutineScope scope
+        +run(key, block) T
+    }
+    class safeApiCall {
+    }
+    CatalogRepository --> SingleFlight
+    SingleFlight ..> safeApiCall

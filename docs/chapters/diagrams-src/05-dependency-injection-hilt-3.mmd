@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant CS as Compose Screen
+    participant H as Hilt (generated)
+    participant VM as SearchViewModel
+    participant UC as SearchProductsUseCase
+    participant REPO as CatalogRepository
+    participant INFRA as OkHttp/Room/Dispatchers
+    CS->>H: hiltViewModel()
+    H->>INFRA: resolve singletons (cached)
+    H->>REPO: @Binds impl (singleton, cached)
+    H->>UC: @Inject(Repo)
+    H->>VM: @Inject(UC, SavedStateHandle)
+    H-->>CS: SearchViewModel
+    Note over CS,H: entire graph validated at COMPILE time

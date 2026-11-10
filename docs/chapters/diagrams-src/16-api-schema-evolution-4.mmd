@@ -1,0 +1,5 @@
+flowchart LR
+    S["status = REFUND_PENDING (new)"] --> K{known enum?}
+    K -->|yes| MAP["map to member"]
+    K -->|no| UNK["OrderStatus.Unknown, safe default UI"]
+    UNK --> LOG["log unknown enum for schema drift"]

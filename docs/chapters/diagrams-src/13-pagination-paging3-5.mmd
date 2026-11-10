@@ -1,0 +1,7 @@
+flowchart TD
+    AL["append load"] --> NET{network ok?}
+    NET -->|yes| TX["tx: upsert page + keys"]
+    NET -->|error| KEEP["keep pages + retry footer"]
+    TX --> NC{nextCursor null?}
+    NC -->|no| MORE["more pages available"]
+    NC -->|yes| END["endOfPaginationReached"]

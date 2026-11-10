@@ -1,0 +1,26 @@
+classDiagram
+    class UploadWorker {
+        +doWork() Result
+    }
+    class UploadSession {
+        +String localId
+        +String contentUri
+        +String uploadId
+        +long bytesSent
+        +long totalBytes
+        +String idempotencyKey
+        +Status status
+    }
+    class ResumableUploadApi {
+        <<interface>>
+        +init(key, meta) InitResult
+        +uploadChunk(uploadId, range, body) ChunkResult
+        +status(uploadId) long
+    }
+    class ProgressRequestBody {
+        +writeTo(sink)
+        +contentLength() long
+    }
+    UploadWorker --> UploadSession
+    UploadWorker --> ResumableUploadApi
+    UploadWorker --> ProgressRequestBody

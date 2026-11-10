@@ -1,0 +1,7 @@
+stateDiagram-v2
+    [*] --> Closed
+    Closed --> Closed: success resets count
+    Closed --> Open: failures >= threshold
+    Open --> HalfOpen: cooldown elapsed
+    HalfOpen --> Open: probe fails
+    HalfOpen --> Closed: probe succeeds

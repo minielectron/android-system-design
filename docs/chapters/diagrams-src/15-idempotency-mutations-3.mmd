@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant VM as CheckoutViewModel
+    participant REPO as CheckoutRepository
+    participant OUT as Room outbox
+    participant BK as Backend
+    User->>VM: tap Pay (intent)
+    VM->>REPO: submit(form)
+    REPO->>OUT: persist PendingMutation key=K
+    REPO->>BK: POST /orders Idempotency-Key: K
+    BK->>BK: execute, store K, order
+    BK-->>REPO: response lost (timeout)
+    REPO->>BK: retry POST /orders Idempotency-Key: K
+    BK->>BK: K seen, return order
+    BK-->>REPO: order
+    REPO->>OUT: mark complete, discard K
+    REPO-->>VM: Outcome.Success(order)

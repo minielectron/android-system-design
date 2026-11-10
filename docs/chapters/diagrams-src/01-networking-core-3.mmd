@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant SR as SearchRepository
+    participant SAC as safeApiCall
+    participant RF as Retrofit Api
+    participant IC as Interceptors
+    participant OK as OkHttpClient
+    participant BK as Backend
+    SR->>SAC: safeApiCall - api.search(q)
+    SAC->>RF: suspend search(q)
+    RF->>IC: Request
+    IC->>IC: add correlation id, headers, auth
+    IC->>OK: proceed(request)
+    OK->>BK: HTTP GET (HTTP/2, gzip)
+    BK-->>OK: 200 + JSON
+    OK-->>RF: Response
+    RF-->>SAC: List of ProductDto
+    SAC-->>SR: Outcome.Success(dtos)

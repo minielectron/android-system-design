@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant DW as DownloadWorker
+    participant ROOM as Room
+    participant PART as .part file
+    participant BK as Backend
+    DW->>ROOM: read offset (0) + etag
+    DW->>BK: GET Range bytes=0- (If-Range etag)
+    BK-->>DW: 206 Partial Content + Content-Length
+    loop stream
+        DW->>PART: append chunk
+        DW->>ROOM: persist offset
+    end
+    Note over DW,BK: connection drops at 60%
+    DW->>ROOM: offset = 60%
+    DW->>BK: GET Range bytes=offset- (If-Range etag)
+    BK-->>DW: 206 remaining bytes
+    DW->>PART: append remaining
+    DW->>DW: verify size + sha256
+    DW->>PART: rename .part to final
+    DW->>ROOM: status = COMPLETE

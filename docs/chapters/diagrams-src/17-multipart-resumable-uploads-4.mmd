@@ -1,0 +1,6 @@
+flowchart LR
+    URI["content URI"] --> PRB["ProgressRequestBody streams file"]
+    PRB --> POST["POST multipart with Idempotency-Key"]
+    POST --> SUC{success?}
+    SUC -->|yes| DONE["done"]
+    SUC -->|transient fail| RETRY["WorkManager retry backoff"]

@@ -1,0 +1,30 @@
+flowchart TD
+    subgraph DATA["Data (:data:catalog)"]
+        REPO["SearchRepository (SSOT for results)"]
+        LRU["In-memory LRU query cache"]
+        API["ProductSearchApi (Retrofit)"]
+    end
+    subgraph NET[":core:network"]
+        OK["OkHttp + Outcome/AppError"]
+    end
+    subgraph DOM["Domain (:domain)"]
+        UC["SearchProductsUseCase"]
+    end
+    subgraph VM["SearchViewModel"]
+        QF["queryFlow: MutableStateFlow of String"]
+        PIPE["debounce, distinctUntilChanged, flatMapLatest"]
+        US["uiState: StateFlow of SearchUiState"]
+    end
+    subgraph PRES["Presentation (:feature:search)"]
+        BAR["SearchBar (Compose)"]
+        LIST["ResultsList (Compose)"]
+    end
+    REPO -->|miss| API
+    REPO --> LRU
+    API --> OK
+    UC --> REPO
+    BAR -->|onQueryChange| QF
+    QF -.->|cold pipeline| PIPE
+    PIPE --> UC
+    PIPE --> US
+    US -.->|collectAsStateWithLifecycle| LIST

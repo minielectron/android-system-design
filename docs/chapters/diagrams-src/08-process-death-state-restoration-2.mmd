@@ -1,0 +1,20 @@
+classDiagram
+    class CheckoutViewModel {
+        -SavedStateHandle saved
+        +step StateFlow~Int~
+        +form StateFlow~CheckoutForm~
+        +onFieldChange(...)
+    }
+    class SavedStateHandle {
+        +get(key) T
+        +set(key, T)
+        +getStateFlow(key, default) StateFlow~T~
+    }
+    class CheckoutForm {
+        <<Parcelable>>
+        +String name
+        +String address
+        +String city
+    }
+    CheckoutViewModel --> SavedStateHandle
+    CheckoutViewModel --> CheckoutForm

@@ -1,0 +1,14 @@
+flowchart TD
+    subgraph VM["ViewModel"]
+        EH["event handling / results"]
+        CH["_effects: Channel of Effect (BUFFERED)"]
+        FL["effects: Flow = receiveAsFlow()"]
+    end
+    subgraph CR["Compose Route"]
+        LE["LaunchedEffect + repeatOnLifecycle(STARTED)"]
+        HND["handle: navigate / snackbar / dialog"]
+    end
+    EH -->|send effect| CH
+    CH --> FL
+    FL -.->|single lifecycle-aware collector| LE
+    LE --> HND

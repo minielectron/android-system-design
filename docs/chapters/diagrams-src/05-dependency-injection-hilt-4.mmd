@@ -1,0 +1,7 @@
+flowchart TD
+    C["compile"] --> GV{graph valid?}
+    GV -->|missing/ambiguous/scope| CE["compile error - fix binding"]
+    GV -->|ok| APP["app runs with validated graph"]
+    APP --> RS{runtime scope correct?}
+    RS -->|wrong scope| LEAK["leak / lost cache"]
+    RS -->|correct| STABLE["stable"]

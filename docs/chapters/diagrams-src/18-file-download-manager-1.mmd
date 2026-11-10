@@ -1,0 +1,20 @@
+flowchart TD
+    REQ["request download"] --> DQ["DownloadQueue (bounded + priority, Ch 14)"]
+    DQ --> ENQ["enqueue DownloadWorker (WorkManager)"]
+    CONS["constraints: unmetered/charging"]
+    subgraph DW["DownloadWorker (foreground service)"]
+        GET["GET with Range bytes=offset-"]
+        STREAM["stream to .part file"]
+        PERSIST["persist offset + total + etag (Room)"]
+        VERIFY["verify size/checksum, rename final"]
+    end
+    ENQ --> GET
+    CONS -.-> DW
+    GET --> BK["Backend (Accept-Ranges)"]
+    BK --> STREAM
+    STREAM --> PERSIST
+    PERSIST --> VERIFY
+    STREAM -->|fail| RESUME["resume: Range from saved offset"]
+    RESUME --> GET
+    VERIFY --> SS["scoped storage / app files"]
+    PERSIST -.->|progress| UI["UI observes WorkInfo / Room"]

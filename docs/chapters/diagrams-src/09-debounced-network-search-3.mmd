@@ -1,0 +1,23 @@
+sequenceDiagram
+    actor User
+    participant BAR as SearchBar
+    participant VM as SearchViewModel
+    participant UC as SearchProductsUseCase
+    participant REPO as SearchRepository
+    participant API as ProductSearchApi
+    User->>BAR: types head
+    BAR->>VM: onQueryChanged(head)
+    Note over VM: query emits, debounce 300ms waiting
+    User->>BAR: types phones (within 300ms)
+    BAR->>VM: onQueryChanged(headphones)
+    Note over VM: debounce resets, only headphones survives
+    Note over VM: distinctUntilChanged passes, flatMapLatest cancels prior inner flow
+    VM->>VM: emit Loading
+    VM->>UC: invoke(headphones)
+    UC->>REPO: search(headphones)
+    REPO->>API: GET /search/products?q=headphones (IO)
+    API-->>REPO: List of ProductDto
+    REPO-->>UC: Outcome.Success(List of Product)
+    UC-->>VM: Outcome.Success
+    VM-->>BAR: emit Results(list) / Empty
+    BAR-->>User: renders results

@@ -1,0 +1,18 @@
+flowchart TD
+    subgraph SF["SingleFlight (singleton)"]
+        MAP["inFlight: Map of Key, Deferred"]
+        MUTEX["Mutex"]
+        SCOPE["coordinator scope (SupervisorJob)"]
+    end
+    subgraph CALLERS["concurrent callers"]
+        HOME["Home screen"]
+        PROFILE["Profile chip"]
+        PREFETCH["Prefetch"]
+    end
+    SAFE["safeApiCall (Ch 1)"]
+    HOME -->|run key=user:me| MAP
+    PROFILE -->|run key=user:me| MAP
+    PREFETCH -->|run key=user:me| MAP
+    MAP -.->|same result to all 3| HOME
+    SCOPE -->|first caller only| SAFE
+    SAFE --> SCOPE

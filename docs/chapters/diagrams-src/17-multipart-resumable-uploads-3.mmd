@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant UW as UploadWorker
+    participant RS as Room session
+    participant BK as Backend
+    UW->>BK: init (Idempotency-Key K)
+    BK-->>UW: uploadId = U
+    UW->>RS: persist U, offset=0
+    loop chunks
+        UW->>BK: PUT chunk Content-Range bytes offset-end
+        BK-->>UW: 308 Resume Incomplete, received=offset
+        UW->>RS: persist offset
+    end
+    Note over UW,BK: connection drops mid-upload
+    UW->>BK: status(U)
+    BK-->>UW: last received = offset2
+    UW->>UW: resume from offset2
+    UW->>BK: final chunk
+    BK-->>UW: 201 Created (resource id)
+    UW->>RS: mark complete

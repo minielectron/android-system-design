@@ -1,0 +1,27 @@
+flowchart TD
+    REPO["Repository"]
+    SAFE["safeApiCall (Ch 1)"]
+    subgraph CORE[":core:network reliability"]
+        RC["reliableCall policy"]
+        IDEM{idempotent or has key?}
+        SINGLE["single attempt"]
+        CIRC{circuit open?}
+        FAIL["fail fast: ServiceUnavailable"]
+        LOOP["retry loop: safeApiCall + backoff"]
+        REC["breaker.record success or failure"]
+        RETRY{retryable?}
+        BACKOFF["backoff + jitter, honor Retry-After"]
+        OUT["Outcome"]
+    end
+    REPO --> RC
+    RC --> IDEM
+    IDEM -->|no| SINGLE
+    IDEM -->|yes| CIRC
+    CIRC -->|open| FAIL
+    CIRC -->|closed/half| LOOP
+    LOOP --> SAFE
+    LOOP -.-> REC
+    LOOP --> RETRY
+    RETRY -->|yes and attempts left| BACKOFF
+    RETRY -->|no or exhausted| OUT
+    BACKOFF --> LOOP

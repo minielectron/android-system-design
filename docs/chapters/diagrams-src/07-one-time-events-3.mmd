@@ -1,0 +1,14 @@
+sequenceDiagram
+    actor User
+    participant CR as CheckoutRoute
+    participant VM as CheckoutViewModel
+    participant EC as effects Channel
+    User->>CR: tap Pay
+    CR->>VM: onEvent(Pay)
+    VM->>VM: process payment (success)
+    VM->>EC: send(Navigate.Confirmation)
+    Note over CR: user briefly backgrounds the app
+    Note over EC: effect buffered while STOPPED, not collecting
+    User->>CR: returns (STARTED)
+    EC-->>CR: deliver Navigate.Confirmation (once)
+    CR->>CR: navController.navigate(confirmation)

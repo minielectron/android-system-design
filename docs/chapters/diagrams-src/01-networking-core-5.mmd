@@ -1,0 +1,13 @@
+flowchart TD
+    SAC["safeApiCall"] --> T{throwable?}
+    T -->|none| OS["Outcome.Success"]
+    T -->|UnknownHost/IO| NC["NoConnectivity"]
+    T -->|SocketTimeout| TO["Timeout"]
+    T -->|HttpException| CODE{code?}
+    T -->|Serialization| SER["Serialization"]
+    T -->|SSLHandshake| TLS["Unknown TLS"]
+    T -->|Cancellation| RT["rethrow"]
+    CODE -->|401| UA["Unauthorized"]
+    CODE -->|403| FB["Forbidden"]
+    CODE -->|429| RL["RateLimited"]
+    CODE -->|other| HC["Http code"]

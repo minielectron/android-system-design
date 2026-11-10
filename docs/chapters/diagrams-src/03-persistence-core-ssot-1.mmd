@@ -1,0 +1,28 @@
+flowchart TD
+    subgraph PRES["Presentation"]
+        VM["ViewModel"]
+    end
+    subgraph DOM["Domain"]
+        UC["UseCase"]
+    end
+    subgraph DATA[":data:catalog"]
+        NBR["networkBoundResource"]
+        MAP["mappers: Dto/Entity/Domain"]
+        REPO["CatalogRepository (SSOT owner)"]
+    end
+    subgraph DB[":core:database"]
+        DAO["ProductDao"]
+        ROOM["Room (SSOT)"]
+    end
+    API["ProductApi (:core:network)"]
+    VM --> UC
+    UC --> REPO
+    REPO --> NBR
+    NBR -->|observe| DAO
+    DAO --> ROOM
+    ROOM -.->|Flow emissions| NBR
+    API -->|fetch on miss/stale| NBR
+    NBR --> MAP
+    NBR -.->|Flow of Resource| VM
+    REPO --> DAO
+    REPO --> API

@@ -1,0 +1,10 @@
+flowchart TD
+    RESP["response"] --> POK{parse ok?}
+    POK -->|yes| MAP["map DTO to domain"]
+    POK -->|unknown field| IGN["ignore, ok"]
+    POK -->|unknown enum| UNK["UNKNOWN fallback + telemetry"]
+    POK -->|type/shape broke| ERR["typed error + drift alert"]
+    MAP --> STABLE["stable domain"]
+    ERR --> BW{breaking and widespread?}
+    BW -->|yes| MIN["min-version forced upgrade"]
+    BW -->|no| HOT["client hotfix mapper"]

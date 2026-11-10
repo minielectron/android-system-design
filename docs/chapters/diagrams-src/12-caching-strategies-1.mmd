@@ -1,0 +1,12 @@
+flowchart TD
+    VM["ViewModel"] --> REPO["Repository (cache policy owner)"]
+    REPO -.->|write/mutation| INV["invalidate/update cache"]
+    REPO --> LRU{in-memory LRU hit and fresh?}
+    LRU -->|yes| HOT["return (hot)"]
+    LRU -->|no| ROOM{Room hit and fresh?}
+    ROOM -->|yes| RET["return + populate memory"]
+    ROOM -->|stale/miss| SF["single-flight fetch (Ch 11)"]
+    SF --> OK["OkHttp (HTTP cache: ETag/304)"]
+    OK --> BK["Backend"]
+    BK --> WR["write Room + memory, set updatedAt/etag"]
+    WR --> RET

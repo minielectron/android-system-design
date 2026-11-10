@@ -1,0 +1,5 @@
+flowchart LR
+    TAP["tap Pay, persist key K"] --> PD["process death"]
+    PD --> RESTART["restart: read pending mutation K"]
+    RESTART --> RESEND["resend with same key K"]
+    RESEND --> REPLAY["server replays stored result, one order"]

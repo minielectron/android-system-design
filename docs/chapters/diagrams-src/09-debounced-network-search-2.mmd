@@ -1,0 +1,33 @@
+classDiagram
+    class SearchViewModel {
+        -MutableStateFlow~String~ query
+        +StateFlow~SearchUiState~ uiState
+        +onQueryChanged(String)
+        +onRetry()
+        +onClear()
+    }
+    class SearchProductsUseCase {
+        +invoke(String) Outcome~List~Product~~
+    }
+    class SearchUiState {
+        <<sealed>>
+    }
+    class SearchRepository {
+        <<interface>>
+        +search(String) Outcome~List~Product~~
+    }
+    class SearchRepositoryImpl {
+        -ProductSearchApi api
+        -LruCache cache
+        -DispatcherProvider dispatchers
+        +search(String) Outcome~List~Product~~
+    }
+    class ProductSearchApi {
+        <<interface>>
+        +search(String, Int) List~ProductDto~
+    }
+    SearchViewModel --> SearchProductsUseCase
+    SearchViewModel --> SearchUiState
+    SearchProductsUseCase --> SearchRepository
+    SearchRepositoryImpl ..|> SearchRepository
+    SearchRepositoryImpl --> ProductSearchApi

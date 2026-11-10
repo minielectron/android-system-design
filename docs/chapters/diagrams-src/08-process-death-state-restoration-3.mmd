@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor User
+    participant CS as CheckoutScreen
+    participant VM as CheckoutViewModel
+    participant SSH as SavedStateHandle
+    participant SSOT
+    User->>CS: fill name, address (step 2)
+    CS->>VM: onFieldChange(...)
+    VM->>SSH: set form and step=2
+    Note over SSH: OS kills process - background, low memory
+    Note over CS: user returns much later
+    CS->>VM: recreated ViewModel(SavedStateHandle)
+    VM->>SSH: restore form, step=2
+    VM->>SSOT: read cart (durable)
+    VM-->>CS: UiState(step=2, prefilled form, cart)
+    CS-->>User: resumes exactly where they left off

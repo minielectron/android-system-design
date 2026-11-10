@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant CR as CatalogRepository
+    participant DAO as ProductDao
+    participant API as ProductApi
+    CR->>DAO: observeAll()
+    DAO-->>CR: cached list
+    CR->>API: fetchCatalog()
+    API-->>CR: Failure(NoConnectivity)
+    CR->>CR: keep cached data
+    CR-->>CR: Resource.Error(NoConnectivity, cached)

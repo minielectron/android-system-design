@@ -1,0 +1,10 @@
+flowchart TD
+    READ["read"] --> MEM{mem fresh?}
+    MEM -->|yes| SERVE["serve"]
+    MEM -->|no| DB{db fresh?}
+    DB -->|yes| WARM["serve + warm mem"]
+    DB -->|stale| NET{network ok?}
+    NET -->|yes 200/304| UPD["update caches, serve fresh"]
+    NET -->|fail| CACHE{cache present?}
+    CACHE -->|yes| STALE["serve stale + marker"]
+    CACHE -->|no| ERR["error + retry"]

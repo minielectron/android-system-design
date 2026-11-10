@@ -1,0 +1,26 @@
+flowchart TD
+    subgraph SRC["sources"]
+        RECENT["RecentSearches (DataStore, Ch 4)"]
+        TREND["Trending (cached)"]
+    end
+    subgraph VM["SearchSuggestVM"]
+        MERGE["merge(recent, trending, remote)"]
+        SUG["suggestions: StateFlow of SuggestUiState"]
+        QUERY["query: MutableStateFlow"]
+        PIPE["debounce, distinctUntilChanged, flatMapLatest"]
+    end
+    subgraph BAR["Search bar + dropdown"]
+        SB["SearchBar"]
+        SL["SuggestionList"]
+    end
+    API["SuggestApi (Ch 1 + Ch 9 cache)"]
+    RECENT --> MERGE
+    TREND --> MERGE
+    MERGE --> SUG
+    SUG -.-> SL
+    SB -->|onQueryChange| QUERY
+    SL -->|onSelect/onComplete| SB
+    QUERY --> PIPE
+    PIPE --> MERGE
+    PIPE --> API
+    API --> MERGE

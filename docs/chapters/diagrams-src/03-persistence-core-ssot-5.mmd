@@ -1,0 +1,8 @@
+flowchart TD
+    REF["refresh"] --> FETCH{fetch ok?}
+    FETCH -->|yes| WRITE{write ok?}
+    FETCH -->|no| CACHE{cache present?}
+    WRITE -->|yes| OK["Success: Room re-emits"]
+    WRITE -->|disk full| DISK["DiskFull: keep old data"]
+    CACHE -->|yes| ERRC["Error with cached data"]
+    CACHE -->|no| ERRE["Error empty + Retry"]

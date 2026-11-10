@@ -1,0 +1,23 @@
+classDiagram
+    class CachedRepository {
+        -LruCache memory
+        -Dao dao
+        -SingleFlight single
+        +observe(key) Flow~Resource~
+        +invalidate(key)
+    }
+    class CachePolicy {
+        +Duration ttl
+        +boolean useEtag
+        +boolean staleWhileRevalidate
+    }
+    class CacheEntry {
+        +T value
+        +long updatedAt
+        +String etag
+    }
+    class SingleFlight {
+    }
+    CachedRepository --> CachePolicy
+    CachedRepository --> CacheEntry
+    CachedRepository --> SingleFlight

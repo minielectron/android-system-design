@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant LC as LazyColumn
+    participant PAGER as Pager
+    participant ROOM as Room
+    participant RM as RemoteMediator
+    participant API as Paged API
+    LC->>PAGER: scroll near end (prefetchDistance)
+    PAGER->>ROOM: load next page from DAO
+    ROOM-->>PAGER: no more cached rows
+    PAGER->>RM: load(APPEND, state)
+    RM->>ROOM: read nextKey from remote_keys (last item)
+    RM->>API: GET /products?after=nextKey and limit=20
+    API-->>RM: items + nextCursor
+    RM->>ROOM: transaction - upsert items and remote_keys
+    ROOM-->>PAGER: invalidate, new PagingData
+    PAGER-->>LC: appended items rendered

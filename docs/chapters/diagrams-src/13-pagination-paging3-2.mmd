@@ -1,0 +1,22 @@
+classDiagram
+    class ProductRemoteMediator {
+        +load(LoadType, PagingState) MediatorResult
+    }
+    class ProductDao {
+        +pagingSource() PagingSource~Int,ProductEntity~
+        +upsertAll(List)
+        +clearAll()
+    }
+    class RemoteKeyDao {
+        +keysFor(id) RemoteKey
+        +upsert(List~RemoteKey~)
+        +clear()
+    }
+    class RemoteKey {
+        +String id
+        +String prevKey
+        +String nextKey
+    }
+    ProductRemoteMediator --> ProductDao
+    ProductRemoteMediator --> RemoteKeyDao
+    RemoteKeyDao --> RemoteKey

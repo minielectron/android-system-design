@@ -1,0 +1,18 @@
+classDiagram
+    class NetworkScheduler {
+        -Semaphore slots
+        +schedule(priority, block) T
+    }
+    class AnalyticsBatcher {
+        -Channel buffer
+        +log(event)
+        -flush()
+    }
+    class Priority {
+        <<enum>>
+        Immediate
+        UserVisible
+        Prefetch
+        Background
+    }
+    NetworkScheduler --> Priority

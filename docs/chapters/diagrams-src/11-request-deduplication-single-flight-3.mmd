@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant A as Caller A
+    participant B as Caller B
+    participant SF as SingleFlight
+    participant SAC as safeApiCall
+    A->>SF: run(user:me)
+    SF->>SF: no entry, create Deferred, store
+    SF->>SAC: GET /me (once)
+    B->>SF: run(user:me)
+    SF-->>B: await existing Deferred (no new call)
+    SAC-->>SF: Outcome.Success(user)
+    SF->>SF: remove entry
+    SF-->>A: result
+    SF-->>B: same result

@@ -1,0 +1,21 @@
+classDiagram
+    class DispatchersModule {
+        +provideDispatcherProvider() DispatcherProvider
+    }
+    class SearchViewModel {
+        +inject(useCase, savedState)
+    }
+    class RepositoryModule {
+        +bindCatalogRepository(impl) CatalogRepository
+    }
+    class DispatcherProvider {
+        <<interface>>
+        +io CoroutineDispatcher
+        +default CoroutineDispatcher
+        +main CoroutineDispatcher
+    }
+    class CatalogRepository {
+    }
+    DispatchersModule --> DispatcherProvider
+    SearchViewModel --> DispatcherProvider
+    RepositoryModule ..> CatalogRepository

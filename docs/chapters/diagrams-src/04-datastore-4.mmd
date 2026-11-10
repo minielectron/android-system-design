@@ -1,0 +1,10 @@
+flowchart TD
+    SD["store.data"] --> PARSE{parse ok?}
+    PARSE -->|yes| EMIT["emit value"]
+    PARSE -->|corrupt| CH["CorruptionHandler: default"]
+    PARSE -->|IOException| CATCH["catch: emit default"]
+    CH --> EMIT
+    CATCH --> EMIT
+    ED["edit/updateData"] --> WRITE{write ok?}
+    WRITE -->|yes| COMMIT["commit + emit"]
+    WRITE -->|disk full| KEEP["keep old + surface error"]
