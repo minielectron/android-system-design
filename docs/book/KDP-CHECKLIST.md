@@ -17,11 +17,11 @@ series setup** once, then repeat the **per-volume** steps for each of the five b
 
 | Vol | Subtitle | Chapters | Paperback pp (7×10") | Cover accent |
 |-----|----------|----------|----------------------|--------------|
-| 1 | Foundations: Networking & Local Data | 1–18 | 296 | Teal `#1DB596` |
-| 2 | Security, Offline-First & State | 19–43 | 397 | Crimson `#E5484D` |
-| 3 | Lifecycle, Background & Media | 44–62 | 306 | Violet `#8A5CF6` |
-| 4 | Real-Time & Feature Architectures | 63–81 | 316 | Azure `#2E90FA` |
-| 5 | Performance, Scale & Platform Breadth | 82–100 | 306 | Amber `#F79009` |
+| 1 | Foundations: Networking & Local Data | 1–18 | 295 | Teal `#1DB596` |
+| 2 | Security, Offline-First & State | 19–43 | 395 | Crimson `#E5484D` |
+| 3 | Lifecycle, Background & Media | 44–62 | 307 | Violet `#8A5CF6` |
+| 4 | Real-Time & Feature Architectures | 63–81 | 318 | Azure `#2E90FA` |
+| 5 | Performance, Scale & Platform Breadth | 82–100 | 311 | Amber `#F79009` |
 
 ---
 

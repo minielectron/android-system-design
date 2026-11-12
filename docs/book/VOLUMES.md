@@ -1,6 +1,6 @@
 # Designing Android at Scale — 5-Volume Series Blueprint (Kindle / KDP)
 
-The 100-chapter book (**1,526 body pages**) is published as a **5-volume series** for Amazon
+The 100-chapter book (**1,626 pages** across the five volumes, 7×10″) is published as a **5-volume series** for Amazon
 KDP. Each volume is a merged **DOCX** (front matter → chapters → back matter), uploadable to KDP
 as a Kindle eBook, plus a matching cover. Volumes are split on **whole-Part boundaries** so each
 is a coherent, self-contained unit.
@@ -11,13 +11,13 @@ is a coherent, self-contained unit.
 
 ## The five volumes
 
-| Vol | Subtitle | Parts | Chapters | Body pp | Key topics |
-|-----|----------|-------|----------|---------|-----------|
-| **1** | Foundations — Networking & Local Data | I–II | 1–18 | ~271 | Core infrastructure, networking patterns, retries, caching, search |
-| **2** | Security, Offline-First & State | III–V | 19–43 | ~364 | Auth, crypto/Keystore, PII, offline sync, outbox, conflict resolution, shared state |
-| **3** | Lifecycle, Background & Media | VI–VII | 44–62 | ~281 | Lifecycle, WorkManager, Doze, notifications, Media3/ExoPlayer, DRM, files |
-| **4** | Real-Time & Feature Architectures | VIII–IX | 63–81 | ~310 | WebSocket, presence, BLE, feeds, checkout, payments, order tracking |
-| **5** | Performance, Scale & Platform Breadth | X–XI | 82–100 | ~300 | Analytics, crash, tracing, perf, memory, modularization, TV/Wear, capstone |
+| Vol | Subtitle | Parts | Chapters | Pages (7×10″) | Key topics |
+|-----|----------|-------|----------|---------------|-----------|
+| **1** | Foundations — Networking & Local Data | I–II | 1–18 | 295 | Core infrastructure, networking patterns, retries, caching, search |
+| **2** | Security, Offline-First & State | III–V | 19–43 | 395 | Auth, crypto/Keystore, PII, offline sync, outbox, conflict resolution, shared state |
+| **3** | Lifecycle, Background & Media | VI–VII | 44–62 | 307 | Lifecycle, WorkManager, Doze, notifications, Media3/ExoPlayer, DRM, files |
+| **4** | Real-Time & Feature Architectures | VIII–IX | 63–81 | 318 | WebSocket, presence, BLE, feeds, checkout, payments, order tracking |
+| **5** | Performance, Scale & Platform Breadth | X–XI | 82–100 | 311 | Analytics, crash, tracing, perf, memory, modularization, TV/Wear, capstone |
 
 **Part → Volume map**
 

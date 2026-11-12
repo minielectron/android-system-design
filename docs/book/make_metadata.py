@@ -6,6 +6,16 @@ import os
 AUTHOR = "Prakash Sharma"
 SERIES = "Designing Android at Scale"
 
+# Authoritative paperback page counts — 7x10" trim, measured from the built DOCX
+# (LibreOffice render -> pdfinfo). Regenerate after any content/image/build change.
+PAGES = {1: 295, 2: 395, 3: 307, 4: 318, 5: 311}
+
+# Print / paperback specification shared by every volume (7x10" B&W interior).
+TRIM_SIZE   = '7 × 10 in (17.78 × 25.4 cm)'
+INK_PAPER   = 'Black & white interior on white paper'
+BLEED       = 'No (diagrams do not run to the edge)'
+BINDING     = 'Paperback (perfect bound)'
+
 VOLS = {
 1: dict(
   subtitle="Foundations: Networking & Local Data",
@@ -178,6 +188,17 @@ def write_series():
 ## Language
 English
 
+## Volumes at a glance (paperback, {TRIM_SIZE.split(' (')[0]} trim, {INK_PAPER.lower()})
+
+| Vol | Subtitle | Chapters | Pages |
+|-----|----------|----------|-------|
+| 1 | Foundations: Networking & Local Data | 1–18 | {PAGES[1]} |
+| 2 | Security, Offline-First & State | 19–43 | {PAGES[2]} |
+| 3 | Lifecycle, Background & Media | 44–62 | {PAGES[3]} |
+| 4 | Real-Time & Feature Architectures | 63–81 | {PAGES[4]} |
+| 5 | Performance, Scale & Platform Breadth | 82–100 | {PAGES[5]} |
+| | **Series total** | **100** | **{sum(PAGES.values()):,}** |
+
 ## Series description  ({len(SERIES_DESC)} characters — within KDP's 4000 limit)
 
 {SERIES_DESC}
@@ -238,13 +259,40 @@ English
 ## Categories / BISAC (choose up to 3)
 """ + "\n".join(f"- {c}" for c in CATEGORIES) + f"""
 
+## Print / paperback specifications (KDP → Paperback)
+
+| Field | Value |
+|-------|-------|
+| **Page count** | **{PAGES[vol]} pages** |
+| **Trim size** | {TRIM_SIZE} |
+| **Bleed** | {BLEED} |
+| **Interior** | {INK_PAPER} |
+| **Binding** | {BINDING} |
+| **Paper** | White |
+| **Manuscript file** | `Designing-Android-at-Scale-Vol{vol}.docx` (or export to PDF for exact fidelity) |
+| **Paperback ISBN** | Free KDP ISBN (assigned at setup); your own ISBN optional |
+| **Cover (print)** | Wraparound PDF — size it with KDP's **Print Cover Calculator** using {TRIM_SIZE.split(' (')[0]} trim, **{PAGES[vol]}** pages, white paper. Spine text: `Designing Android at Scale · Vol {vol}` |
+
+> The **{PAGES[vol]}-page** count and {TRIM_SIZE.split(' (')[0]} trim are measured from the built
+> manuscript; KDP may ask you to confirm the gutter margin for this page count.
+
+## eBook (Kindle) specifications (KDP → Kindle eBook)
+
+| Field | Value |
+|-------|-------|
+| **Format** | Reflowable (no fixed page size — reflows to the reader's device) |
+| **Manuscript file** | `Designing-Android-at-Scale-Vol{vol}.docx` (hyperlinked Table of Contents built in) |
+| **eBook ISBN** | Not required — KDP assigns an ASIN |
+| **Cover (eBook)** | 1600 × 2560 px, RGB, JPEG/TIFF, < 50 MB (see `../COVER-PROMPTS.md`, Volume {vol}) |
+
 ## Other listing fields
 - **Contributors:** {AUTHOR} (Author)
 - **Edition:** First Edition
 - **Publication:** 2026
+- **Language:** English
 - **Adult content:** No
+- **Reading age / grade:** Not applicable (professional/technical title)
 - **Pricing/territories:** your choice (KDP sets these at upload)
-- **Cover:** 1600 × 2560 px (see `../COVER-PROMPTS.md`, Volume {vol})
 """
     out = f"/home/user/android-system-design/docs/book/vol{vol}/metadata.md"
     os.makedirs(os.path.dirname(out), exist_ok=True)

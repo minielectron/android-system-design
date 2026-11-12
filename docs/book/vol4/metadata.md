@@ -70,10 +70,37 @@ android realtime connectivity
 - COMPUTERS › Software Development & Engineering › General
 - COMPUTERS › Programming Languages › Java  (Kotlin runs on the JVM)
 
+## Print / paperback specifications (KDP → Paperback)
+
+| Field | Value |
+|-------|-------|
+| **Page count** | **318 pages** |
+| **Trim size** | 7 × 10 in (17.78 × 25.4 cm) |
+| **Bleed** | No (diagrams do not run to the edge) |
+| **Interior** | Black & white interior on white paper |
+| **Binding** | Paperback (perfect bound) |
+| **Paper** | White |
+| **Manuscript file** | `Designing-Android-at-Scale-Vol4.docx` (or export to PDF for exact fidelity) |
+| **Paperback ISBN** | Free KDP ISBN (assigned at setup); your own ISBN optional |
+| **Cover (print)** | Wraparound PDF — size it with KDP's **Print Cover Calculator** using 7 × 10 in trim, **318** pages, white paper. Spine text: `Designing Android at Scale · Vol 4` |
+
+> The **318-page** count and 7 × 10 in trim are measured from the built
+> manuscript; KDP may ask you to confirm the gutter margin for this page count.
+
+## eBook (Kindle) specifications (KDP → Kindle eBook)
+
+| Field | Value |
+|-------|-------|
+| **Format** | Reflowable (no fixed page size — reflows to the reader's device) |
+| **Manuscript file** | `Designing-Android-at-Scale-Vol4.docx` (hyperlinked Table of Contents built in) |
+| **eBook ISBN** | Not required — KDP assigns an ASIN |
+| **Cover (eBook)** | 1600 × 2560 px, RGB, JPEG/TIFF, < 50 MB (see `../COVER-PROMPTS.md`, Volume 4) |
+
 ## Other listing fields
 - **Contributors:** Prakash Sharma (Author)
 - **Edition:** First Edition
 - **Publication:** 2026
+- **Language:** English
 - **Adult content:** No
+- **Reading age / grade:** Not applicable (professional/technical title)
 - **Pricing/territories:** your choice (KDP sets these at upload)
-- **Cover:** 1600 × 2560 px (see `../COVER-PROMPTS.md`, Volume 4)

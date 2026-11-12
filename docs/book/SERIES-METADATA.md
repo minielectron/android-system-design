@@ -25,6 +25,17 @@ Prakash Sharma
 ## Language
 English
 
+## Volumes at a glance (paperback, 7 × 10 in trim, black & white interior on white paper)
+
+| Vol | Subtitle | Chapters | Pages |
+|-----|----------|----------|-------|
+| 1 | Foundations: Networking & Local Data | 1–18 | 295 |
+| 2 | Security, Offline-First & State | 19–43 | 395 |
+| 3 | Lifecycle, Background & Media | 44–62 | 307 |
+| 4 | Real-Time & Feature Architectures | 63–81 | 318 |
+| 5 | Performance, Scale & Platform Breadth | 82–100 | 311 |
+| | **Series total** | **100** | **1,626** |
+
 ## Series description  (1983 characters — within KDP's 4000 limit)
 
 **The complete, 100-chapter Android system-design curriculum — in five volumes.**
