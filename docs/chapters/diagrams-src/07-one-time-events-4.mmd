@@ -1,0 +1,7 @@
+flowchart TD
+    EE["emitEffect"] --> CS{collector STARTED?}
+    CS -->|yes| DEL["deliver once"]
+    CS -->|no| BUF["buffer in Channel"]
+    BUF --> RS{resume STARTED?}
+    RS -->|yes| DEL
+    RS -->|process death| LOST["lost by design, re-derive from state"]

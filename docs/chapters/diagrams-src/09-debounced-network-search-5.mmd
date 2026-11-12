@@ -1,0 +1,12 @@
+flowchart TD
+    SQ["search q"] --> OUT{Outcome?}
+    OUT -->|Success non-empty| RES["Results"]
+    OUT -->|Success empty| EMPTY["Empty"]
+    OUT -->|Failure| AE{AppError}
+    AE -->|NoConnectivity/Timeout/5xx| ERT["Error retryable=true"]
+    AE -->|Serialization/Forbidden| ERF["Error retryable=false"]
+    AE -->|RateLimited| BACK["Backoff then retryable"]
+    AE -->|Unauthorized| REF["Refresh token, replay"]
+    ERT -->|user/auto| SQ
+    BACK -->|after delay| SQ
+    REF --> SQ

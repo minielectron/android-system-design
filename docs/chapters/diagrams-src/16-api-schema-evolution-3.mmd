@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant BK as Backend v2
+    participant DTO as ProductDto (tolerant)
+    participant MAP as Mapper
+    participant UI as Old client UI
+    BK->>DTO: JSON with new badges field
+    DTO->>DTO: ignoreUnknownKeys, drop unknown it does not model
+    DTO->>MAP: known fields + defaults for missing
+    MAP-->>UI: stable Product (no crash)

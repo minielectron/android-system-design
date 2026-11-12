@@ -1,0 +1,22 @@
+flowchart TD
+    subgraph DD["Domain / Data"]
+        UC["use cases"]
+        REPO["CartRepository (SSOT, Ch 3)"]
+    end
+    subgraph UIG["Compose UI (stateless)"]
+        UA["user actions"]
+    end
+    subgraph VMG["CartViewModel (state owner)"]
+        RED["reduce / handle(event)"]
+        STATE["uiState: StateFlow of CartUiState"]
+        EFF["effects: Channel of CartEffect (one-time)"]
+    end
+    SCREEN["CartScreen: render(state)"]
+    UC --> REPO
+    UC --> RED
+    REPO -.->|Flow / Resource| RED
+    UA -->|onEvent| RED
+    RED --> STATE
+    RED -.->|navigate / snackbar| EFF
+    STATE -.->|collectAsStateWithLifecycle| SCREEN
+    EFF -.->|collect once| SCREEN

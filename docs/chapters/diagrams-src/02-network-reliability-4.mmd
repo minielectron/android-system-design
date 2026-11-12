@@ -1,0 +1,12 @@
+flowchart TD
+    FAIL["Failure"] --> IDEM{idempotent/key?}
+    IDEM -->|no| ERR["return error"]
+    IDEM -->|yes| RETRY{retryable?}
+    RETRY -->|no| ERR
+    RETRY -->|yes| ATT{attempts left?}
+    ATT -->|no| ERR
+    ATT -->|yes| WAIT["wait backoff+jitter / Retry-After"]
+    WAIT --> RT["retry"]
+    RT --> SUC{success?}
+    SUC -->|yes| OK["Success + breaker reset"]
+    SUC -->|no| FAIL

@@ -1,0 +1,18 @@
+flowchart TD
+    LC["LazyColumn + collectAsLazyPagingItems"]
+    PAGER["Pager(PagingConfig)"]
+    PS["PagingSource = Room DAO"]
+    ROOM["Room (cached pages)"]
+    RM["RemoteMediator"]
+    API["Paged API (cursor/offset)"]
+    BK["Backend"]
+    PAGER -->|Flow of PagingData| LC
+    LC -.-> PAGER
+    PAGER --> PS
+    PAGER --> RM
+    PS --> ROOM
+    RM -->|write page + remote keys| ROOM
+    ROOM -.->|invalidate, new PagingData| PAGER
+    RM -->|Room exhausted| API
+    API --> BK
+    BK --> RM

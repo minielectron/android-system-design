@@ -1,0 +1,31 @@
+flowchart TD
+    subgraph FEAT["feature repositories (:data:*)"]
+        SR["SearchRepository"]
+        CR["CartRepository"]
+        WR["WalletRepository"]
+    end
+    subgraph CORE[":core:network"]
+        SAC["safeApiCall { }"]
+        RF["Retrofit"]
+        MAP["toAppError() mapper"]
+        subgraph CHAIN["OkHttp interceptor chain"]
+            CID["CorrelationIdInterceptor"]
+            HID["HeaderInterceptor"]
+            AID["AuthInterceptor"]
+            LID["LoggingInterceptor (debug)"]
+        end
+        OK["OkHttpClient (singleton: pool, dispatcher, cache)"]
+    end
+    BK["Backend API"]
+    SR --> SAC
+    CR --> SAC
+    WR --> SAC
+    SAC --> RF
+    SAC -.->|maps exceptions| MAP
+    RF --> CID
+    CID --> HID
+    HID --> AID
+    AID --> LID
+    LID --> OK
+    OK --> BK
+    BK --> OK

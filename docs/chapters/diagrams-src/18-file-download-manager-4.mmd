@@ -1,0 +1,5 @@
+flowchart LR
+    DF["download finished"] --> M{size and sha256 match?}
+    M -->|yes| REN["rename to final, usable"]
+    M -->|no| DEL["delete .part"]
+    DEL --> RE["re-download"]

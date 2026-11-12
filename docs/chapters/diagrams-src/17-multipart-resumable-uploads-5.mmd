@@ -1,0 +1,9 @@
+flowchart TD
+    UC["upload chunk"] --> RES{result?}
+    RES -->|2xx/308| PERSIST["persist offset, next chunk"]
+    RES -->|transient fail| RETRY["Result.retry backoff"]
+    RES -->|4xx non-retryable| FAIL["fail + surface error"]
+    PERSIST --> ALL{all sent?}
+    ALL -->|yes| MARK["mark complete"]
+    RETRY --> QUERY["query status, resume offset"]
+    QUERY --> UC

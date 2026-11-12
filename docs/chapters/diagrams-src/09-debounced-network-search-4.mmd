@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant VM as SearchViewModel
+    participant REPO as SearchRepository
+    participant API as ProductSearchApi
+    VM->>REPO: search(headphones)
+    REPO->>API: GET ... (IO)
+    API-->>REPO: UnknownHostException
+    REPO-->>VM: Outcome.Failure(NoConnectivity)
+    VM->>VM: emit Error(NoConnectivity, retryable=true)
+    Note over VM: user taps Retry, onRetry re-emits same query bypassing debounce

@@ -1,0 +1,9 @@
+flowchart TD
+    SUB["submit with key K"] --> RESP{response?}
+    RESP -->|success| MARK["mark complete, discard K"]
+    RESP -->|lost/timeout| RETRY["retry SAME key K"]
+    RETRY --> SEEN{server seen K?}
+    SEEN -->|yes| STORED["return stored result"]
+    SEEN -->|no| EXEC["execute once"]
+    STORED --> MARK
+    EXEC --> MARK

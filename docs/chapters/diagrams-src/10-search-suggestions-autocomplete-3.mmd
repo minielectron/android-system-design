@@ -1,0 +1,22 @@
+sequenceDiagram
+    actor User
+    participant SB as SearchBar
+    participant VM as SearchSuggestVM
+    participant REC as Recents(DataStore)
+    participant API as SuggestApi
+    User->>SB: focuses empty box
+    VM->>REC: observe recents
+    REC-->>SB: ZeroQuery(recents, trending)
+    User->>SB: types sho
+    SB->>VM: onQueryChanged(sho)
+    Note over VM: debounce 300ms then flatMapLatest
+    VM->>VM: merge recents matching sho immediately
+    VM-->>SB: Typing(local merged, loadingRemote=true)
+    VM->>API: suggest(sho)
+    API-->>VM: shoe rack, shorts men
+    VM->>VM: merge + dedup + rank
+    VM-->>SB: Typing(merged, loadingRemote=false)
+    User->>SB: taps shoe rack
+    SB->>VM: onSelect(shoe rack)
+    VM->>REC: add(shoe rack)
+    Note over VM: run search Ch 9 and navigate to results

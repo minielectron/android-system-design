@@ -1,0 +1,17 @@
+flowchart TD
+    PICK["pick file (SAF content URI)"] --> ENQ["enqueue UploadWorker (WorkManager)"]
+    CONS["constraints: unmetered/charging"]
+    subgraph UW["UploadWorker (foreground service)"]
+        INIT["init session (idempotency key) to uploadId"]
+        CHUNKS["upload chunks with Content-Range"]
+        PERSIST["persist uploadId + offset (Room)"]
+        PROG["report progress"]
+    end
+    ENQ --> INIT
+    CONS -.-> UW
+    INIT --> CHUNKS
+    CHUNKS --> BK["Backend (resumable endpoint)"]
+    CHUNKS --> PERSIST
+    BK -->|fail| QUERY["query last offset, resume"]
+    QUERY --> CHUNKS
+    PROG -.-> UI["UI observes WorkInfo progress"]

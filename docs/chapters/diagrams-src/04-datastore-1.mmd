@@ -1,0 +1,20 @@
+flowchart TD
+    subgraph PRES["Presentation"]
+        VM["SettingsViewModel"]
+    end
+    subgraph DATA[":data:settings"]
+        REPO["SettingsRepository"]
+    end
+    subgraph CORE[":core:datastore"]
+        PROTO["Proto DataStore (session.pb)"]
+        SER["SessionSerializer"]
+        PREFS["Preferences DataStore (settings.preferences_pb)"]
+        MIG["SharedPreferences migration"]
+    end
+    VM --> REPO
+    REPO -->|observe Flow| PROTO
+    REPO -->|updateData| PROTO
+    REPO -->|observe Flow| PREFS
+    REPO -->|edit / updateData| PREFS
+    PROTO --> SER
+    PREFS --> MIG

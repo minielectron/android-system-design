@@ -1,0 +1,8 @@
+flowchart TD
+    UE["UiEvent"] --> HND["handle in ViewModel"]
+    HND --> WOK{write ok?}
+    WOK -->|yes| SSOT["SSOT Flow re-emits, new state"]
+    WOK -->|no| RB["rollback + snackbar effect"]
+    DF["data Flow"] --> RES{Resource?}
+    RES -->|Success/Loading with data| CONTENT["Content"]
+    RES -->|Error no data| ERR["Error + Retry"]

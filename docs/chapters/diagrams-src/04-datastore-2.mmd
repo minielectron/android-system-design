@@ -1,0 +1,20 @@
+classDiagram
+    class SettingsRepository {
+        <<interface>>
+        +settings Flow~UserSettings~
+        +setTheme(Theme)
+        +setAutoplay(Boolean)
+    }
+    class SessionSerializer {
+        <<Serializer~Session~>>
+        +defaultValue Session
+        +readFrom(InputStream) Session
+        +writeTo(Session, OutputStream)
+    }
+    class PreferencesSettingsRepository {
+        -DataStore~Preferences~ store
+    }
+    class DataStore {
+    }
+    PreferencesSettingsRepository ..|> SettingsRepository
+    PreferencesSettingsRepository --> DataStore

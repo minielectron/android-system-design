@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant SS as SettingsScreen
+    participant VM as SettingsViewModel
+    participant REPO as SettingsRepository
+    participant DS as Preferences DataStore
+    SS->>VM: toggle autoplay
+    VM->>REPO: setAutoplay(true)
+    REPO->>DS: edit prefs AUTOPLAY = true (transactional, suspend)
+    DS-->>REPO: committed
+    DS-->>REPO: data Flow emits new Preferences
+    REPO-->>VM: UserSettings(autoplay=true)
+    VM-->>SS: state update (every observer app-wide updates)

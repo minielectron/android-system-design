@@ -1,0 +1,31 @@
+classDiagram
+    class AppError {
+        <<sealed>>
+    }
+    class NetworkModule {
+        +provideClient() OkHttpClient
+        +provideRetrofit() Retrofit
+    }
+    class AuthInterceptor {
+        -TokenProvider tokens
+        +intercept(Chain) Response
+    }
+    class CorrelationIdInterceptor {
+        +intercept(Chain) Response
+    }
+    class HeaderInterceptor {
+        -AppInfo appInfo
+        +intercept(Chain) Response
+    }
+    class TokenProvider {
+        <<interface>>
+        +currentAccessToken() String
+    }
+    class OutcomeT {
+        <<sealed>>
+    }
+    NetworkModule --> AuthInterceptor
+    NetworkModule --> CorrelationIdInterceptor
+    NetworkModule --> HeaderInterceptor
+    AuthInterceptor --> TokenProvider
+    AuthInterceptor ..> OutcomeT

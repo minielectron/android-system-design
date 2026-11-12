@@ -1,0 +1,21 @@
+flowchart TD
+    OS["Android OS"] -->|low memory| PD["process death"]
+    PD -->|later| RE["recreate task + Activity"]
+    subgraph VM["ViewModel"]
+        SSH["SavedStateHandle (from Bundle)"]
+        RK["restored keys: query, step, form"]
+        DER["derive UiState"]
+    end
+    RE --> SSH
+    SSH --> RK
+    RK --> DER
+    subgraph SSOT["SSOT"]
+        ROOM["Room (Ch 3)"]
+        DS["DataStore (Ch 4)"]
+    end
+    DER -->|read durable data| ROOM
+    DER -->|read config/session| DS
+    US["uiState: StateFlow"]
+    DER --> US
+    CMP["Compose (rememberSaveable for pure-UI bits)"]
+    US -.-> CMP

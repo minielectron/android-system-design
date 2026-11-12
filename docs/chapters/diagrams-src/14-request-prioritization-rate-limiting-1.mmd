@@ -1,0 +1,24 @@
+flowchart TD
+    subgraph SRC["request sources"]
+        TAP["tapped detail (Immediate)"]
+        VIS["visible content/images (UserVisible)"]
+        PRE["prefetch (Prefetch)"]
+        ANA["analytics (Background)"]
+    end
+    AB["AnalyticsBatcher (coalesce + flush)"]
+    subgraph NS["NetworkScheduler"]
+        PQ["priority queue"]
+        BC["bounded concurrency (Semaphore)"]
+    end
+    DISP["OkHttp Dispatcher (maxRequests/host)"]
+    BK["Backend"]
+    SCROLL["scroll/nav away"]
+    TAP --> PQ
+    VIS --> PQ
+    PRE --> PQ
+    ANA --> AB
+    AB --> PQ
+    PQ --> BC
+    BC --> DISP
+    DISP --> BK
+    SCROLL -.->|cancel item jobs| PQ

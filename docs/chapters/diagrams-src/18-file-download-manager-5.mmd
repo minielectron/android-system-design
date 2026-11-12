@@ -1,0 +1,12 @@
+flowchart TD
+    DR["download/resume"] --> RES{result?}
+    RES -->|206/200 streaming| APP["append .part, persist offset"]
+    RES -->|transient fail| RETRY["retry + resume"]
+    RES -->|gone/expired| FAIL["fail / refresh url"]
+    APP --> COMP{complete?}
+    COMP -->|no| DR
+    COMP -->|yes| INT{integrity ok?}
+    INT -->|yes| RENAME["rename, final"]
+    INT -->|no| DELRE["delete + re-download"]
+    RETRY --> DR
+    FAIL --> DR

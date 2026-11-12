@@ -1,0 +1,5 @@
+flowchart LR
+    PR["pull to refresh"] --> RM["RemoteMediator REFRESH"]
+    RM --> TX["transaction: clear items + keys, load page 1"]
+    TX --> INV["Room invalidates PagingSource"]
+    INV --> RESET["list resets to top, fresh"]

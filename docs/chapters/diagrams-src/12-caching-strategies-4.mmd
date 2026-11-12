@@ -1,0 +1,5 @@
+flowchart LR
+    M["mutation: update price"] --> ODB["optimistic DB write"]
+    ODB --> INV["invalidate memory entry"]
+    INV --> SC["server confirms"]
+    SC --> REF["refresh DB/memory from response"]

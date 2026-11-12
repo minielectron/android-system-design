@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant SAC as safeApiCall
+    participant RF as Retrofit Api
+    participant BK as Backend
+    SAC->>RF: suspend search(q)
+    RF->>BK: HTTP GET
+    BK-->>RF: 503 / timeout / no network
+    RF-->>SAC: HttpException or IOException
+    SAC->>SAC: toAppError(throwable)
+    SAC-->>SAC: Outcome.Failure(AppError)

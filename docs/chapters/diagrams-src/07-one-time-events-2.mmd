@@ -1,0 +1,21 @@
+classDiagram
+    class ViewModelBase {
+        -Channel~Effect~ _effects
+        +Flow~Effect~ effects
+        #emitEffect(Effect)
+    }
+    class Effect {
+        <<sealed>>
+    }
+    class Navigate {
+    }
+    class ShowSnackbar {
+        +String message
+        +String action
+    }
+    class ShowDialog {
+    }
+    ViewModelBase --> Effect
+    Navigate ..|> Effect
+    ShowSnackbar ..|> Effect
+    ShowDialog ..|> Effect

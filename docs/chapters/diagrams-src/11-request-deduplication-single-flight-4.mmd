@@ -1,0 +1,9 @@
+flowchart TD
+    RUN["run key"] --> EXISTS{entry exists?}
+    EXISTS -->|yes| AWAIT["await shared Deferred"]
+    EXISTS -->|no| START["start Deferred in coordinator scope"]
+    START --> BLOCK["block runs once"]
+    BLOCK --> FIN["finally: remove entry"]
+    FIN --> SUC{success?}
+    SUC -->|yes| RESULT["all waiters get result"]
+    SUC -->|fail| FAILURE["all waiters get failure"]

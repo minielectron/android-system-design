@@ -1,0 +1,11 @@
+flowchart TD
+    PAY["user taps Pay (one intent)"] --> GEN["generate key = UUID"]
+    GEN --> PERSIST["persist key + request in Room (outbox, Ch 31)"]
+    PERSIST --> SEND["send with Idempotency-Key header"]
+    SEND -.->|lost response / retry| SEND
+    SEND --> SEEN["server: seen key?"]
+    SEEN -->|no| EXEC["execute once, store key, result"]
+    SEEN -->|yes| RET["return stored result, no re-execute"]
+    EXEC --> RESULT["result"]
+    RET --> RESULT
+    RESULT --> MARK["mark complete, discard key"]

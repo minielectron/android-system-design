@@ -1,0 +1,7 @@
+flowchart TD
+    REQ["request"] --> PRI{priority}
+    PRI -->|Immediate/UserVisible| RES["reserved slots, run soon"]
+    PRI -->|Prefetch/Background| SLOT{slot free and under rate?}
+    SLOT -->|yes| RUN["run"]
+    SLOT -->|no| QT["queue / throttle"]
+    SCROLL["scroll away"] -.-> CANCEL["cancel queued/in-flight low-pri"]

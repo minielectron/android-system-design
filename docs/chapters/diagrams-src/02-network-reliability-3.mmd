@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant Repo
+    participant RC as reliableCall
+    participant CB as CircuitBreaker
+    participant SAC as safeApiCall
+    participant BK as Backend
+    Repo->>RC: reliableCall(policy) - api.search(q)
+    RC->>CB: canRequest(host)?
+    CB-->>RC: yes (Closed)
+    RC->>SAC: attempt 1
+    SAC->>BK: GET
+    BK-->>SAC: 503
+    SAC-->>RC: Failure(Http 503) retryable
+    RC->>CB: recordFailure
+    RC->>RC: wait backoff(1) + jitter
+    RC->>SAC: attempt 2
+    SAC->>BK: GET
+    BK-->>SAC: 200
+    SAC-->>RC: Success
+    RC->>CB: recordSuccess (reset)
+    RC-->>Repo: Outcome.Success

@@ -1,0 +1,21 @@
+flowchart TD
+    APP["@HiltAndroidApp Application"]
+    subgraph MODS["modules by layer"]
+        CORE["core modules: NetworkModule, DatabaseModule, DataStoreModule, DispatchersModule"]
+        DATAM["data modules: @Binds repositories"]
+        FEAT["feature: @HiltViewModel ViewModels"]
+    end
+    subgraph HIER["Hilt component hierarchy"]
+        SINGLE["SingletonComponent (app lifetime)"]
+        ARC["ActivityRetainedComponent (survives config change)"]
+        AC["ActivityComponent"]
+        VMC["ViewModelComponent (ViewModel lifetime)"]
+    end
+    APP --> SINGLE
+    CORE -->|@InstallIn SingletonComponent| SINGLE
+    DATAM -->|@InstallIn SingletonComponent| SINGLE
+    FEAT -->|@HiltViewModel| VMC
+    SINGLE --> ARC
+    SINGLE --> AC
+    ARC --> VMC
+    AC --> VMC

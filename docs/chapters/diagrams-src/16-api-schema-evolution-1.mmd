@@ -1,0 +1,16 @@
+flowchart TD
+    GATE["Min supported version gate (Ch 54)"]
+    BK["Backend (evolving schema)"]
+    DTO["DTO (tolerant: ignoreUnknownKeys, defaults)"]
+    FLAGS["Remote flags (Ch 41)"]
+    MAP["Mapper: toDomain (absorbs renames/defaults)"]
+    TEL["telemetry: schema drift"]
+    DM["Domain model (stable)"]
+    UI["UI (unaffected by schema churn)"]
+    GATE -.->|breaking only| BK
+    BK --> DTO
+    FLAGS -.-> MAP
+    DTO --> MAP
+    DTO -.->|parse error / unknown enum| TEL
+    MAP --> DM
+    DM --> UI

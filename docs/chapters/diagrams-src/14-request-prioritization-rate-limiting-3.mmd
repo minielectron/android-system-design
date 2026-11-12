@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant PG as Product grid
+    participant NS as NetworkScheduler
+    participant OK as OkHttp
+    participant BK as Backend
+    PG->>NS: schedule(UserVisible, loadImage A) x6 (visible)
+    PG->>NS: schedule(Prefetch, loadImage N) x20 (offscreen)
+    Note over NS: capacity = 4, admit UserVisible first
+    NS->>OK: 4 visible image requests
+    OK->>BK: GET images
+    BK-->>OK: images
+    PG->>NS: user scrolls, cancel offscreen prefetch jobs
+    NS-->>NS: slot freed, admit next by priority
+    NS->>OK: remaining visible, then surviving prefetch

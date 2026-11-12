@@ -1,0 +1,16 @@
+classDiagram
+    class CheckoutRepository {
+        +submit(form) Outcome~OrderResult~
+    }
+    class PendingMutation {
+        +String idempotencyKey
+        +String type
+        +String payloadJson
+        +Status status
+    }
+    class IdempotentApi {
+        <<interface>>
+        +placeOrder(key, body) OrderResult
+    }
+    CheckoutRepository --> PendingMutation
+    CheckoutRepository --> IdempotentApi

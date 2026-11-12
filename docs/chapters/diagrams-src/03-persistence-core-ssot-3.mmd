@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant VM as ViewModel
+    participant CR as CatalogRepository
+    participant DAO as ProductDao (Room)
+    participant API as ProductApi
+    VM->>CR: observeCatalog()
+    CR->>DAO: observeAll() (Flow)
+    DAO-->>CR: cached list (maybe empty)
+    CR-->>VM: Resource.Loading(cached)
+    CR->>API: fetchCatalog()
+    API-->>CR: List of ProductDto
+    CR->>DAO: replaceAll(entities) in transaction
+    DAO-->>CR: table changed, Flow re-emits
+    CR-->>VM: Resource.Success(freshList)

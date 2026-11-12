@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant VM as ViewModel
+    participant REPO as Repository
+    participant LRU as LruCache
+    participant ROOM as Room
+    participant NET as OkHttp+Backend
+    VM->>REPO: get(product:1)
+    REPO->>LRU: lookup
+    LRU-->>REPO: miss
+    REPO->>ROOM: query + check updatedAt
+    ROOM-->>REPO: present but stale
+    REPO-->>VM: Resource.Loading(staleData)
+    REPO->>NET: GET /products/1 with If-None-Match: etag
+    alt 304 Not Modified
+        NET-->>REPO: 304 (no body)
+        REPO->>ROOM: bump updatedAt only
+    else 200 new data
+        NET-->>REPO: 200 + body + new etag
+        REPO->>ROOM: upsert + updatedAt + etag
+    end
+    ROOM-->>REPO: fresh row (Flow)
+    REPO->>LRU: populate
+    REPO-->>VM: Resource.Success(fresh)

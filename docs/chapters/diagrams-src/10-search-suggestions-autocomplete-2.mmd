@@ -1,0 +1,30 @@
+classDiagram
+    class Suggestion {
+        +String text
+        +SuggestionType type
+        +String subtitle
+    }
+    class SuggestUiState {
+        <<sealed>>
+    }
+    class SuggestionRepository {
+        <<interface>>
+        +suggest(String) Outcome~List~Suggestion~~
+    }
+    class RecentSearchesRepository {
+        <<interface>>
+        +recents Flow~List~String~~
+        +add(String)
+        +remove(String)
+        +clear()
+    }
+    class ZeroQuery {
+        +List~Suggestion~ recents
+        +List~Suggestion~ trending
+    }
+    class Typing {
+        +List~Suggestion~ merged
+        +boolean loadingRemote
+    }
+    ZeroQuery ..|> SuggestUiState
+    Typing ..|> SuggestUiState

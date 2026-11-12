@@ -1,0 +1,9 @@
+flowchart TD
+    PD["process death"] --> RE["recreate"]
+    RE --> SK{saved keys present?}
+    SK -->|yes| RMK["restore minimal keys"]
+    SK -->|no| FRESH["fresh launch defaults"]
+    RMK --> RD["read durable data from Room/DataStore"]
+    RMK --> MID{mid-operation?}
+    RD --> REC["reconstruct UiState"]
+    MID -->|yes| REUSE["reuse idempotency key, safe resume"]

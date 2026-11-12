@@ -1,0 +1,33 @@
+classDiagram
+    class CatalogRepository {
+        <<interface>>
+        +observeCatalog() Flow~Resource~List~Product~~~
+        +observeProduct(String) Flow~Resource~Product~~
+        +refresh() Outcome~Unit~
+    }
+    class CatalogRepositoryImpl {
+        -ProductDao dao
+        -ProductApi api
+        -DispatcherProvider dispatchers
+    }
+    class ProductDao {
+        <<interface>>
+        +observeAll() Flow~List~ProductEntity~~
+        +observeById(String) Flow~ProductEntity~
+        +upsertAll(List~ProductEntity~)
+        +replaceAll(List~ProductEntity~)
+        +clear()
+    }
+    class ResourceT {
+        <<sealed>>
+    }
+    class ProductEntity {
+        +String id
+        +String title
+        +long priceCents
+        +long updatedAt
+    }
+    CatalogRepositoryImpl ..|> CatalogRepository
+    CatalogRepositoryImpl --> ProductDao
+    CatalogRepositoryImpl --> ResourceT
+    ProductDao --> ProductEntity

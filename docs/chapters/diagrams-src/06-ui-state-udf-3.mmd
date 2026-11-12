@@ -1,0 +1,20 @@
+sequenceDiagram
+    actor User
+    participant CS as CartScreen
+    participant VM as CartViewModel
+    participant UC as UpdateQuantityUseCase
+    participant REPO as CartRepository
+    User->>CS: tap plus on a line
+    CS->>VM: onEvent(IncrementQty(lineId))
+    Note over VM: copy Content with mutating=true
+    VM-->>CS: Content(mutating=true)
+    VM->>UC: invoke(lineId, qty+1)
+    UC->>REPO: updateQuantity(...)
+    REPO-->>VM: Flow emits updated cart
+    Note over VM: map to Content mutating=false
+    VM-->>CS: Content(newLines, newTotal)
+    alt update fails
+        REPO-->>VM: Outcome.Failure(error)
+        VM-->>CS: effect snackbar Couldn't update
+        Note over VM: state rolled back to previous Content
+    end

@@ -1,0 +1,7 @@
+flowchart TD
+    Q["query"] --> EMPTY{empty?}
+    EMPTY -->|yes| ZQ["ZeroQuery: recents + trending"]
+    EMPTY -->|no| LOCAL["emit local matches now"]
+    LOCAL --> ROK{remote ok?}
+    ROK -->|yes| MERGE["merge + dedup + rank"]
+    ROK -->|fail/empty| KEEP["keep local only"]

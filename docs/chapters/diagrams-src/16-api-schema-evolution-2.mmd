@@ -1,0 +1,20 @@
+classDiagram
+    class ProductDto {
+        +String id
+        +String title
+        +long priceCents
+        +String discount
+        +List~String~ badges
+        +OrderStatusDto status
+    }
+    class Product {
+        +String id
+        +String title
+        +Money price
+        +OrderStatus status
+    }
+    class OrderStatusDto {
+        <<enum with UNKNOWN fallback>>
+    }
+    ProductDto --> Product : toDomain()
+    ProductDto --> OrderStatusDto

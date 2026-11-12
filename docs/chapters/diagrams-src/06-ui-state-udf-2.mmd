@@ -1,0 +1,30 @@
+classDiagram
+    class CartViewModel {
+        +StateFlow~CartUiState~ uiState
+        +Flow~CartEffect~ effects
+        +onEvent(CartUiEvent)
+    }
+    class CartUiState {
+        <<sealed>>
+    }
+    class CartUiEvent {
+        <<sealed>>
+    }
+    class Loading {
+    }
+    class Content {
+        +List~CartLine~ lines
+        +Money total
+        +boolean mutating
+    }
+    class Empty {
+    }
+    class ErrorState {
+        +AppError error
+    }
+    CartViewModel --> CartUiState
+    CartViewModel --> CartUiEvent
+    Loading ..|> CartUiState
+    Content ..|> CartUiState
+    Empty ..|> CartUiState
+    ErrorState ..|> CartUiState

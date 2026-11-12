@@ -1,0 +1,24 @@
+classDiagram
+    class DownloadQueue {
+        +enqueue(request)
+        +pause(id)
+        +resume(id)
+        +cancel(id)
+    }
+    class DownloadWorker {
+        +doWork() Result
+    }
+    class DownloadEntity {
+        +String id
+        +String url
+        +String partPath
+        +String finalPath
+        +long bytesWritten
+        +long totalBytes
+        +String etag
+        +String sha256
+        +int priority
+        +Status status
+    }
+    DownloadQueue --> DownloadEntity
+    DownloadWorker --> DownloadEntity
